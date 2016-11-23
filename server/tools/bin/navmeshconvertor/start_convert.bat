@@ -1,0 +1,1 @@
+start navmeshconvertor64d.exe -all
