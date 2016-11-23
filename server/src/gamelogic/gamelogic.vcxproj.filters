@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="main">
+      <UniqueIdentifier>{548f62c5-27bf-468b-bb79-4534a8fd7be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bt">
+      <UniqueIdentifier>{2358094d-c633-4381-9dc4-5f82e966c745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script">
+      <UniqueIdentifier>{26d56c45-3fe4-4444-9d84-60b7feacf6f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{febaa87c-1e4b-4764-8bee-8582547f2224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\gen">
+      <UniqueIdentifier>{2d07403a-d72c-4c74-977a-8c949327686e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\pkg">
+      <UniqueIdentifier>{907e92a0-676e-4f54-b6d9-d2e179b753ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{b3acb9ff-b615-41f5-8897-37443dd3840e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\gamelogic.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="bt\bt_manager.cpp">
+      <Filter>bt</Filter>
+    </ClCompile>
+    <ClCompile Include="script\script_func.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="bt\bt_action.cpp">
+      <Filter>bt</Filter>
+    </ClCompile>
+    <ClCompile Include="bt\bt_event.cpp">
+      <Filter>bt</Filter>
+    </ClCompile>
+    <ClCompile Include="ai\ai_manager.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="script\tolua_ai.cpp">
+      <Filter>script\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="script\tolua_common.cpp">
+      <Filter>script\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\nav_mesh.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\nav_mesh_build.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\nav_mesh_query.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\gamelogic\gamelogic.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\bt_manager.h">
+      <Filter>bt</Filter>
+    </ClInclude>
+    <ClInclude Include="script\script_func.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\bt_action.h">
+      <Filter>bt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\bt_event.h">
+      <Filter>bt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\ai_manager.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="script\tolua_ai.h">
+      <Filter>script\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="script\tolua_common.h">
+      <Filter>script\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh_build.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh_query.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <toluapp Include="script\ai.pkg">
+      <Filter>script\pkg</Filter>
+    </toluapp>
+    <toluapp Include="script\common.pkg">
+      <Filter>script\pkg</Filter>
+    </toluapp>
+  </ItemGroup>
+</Project>

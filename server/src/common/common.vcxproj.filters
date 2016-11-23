@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="define">
+      <UniqueIdentifier>{bdc8f269-6966-4592-8681-106ebca302ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{fbb6b067-609a-425e-b419-5a86a9b914cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{495b8f02-f24e-4e79-b02e-20ee6b1673c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script">
+      <UniqueIdentifier>{acf16599-4670-4827-bc30-5d686a2d2d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\pkg">
+      <UniqueIdentifier>{69bf1a83-7ff9-4f95-8b72-88507bea7f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\gen">
+      <UniqueIdentifier>{d70455e4-9b83-4efc-b677-758ac9099d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{fb3da8c0-aa20-412d-914e-b775e48fd18a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\common\server_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\string_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\common.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\server_config.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\guard_config.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\global_config.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="script\tolua_common.h">
+      <Filter>script\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="script\tolua_global_config.h">
+      <Filter>script\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\tab_test_data.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\ai_data.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\scene_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\grid_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\region_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\common\polygon_def.h">
+      <Filter>define</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\common.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="config\global_config.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="script\tolua_common.cpp">
+      <Filter>script\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="script\tolua_global_config.cpp">
+      <Filter>script\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="data\tab_test_data.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\ai_data.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <toluapp Include="script\global_config.pkg">
+      <Filter>script\pkg</Filter>
+    </toluapp>
+    <toluapp Include="script\common.pkg">
+      <Filter>script\pkg</Filter>
+    </toluapp>
+  </ItemGroup>
+</Project>

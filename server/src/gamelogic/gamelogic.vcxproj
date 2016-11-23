@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C03A6FAC-F5FF-4C16-A5EB-655845D375E4}</ProjectGuid>
+    <RootNamespace>gamelogic</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="..\common\script\toluapp.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>gamelogic64d</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>gamelogic64</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <GenerateMapFile>false</GenerateMapFile>
+      <MapFileName>
+      </MapFileName>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ai\ai_manager.cpp" />
+    <ClCompile Include="bt\bt_action.cpp" />
+    <ClCompile Include="bt\bt_event.cpp" />
+    <ClCompile Include="bt\bt_manager.cpp" />
+    <ClCompile Include="main\gamelogic.cpp" />
+    <ClCompile Include="scene\nav_mesh.cpp" />
+    <ClCompile Include="scene\nav_mesh_build.cpp" />
+    <ClCompile Include="scene\nav_mesh_query.cpp" />
+    <ClCompile Include="script\script_func.cpp" />
+    <ClCompile Include="script\tolua_ai.cpp" />
+    <ClCompile Include="script\tolua_common.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\gamelogic\ai_manager.h" />
+    <ClInclude Include="..\..\inc\gamelogic\bt_action.h" />
+    <ClInclude Include="..\..\inc\gamelogic\bt_event.h" />
+    <ClInclude Include="..\..\inc\gamelogic\bt_manager.h" />
+    <ClInclude Include="..\..\inc\gamelogic\gamelogic.h" />
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh.h" />
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh_build.h" />
+    <ClInclude Include="..\..\inc\gamelogic\nav_mesh_query.h" />
+    <ClInclude Include="script\script_func.h" />
+    <ClInclude Include="script\tolua_ai.h" />
+    <ClInclude Include="script\tolua_common.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <toluapp Include="script\ai.pkg">
+      <FileType>Document</FileType>
+    </toluapp>
+    <toluapp Include="script\common.pkg">
+      <FileType>Document</FileType>
+    </toluapp>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\common\script\toluapp.targets" />
+  </ImportGroup>
+</Project>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\gameserver.cpp" />
+    <ClCompile Include="message\gs_external_packet_parser.cpp" />
+    <ClCompile Include="message\gs_internal_packet_parser.cpp" />
+    <ClCompile Include="message\gs_message_handler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main\gameserver.h" />
+    <ClInclude Include="message\gs_external_packet_parser.h" />
+    <ClInclude Include="message\gs_internal_packet_parser.h" />
+    <ClInclude Include="message\gs_message_handler.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8FBC7681-CC67-49B1-B7B7-2769C264653D}</ProjectGuid>
+    <RootNamespace>gameserver</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\gameserver\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>gameserver64d</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\gameserver\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>gameserver64</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\3rd\SDL-2.0.0-6713\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql-5.6.27\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua-5.1.5\lib\win64;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\lib\win64;%LZPL_ROOT%\server\3rd\curl-7.46.0\build\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;libmysql.lib;zlibwapi64d.lib;lzpl64d.lib;message64d.lib;gamelogic64d.lib;common64d.lib;lua64d.lib;toluapp64d.lib;curl64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql-5.6.27\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua-5.1.5\lib\win64;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\lib\win64;%LZPL_ROOT%\server\3rd\curl-7.46.0\build\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;libmysql.lib;zlibwapi64.lib;lzpl64.lib;message64.lib;gamelogic64.lib;common64.lib;lua64.lib;toluapp64.lib;curl64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

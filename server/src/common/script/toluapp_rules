@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<VisualStudioToolFile
+	Name="toluapp"
+	Version"8.00"
+	>
+	<Rules>
+		<CustomBuildRule
+			Name="toluapp"
+			DisplayName="toluapp"
+			CommandLine="script\toluapp.exe -D -n $(InputName) -o $(InputDir)tolua_$(InputName).cpp -H $(InputDir)tolua_$(InputName).h $(InputDir)$(InputName).pkg"
+			Outputs="$(InputDir)tolua_$(InputName).cpp;$(InputDir)tolua_$(InputName).h"
+			FileExtensions="*.pkg"
+			ExecutionDescription="Compiling tolua++ file $(InputName).pkg"
+			ShowOnlyRuleProperties="false"
+			>
+		</CustomBuildRule>
+	</Rules>
+</VisualStudioToolFile

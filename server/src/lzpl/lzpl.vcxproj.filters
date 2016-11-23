@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{1b7bb58e-3bb1-4cd1-8a76-adcf13f2742b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="container">
+      <UniqueIdentifier>{b0dbefeb-c24e-47f5-b801-95ceae9a5c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="db">
+      <UniqueIdentifier>{cd6a7de0-4f07-44e5-b1b7-324189b09bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="file">
+      <UniqueIdentifier>{646fa038-21d8-40f9-8a1e-0ff494286428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="log">
+      <UniqueIdentifier>{2b96cdd9-2e7a-4577-be00-77e90c1c0505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{f9de3d63-a355-488a-b652-489892d50147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="net">
+      <UniqueIdentifier>{c00c9ccd-bda3-4c3b-b24d-3e19ca19b0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{08a18d36-fd7b-4cb0-b154-20b5ebcab450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tinyxml">
+      <UniqueIdentifier>{87f41306-3595-41d9-8730-73d880f3ad56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility">
+      <UniqueIdentifier>{85266f37-7dbc-4816-81af-53a8f80afb7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="net\interface">
+      <UniqueIdentifier>{66fad60a-0668-440f-9919-ec2f94eef7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="net\iocp">
+      <UniqueIdentifier>{55da0c10-7c85-482d-a9d4-ec60035e1999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string">
+      <UniqueIdentifier>{01617dc5-7bd7-4f63-ad89-5780267d7055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bt">
+      <UniqueIdentifier>{4b37399f-babf-4f4c-9f3b-23b140a962c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unicode">
+      <UniqueIdentifier>{1502034c-8563-4333-b2b4-86f238885191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="http">
+      <UniqueIdentifier>{c535faef-6723-4e4c-a783-07880da073af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dump">
+      <UniqueIdentifier>{99bfae08-ecc2-4a7b-a954-2c4ee30f7ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="encrypt">
+      <UniqueIdentifier>{9b334829-3ee5-40eb-8a42-3c9025ab1318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="global">
+      <UniqueIdentifier>{33a4ccdf-87c4-42a1-8dfc-cb125603a675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{445ca9f9-2c77-4e95-aefe-62568d2c7317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="message\interface">
+      <UniqueIdentifier>{95c64638-070c-4898-811d-acd07cdf5d18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sharemem">
+      <UniqueIdentifier>{ac50ab59-55fe-47f2-abcb-b247debb96f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\lzpl\lp_base.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_def.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_lzpl.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_type.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_baselist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_looplist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_sqlmgr.h">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_sqlstmt.h">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_tabfile.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_file.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_processerror.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_profile.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_logger.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_luascript.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_luascriptmgr.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_connector.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_eventhandler.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_listener.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_net.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_reactor.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_socker.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h">
+      <Filter>net\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_lock.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_system.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_thread.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_time.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\tinystr.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\tinyxml.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_objpool.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_singleton.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_loopbuf.h">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_string.h">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_buf.h">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_bt.h">
+      <Filter>bt</Filter>
+    </ClInclude>
+    <ClInclude Include="file\lp_normalfile.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="log\lp_filelogger.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\lp_loggerctrl.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="net\iocp\lp_iocp.h">
+      <Filter>net\iocp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_datamanager.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_http.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_dump.h">
+      <Filter>dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_urlcode.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_global.h">
+      <Filter>global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_base64.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_md5.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_codeconvert.h">
+      <Filter>unicode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_dbinit.h">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_filelist.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_dynamicarray.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_simplelist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_netmessagehandler.h">
+      <Filter>message\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_message.h">
+      <Filter>message\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_packetparser.h">
+      <Filter>message\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_messageserializer.h">
+      <Filter>message\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_messageserializer.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_sharememory.h">
+      <Filter>sharemem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bt\lp_bt.cpp">
+      <Filter>bt</Filter>
+    </ClCompile>
+    <ClCompile Include="container\lp_looplist.cpp">
+      <Filter>container</Filter>
+    </ClCompile>
+    <ClCompile Include="db\lp_sqlmgr.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="db\lp_sqlstmt.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="file\lp_normalfile.cpp">
+      <Filter>file</Filter>
+    </ClCompile>
+    <ClCompile Include="file\lp_tabfile.cpp">
+      <Filter>file</Filter>
+    </ClCompile>
+    <ClCompile Include="log\lp_filelogger.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\lp_loggerctrl.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\lp_profile.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lp_luascript.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lp_luascriptmgr.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="net\iocp\lp_iocp.cpp">
+      <Filter>net\iocp</Filter>
+    </ClCompile>
+    <ClCompile Include="string\lp_loopbuf.cpp">
+      <Filter>string</Filter>
+    </ClCompile>
+    <ClCompile Include="string\lp_string.cpp">
+      <Filter>string</Filter>
+    </ClCompile>
+    <ClCompile Include="system\lp_lock.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\lp_system.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\lp_thread.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\lp_time.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="http\lp_http.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="dump\lp_dump.cpp">
+      <Filter>dump</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\lp_urlcode.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="global\lp_global.cpp">
+      <Filter>global</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\lp_base64.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\lp_md5.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="unicode\lp_codeconvert.cpp">
+      <Filter>unicode</Filter>
+    </ClCompile>
+    <ClCompile Include="db\lp_dbinit.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="file\lp_filelist.cpp">
+      <Filter>file</Filter>
+    </ClCompile>
+    <ClCompile Include="message\lp_messageserializer.cpp">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="sharemem\lp_sharememory.cpp">
+      <Filter>sharemem</Filter>
+    </ClCompile>
+    <ClCompile Include="base\lp_lzpl.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

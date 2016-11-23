@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{041FDAC0-D402-48E5-A83A-4ED715003986}</ProjectGuid>
+    <RootNamespace>lzpl</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>lzpl64d</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>lzpl64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ws2_32.lib;zlibwapi64d.lib;libmysql.lib;lua64d.lib;toluapp64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\3rd\zlib\lib\win64;..\..\3rd\mysql-5.6.27\lib\win64;..\..\3rd\lua-5.1.5\lib\win64;..\..\3rd\tolua++-1.0.92\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\lzpl\lpi_buf.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_connector.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_eventhandler.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_file.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_listener.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_logger.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_message.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_messageserializer.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_net.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_netmessagehandler.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_packetparser.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_reactor.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_socker.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_base.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_base64.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_baselist.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_bt.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_datamanager.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_dbinit.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_def.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_dump.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_dynamicarray.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_filelist.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_global.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_http.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_lock.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_loopbuf.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_looplist.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_luascript.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_luascriptmgr.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_lzpl.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_md5.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_messageserializer.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_objpool.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_processerror.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_profile.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_sharememory.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_simplelist.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_singleton.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_sqlmgr.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_sqlstmt.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_string.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_system.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_tabfile.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_thread.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_time.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_type.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_urlcode.h" />
+    <ClInclude Include="..\..\inc\lzpl\tinystr.h" />
+    <ClInclude Include="..\..\inc\lzpl\tinyxml.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_codeconvert.h" />
+    <ClInclude Include="file\lp_normalfile.h" />
+    <ClInclude Include="log\lp_filelogger.h" />
+    <ClInclude Include="log\lp_loggerctrl.h" />
+    <ClInclude Include="net\iocp\lp_iocp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="base\lp_lzpl.cpp" />
+    <ClCompile Include="bt\lp_bt.cpp" />
+    <ClCompile Include="container\lp_looplist.cpp" />
+    <ClCompile Include="db\lp_dbinit.cpp" />
+    <ClCompile Include="db\lp_sqlmgr.cpp" />
+    <ClCompile Include="db\lp_sqlstmt.cpp" />
+    <ClCompile Include="dump\lp_dump.cpp" />
+    <ClCompile Include="encrypt\lp_base64.cpp" />
+    <ClCompile Include="encrypt\lp_md5.cpp" />
+    <ClCompile Include="encrypt\lp_urlcode.cpp" />
+    <ClCompile Include="file\lp_filelist.cpp" />
+    <ClCompile Include="file\lp_normalfile.cpp" />
+    <ClCompile Include="file\lp_tabfile.cpp" />
+    <ClCompile Include="global\lp_global.cpp" />
+    <ClCompile Include="http\lp_http.cpp" />
+    <ClCompile Include="log\lp_filelogger.cpp" />
+    <ClCompile Include="log\lp_loggerctrl.cpp" />
+    <ClCompile Include="log\lp_profile.cpp" />
+    <ClCompile Include="lua\lp_luascript.cpp" />
+    <ClCompile Include="lua\lp_luascriptmgr.cpp" />
+    <ClCompile Include="message\lp_messageserializer.cpp" />
+    <ClCompile Include="net\iocp\lp_iocp.cpp" />
+    <ClCompile Include="sharemem\lp_sharememory.cpp" />
+    <ClCompile Include="string\lp_loopbuf.cpp" />
+    <ClCompile Include="string\lp_string.cpp" />
+    <ClCompile Include="system\lp_lock.cpp" />
+    <ClCompile Include="system\lp_system.cpp" />
+    <ClCompile Include="system\lp_thread.cpp" />
+    <ClCompile Include="system\lp_time.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="unicode\lp_codeconvert.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

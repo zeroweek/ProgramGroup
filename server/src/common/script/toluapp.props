@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(toluappBeforeTargets)' == '' and '$(toluappAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <toluappBeforeTargets>Midl</toluappBeforeTargets>
+    <toluappAfterTargets>CustomBuild</toluappAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <toluappDependsOn Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;ResolveAssemblyReferences;$(toluappDependsOn)</toluappDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <toluapp>
+      <CommandLineTemplate>script\toluapp64.exe -D -n %(Filename) -o %(RootDir)%(Directory)tolua_%(Filename).cpp -H %(RootDir)%(Directory)tolua_%(Filename).h %(RootDir)%(Directory)%(Filename).pkg</CommandLineTemplate>
+      <Outputs>%(RootDir)%(Directory)tolua_%(Filename).cpp;%(RootDir)%(Directory)tolua_%(Filename).h</Outputs>
+      <ExecutionDescription>Compiling tolua++ file %(Filename).pkg</ExecutionDescription>
+      <ShowOnlyRuleProperties>false</ShowOnlyRuleProperties>
+    </toluapp>
+  </ItemDefinitionGroup>
+</Project>

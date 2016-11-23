@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="globalconfig">
+      <UniqueIdentifier>{e77c9b57-fb22-4c23-b91c-9a35fa93886b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script">
+      <UniqueIdentifier>{5c14e5ac-13d6-451c-b2c5-ef1e26d15fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\ai">
+      <UniqueIdentifier>{5d16a151-0884-4758-a554-b86a99e97c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\include">
+      <UniqueIdentifier>{ba313a09-bbcb-4a9c-97aa-75bcc3d94793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\ai\default">
+      <UniqueIdentifier>{8bac21b2-2949-4003-aaf0-8a2ab6c2fb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\ai\sub_tree">
+      <UniqueIdentifier>{6f01add4-7ff9-4ae7-bfda-0a65c75ae466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\test">
+      <UniqueIdentifier>{430ae094-8e03-4af2-b272-0a3675e671b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\ai\1_Test01">
+      <UniqueIdentifier>{0202a7de-1d34-4639-b2c9-3f8f5d3f76dd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\config\globalconfig\common_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\globalconfig\gamelogic_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\globalconfig\gameserver_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\globalconfig\gateserver_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\globalconfig\global_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\globalconfig\guardserver_config.lua">
+      <Filter>globalconfig</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\ai\default\main.lh">
+      <Filter>script\ai\default</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\ai\default\main.lua">
+      <Filter>script\ai\default</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\ai\sub_tree\sub_tree.lh">
+      <Filter>script\ai\sub_tree</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\include\bt_base.lua">
+      <Filter>script\include</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\test\main.lua">
+      <Filter>script\test</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\ai\1_Test01\main.lh">
+      <Filter>script\ai\1_Test01</Filter>
+    </None>
+    <None Include="..\..\bin\config\script\ai\1_Test01\main.lua">
+      <Filter>script\ai\1_Test01</Filter>
+    </None>
+  </ItemGroup>
+</Project>

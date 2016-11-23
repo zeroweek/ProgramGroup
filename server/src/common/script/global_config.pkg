@@ -1,0 +1,6 @@
+$pfile "script/common.pkg"
+
+$hfile "../../inc/lzpl/lpi_net.h"
+$hfile "../../inc/common/guard_config.h"
+$hfile "../../inc/common/server_config.h"
+$hfile "../../inc/common/global_config.h"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  
+  <!-- c and t :  protocol bettwen client and gateserver -->
+  <ROLE_BASE_INFO type="struct">
+    
+  </ROLE_BASE_INFO>
+  <C2T_LOGIN_REQ type="struct">
+    <ID type="UINT_32"></ID>
+    <Name type="string" length="20"></Name>
+  </C2T_LOGIN_REQ>
+  <C2T_LOGIN_REQ type="INT_32"></C2T_LOGIN_REQ>
+  
+  <!-- c and g :  protocol bettwen client and gameserver -->
+  
+  
+  <!-- c and m :  protocol bettwen client and managerserver -->
+  
+  
+</root>

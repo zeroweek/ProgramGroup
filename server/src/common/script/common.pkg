@@ -1,0 +1,9 @@
+typedef int                     BOOL;
+typedef signed char              INT_8;
+typedef signed short             INT_16;
+typedef signed int               INT_32;
+typedef signed int               INT_64;
+typedef unsigned char            UINT_8;
+typedef unsigned short           UINT_16;
+typedef unsigned int             UINT_32;
+typedef unsigned int             UINT_64;

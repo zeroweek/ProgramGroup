@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PropertyPageSchema
+      Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
+    <AvailableItemName Include="toluapp">
+      <Targets>_toluapp</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+      $(ComputeLinkInputsTargets);
+      ComputetoluappOutput;
+    </ComputeLinkInputsTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ComputeLibInputsTargets>
+      $(ComputeLibInputsTargets);
+      ComputetoluappOutput;
+    </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <UsingTask
+    TaskName="toluapp"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <Target
+    Name="_toluapp"
+    BeforeTargets="$(toluappBeforeTargets)"
+    AfterTargets="$(toluappAfterTargets)"
+    Condition="'@(toluapp)' != ''"
+    Outputs="@(toluapp-&gt;'%(Outputs)')"
+    Inputs="@(toluapp);@(toluapp->'%(AdditionalDependencies)');$(MSBuildProjectFile)"
+    DependsOnTargets="$(toluappDependsOn)">
+    <ItemGroup Condition="'@(SelectedFiles)' != ''">
+      <toluapp Remove="@(toluapp)" Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <toluapp_tlog Include="%(toluapp.Outputs)" Condition="'%(toluapp.Outputs)' != '' and '%(toluapp.ExcludedFromBuild)' != 'true'">
+        <Source>@(toluapp, '|')</Source>
+      </toluapp_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(toluapp.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(toluapp_tlog)' != '' and '%(toluapp_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(TLogLocation)$(ProjectName).write.1u.tlog"
+      Lines="^%(toluapp_tlog.Source);@(toluapp_tlog-&gt;'%(Fullpath)')"
+      Encoding="Unicode"/>
+    <toluapp
+      Condition="'@(toluapp)' != '' and '%(toluapp.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(toluapp.CommandLineTemplate)"
+      AdditionalOptions="%(toluapp.AdditionalOptions)"
+      Inputs="@(toluapp)" />
+  </Target>
+  <Target
+    Name="ComputetoluappOutput"
+    Condition="'@(toluapp)' != ''">
+    <ItemGroup>
+    	<toluappDirsToMake
+    		Condition="'@(toluapp)' != '' and '%(toluapp.ExcludedFromBuild)' != 'true'"
+    		Include="%(toluapp.Outputs)"/>
+    	<Link
+    		Include="%(toluappDirsToMake.Identity)"
+    		Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'"/>
+   		<Lib
+    		Include="%(toluappDirsToMake.Identity)"
+    		Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'"/>
+     	<ImpLib
+    		Include="%(toluappDirsToMake.Identity)"
+    		Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'"/>
+     </ItemGroup>
+     <MakeDir
+     	Directories="@(toluappDirsToMake-&gt;'%(RootDir)%(Directory)')"/>
+  </Target>
+</Project>

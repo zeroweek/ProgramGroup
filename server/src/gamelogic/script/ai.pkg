@@ -1,0 +1,6 @@
+$pfile "script/common.pkg"
+
+$hfile "../../inc/lzpl/lp_bt.h"
+$hfile "../../inc/gamelogic/bt_action.h"
+
+$hfile "../../inc/common/ai_data.h"

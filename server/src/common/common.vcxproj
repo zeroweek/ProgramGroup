@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A13E040E-886D-4134-9462-5649EE21943C}</ProjectGuid>
+    <RootNamespace>common</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="script\toluapp.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>common64d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\lib\win64\</OutDir>
+    <IntDir>..\..\output\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>common64</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\common\ai_data.h" />
+    <ClInclude Include="..\..\inc\common\common.h" />
+    <ClInclude Include="..\..\inc\common\global_config.h" />
+    <ClInclude Include="..\..\inc\common\grid_def.h" />
+    <ClInclude Include="..\..\inc\common\guard_config.h" />
+    <ClInclude Include="..\..\inc\common\polygon_def.h" />
+    <ClInclude Include="..\..\inc\common\region_def.h" />
+    <ClInclude Include="..\..\inc\common\scene_def.h" />
+    <ClInclude Include="..\..\inc\common\server_config.h" />
+    <ClInclude Include="..\..\inc\common\server_def.h" />
+    <ClInclude Include="..\..\inc\common\string_def.h" />
+    <ClInclude Include="..\..\inc\common\tab_test_data.h" />
+    <ClInclude Include="script\tolua_common.h" />
+    <ClInclude Include="script\tolua_global_config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="config\global_config.cpp" />
+    <ClCompile Include="data\ai_data.cpp" />
+    <ClCompile Include="data\tab_test_data.cpp" />
+    <ClCompile Include="main\common.cpp" />
+    <ClCompile Include="script\tolua_common.cpp" />
+    <ClCompile Include="script\tolua_global_config.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <toluapp Include="script\common.pkg">
+      <FileType>Document</FileType>
+    </toluapp>
+    <toluapp Include="script\global_config.pkg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="script\toluapp.targets" />
+  </ImportGroup>
+</Project>
