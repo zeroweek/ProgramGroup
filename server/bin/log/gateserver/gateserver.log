@@ -1,0 +1,20 @@
+2016-11-05 13:11:55,668997 [00000001] [IMP] load lua script config/globalconfig/global_config.lua successfully !
+2016-11-05 13:11:55,669997 [00000002] [LUA] loading GlobalConfig
+2016-11-05 13:11:55,672997 [00000003] [IMP] m_oSockerPool init size : 100
+2016-11-05 13:11:55,689999 [00000004] [IMP] start listening 127.0.0.1:6001 !
+2016-11-05 13:11:55,692999 [00000005] [IMP] start listening 127.0.0.1:6002 !
+2016-11-05 13:11:55,695999 [00000006] [IMP] gateserver start success !
+2016-11-05 16:02:50,426546 [00000001] [IMP] load lua script config/globalconfig/global_config.lua successfully !
+2016-11-05 16:02:50,427546 [00000002] [LUA] loading GlobalConfig
+2016-11-05 16:02:50,430546 [00000003] [IMP] m_oSockerPool init size : 100
+2016-11-05 16:02:50,457549 [00000004] [IMP] start listening 127.0.0.1:6001 !
+2016-11-05 16:02:50,460549 [00000005] [IMP] start listening 127.0.0.1:6002 !
+2016-11-05 16:02:50,463550 [00000006] [IMP] gateserver start success !
+2016-11-05 16:03:24,410935 [00000007] [ERR] *** LOG_PROCESS_ERROR(dwLen + dwDstStartPos <= m_dwCapacity) at line 370 in function LZPL::LPString::Insert() file "e:\resource\lzpl\programgroup\server\src\lzpl\string\lp_string.cpp"
+2016-11-05 16:03:26,684307 [00000008] [ERR] *** LOG_CHECK_ERROR(nResult) at line 598 in function _Test_String() file "e:\resource\lzpl\programgroup\server\src\gateserver\main\gateserver.cpp"
+2016-11-05 16:19:42,438541 [00000001] [IMP] load lua script config/globalconfig/global_config.lua successfully !
+2016-11-05 16:19:42,439541 [00000002] [LUA] loading GlobalConfig
+2016-11-05 16:19:42,441541 [00000003] [IMP] m_oSockerPool init size : 100
+2016-11-05 16:19:42,479545 [00000004] [IMP] start listening 127.0.0.1:6001 !
+2016-11-05 16:19:42,481545 [00000005] [IMP] start listening 127.0.0.1:6002 !
+2016-11-05 16:19:42,483545 [00000006] [IMP] gateserver start success !

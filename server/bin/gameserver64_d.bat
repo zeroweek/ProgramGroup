@@ -1,0 +1,1 @@
+start gameserver/gameserver64d.exe

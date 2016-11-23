@@ -1,0 +1,1 @@
+start gateserver/gateserver64d.exe

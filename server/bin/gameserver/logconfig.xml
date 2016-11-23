@@ -1,0 +1,63 @@
+<Root>
+
+	<!-- 日志文件存放的目录子目录（根目录是进程的WorkingDir） -->
+	<LogDir value="log/gateserver" />
+	
+	<!-- 日志文件名 -->
+	<FileName value="gateserver" />
+	
+	<!-- 日志模块写日志是否使用线程锁：0-不使用，1-使用 
+		enum e_LogMode
+		{
+			eLogMode_None            = 0,      // none
+			eLogMode_SingleFile      = 1,      // 记录在单个文件
+			eLogMode_DayDivide       = 2,      // 按天分开记在不同文件
+			eLogMode_MonthDivide     = 3,      // 按月分开记在不同文件
+			eLogMode_HourDivide      = 4,      // 按小时分开记在不同文件
+			eLogMode_Max
+		};
+	-->
+	<WrithLock value="1" />
+	
+	<!-- 日志文件的拆分模式 -->
+	<LogMode value="1" />
+	
+	<!-- 日志等级开关：0-关闭，1-打开 -->
+	<LogLevel_DBG value="1" />
+	<LogLevel_INF value="1" />
+	<LogLevel_WRN value="1" />
+	<LogLevel_IMP value="1" />
+	<LogLevel_ERR value="1" />
+	<LogLevel_FTL value="1" />
+	<LogLevel_LUA value="1" />
+	
+	<!-- 日志输出位置开关：0-关闭，1-打开 -->
+	<OutputMask_File value="1" />
+	<OutputMask_Console value="1" />
+	<OutputMask_Debug value="1" />
+	
+	
+	<!-- 日志模块日志缓冲区最大字节数，配0即使用默认值10 * 1024 * 1024
+		如需调整大小直接在这里填值，但不能小于默认值
+	-->
+	<MaxLogLoopBufSize value="0" />
+	
+	<!-- 单个日志文件存储大小最大字节数，配0即使用默认值10 * 1024 * 1024
+		如需调整大小直接在这里填值，但不能小于默认值
+	-->
+	<MaxLogSingleFileSize value="0" />
+	
+	<!-- 单条日志消息最大字节数，配0即使用默认值1 * 1024 * 1024
+		如需调整大小直接在这里填值，但不能小于默认值
+	-->
+	<MaxLogOneMsgSize value="0" />
+	
+	<!-- 日志文件流flush时间间隔（单位毫秒），配0即使用默认值1 * 3000
+		如需调整大小直接在这里填值，但不能小于默认值
+	-->
+	<LogFlushInterval value="0" />
+	
+	<!-- 日志模块以及时间模块使用的时区 -->
+	<Timezone value="8" />
+	
+</Root>

@@ -1,0 +1,53 @@
+include("script/include/bt_base.lua");
+
+------------------------------ event list ------------------------------
+
+on_init = { btatSequencer };
+on_die = { btatSequencer };
+
+
+
+------------------------------ tree function ------------------------------
+
+function _init_tree()
+	local result = 
+	{ btatParallel,
+		'on_init',
+		{ btatReturnSuccess },
+	};
+
+	return result;
+end
+
+function _idle_tree()
+	local result = 
+	{
+		btatReturnSuccess,
+	};
+
+	return result;
+end
+
+function _fight_tree()
+	local result = 
+	{
+		btatReturnSuccess,
+	};
+
+	return result;
+end
+
+function _die_tree()
+	local result = 
+	{ btatParallel,
+		'on_die',
+	};
+
+	return result;
+end
+
+btetAIInit = _init_tree();
+btetAIIdle = _idle_tree();
+btetAIFight = _fight_tree();
+btetAIDie = _die_tree();
+
