@@ -1,0 +1,3 @@
+1. SDL_AUDIO_DRIVER_XAUDIO2 值1改为0
+2. SDL工程添加SDL_gamecontroller.c文件进入编译
+3. 修改编译配置x86位x64

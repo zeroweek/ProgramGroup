@@ -1,0 +1,18 @@
+﻿Build started 2015/12/3 16:03:34.
+     1>Project "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluapp\toluapp.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapp\Release\\" /Fd"F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapp\Release\vc140.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\..\src\bin\tolua.c ..\..\..\src\bin\toluabind.c
+         tolua.c
+         toluabind.c
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\..\lib\win32\toluapp32.exe" /NOLOGO /LIBPATH:"..\..\..\..\lua-5.1.5\lib\win32" /LIBPATH:..\..\..\lib\win32 lua32.lib toluapp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"..\..\..\lib\win32\toluapp32.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\..\lib\win32\toluapp32.lib" /MACHINE:X86 /SAFESEH "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapp\Release\tolua.obj"
+         "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapp\Release\toluabind.obj"
+         Generating code
+         All 54 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         Finished generating code
+         toluapp.vcxproj -> F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluapp\..\..\..\lib\win32\toluapp32.exe
+     1>Done Building Project "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluapp\toluapp.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.54

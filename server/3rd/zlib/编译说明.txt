@@ -1,0 +1,3 @@
+1. 注释掉“#define IOWIN32_USING_WINRT_API 1”，防止调用CreateFile2 win8的sdk
+2. #define ZEXPORT WINAPI 改成 #define ZEXPORT WINAPIV，防止32位找不到连接符号（多了@后缀信息）
+3. 包含中的目录路径错误修改：86改成64、或是多了目录层次等

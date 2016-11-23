@@ -1,0 +1,21 @@
+﻿Build started 2015/12/3 16:03:34.
+     1>Project "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluappdll\toluappdll.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\\" /Fd"..\..\..\lib\win32\toluapp32.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\..\src\lib\tolua_event.c ..\..\..\src\lib\tolua_is.c ..\..\..\src\lib\tolua_map.c ..\..\..\src\lib\tolua_push.c ..\..\..\src\lib\tolua_to.c
+         tolua_event.c
+         tolua_is.c
+         tolua_map.c
+         tolua_push.c
+         tolua_to.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"..\..\..\lib\win32\toluapp32.lib" /NOLOGO /LTCG "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\tolua_event.obj"
+         "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\tolua_is.obj"
+         "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\tolua_map.obj"
+         "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\tolua_push.obj"
+         "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\\output\toluapplib\Release\tolua_to.obj"
+         toluappdll.vcxproj -> F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluappdll\..\..\..\lib\win32\toluapp32.lib
+     1>Done Building Project "F:\Demo\VSProjects\ProgramGroup\3rd\tolua++-1.0.92\win32\vc14\toluappdll\toluappdll.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.41
