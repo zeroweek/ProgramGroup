@@ -1,0 +1,276 @@
+# version : ProgramGroup_20160229.093400.zip
+
+  1. 添加共享内存模块
+  2. 多线程变量添加volatile修饰
+  3. 去掉指针型单例，避免多线程创建问题
+  4. 修改loopbuf连续调用问题
+
+# version : ProgramGroup_20160219.153600.zip
+
+  1. lzpl_csharp 消息模块完善
+
+# version : ProgramGroup_20160216.142800.zip
+
+  1. lzpl_csharp 添加net网络模块
+
+# version : ProgramGroup_20160204.104500.zip
+
+  1. lzpl_csharp 添加filelog、dump、loopbuf、global等模块
+  2. lzpl_c++ 调整exe path/dir 和working dir等获取函数
+  3. lzpl_c++ console和debug输出位置调整
+
+# version : ProgramGroup_20160129.154200.zip
+
+  1. 添加client基本框架代码：LzplCSharp
+
+# version : ProgramGroup_20160126.154600.zip
+
+  1. 添加navmesh转换工具
+  2. 去掉SDL test模块
+
+# version : ProgramGroup_2016.0122.174900.zip
+
+  1. navemesh模块更新，基本实现了NavMesh.obj的转换功能
+
+# version : ProgramGroup_20160120.134100.zip
+
+  1. 添加SDL库
+  2. 全局函数前缀修改为lp
+  3. 添加navmesh模块基础代码
+
+# version : ProgramGroup_20160105.150200.zip
+
+  1. 添加数据库初始化模块
+  2. 添加libcurl库
+  3. 修改bg2312和utf8转换函数
+
+# version : ProgramGroup_20151230.145800.zip
+
+  1. 添加jsoncpp库
+  2. 添加encrypt模块
+  3. 添加global全局函数变量模块
+  4. 去掉WINDOWS、LINUX宏，统一使用_WIN32作为系统判断宏
+
+# version : ProgramGroup_20151225.145200.zip
+
+  1. 添加dump模块
+
+# version : ProgramGroup_20151223.190400.zip
+
+  1. 添加http协议解析消息类
+  2. connector重连逻辑调整
+  3. 连接断开新增connector socket断开单独处理回调接口
+  4. 添加external_message_header.h消息头文件
+  5. lploopbuf读指针溢出时进行重置
+  6. 完成端口处理线程逻辑调整，按照io操作类型进行区分
+  7. socker关闭流程调整，延迟关闭socket与延迟释放socker分开处理
+
+# version : ProgramGroup_20151210.192300.zip
+
+  1. 结构体命名规则修改
+  2. 文件日志调试时输出处理
+  3. e_CommonState新增状态
+  4. 服务器关闭流程整理
+
+# version : ProgramGroup_20151208.190200.zip
+
+  1. 网络组件相关模块单例改为对象创建 
+  2. 去掉组件网络配置，改为创建网络组件时传入参数
+  3. 消息回调结构添加连接错误回调接口
+  4. 添加新的utf8和utf16互转的文件内容
+  5. gamelogic模块相关的Init和UnInit处理
+
+# version : ProgramGroup_20151204.111900.zip
+
+  1. 添加ai配置数据和脚本，
+  2. 添加ai模板管理器
+  3. 日志输出序号补0对齐
+
+# version : ProgramGroup_20151203.160500.zip
+
+  1. tolua对结构体位变量的支持
+  2. 新增bt基本脚本
+  3. 新增配置数据模板类
+  4. 行为数管理器实现
+
+# version : ProgramGroup_20151130.192500.zip
+
+  1. 程序关闭按钮灰显
+  2. 消息Serialize和UnSerialize定义简便宏
+  3. 新增完成端口一对一模式（一个完成端口对应一个线程）
+  4. 事件管理器单事件列表改为多列表模式
+
+# version : ProgramGroup_20151128.142300.zip
+
+  1. 修改tolua++（strncpy_s,结构体字符串赋值函数）
+  2. 新增common工程（共用内容，lua配置）
+
+# version : ProgramGroup_20151124.175700.zip
+
+  1. tab file实现
+
+# version : ProgramGroup_20151102.180400.zip
+
+  1. 日志模块调整：出错处理
+
+# version : Lzpl_20151026.154400.zip
+
+  1. message模块调整
+
+# version : Lzpl_20151021.175000.zip
+
+  1. 修改ILPConnectorCtrl为ILPConnector，修改ILPConnectorCtrl为ILPConnector
+  2. 调整调整代码为PROCESS_ERROR格式
+  3. socker的m_bSending和m_bConnect改用原子类型
+
+# version : Lzpl_20151020.165100.zip
+
+  1. 去掉ILPConnection，添加ILPNetMessageHandler接口
+
+# version : Lzpl_20151019.175300.zip
+
+  1. 添加初步的message模块
+  2. 去掉windows和linux实现的文件名区分
+
+# version : Lzpl_20151017.165200.zip
+
+  1. 添加自定义编译toluapp
+
+# version : Lzpl_20151015.174500.zip
+
+  1. 添加lua模块
+
+# version : Lzpl_20151014.195200.zip
+
+  1. 添加db（sql stmt）模块
+  2. 添加lua-5.1.5库
+  3. 添加tolua++-1.0.92库
+
+# version : Lzpl_20151013.135600.zip
+
+  1. 添加新的mysql-5.6.27库
+  2. lzpl完善32/64的debug/release配置
+
+# version : Lzpl_20151012.112300.zip
+
+  1. zlib库文件重新编译
+
+# version : Lzpl_20151010.193500.zip
+
+  1. 添加zlib库
+  2. ...
+
+# version : Lzpl_20151008.183300.zip
+
+  1. 添加ILPFile模块
+
+
+# version : Lzpl_20150918.171600.zip
+
+  1. 添加profile性能分析
+  2. 添加processerror函数返回处理宏
+  3. bool改成BOOL
+  4. 日志模块和配置模块与net模块分离，单独处理
+
+
+
+# version : Lzpl_20150618.162500.zip
+
+ 1. 关闭事件完善：主动连接关闭时通知连接器位置修改，改在调用closesocket之后通知，
+		简化ILPConnector与LPSocker的关系处理
+ 2. 新增连接建立事件，将连接回调也放到事件模块去，与接收事件在同一线程处理
+ 3. LPSockerMgr中socker数组换成对象池，以及去掉句柄数组
+ 4. LPSocker类中锁的修改，连接状态修改单独出一个锁控制，原来的锁改成发送缓冲区锁，
+		并修改器锁定的范围，只锁PostSend和OnSend，不锁Send
+
+
+
+# version : Lzpl_20150617.175800.zip
+
+ 1. LPListener和LPConnector添加id成员，LPSocker添加与其关联的LPListener和LPConnector
+		的id成员以及标记是否accept还是connect创建来源的成员
+ 2. LPConnector的OnConnect回调中，将connect与socker的处理逻辑分开
+
+
+
+# version : Lzpl_20150617.162200.zip
+
+ 1. 将ILPBase的引用计数相关接口抽象出ILPObject接口
+ 2. 修改LPObject对象池模板在创建对象时没有解锁的问题
+ 3. LPListener、LPConnector以及LPSocker添加ILPacketParser成员
+ 4. 添加事件模块，将ILPSocker关闭以及接收数据创建成事件
+
+
+
+# version : Lzpl_20150616.155000.zip
+
+ 1. 添加lpi_config.h文件，定义LZPL组件内部配置对象，以及定义获取该对象的外部接口
+ 2. 抽象ILPBuf接口，以及Read读取接口修改，支持拷贝读取数据
+ 3. g_poNetLoggerCtrl对象的创建逻辑调整，保证在ILPNet对象初始化之前就已创建
+
+
+
+# version : Lzpl_20150616.135000.zip
+
+ 1. 将LPBuf的长度对象定义成原子类型，支持单线程读、单线程写的无锁操作
+
+
+
+# version : Lzpl_20150615.180600.zip
+
+ 1. 内外部线程锁统一，底层统一使用LPLock临界区锁；外部统一使用LZPL_CreateThreadLock接口创建
+		线程锁，内部则直接使用LPLock
+
+
+
+# version : Lzpl_20150615.165200.zip
+
+ 1. 文件名及文件结构调整，减少外部使用头文件数量已经名字统一(前缀lpi)
+
+
+
+# version : Lzpl_20150615.155100.zip
+
+ 1. 新增important日志类型
+ 2. LPBuf去掉双倍内存机制，以及读写操作逻辑调整，读操作只修改读指针和数据长度，
+		写操作只修改写指针和数据长度，为后支持续单线程读、单线程写无锁操作实现提供基础
+
+
+
+# version : Lzpl_20150612.180200.zip
+
+ 1. 部分文件注释修改，以及对LPAPI修饰的遗漏进行添加
+ 2. 定义e_SockErrCode、e_IoOptType以及e_EventHandlerType相关枚举值的描述，用于优化日志提示效果
+
+
+
+# version : Lzpl_20150612.153500.zip
+
+ 1. 相关线程，m_bRun赋值逻辑调整
+ 2. 打开日志文件fopen_s改成_fsopen，使日志文件在运行时能被共享打开
+
+
+
+# version : Lzpl_20150612.133300.zip
+
+ 1. 日志记录添加编号
+ 2. 调整日志打印宏名称，以及去掉某些printf日志输出，统一使用日志打印宏
+
+
+
+# version : Lzpl_20150611.181000.zip
+
+ 1. lp_string.h新增lpFastZeroCharArray和lpStrNLen函数，用于快速初始化数组以及获取字符串的长度
+ 2. LPBuf的Read函数添加用于控制是否想输出字符串缓冲区末添加null字符的参数
+ 3. 新增获取时间的相关函数（lp_time.h）
+ 4. 日志组件完善；日志对象类添加引用计数，LZPL内部日志对象改为由外部创建传入进行引用的方式，
+		使内外部公用一个日志对象
+
+
+
+# version : Lzpl_20150610.173000.zip
+
+ 1. 添加TinyXml第三方库
+
+
+
