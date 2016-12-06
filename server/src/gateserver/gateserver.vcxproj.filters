@@ -24,6 +24,9 @@
     <ClCompile Include="message\gt_internal_packet_parser.cpp">
       <Filter>message</Filter>
     </ClCompile>
+    <ClCompile Include="main\testcase.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gateserver.h">
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="message\gt_internal_packet_parser.h">
       <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="main\testcase.h">
+      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

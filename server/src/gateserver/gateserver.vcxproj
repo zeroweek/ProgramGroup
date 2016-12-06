@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\gateserver.cpp" />
+    <ClCompile Include="main\testcase.cpp" />
     <ClCompile Include="message\gt_external_packet_parser.cpp" />
     <ClCompile Include="message\gt_internal_packet_parser.cpp" />
     <ClCompile Include="message\gt_message_handler.cpp" />
@@ -19,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gateserver.h" />
+    <ClInclude Include="main\testcase.h" />
     <ClInclude Include="message\gt_external_packet_parser.h" />
     <ClInclude Include="message\gt_internal_packet_parser.h" />
     <ClInclude Include="message\gt_message_handler.h" />

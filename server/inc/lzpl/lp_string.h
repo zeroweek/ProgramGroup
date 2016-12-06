@@ -18,6 +18,12 @@ NS_LZPL_BEGIN
 
 
 // Summary:
+//   全局变量
+extern std::string NULL_STR;
+
+
+
+// Summary:
 //		快速字符数组清零初始化
 template <class T>
 inline DECLARE void LPAPI lpFastZeroCharArray(T& dst) throw()
@@ -129,6 +135,7 @@ DECLARE BOOL LPAPI lpStrCharCheck(const char* pcszSrc, e_CharCheckType eCharChec
 
 // Summary:
 //   自定义字符串类
+//   缺少赋值函数，不能作为left-value
 class DECLARE LPString
 {
 public:
@@ -178,6 +185,14 @@ private:
 	UINT_32                 m_dwDataSize;    // 数据大小
 	UINT_32                 m_dwCapacity;    // 缓存区容量（不包含1字节终止符）
 };
+
+
+
+// Summary:
+//   序列化字符串
+// Input:
+//   nMaxLen: 输出字符串最大长度，不包含null终止符
+DECLARE std::string LPAPI lpSerializeToString(UINT_32 nMaxLen, const char * format, ...);
 
 
 

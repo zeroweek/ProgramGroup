@@ -21,6 +21,12 @@ struct BASE_LIST_NODE
 {
 	BASE_LIST_NODE*    pstPrev;
 	BASE_LIST_NODE*    pstNext;
+
+	BASE_LIST_NODE()
+	{
+		pstPrev = nullptr;
+		pstNext = nullptr;
+	}
 };
 
 
@@ -126,7 +132,7 @@ private:
 
 // Summary:
 //		通过成员变量访问对象（成员变量的偏移量）
-#define NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
+#define BASE_NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
 			((_obj_class_ptr_)((char*)(_node_ptr_) - (char*)&(((_obj_class_ptr_)0)->_member_)))
 
 

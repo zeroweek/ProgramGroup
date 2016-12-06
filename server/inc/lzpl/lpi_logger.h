@@ -9,10 +9,6 @@
 
 #include "lp_base.h"
 
-#ifdef _WIN32
-#	include <Windows.h>
-#endif
-
 
 
 //begin声明所处的名字空间

@@ -67,6 +67,15 @@
     <Filter Include="sharemem">
       <UniqueIdentifier>{ac50ab59-55fe-47f2-abcb-b247debb96f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="table">
+      <UniqueIdentifier>{3efce4c6-e416-47a4-9f54-df9c40d2bd85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="property">
+      <UniqueIdentifier>{999be143-cc33-42b5-a4a2-1dc855fb01f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{9d4fd3bc-143e-4de3-ba7d-6f745eab30ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\lzpl\lp_base.h">
@@ -237,6 +246,36 @@
     <ClInclude Include="..\..\inc\lzpl\lp_sharememory.h">
       <Filter>sharemem</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_table.h">
+      <Filter>table</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_property.h">
+      <Filter>property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_property.h">
+      <Filter>property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_table.h">
+      <Filter>table</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_datalist.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_identid.h">
+      <Filter>property</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_data.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_data.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lpi_datalist.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_stacklist.h">
+      <Filter>container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt\lp_bt.cpp">
@@ -340,6 +379,18 @@
     </ClCompile>
     <ClCompile Include="base\lp_lzpl.cpp">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="table\lp_table.cpp">
+      <Filter>table</Filter>
+    </ClCompile>
+    <ClCompile Include="property\lp_property.cpp">
+      <Filter>property</Filter>
+    </ClCompile>
+    <ClCompile Include="data\lp_datalist.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\lp_data.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

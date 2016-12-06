@@ -131,6 +131,14 @@
 #define MB                                                 (1024 * 1024)
 
 
+#define ZERO_INT                                           (0)
+#define ZERO_FLOAT                                         (0.0f)
+#define ZERO_DOUBLE                                        (0.0)
+
+#define MAX_INT64_LEN                                      (32)
+#define MAX_FLOAT_LEN                                      (32)
+#define MAX_DOUBLE_LEN                                     (32)
+
 
 //网络相关宏
 #define IP_LEN                                             (64)                 //定义存储ip字符串的长度

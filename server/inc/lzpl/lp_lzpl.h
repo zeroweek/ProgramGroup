@@ -16,6 +16,7 @@
 
 #include "lp_dynamicarray.h"
 #include "lp_simplelist.h"
+#include "lp_stacklist.h"
 #include "lp_baselist.h"
 #include "lp_looplist.h"
 #include "lp_string.h"
@@ -28,7 +29,8 @@
 #include "lp_singleton.h"
 #include "lp_bt.h"
 #include "lp_luascriptmgr.h"
-
+#include "lpi_property.h"
+#include "lpi_table.h"
 
 
 //begin声明所处的名字空间

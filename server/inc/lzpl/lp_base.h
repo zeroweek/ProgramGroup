@@ -42,14 +42,28 @@ struct MODULE_VERSION
 
 
 // Summary:
-//		所有对象的基础接口定义
+//   所有对象的基础接口定义
 class DECLARE ILPObject
+{
+public:
+
+	virtual LPAPI ~ILPObject(void){}
+
+	virtual std::string LPAPI ToString() = 0;
+};
+
+
+
+
+// Summary:
+//		所有组件对象的基础接口定义
+class DECLARE ILPBase
 {
 public:
 
 	// Summary:
 	//		无
-	virtual LPAPI ~ILPObject(void){}
+	virtual LPAPI ~ILPBase(void) {}
 
 	// Summary:
 	//		引用计数加1
@@ -62,20 +76,6 @@ public:
 	// Summary:
 	//		释放对象
 	virtual void LPAPI Release(void) = 0;
-};
-
-
-
-
-// Summary:
-//		所有组件对象的基础接口定义
-class DECLARE ILPBase : public ILPObject
-{
-public:
-
-	// Summary:
-	//		无
-	virtual LPAPI ~ILPBase(void){}
 
 	// Summary:
 	//		获取版本信息

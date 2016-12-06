@@ -89,8 +89,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\inc\lzpl\lpi_buf.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_connector.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_data.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_datalist.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_eventhandler.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_file.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_identid.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_listener.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_logger.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_message.h" />
@@ -98,13 +101,17 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_net.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_netmessagehandler.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_packetparser.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_property.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_reactor.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_socker.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h" />
+    <ClInclude Include="..\..\inc\lzpl\lpi_table.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_base.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_base64.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_baselist.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_bt.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_data.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_datalist.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_datamanager.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_dbinit.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_def.h" />
@@ -124,14 +131,17 @@
     <ClInclude Include="..\..\inc\lzpl\lp_objpool.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_processerror.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_profile.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_property.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_sharememory.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_simplelist.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_singleton.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_sqlmgr.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_sqlstmt.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_stacklist.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_string.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_system.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_tabfile.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_table.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_thread.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_time.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_type.h" />
@@ -148,6 +158,8 @@
     <ClCompile Include="base\lp_lzpl.cpp" />
     <ClCompile Include="bt\lp_bt.cpp" />
     <ClCompile Include="container\lp_looplist.cpp" />
+    <ClCompile Include="data\lp_data.cpp" />
+    <ClCompile Include="data\lp_datalist.cpp" />
     <ClCompile Include="db\lp_dbinit.cpp" />
     <ClCompile Include="db\lp_sqlmgr.cpp" />
     <ClCompile Include="db\lp_sqlstmt.cpp" />
@@ -167,6 +179,7 @@
     <ClCompile Include="lua\lp_luascriptmgr.cpp" />
     <ClCompile Include="message\lp_messageserializer.cpp" />
     <ClCompile Include="net\iocp\lp_iocp.cpp" />
+    <ClCompile Include="property\lp_property.cpp" />
     <ClCompile Include="sharemem\lp_sharememory.cpp" />
     <ClCompile Include="string\lp_loopbuf.cpp" />
     <ClCompile Include="string\lp_string.cpp" />
@@ -174,6 +187,7 @@
     <ClCompile Include="system\lp_system.cpp" />
     <ClCompile Include="system\lp_thread.cpp" />
     <ClCompile Include="system\lp_time.cpp" />
+    <ClCompile Include="table\lp_table.cpp" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
     <ClCompile Include="tinyxml\tinyxml.cpp" />
     <ClCompile Include="tinyxml\tinyxmlerror.cpp" />

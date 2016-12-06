@@ -55,7 +55,15 @@ inline DECLARE float LPAPI lpSqrt(float x) { return sqrtf(x); }
 template<class T> inline DECLARE T LPAPI lpClamp(T v, T _min, T _max) { return v < _min ? _min : (v > _max ? _max : v); }
 
 
+inline BOOL lpIsZeroFloat(const FLOAT fValue, FLOAT epsilon = 1e-6)
+{
+	return std::abs(fValue) <= epsilon ? TRUE : FALSE;
+}
 
+inline BOOL lpIsZeroDouble(const DOUBLE dValue, DOUBLE epsilon = 1e-15)
+{
+	return std::abs(dValue) <= epsilon ? TRUE : FALSE;
+}
 
 
 

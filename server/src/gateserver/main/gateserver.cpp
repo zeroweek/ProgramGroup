@@ -19,6 +19,7 @@
 #include "internal_message_header.h"
 #include "lp_sharememory.h"
 
+#include "testcase.h"
 
 
 SINGLETON_IMPLEMENT(CGateServer)
@@ -600,12 +601,86 @@ Exit0:
 	return FALSE;
 }
 
+BOOL _Test_VarData(void)
+{
+	INT_32 nResult = 0;
+	LPString str = LPString(2, true);
+	std::string strTemp = NULL_STR;
+
+	LPDataInt64 data64;
+	LPDataFloat dataFloat;
+	LPDataDouble dataDouble;
+	LPDataString dataString;
+
+	//strTemp = data64.ToString();
+	//nResult = data64.SetInt64(1234567890);
+	//strTemp = data64.ToString();
+	//nResult = data64.SetFloat(1234567890.123456789f);
+	//nResult = data64.SetDouble(1234567890.123456789);
+	//nResult = data64.SetString("hello1234567890");
+
+	//strTemp = dataFloat.ToString();
+	//nResult = dataFloat.SetFloat(1234567890.123456789f);
+	//strTemp = dataFloat.ToString();
+	//nResult = dataFloat.SetInt64(1234567890);
+	//nResult = dataFloat.SetDouble(1234567890.123456789);
+	//nResult = dataFloat.SetString("hello1234567890");
+
+	//strTemp = dataDouble.ToString();
+	//nResult = dataDouble.SetDouble(1234567890.123456789);
+	//strTemp = dataDouble.ToString();
+	//nResult = dataDouble.SetInt64(1234567890);
+	//nResult = dataDouble.SetFloat(1234567890.123456789f);
+	//nResult = dataDouble.SetString("hello1234567890");
+
+	//strTemp = dataString.ToString();
+	//nResult = dataString.SetString("hello1234567890");
+	//strTemp = dataString.ToString();
+	//nResult = dataString.SetInt64(1234567890);
+	//nResult = dataString.SetFloat(1234567890.123456789f);
+	//nResult = dataString.SetDouble(1234567890.123456789);
+
+	int n1 = sizeof(data64);
+	int n2 = sizeof(dataFloat);
+	int n3 = sizeof(dataDouble);
+	int n4 = sizeof(dataString);
+
+	SIMPLE_LIST_NODE node;
+	int n5 = sizeof(node);
+	int n6 = sizeof(SIMPLE_LIST_NODE);
+
+	PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL _Test_DataList(void)
+{
+	INT_32 nResult = 0;
+
+	LPDATALIST oDataList;
+	std::string strTemp = "tempstring";
+
+	oDataList << 3 << 4.4f << 5.5 << "hello6" << strTemp;
+	
+	INT_64 lData = oDataList.Int64(0);
+	FLOAT fData = oDataList.Float(1);
+	DOUBLE dData = oDataList.Double(2);
+	std::string strData = oDataList.String(3);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
 BOOL _Test(void)
 {
 	INT_32 nResult = 0;
 
-	//nResult = _Test_String();
-	//LOG_PROCESS_ERROR(nResult);
+	nResult = TC_TestSimpleList();
+	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);
 

@@ -1,11 +1,11 @@
 //****************************************************************************/
 //    author: caihy
-//    date: January 18, 2016
-//    description: 简单的单向列表实现
+//    date: Dec 2, 2016
+//    description: 简单的栈列表实现（先进后出）
 //
 //****************************************************************************/
-#ifndef _LP_SIMPLE_LIST_H_
-#define _LP_SIMPLE_LIST_H_
+#ifndef _LP_STACK_LIST_H_
+#define _LP_STACK_LIST_H_
 
 #include "lp_base.h"
 #include "lp_processerror.h"
@@ -17,11 +17,11 @@ NS_LZPL_BEGIN
 
 
 
-struct SIMPLE_LIST_NODE
+struct STACK_LIST_NODE
 {
-	SIMPLE_LIST_NODE*    pstNext;
+	STACK_LIST_NODE*    pstNext;
 
-	SIMPLE_LIST_NODE()
+	STACK_LIST_NODE()
 	{
 		pstNext = nullptr;
 	}
@@ -29,17 +29,17 @@ struct SIMPLE_LIST_NODE
 
 
 // Summary:
-//		简单单向列表类
-class DECLARE LPSimpleList
+//		简单栈列表类
+class DECLARE LPStackList
 {
 public:
 
-	LPSimpleList()
+	LPStackList()
 	{
 		Clear();
 	}
 
-	virtual ~LPSimpleList()
+	virtual ~LPStackList()
 	{
 		LOG_CHECK_ERROR(m_stTop.pstNext == nullptr);
 	}
@@ -48,62 +48,51 @@ public:
 	inline BOOL LPAPI IsEmpty(void);
 	inline UINT_32 LPAPI Size(void) const;
 
-	inline BOOL LPAPI Append(SIMPLE_LIST_NODE* pstNode);
-	inline SIMPLE_LIST_NODE* LPAPI Head(void);
-	inline SIMPLE_LIST_NODE* LPAPI Pop(void);
+	inline BOOL LPAPI Push(STACK_LIST_NODE* pstNode);
+	inline STACK_LIST_NODE* LPAPI Pop(void);
+	inline STACK_LIST_NODE* LPAPI Top(void);
 
-	inline BOOL LPAPI InsertAfter(SIMPLE_LIST_NODE* pNewNode, SIMPLE_LIST_NODE* pTargetNode);
-	inline BOOL LPAPI InsertBefore(SIMPLE_LIST_NODE* pNewNode, SIMPLE_LIST_NODE* pTargetNode);
+	inline BOOL LPAPI InsertAfter(STACK_LIST_NODE* pNewNode, STACK_LIST_NODE* pTargetNode);
+	inline BOOL LPAPI InsertBefore(STACK_LIST_NODE* pNewNode, STACK_LIST_NODE* pTargetNode);
 
-	inline BOOL LPAPI Remove(SIMPLE_LIST_NODE* pstNode);
+	inline BOOL LPAPI Remove(STACK_LIST_NODE* pstNode);
 
 private:
 
 	UINT_32               m_dwSize;
-	SIMPLE_LIST_NODE      m_stTop;
-	SIMPLE_LIST_NODE*     m_ptRear;
+	STACK_LIST_NODE       m_stTop;
 };
 
 
 // Summary:
 //		通过成员变量访问对象（成员变量的偏移量）
-#define SIMPLE_NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
+#define STACK_NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
 			((_obj_class_ptr_)((char*)(_node_ptr_) - (char*)&(((_obj_class_ptr_)0)->_member_)))
 
 
-inline void LPAPI LPSimpleList::Clear(void)
+inline void LPAPI LPStackList::Clear(void)
 {
 	m_dwSize = 0;
 	m_stTop.pstNext = nullptr;
-	m_ptRear = nullptr;
 }
 
-inline BOOL LPAPI LPSimpleList::IsEmpty(void)
+inline BOOL LPAPI LPStackList::IsEmpty(void)
 {
 	return m_stTop.pstNext == nullptr;
 }
 
-inline UINT_32 LPAPI LPSimpleList::Size(void) const
+inline UINT_32 LPAPI LPStackList::Size(void) const
 {
 	return m_dwSize;
 }
 
-inline BOOL LPAPI LPSimpleList::Append(SIMPLE_LIST_NODE * pstNode)
+inline BOOL LPAPI LPStackList::Push(STACK_LIST_NODE * pstNode)
 {
 	LOG_PROCESS_ERROR(pstNode);
 	LOG_PROCESS_ERROR(pstNode->pstNext == nullptr);
 
-	if (m_ptRear == nullptr)
-	{
-		m_ptRear = pstNode;
-		m_stTop.pstNext = pstNode;
-	}
-	else
-	{
-		m_ptRear->pstNext = pstNode;
-		m_ptRear = pstNode;
-	}
-
+	pstNode->pstNext = m_stTop.pstNext;
+	m_stTop.pstNext = pstNode;
 	++m_dwSize;
 
 	return TRUE;
@@ -111,16 +100,11 @@ Exit0:
 	return FALSE;
 }
 
-inline SIMPLE_LIST_NODE *LPAPI LPSimpleList::Pop(void)
+inline STACK_LIST_NODE *LPAPI LPStackList::Pop(void)
 {
-	SIMPLE_LIST_NODE* pNode = nullptr;
+	STACK_LIST_NODE* pNode = nullptr;
 
 	PROCESS_ERROR(!IsEmpty());
-
-	if (m_stTop.pstNext == m_ptRear && m_ptRear != nullptr)
-	{
-		m_ptRear = m_stTop.pstNext->pstNext;
-	}
 
 	pNode = m_stTop.pstNext;
 	m_stTop.pstNext = pNode->pstNext;
@@ -133,7 +117,7 @@ Exit0:
 	return nullptr;
 }
 
-inline SIMPLE_LIST_NODE *LPAPI LPSimpleList::Head(void)
+inline STACK_LIST_NODE *LPAPI LPStackList::Top(void)
 {
 	PROCESS_ERROR(!IsEmpty());
 
@@ -143,16 +127,11 @@ Exit0:
 	return nullptr;
 }
 
-inline BOOL LPAPI LPSimpleList::InsertAfter(SIMPLE_LIST_NODE * pNewNode, SIMPLE_LIST_NODE * pTargetNode)
+inline BOOL LPAPI LPStackList::InsertAfter(STACK_LIST_NODE * pNewNode, STACK_LIST_NODE * pTargetNode)
 {
 	LOG_PROCESS_ERROR(pTargetNode);
 	LOG_PROCESS_ERROR(pNewNode);
 	LOG_PROCESS_ERROR(pNewNode->pstNext == nullptr);
-
-	if (m_ptRear == nullptr || m_ptRear == pTargetNode)
-	{
-		m_ptRear = pNewNode;
-	}
 
 	pNewNode->pstNext = pTargetNode->pstNext;
 	pTargetNode->pstNext = pNewNode;
@@ -164,14 +143,14 @@ Exit0:
 	return FALSE;
 }
 
-inline BOOL LPAPI LPSimpleList::InsertBefore(SIMPLE_LIST_NODE * pNewNode, SIMPLE_LIST_NODE * pTargetNode)
+inline BOOL LPAPI LPStackList::InsertBefore(STACK_LIST_NODE * pNewNode, STACK_LIST_NODE * pTargetNode)
 {
 	LOG_PROCESS_ERROR(pTargetNode);
 	LOG_PROCESS_ERROR(pTargetNode != &m_stTop);
 	LOG_PROCESS_ERROR(pNewNode);
 	LOG_PROCESS_ERROR(pNewNode->pstNext == nullptr);
 
-	for (SIMPLE_LIST_NODE* pNode = &m_stTop; pNode != nullptr; pNode = pNode->pstNext)
+	for (STACK_LIST_NODE* pNode = &m_stTop; pNode != nullptr; pNode = pNode->pstNext)
 	{
 		if (pNode->pstNext != pTargetNode)
 		{
@@ -190,12 +169,12 @@ Exit0:
 	return FALSE;
 }
 
-inline BOOL LPAPI LPSimpleList::Remove(SIMPLE_LIST_NODE * pTargetNode)
+inline BOOL LPAPI LPStackList::Remove(STACK_LIST_NODE * pTargetNode)
 {
 	LOG_PROCESS_ERROR(pTargetNode);
 	LOG_PROCESS_ERROR(pTargetNode != &m_stTop);
 
-	for (SIMPLE_LIST_NODE* pNode = &m_stTop; pNode != nullptr; pNode = pNode->pstNext)
+	for (STACK_LIST_NODE* pNode = &m_stTop; pNode != nullptr; pNode = pNode->pstNext)
 	{
 		if (pNode->pstNext != pTargetNode)
 		{

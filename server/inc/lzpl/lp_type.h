@@ -64,13 +64,20 @@
 
 
 #ifdef _WIN32
-	#define FMT_I64 "%I64"
-	#define FMT_U64 "%I64u"
-	#define FMT_64X "%I64x"
+	//#define FMT_I64 "%I64"
+	//#define FMT_U64 "%I64u"
+	//#define FMT_64X "%I64x"
+	#define FMT_I64 "%lld"
+	#define FMT_U64 "%llu"
+	#define FMT_64X "%llx"
+	#define FMT_FLT "%f"
+	#define FMT_DBE "%lf"
 #else
 	#define FMT_I64 "%ll"
 	#define FMT_U64 "%llu"
 	#define FMT_64X "%llx"
+	#define FMT_FLT "%f"
+	#define FMT_DBE "%lf"
 #endif
 
 

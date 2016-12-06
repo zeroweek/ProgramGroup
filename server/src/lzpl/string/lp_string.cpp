@@ -7,6 +7,7 @@
 NS_LZPL_BEGIN
 
 
+std::string NULL_STR = "";
 
 DECLARE void LPAPI lpPathFilter(char * pszPath, UINT_32 dwMaxLen)
 {
@@ -383,6 +384,35 @@ Exit0:
 char* LPAPI LPString::GetData()
 {
 	return m_pBuf;
+}
+
+DECLARE std::string LPAPI lpSerializeToString(UINT_32 nMaxLen, const char * format, ...)
+{
+	INT_32 nResult = 0;
+	char* pszBuf = nullptr;
+
+	if (nullptr == format || nMaxLen == 0)
+	{
+		return NULL_STR;
+	}
+
+	pszBuf = new char[nMaxLen + 1];
+
+	va_list args;
+	va_start(args, format);
+	nResult = vsnprintf_s(pszBuf, nMaxLen + 1, nMaxLen, format, args);
+	va_end(args);
+
+	if (nResult < 0)
+	{
+		SAFE_DELETE_SZ(pszBuf);
+		return NULL_STR;
+	}
+
+	std::string strResult = std::string(pszBuf, nResult);
+	SAFE_DELETE_SZ(pszBuf);
+
+	return strResult;
 }
 
 
