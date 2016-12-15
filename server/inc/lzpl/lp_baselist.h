@@ -130,11 +130,27 @@ private:
 };
 
 
+
 // Summary:
-//		通过成员变量访问对象（成员变量的偏移量）
+//   通过成员变量访问对象（成员变量的偏移量）
 #define BASE_NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
 			((_obj_class_ptr_)((char*)(_node_ptr_) - (char*)&(((_obj_class_ptr_)0)->_member_)))
 
+// Summary:
+//   for循环开始宏
+#define BASE_LIST_FOR_BEGIN(__base_list__) \
+	for (BASE_LIST_NODE* ptNode = ##__base_list__.Head().pstNext;\
+		ptNode != &##__base_list__.Rear();)\
+	{\
+		LOG_CHECK_ERROR(ptNode != nullptr);\
+		if (ptNode == nullptr) { break; }\
+		BASE_LIST_NODE* ptNextNode = ptNode->pstNext;
+
+// Summary:
+//   for循环结束宏
+#define BASE_LIST_FOR_END \
+		ptNode = ptNextNode;\
+	}
 
 
 

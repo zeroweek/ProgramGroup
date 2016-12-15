@@ -30,7 +30,7 @@
 #include "lp_bt.h"
 #include "lp_luascriptmgr.h"
 #include "lpi_property.h"
-#include "lpi_table.h"
+#include "lp_table.h"
 
 
 //begin声明所处的名字空间

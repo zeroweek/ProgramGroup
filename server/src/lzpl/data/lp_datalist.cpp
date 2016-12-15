@@ -7,6 +7,9 @@
 NS_LZPL_BEGIN
 
 
+
+ILPDATALIST* ILPDATALIST::ms_poNullDataList = new LPDATALIST();
+
 LPDATALIST::LPDATALIST()
 {
 
@@ -19,17 +22,14 @@ LPDATALIST::~LPDATALIST()
 
 void LPAPI LPDATALIST::Clear()
 {
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head(); pstNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
-		SIMPLE_LIST_NODE* pstNextNode = pstNode->pstNext;
-
-		DATA_SIMPLE_LIST_NODE* ptDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+		DATA_SIMPLE_LIST_NODE* ptDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 		LOG_CHECK_ERROR(ptDataListNode->poData);
 		ILPData::DeleteData(ptDataListNode->poData);
 		DATA_SIMPLE_LIST_NODE::DeleteNode(ptDataListNode);
-
-		pstNode = pstNextNode;
 	}
+	SIMPLE_LIST_FOR_END
 
 	m_oDataList.Clear();
 }
@@ -49,17 +49,18 @@ E_DataType LPAPI LPDATALIST::Type(const INT_32 nIndex)
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
 	INT_32 i = 0;
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head();pstNode != nullptr; ++i)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
 		{
-			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 			LOG_PROCESS_ERROR(poDataListNode->poData);
 			return poDataListNode->poData->GetType();
 		}
 
-		pstNode = pstNode->pstNext;
+		++i;
 	}
+	SIMPLE_LIST_FOR_END
 
 Exit0:
 	return eDataType_Invalid;
@@ -165,91 +166,94 @@ Exit0:
 	return FALSE;
 }
 
-INT_64 LPAPI LPDATALIST::Int64(const INT_32 nIndex)
+INT_64 LPAPI LPDATALIST::Int64(const INT_32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
 	INT_32 i = 0;
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head(); pstNode != nullptr; ++i)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
 		{
-			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 			LOG_PROCESS_ERROR(poDataListNode->poData);
 			return poDataListNode->poData->GetInt64();
 		}
 
-		pstNode = pstNode->pstNext;
+		++i;
 	}
+	SIMPLE_LIST_FOR_END
 
 Exit0:
 	return ZERO_INT;
 }
 
-FLOAT LPAPI LPDATALIST::Float(const INT_32 nIndex)
+FLOAT LPAPI LPDATALIST::Float(const INT_32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
 	INT_32 i = 0;
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head(); pstNode != nullptr; ++i)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
 		{
-			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 			LOG_PROCESS_ERROR(poDataListNode->poData);
 			return poDataListNode->poData->GetFloat();
 		}
 
-		pstNode = pstNode->pstNext;
+		++i;
 	}
+	SIMPLE_LIST_FOR_END
 
 Exit0:
 	return ZERO_FLOAT;
 }
 
-DOUBLE LPAPI LPDATALIST::Double(const INT_32 nIndex)
+DOUBLE LPAPI LPDATALIST::Double(const INT_32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
 	INT_32 i = 0;
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head(); pstNode != nullptr; ++i)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
 		{
-			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 			LOG_PROCESS_ERROR(poDataListNode->poData);
 			return poDataListNode->poData->GetDouble();
 		}
 
-		pstNode = pstNode->pstNext;
+		++i;
 	}
+	SIMPLE_LIST_FOR_END
 
 Exit0:
 	return ZERO_DOUBLE;
 }
 
-const std::string& LPAPI LPDATALIST::String(const INT_32 nIndex)
+const std::string& LPAPI LPDATALIST::String(const INT_32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
 	INT_32 i = 0;
-	for (SIMPLE_LIST_NODE* pstNode = m_oDataList.Head(); pstNode != nullptr; ++i)
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
 		{
-			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)pstNode;
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
 			LOG_PROCESS_ERROR(poDataListNode->poData);
 			return poDataListNode->poData->GetString();
 		}
 
-		pstNode = pstNode->pstNext;
+		++i;
 	}
+	SIMPLE_LIST_FOR_END
 
 Exit0:
 	return NULL_STR;
 }
 
-const LPDATALIST LPDATALIST::m_oNull = LPDATALIST();
 
 
 //end声明所处的名字空间

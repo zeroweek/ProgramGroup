@@ -60,20 +60,10 @@ public:
 	virtual BOOL LPAPI Add(const char* value);
 	virtual BOOL LPAPI Add(const std::string& value);
 
-	virtual INT_64 LPAPI Int64(const INT_32 nIndex);
-	virtual FLOAT LPAPI Float(const INT_32 nIndex);
-	virtual DOUBLE LPAPI Double(const INT_32 nIndex);
-	virtual const std::string& LPAPI String(const INT_32 nIndex);
-
-public:
-	static const LPAPI LPDATALIST& NULLDataList()
-	{
-		return m_oNull;
-	}
-
-protected:
-
-	const static LPDATALIST m_oNull;
+	virtual INT_64 LPAPI Int64(const INT_32 nIndex) const;
+	virtual FLOAT LPAPI Float(const INT_32 nIndex) const;
+	virtual DOUBLE LPAPI Double(const INT_32 nIndex) const;
+	virtual const std::string& LPAPI String(const INT_32 nIndex) const;
 
 protected:
 

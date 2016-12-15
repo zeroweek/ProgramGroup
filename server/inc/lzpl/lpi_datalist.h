@@ -8,7 +8,7 @@
 #define _LPI_DATALIST_H_
 
 #include "lp_base.h"
-#include "lp_data.h"
+#include "lpi_data.h"
 #include "lp_simplelist.h"
 #include "lpi_identid.h"
 
@@ -26,6 +26,14 @@ class DECLARE ILPDATALIST
 {
 public:
 
+	static ILPDATALIST* ms_poNullDataList;
+	static const ILPDATALIST& NullDataList()
+	{
+		return *ms_poNullDataList;
+	}
+
+public:
+
 	virtual ~ILPDATALIST() { }
 
 	virtual void LPAPI Clear() = 0;
@@ -39,10 +47,10 @@ public:
 	virtual BOOL LPAPI Add(const char* value) = 0;
 	virtual BOOL LPAPI Add(const std::string& value) = 0;
 
-	virtual INT_64 LPAPI Int64(const INT_32 nIndex) = 0;
-	virtual FLOAT LPAPI Float(const INT_32 nIndex) = 0;
-	virtual DOUBLE LPAPI Double(const INT_32 nIndex) = 0;
-	virtual const std::string& LPAPI String(const INT_32 nIndex) = 0;
+	virtual INT_64 LPAPI Int64(const INT_32 nIndex) const = 0;
+	virtual FLOAT LPAPI Float(const INT_32 nIndex) const = 0;
+	virtual DOUBLE LPAPI Double(const INT_32 nIndex) const = 0;
+	virtual const std::string& LPAPI String(const INT_32 nIndex) const = 0;
 
 	inline BOOL LPAPI Compare(const INT_32 nPos, const ILPDATALIST& oSrc) const
 	{

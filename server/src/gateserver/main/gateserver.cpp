@@ -607,43 +607,43 @@ BOOL _Test_VarData(void)
 	LPString str = LPString(2, true);
 	std::string strTemp = NULL_STR;
 
-	LPDataInt64 data64;
-	LPDataFloat dataFloat;
-	LPDataDouble dataDouble;
-	LPDataString dataString;
+	ILPData* poDataInt64 = ILPData::NewData(eDataType_Int64);
+	ILPData* poDataFloat = ILPData::NewData(eDataType_Float);
+	ILPData* poDataDouble = ILPData::NewData(eDataType_Double);
+	ILPData* poDataString = ILPData::NewData(eDataType_String);
 
-	//strTemp = data64.ToString();
-	//nResult = data64.SetInt64(1234567890);
-	//strTemp = data64.ToString();
-	//nResult = data64.SetFloat(1234567890.123456789f);
-	//nResult = data64.SetDouble(1234567890.123456789);
-	//nResult = data64.SetString("hello1234567890");
+	//strTemp = poDataInt64->ToString();
+	//nResult = poDataInt64->SetInt64(1234567890);
+	//strTemp = poDataInt64->ToString();
+	//nResult = poDataInt64->SetFloat(1234567890.123456789f);
+	//nResult = poDataInt64->SetDouble(1234567890.123456789);
+	//nResult = poDataInt64->SetString("hello1234567890");
 
-	//strTemp = dataFloat.ToString();
-	//nResult = dataFloat.SetFloat(1234567890.123456789f);
-	//strTemp = dataFloat.ToString();
-	//nResult = dataFloat.SetInt64(1234567890);
-	//nResult = dataFloat.SetDouble(1234567890.123456789);
-	//nResult = dataFloat.SetString("hello1234567890");
+	//strTemp = poDataFloat->ToString();
+	//nResult = poDataFloat->SetFloat(1234567890.123456789f);
+	//strTemp = poDataFloat->ToString();
+	//nResult = poDataFloat->SetInt64(1234567890);
+	//nResult = poDataFloat->SetDouble(1234567890.123456789);
+	//nResult = poDataFloat->SetString("hello1234567890");
 
-	//strTemp = dataDouble.ToString();
-	//nResult = dataDouble.SetDouble(1234567890.123456789);
-	//strTemp = dataDouble.ToString();
-	//nResult = dataDouble.SetInt64(1234567890);
-	//nResult = dataDouble.SetFloat(1234567890.123456789f);
-	//nResult = dataDouble.SetString("hello1234567890");
+	//strTemp = poDataDouble->ToString();
+	//nResult = poDataDouble->SetDouble(1234567890.123456789);
+	//strTemp = poDataDouble->ToString();
+	//nResult = poDataDouble->SetInt64(1234567890);
+	//nResult = poDataDouble->SetFloat(1234567890.123456789f);
+	//nResult = poDataDouble->SetString("hello1234567890");
 
-	//strTemp = dataString.ToString();
-	//nResult = dataString.SetString("hello1234567890");
-	//strTemp = dataString.ToString();
-	//nResult = dataString.SetInt64(1234567890);
-	//nResult = dataString.SetFloat(1234567890.123456789f);
-	//nResult = dataString.SetDouble(1234567890.123456789);
+	//strTemp = poDataString->ToString();
+	//nResult = poDataString->SetString("hello1234567890");
+	//strTemp = poDataString->ToString();
+	//nResult = poDataString->SetInt64(1234567890);
+	//nResult = poDataString->SetFloat(1234567890.123456789f);
+	//nResult = poDataString->SetDouble(1234567890.123456789);
 
-	int n1 = sizeof(data64);
-	int n2 = sizeof(dataFloat);
-	int n3 = sizeof(dataDouble);
-	int n4 = sizeof(dataString);
+	int n1 = sizeof(*poDataInt64);
+	int n2 = sizeof(*poDataFloat);
+	int n3 = sizeof(*poDataDouble);
+	int n4 = sizeof(*poDataString);
 
 	SIMPLE_LIST_NODE node;
 	int n5 = sizeof(node);
@@ -679,7 +679,7 @@ BOOL _Test(void)
 {
 	INT_32 nResult = 0;
 
-	nResult = TC_TestSimpleList();
+	nResult = TC_TestNewDeleteProperty();
 	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);

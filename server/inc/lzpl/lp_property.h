@@ -9,7 +9,7 @@
 
 #include "lp_base.h"
 #include "lpi_property.h"
-#include "lp_baselist.h"
+#include "lp_simplelist.h"
 
 
 
@@ -25,20 +25,36 @@ class DECLARE LPProperty : public ILPProperty
 {
 public:
 
-	class DECLARE LPPropertyCB : public BASE_LIST_NODE
+	class DECLARE LPPropertyCB : public SIMPLE_LIST_NODE
 	{
 	public:
 		friend class LPProperty;
+
 	public:
+
 		LPPropertyCB()
 		{
 			m_nPriority = 0;
 			m_pfPropertyCB = nullptr;
 		}
-		~LPPropertyCB()
-		{
 
+		~LPPropertyCB() { }
+
+		static LPPropertyCB* LPAPI NewPropertyCB(INT_32 nPriority, pfunPropertyEvent pfPropertyCB)
+		{
+			LPPropertyCB* poPropertyCB = new LPPropertyCB();
+			poPropertyCB->m_nPriority = nPriority;
+			poPropertyCB->m_pfPropertyCB = pfPropertyCB;
+
+			return poPropertyCB;
 		}
+
+		static void LPAPI DeletePropertyCB(LPPropertyCB* poPropertyCB)
+		{
+			SAFE_DELETE(poPropertyCB);
+		}
+
+	private:
 
 	private:
 
@@ -52,11 +68,14 @@ public:
 
 public:
 
-	LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, const std::string& strPropertyName, E_DataType eDataType);
+	LPProperty();
+	LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType);
 	~LPProperty();
 
+	virtual BOOL LPAPI Init(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType);
+	virtual BOOL LPAPI UnInit();
+
 	virtual UINT_32 LPAPI GetPropertyID() const;
-	virtual const std::string& LPAPI GetPropertyName() const;
 	virtual const E_DataType GetType() const;
 
 	virtual BOOL LPAPI SetInt64(INT_64 value);
@@ -79,10 +98,9 @@ private:
 
 	LPIDENTID                     m_oOwner;
 	UINT_32                       m_dwPropertyID;
-	std::string                   m_strPropertyName;
 	ILPData*                      m_poData;
 
-	LPBaseList                    m_oCallbackList;
+	LPSimpleList*                 m_poCallbackList; //¼õÐ¡ÄÚ´æ
 };
 
 

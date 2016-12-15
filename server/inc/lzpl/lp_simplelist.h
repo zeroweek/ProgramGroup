@@ -45,11 +45,11 @@ public:
 	}
 
 	inline void LPAPI Clear(void);
-	inline BOOL LPAPI IsEmpty(void);
+	inline BOOL LPAPI IsEmpty(void) const;
 	inline UINT_32 LPAPI Size(void) const;
 
 	inline BOOL LPAPI Append(SIMPLE_LIST_NODE* pstNode);
-	inline SIMPLE_LIST_NODE* LPAPI Head(void);
+	inline SIMPLE_LIST_NODE* LPAPI Head(void) const;
 	inline SIMPLE_LIST_NODE* LPAPI Pop(void);
 
 	inline BOOL LPAPI InsertAfter(SIMPLE_LIST_NODE* pNewNode, SIMPLE_LIST_NODE* pTargetNode);
@@ -65,10 +65,25 @@ private:
 };
 
 
+
 // Summary:
 //		通过成员变量访问对象（成员变量的偏移量）
 #define SIMPLE_NODE_CAST(_obj_class_ptr_, _member_, _node_ptr_)\
 			((_obj_class_ptr_)((char*)(_node_ptr_) - (char*)&(((_obj_class_ptr_)0)->_member_)))
+
+// Summary:
+//   for循环开始宏
+#define SIMPLE_LIST_FOR_BEGIN(__base_list__) \
+	for (SIMPLE_LIST_NODE* ptNode = ##__base_list__.Head(); ptNode != nullptr;)\
+	{\
+		SIMPLE_LIST_NODE* ptNextNode = ptNode->pstNext;
+
+// Summary:
+//   for循环结束宏
+#define SIMPLE_LIST_FOR_END \
+		ptNode = ptNextNode;\
+	}
+
 
 
 inline void LPAPI LPSimpleList::Clear(void)
@@ -78,7 +93,7 @@ inline void LPAPI LPSimpleList::Clear(void)
 	m_ptRear = nullptr;
 }
 
-inline BOOL LPAPI LPSimpleList::IsEmpty(void)
+inline BOOL LPAPI LPSimpleList::IsEmpty(void) const
 {
 	return m_stTop.pstNext == nullptr;
 }
@@ -133,7 +148,7 @@ Exit0:
 	return nullptr;
 }
 
-inline SIMPLE_LIST_NODE *LPAPI LPSimpleList::Head(void)
+inline SIMPLE_LIST_NODE *LPAPI LPSimpleList::Head(void) const
 {
 	PROCESS_ERROR(!IsEmpty());
 

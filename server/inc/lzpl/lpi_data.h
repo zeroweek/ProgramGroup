@@ -56,10 +56,17 @@ public:
 
 public:
 
+	static ILPData* LPAPI InvalidData()
+	{
+		return m_poInvalidData;
+	}
+
 	static ILPData* LPAPI NewData(E_DataType eType);
 	static void LPAPI DeleteData(ILPData* poData);
-};
 
+private:
+	static ILPData* m_poInvalidData;
+};
 
 
 

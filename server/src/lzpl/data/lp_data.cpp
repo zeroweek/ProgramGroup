@@ -9,6 +9,8 @@ NS_LZPL_BEGIN
 
 
 
+ILPData* ILPData::m_poInvalidData = new LPDataInvalid();
+
 ILPData* ILPData::NewData(E_DataType eType)
 {
 	switch (eType)
@@ -28,12 +30,15 @@ ILPData* ILPData::NewData(E_DataType eType)
 		break;
 	}
 
-	return new LPDataInvalid();
+	return InvalidData();
 }
 
 void ILPData::DeleteData(ILPData* poData)
 {
-	SAFE_DELETE(poData);
+	if (poData != InvalidData())
+	{
+		SAFE_DELETE(poData);
+	}
 }
 
 LPDataInt64::LPDataInt64()

@@ -1,5 +1,6 @@
 #include "testcase.h"
 #include "lp_processerror.h"
+#include "lp_lzpl.h"
 
 
 struct TC_TEST_SIMPLE_LIST_NODE : SIMPLE_LIST_NODE
@@ -57,112 +58,104 @@ BOOL TC_TestSimpleList(void)
 	2 5 4 7 6 3 1
 	*/
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode4);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode6);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode1);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode2);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode5);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode3);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_SIMPLE_LIST_NODE*)oSimpleList.Pop();
 	nResult = oSimpleList.Remove(tNode7);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (SIMPLE_LIST_NODE* pNode = oSimpleList.Head(); pNode != nullptr;)
+	SIMPLE_LIST_FOR_BEGIN(oSimpleList)
 	{
-		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)pNode;
+		TC_TEST_SIMPLE_LIST_NODE* ptTcNode = (TC_TEST_SIMPLE_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	SIMPLE_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//nResult = oSimpleList.Remove(tNode7);
@@ -240,112 +233,104 @@ BOOL TC_TestStackList(void)
 	6 3 2 5 4 7 1
 	*/
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode4);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode6);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode1);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode2);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode5);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode3);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//tNode0 = (TC_TEST_STACK_LIST_NODE*)oStackList.Pop();
 	nResult = oStackList.Remove(tNode7);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (STACK_LIST_NODE* pNode = oStackList.Top(); pNode != nullptr;)
+	STACK_LIST_FOR_BEGIN(oStackList)
 	{
-		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)pNode;
+		TC_TEST_STACK_LIST_NODE* ptTcNode = (TC_TEST_STACK_LIST_NODE*)ptNode;
 		LOG_PROCESS_ERROR(ptTcNode);
 		LPPRINTF("%d\n", ptTcNode->nIndex);
-
-		pNode = pNode->pstNext;
 	}
+	STACK_LIST_FOR_END
 	LPPRINTF("\n");
 
 	//nResult = oStackList.Remove(tNode7);
@@ -366,4 +351,96 @@ Exit0:
 	SAFE_DELETE(tNode7);
 
 	return nResult;
+}
+
+#define PROPERTY_CB_DEF(__index__) \
+	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const UINT_32& dwPropertyID, const ILPDATALIST& oldVar, const ILPDATALIST& newVar, const ILPDATALIST& nullVar)\
+	{\
+		const INT_64 nOldValue = oldVar.Int64(0);\
+		const INT_64 nNewValue = newVar.Int64(0);\
+		INF("PropertyCB"#__index__"  \n-> Owner: %s, PropertyID: %d OldValue: " FMT_I64 " NewValue: " FMT_I64,\
+			oOwner.ToString().c_str(), dwPropertyID, nOldValue, nNewValue);\
+		return TRUE;\
+	}
+
+PROPERTY_CB_DEF(1)
+PROPERTY_CB_DEF(2)
+PROPERTY_CB_DEF(3)
+PROPERTY_CB_DEF(4)
+PROPERTY_CB_DEF(5)
+PROPERTY_CB_DEF(6)
+PROPERTY_CB_DEF(7)
+
+BOOL TC_TestPropertyCallBack(void)
+{
+	INT_32 nResult = FALSE;
+	LPIDENTID oOwner(1, 2);
+	ILPProperty* poProperty = nullptr;
+
+	LPNormalPropertyFactory oNormalPropertyFactory;
+	poProperty = oNormalPropertyFactory.NewProperty(oOwner, 1, eDataType_Int64);
+	LOG_PROCESS_ERROR(poProperty != nullptr);
+
+	poProperty->RegisterCallback(PropertyCB1, 1, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB2, 3, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB3, 5, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB4, 2, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB5, 2, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB6, 3, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB7, 4, ILPDATALIST::NullDataList());
+
+	poProperty->SetInt64(0);
+	poProperty->SetInt64(1);
+
+	LOG_PROCESS_ERROR(TRUE);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+#include "lp_property.h"
+BOOL TC_TestNewDeleteProperty(void)
+{
+	INT_32 nResult = FALSE;
+	ILPProperty* poPropertyArray = nullptr;
+	LPNormalPropertyFactory oNormalPropertyFactory;
+	
+	LPProperty* pPropertyArray = new LPProperty[100];
+	INT_32 nSize1 = sizeof(pPropertyArray[0]);
+
+	INT_32 nSize4 = sizeof(LPBaseList);
+	INT_32 nSize5 = sizeof(LPSimpleList);
+	INT_32 nSize6 = sizeof(LPStackList);
+	INT_32 nSize7 = sizeof(BASE_LIST_NODE);
+
+	std::string strTest1 = "Test1";
+	std::string strTest2 = "Test2";
+	std::string& strTest3 = strTest1;
+	strTest3 = "Test3";
+	strTest3 = strTest2;
+
+	std::vector<LPProperty> vecProperty;
+	vecProperty.resize(100);
+	INT_32 nSize2 = sizeof(vecProperty);
+	ILPProperty& oProperty = vecProperty[0];
+	INT_32 nSize3 = sizeof(vecProperty[0]);
+	LPIDENTID oOwner(0, 0);
+	nResult = oProperty.Init(oOwner, 1, eDataType_Int64);
+	LOG_PROCESS_ERROR(nResult);
+	oProperty.SetInt64(100);
+
+
+	poPropertyArray = oNormalPropertyFactory.NewPropertyArray(100);
+	LOG_PROCESS_ERROR(poPropertyArray != nullptr);
+
+	WRN("PropertyInstanceCount = %d", oNormalPropertyFactory.GetPropertyInstanceCount());
+
+	oNormalPropertyFactory.DeletePropertyArray(poPropertyArray);
+
+	WRN("PropertyInstanceCount = %d", oNormalPropertyFactory.GetPropertyInstanceCount());
+
+	return TRUE;
+Exit0:
+	return FALSE;
 }

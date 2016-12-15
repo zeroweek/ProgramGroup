@@ -1,6 +1,5 @@
 #include "lp_property.h"
 #include "lp_processerror.h"
-#include "lp_datalist.h"
 
 
 
@@ -9,23 +8,74 @@ NS_LZPL_BEGIN
 
 
 
+LZPL::LPProperty::LPProperty()
+{
+	++ms_nPropertyCount;
 
-LPProperty::LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, const std::string& strPropertyName, E_DataType eDataType)
+	m_oOwner = LPIDENTID(0, 0);
+	m_dwPropertyID = INVALID_PROPERTY;
+
+	m_poData = ILPData::InvalidData();
+	LOG_CHECK_ERROR(m_poData != nullptr);
+
+	m_poCallbackList = nullptr;
+}
+
+LPProperty::LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType)
 {
 	++ms_nPropertyCount;
 
 	m_oOwner = oOwner;
 	m_dwPropertyID = dwPropertyID;
-	m_strPropertyName = strPropertyName;
 
 	m_poData = ILPData::NewData(eDataType);
-}
+	LOG_CHECK_ERROR(m_poData != nullptr);
 
+	m_poCallbackList = nullptr;
+}
 
 LPProperty::~LPProperty()
 {
-	ILPData::DeleteData(m_poData);
+	UnInit();
+
 	--ms_nPropertyCount;
+}
+
+BOOL LPAPI LZPL::LPProperty::Init(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType)
+{
+	INT_32 nResult = FALSE;
+
+	m_oOwner = oOwner;
+	m_dwPropertyID = dwPropertyID;
+
+	m_poData = ILPData::NewData(eDataType);
+	LOG_PROCESS_ERROR(m_poData != nullptr);
+
+	return TRUE;
+Exit0:
+
+	nResult = UnInit();
+	LOG_CHECK_ERROR(nResult);
+	
+	return FALSE;
+}
+
+BOOL LPAPI LPProperty::UnInit()
+{
+	if (m_poCallbackList != nullptr)
+	{
+		SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+		{
+			LPPropertyCB::DeletePropertyCB((LPPropertyCB*)ptNode);
+		}
+		SIMPLE_LIST_FOR_END
+		(*m_poCallbackList).Clear();
+		SAFE_DELETE(m_poCallbackList);
+	}
+
+	ILPData::DeleteData(m_poData);
+
+	return TRUE;
 }
 
 BOOL LPAPI LPProperty::SetInt64(INT_64 value)
@@ -109,11 +159,6 @@ const E_DataType LPProperty::GetType() const
 	return m_poData->GetType();
 }
 
-const  std::string& LPAPI LPProperty::GetPropertyName() const
-{
-	return m_strPropertyName;
-}
-
 UINT_32 LPAPI LPProperty::GetPropertyID() const
 {
 	return m_dwPropertyID;
@@ -142,36 +187,32 @@ const std::string& LPAPI LPProperty::GetString() const
 BOOL LPAPI LPProperty::RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDATALIST& vars)
 {
 	INT_32 nResult = FALSE;
-
 	BOOL bInsert = FALSE;
+	LPPropertyCB* poNewPropertyCB = LPPropertyCB::NewPropertyCB(nPriority, cb);
 
-	LPPropertyCB oNewPropertyCB;
-	oNewPropertyCB.m_nPriority = nPriority;
-	oNewPropertyCB.m_pfPropertyCB = cb;
-
-	for (BASE_LIST_NODE* pstNode = m_oCallbackList.Head().pstNext;
-		pstNode != &m_oCallbackList.Rear();)
+	if (m_poCallbackList == nullptr)
 	{
-		BASE_LIST_NODE* pstNextNode = pstNode->pstNext;
+		m_poCallbackList = new LPSimpleList();
+		LOG_PROCESS_ERROR(m_poCallbackList);
+	}
 
-		LPPropertyCB* poPropertyCB = (LPPropertyCB*)pstNode;
-		LOG_PROCESS_ERROR(poPropertyCB);
-
-		if (oNewPropertyCB.m_nPriority >= poPropertyCB->m_nPriority)
+	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+	{
+		LPPropertyCB* poPropertyCB = (LPPropertyCB*)ptNode;
+		if (poNewPropertyCB->m_nPriority >= poPropertyCB->m_nPriority)
 		{
-			nResult = m_oCallbackList.InsertBefore(pstNode, (BASE_LIST_NODE*)&oNewPropertyCB);
+			nResult = (*m_poCallbackList).InsertBefore(poNewPropertyCB, ptNode);
 			LOG_PROCESS_ERROR(nResult);
 
 			bInsert = TRUE;
 			break;
 		}
-
-		pstNode = pstNextNode;
 	}
+	SIMPLE_LIST_FOR_END
 
 	if (FALSE == bInsert)
 	{
-		nResult = m_oCallbackList.PushRear((BASE_LIST_NODE*)&oNewPropertyCB);
+		nResult = (*m_poCallbackList).Append(poNewPropertyCB);
 		LOG_PROCESS_ERROR(nResult);
 	}
 
@@ -180,33 +221,54 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LZPL::LPProperty::OnEventHandler(const ILPDATALIST& oldVar, const ILPDATALIST& newVar)
+void LPAPI LPProperty::OnEventHandler(const ILPDATALIST & oldVar, const ILPDATALIST & newVar)
 {
 	INT_32 nResult = FALSE;
 
-	PROCESS_SUCCESS(m_oCallbackList.Size() == 0);
-	
-	for (BASE_LIST_NODE* pstNode = m_oCallbackList.Head().pstNext;
-		pstNode != &m_oCallbackList.Rear();)
+	if (m_poCallbackList == nullptr)
 	{
-		BASE_LIST_NODE* pstNextNode = pstNode->pstNext;
-
-		LPPropertyCB* poPropertyCB = (LPPropertyCB*)pstNode;
-		LOG_PROCESS_ERROR(poPropertyCB);
-
-		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, m_strPropertyName, oldVar, newVar, LPDATALIST::NULLDataList());
-		LOG_CHECK_ERROR_WITH_MSG(nResult, "[%d]%s", m_dwPropertyID, m_strPropertyName.c_str());
-
-		pstNode = pstNextNode;
+		return;
 	}
 
-Exit1:
-Exit0:
+	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+	{
+		LPPropertyCB* poPropertyCB = (LPPropertyCB*)ptNode;
+		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, oldVar, newVar, ILPDATALIST::NullDataList());
+		LOG_CHECK_ERROR_WITH_MSG(nResult, "PropertyID[%d]", m_dwPropertyID);
+	}
+	SIMPLE_LIST_FOR_END
+
 	return;
 }
 
 INT_32 LPProperty::ms_nPropertyCount = 0;;
 
+
+
+INT_32 LPAPI LPNormalPropertyFactory::GetPropertyInstanceCount()
+{
+	return LPProperty::ms_nPropertyCount;
+}
+
+ILPProperty* LPAPI LPNormalPropertyFactory::NewPropertyArray(INT_32 nSize)
+{
+	return new LPProperty[nSize];
+}
+
+void LPAPI LZPL::LPNormalPropertyFactory::DeletePropertyArray(ILPProperty* & poData)
+{
+	SAFE_DELETE_SZ(poData);
+}
+
+ILPProperty* LPAPI LPNormalPropertyFactory::NewProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType)
+{
+	return new LPProperty(oOwner, dwPropertyID, eDataType);
+}
+
+void LPAPI LZPL::LPNormalPropertyFactory::DeleteProperty(ILPProperty* & poData)
+{
+	SAFE_DELETE(poData);
+}
 
 //end声明所处的名字空间
 

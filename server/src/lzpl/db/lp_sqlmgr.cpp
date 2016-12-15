@@ -148,12 +148,9 @@ BOOL LPAPI LPSqlMgr::UnInit(void)
 
 	for (INT_32 nIndex = 0; nIndex < m_nSqlStmtCount; ++nIndex)
 	{
-		for (BASE_LIST_NODE* pstNode = m_pSqlStmtPool[nIndex].Head().pstNext;
-		pstNode != &m_pSqlStmtPool[nIndex].Rear();)
+		BASE_LIST_FOR_BEGIN(m_pSqlStmtPool[nIndex])
 		{
-			BASE_LIST_NODE* pstNextNode = pstNode->pstNext;
-
-			LPSqlStmt* pSqlStmt = (LPSqlStmt*)pstNode;
+			LPSqlStmt* pSqlStmt = (LPSqlStmt*)ptNode;
 			LOG_CHECK_ERROR(pSqlStmt);
 			IF_NULL_CONTINUE(pSqlStmt);
 
@@ -161,9 +158,8 @@ BOOL LPAPI LPSqlMgr::UnInit(void)
 			LOG_CHECK_ERROR(nResult);
 
 			SAFE_DELETE(pSqlStmt);
-
-			pstNode = pstNextNode;
 		}
+		BASE_LIST_FOR_END
 
 		m_pSqlStmtPool[nIndex].Clear();
 	}

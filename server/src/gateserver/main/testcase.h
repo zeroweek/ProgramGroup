@@ -13,7 +13,8 @@
 
 BOOL TC_TestSimpleList(void);
 BOOL TC_TestStackList(void);
-
+BOOL TC_TestPropertyCallBack(void);
+BOOL TC_TestNewDeleteProperty(void);
 
 
 
