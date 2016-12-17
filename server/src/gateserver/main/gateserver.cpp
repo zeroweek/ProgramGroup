@@ -655,20 +655,54 @@ Exit0:
 	return FALSE;
 }
 
+
+
 BOOL _Test_DataList(void)
 {
 	INT_32 nResult = 0;
 
-	LPDATALIST oDataList;
-	std::string strTemp = "tempstring";
+	//LPDataList oDataList;
+	LPDataList oDataList2;
+	//LPDataList oDataList3;
+	LPDataList oDataList4;
+	//std::string strTemp = "tempstring";
 
-	oDataList << 3 << 4.4f << 5.5 << "hello6" << strTemp;
+	//oDataList << 1 << 1.1f << 1.1 << "hello1" << strTemp;
+	oDataList2 << 1 << 2.2f << 3.3 << "4.4";
+	//oDataList3 << 5 << 6.6f << 7.7 << "8.8" << "9.9";
+
+	ILPDataList& oDataList22 = oDataList2;
+	ILPDataList& oDataList44 = oDataList4;
+	oDataList4 = oDataList22;
+	PRINTF_DATA_LIST(IMP, oDataList44);
+
+	//oDataList4.Concat(oDataList3);
+	//PRINTF_DATA_LIST(IMP, oDataList4);
+
+	//
+	//INT_64 lData = oDataList.Int64(0);
+	//FLOAT fData = oDataList.Float(1);
+	//DOUBLE dData = oDataList.Double(2);
+	//std::string strData = oDataList.String(3);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL _Test_Temp(void)
+{
+	INT_32 nResult = 0;
+
+	std::map<UINT_32, UINT_32> mapTest1;
+	std::map<UINT_32, std::string> mapTest2;
+	std::map<std::string, std::string> mapTest3;
+
+	nResult = sizeof(mapTest1);
+	nResult = sizeof(mapTest2);
+	nResult = sizeof(mapTest3);
 	
-	INT_64 lData = oDataList.Int64(0);
-	FLOAT fData = oDataList.Float(1);
-	DOUBLE dData = oDataList.Double(2);
-	std::string strData = oDataList.String(3);
-
 	LOG_PROCESS_ERROR(TRUE);
 	return TRUE;
 Exit0:
@@ -679,7 +713,7 @@ BOOL _Test(void)
 {
 	INT_32 nResult = 0;
 
-	nResult = TC_TestNewDeleteProperty();
+	nResult = _Test_Temp();
 	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);

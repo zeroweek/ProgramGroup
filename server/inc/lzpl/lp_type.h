@@ -72,12 +72,14 @@
 	#define FMT_64X "%llx"
 	#define FMT_FLT "%f"
 	#define FMT_DBE "%lf"
+	#define FMT_STR "%s"
 #else
 	#define FMT_I64 "%ll"
 	#define FMT_U64 "%llu"
 	#define FMT_64X "%llx"
 	#define FMT_FLT "%f"
 	#define FMT_DBE "%lf"
+	#define FMT_STR "%s"
 #endif
 
 

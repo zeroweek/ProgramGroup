@@ -40,6 +40,10 @@ class DECLARE ILPData : public ILPObject
 {
 public:
 
+	static UINT_32 ms_dwDataCount;
+
+public:
+
 	~ILPData() {}
 
 	virtual E_DataType LPAPI GetType() const = 0;
@@ -62,12 +66,11 @@ public:
 	}
 
 	static ILPData* LPAPI NewData(E_DataType eType);
-	static void LPAPI DeleteData(ILPData* poData);
+	static void LPAPI DeleteData(ILPData* & poData);
 
 private:
 	static ILPData* m_poInvalidData;
 };
-
 
 
 

@@ -9,6 +9,7 @@ NS_LZPL_BEGIN
 
 
 
+UINT_32 ILPData::ms_dwDataCount = 0;;
 ILPData* ILPData::m_poInvalidData = new LPDataInvalid();
 
 ILPData* ILPData::NewData(E_DataType eType)
@@ -33,7 +34,7 @@ ILPData* ILPData::NewData(E_DataType eType)
 	return InvalidData();
 }
 
-void ILPData::DeleteData(ILPData* poData)
+void ILPData::DeleteData(ILPData* & poData)
 {
 	if (poData != InvalidData())
 	{
@@ -43,12 +44,13 @@ void ILPData::DeleteData(ILPData* poData)
 
 LPDataInt64::LPDataInt64()
 {
+	++ms_dwDataCount;
 	m_lData = ZERO_INT;
 }
 
 LPDataInt64::~LPDataInt64()
 {
-
+	--ms_dwDataCount;
 }
 
 std::string LPAPI LPDataInt64::ToString()
@@ -87,12 +89,13 @@ BOOL LPAPI LPDataInt64::SetString(const std::string& value)
 
 LPDataFloat::LPDataFloat()
 {
+	++ms_dwDataCount;
 	m_fData = ZERO_FLOAT;
 }
 
 LPDataFloat::~LPDataFloat()
 {
-
+	--ms_dwDataCount;
 }
 
 std::string LPAPI LPDataFloat::ToString()
@@ -131,12 +134,13 @@ BOOL LPAPI LPDataFloat::SetString(const std::string& value)
 
 LPDataDouble::LPDataDouble()
 {
+	++ms_dwDataCount;
 	m_dData = ZERO_DOUBLE;
 }
 
 LPDataDouble::~LPDataDouble()
 {
-
+	--ms_dwDataCount;
 }
 
 std::string LPAPI LPDataDouble::ToString()
@@ -175,12 +179,13 @@ BOOL LPAPI LPDataDouble::SetString(const std::string& value)
 
 LPDataString::LPDataString()
 {
+	++ms_dwDataCount;
 	//m_strData = NULL_STR;
 }
 
 LPDataString::~LPDataString()
 {
-
+	--ms_dwDataCount;
 }
 
 std::string LPAPI LPDataString::ToString()

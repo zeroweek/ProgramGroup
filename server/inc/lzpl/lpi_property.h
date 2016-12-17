@@ -18,13 +18,13 @@ NS_LZPL_BEGIN
 
 
 
-#define INVALID_PROPERTY                     (0)
+#define INVALID_PROPERTY_ID                     (0)
 
 
 
 // Summary:
 //   属性回调接口定义
-typedef BOOL(*pfunPropertyEvent)(const LPIDENTID&, const UINT_32&, const ILPDATALIST&, const ILPDATALIST&, const ILPDATALIST&);
+typedef BOOL(*pfunPropertyEvent)(const LPIDENTID&, const UINT_32&, const ILPDataList&, const ILPDataList&, const ILPDataList&);
 
 
 
@@ -52,7 +52,7 @@ public:
 	virtual DOUBLE LPAPI GetDouble() const = 0;
 	virtual const std::string& LPAPI GetString() const = 0;
 
-	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDATALIST& vars) = 0;
+	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDataList& vars) = 0;
 };
 
 
@@ -63,9 +63,9 @@ class DECLARE ILPPropertyFactory
 {
 public:
 
-	virtual INT_32 LPAPI GetPropertyInstanceCount() = 0;
+	virtual UINT_32 LPAPI GetPropertyInstanceCount() = 0;
 
-	virtual ILPProperty* LPAPI NewPropertyArray(INT_32 nSize) = 0;
+	virtual ILPProperty* LPAPI NewPropertyArray(UINT_32 dwSize) = 0;
 	virtual void LPAPI DeletePropertyArray(ILPProperty* & poProperty) = 0;
 
 	virtual ILPProperty* LPAPI NewProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType) = 0;
@@ -80,9 +80,9 @@ class DECLARE LPNormalPropertyFactory : public ILPPropertyFactory
 {
 public:
 
-	virtual INT_32 LPAPI GetPropertyInstanceCount();
+	virtual UINT_32 LPAPI GetPropertyInstanceCount();
 	
-	virtual ILPProperty* LPAPI NewPropertyArray(INT_32 nSize);
+	virtual ILPProperty* LPAPI NewPropertyArray(UINT_32 dwSize);
 	virtual void LPAPI DeletePropertyArray(ILPProperty* & poProperty);
 
 	virtual ILPProperty* LPAPI NewProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType);

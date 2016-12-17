@@ -10,10 +10,10 @@ NS_LZPL_BEGIN
 
 LZPL::LPProperty::LPProperty()
 {
-	++ms_nPropertyCount;
+	++ms_dwPropertyCount;
 
 	m_oOwner = LPIDENTID(0, 0);
-	m_dwPropertyID = INVALID_PROPERTY;
+	m_dwPropertyID = INVALID_PROPERTY_ID;
 
 	m_poData = ILPData::InvalidData();
 	LOG_CHECK_ERROR(m_poData != nullptr);
@@ -23,7 +23,7 @@ LZPL::LPProperty::LPProperty()
 
 LPProperty::LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType)
 {
-	++ms_nPropertyCount;
+	++ms_dwPropertyCount;
 
 	m_oOwner = oOwner;
 	m_dwPropertyID = dwPropertyID;
@@ -38,7 +38,7 @@ LPProperty::~LPProperty()
 {
 	UnInit();
 
-	--ms_nPropertyCount;
+	--ms_dwPropertyCount;
 }
 
 BOOL LPAPI LZPL::LPProperty::Init(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType)
@@ -66,7 +66,8 @@ BOOL LPAPI LPProperty::UnInit()
 	{
 		SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
 		{
-			LPPropertyCB::DeletePropertyCB((LPPropertyCB*)ptNode);
+			LPPropertyCB* poPropertyCB = (LPPropertyCB*)ptNode;
+			LPPropertyCB::DeletePropertyCB(poPropertyCB);
 		}
 		SIMPLE_LIST_FOR_END
 		(*m_poCallbackList).Clear();
@@ -81,8 +82,8 @@ BOOL LPAPI LPProperty::UnInit()
 BOOL LPAPI LPProperty::SetInt64(INT_64 value)
 {
 	INT_32 nResult = FALSE;
-	LPDATALIST oOldVals;
-	LPDATALIST oNewVals;
+	LPDataList oOldVals;
+	LPDataList oNewVals;
 	INT_64 lOldValue = m_poData->GetInt64();
 
 	nResult = m_poData->SetInt64(value);
@@ -100,8 +101,8 @@ Exit0:
 BOOL LPAPI LPProperty::SetFloat(FLOAT value)
 {
 	INT_32 nResult = FALSE;
-	LPDATALIST oOldVals;
-	LPDATALIST oNewVals;
+	LPDataList oOldVals;
+	LPDataList oNewVals;
 	FLOAT fOldValue = m_poData->GetFloat();
 
 	nResult = m_poData->SetFloat(value);
@@ -119,8 +120,8 @@ Exit0:
 BOOL LPAPI LPProperty::SetDouble(DOUBLE value)
 {
 	INT_32 nResult = FALSE;
-	LPDATALIST oOldVals;
-	LPDATALIST oNewVals;
+	LPDataList oOldVals;
+	LPDataList oNewVals;
 	DOUBLE dOldValue = m_poData->GetDouble();
 
 	nResult = m_poData->SetDouble(value);
@@ -138,8 +139,8 @@ Exit0:
 BOOL LPAPI LPProperty::SetString(const std::string& value)
 {
 	INT_32 nResult = FALSE;
-	LPDATALIST oOldVals;
-	LPDATALIST oNewVals;
+	LPDataList oOldVals;
+	LPDataList oNewVals;
 	std::string strOldValue = m_poData->GetString();
 
 	nResult = m_poData->SetString(value);
@@ -184,7 +185,7 @@ const std::string& LPAPI LPProperty::GetString() const
 	return m_poData->GetString();
 }
 
-BOOL LPAPI LPProperty::RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDATALIST& vars)
+BOOL LPAPI LPProperty::RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDataList& vars)
 {
 	INT_32 nResult = FALSE;
 	BOOL bInsert = FALSE;
@@ -221,7 +222,7 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LPProperty::OnEventHandler(const ILPDATALIST & oldVar, const ILPDATALIST & newVar)
+void LPAPI LPProperty::OnEventHandler(const ILPDataList & oldVar, const ILPDataList & newVar)
 {
 	INT_32 nResult = FALSE;
 
@@ -233,7 +234,7 @@ void LPAPI LPProperty::OnEventHandler(const ILPDATALIST & oldVar, const ILPDATAL
 	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
 	{
 		LPPropertyCB* poPropertyCB = (LPPropertyCB*)ptNode;
-		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, oldVar, newVar, ILPDATALIST::NullDataList());
+		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, oldVar, newVar, ILPDataList::NullDataList());
 		LOG_CHECK_ERROR_WITH_MSG(nResult, "PropertyID[%d]", m_dwPropertyID);
 	}
 	SIMPLE_LIST_FOR_END
@@ -241,18 +242,18 @@ void LPAPI LPProperty::OnEventHandler(const ILPDATALIST & oldVar, const ILPDATAL
 	return;
 }
 
-INT_32 LPProperty::ms_nPropertyCount = 0;;
+UINT_32 LPProperty::ms_dwPropertyCount = 0;;
 
 
 
-INT_32 LPAPI LPNormalPropertyFactory::GetPropertyInstanceCount()
+UINT_32 LPAPI LPNormalPropertyFactory::GetPropertyInstanceCount()
 {
-	return LPProperty::ms_nPropertyCount;
+	return LPProperty::ms_dwPropertyCount;
 }
 
-ILPProperty* LPAPI LPNormalPropertyFactory::NewPropertyArray(INT_32 nSize)
+ILPProperty* LPAPI LPNormalPropertyFactory::NewPropertyArray(UINT_32 dwSize)
 {
-	return new LPProperty[nSize];
+	return new LPProperty[dwSize];
 }
 
 void LPAPI LZPL::LPNormalPropertyFactory::DeletePropertyArray(ILPProperty* & poData)

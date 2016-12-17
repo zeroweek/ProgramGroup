@@ -25,6 +25,10 @@ class DECLARE LPProperty : public ILPProperty
 {
 public:
 
+	static UINT_32 ms_dwPropertyCount;
+
+public:
+
 	class DECLARE LPPropertyCB : public SIMPLE_LIST_NODE
 	{
 	public:
@@ -49,7 +53,7 @@ public:
 			return poPropertyCB;
 		}
 
-		static void LPAPI DeletePropertyCB(LPPropertyCB* poPropertyCB)
+		static void LPAPI DeletePropertyCB(LPPropertyCB* & poPropertyCB)
 		{
 			SAFE_DELETE(poPropertyCB);
 		}
@@ -61,10 +65,6 @@ public:
 		INT_32                        m_nPriority;
 		pfunPropertyEvent             m_pfPropertyCB;
 	};
-
-public:
-
-	static INT_32 ms_nPropertyCount;
 
 public:
 
@@ -88,11 +88,11 @@ public:
 	virtual DOUBLE LPAPI GetDouble() const;
 	virtual const std::string& LPAPI GetString() const;
 
-	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDATALIST& vars);
+	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDataList& vars);
 
 protected:
 
-	void LPAPI OnEventHandler(const ILPDATALIST& oldVar, const ILPDATALIST& newVar);
+	void LPAPI OnEventHandler(const ILPDataList& oldVar, const ILPDataList& newVar);
 
 private:
 

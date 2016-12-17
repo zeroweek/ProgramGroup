@@ -354,7 +354,7 @@ Exit0:
 }
 
 #define PROPERTY_CB_DEF(__index__) \
-	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const UINT_32& dwPropertyID, const ILPDATALIST& oldVar, const ILPDATALIST& newVar, const ILPDATALIST& nullVar)\
+	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const UINT_32& dwPropertyID, const ILPDataList& oldVar, const ILPDataList& newVar, const ILPDataList& nullVar)\
 	{\
 		const INT_64 nOldValue = oldVar.Int64(0);\
 		const INT_64 nNewValue = newVar.Int64(0);\
@@ -381,13 +381,13 @@ BOOL TC_TestPropertyCallBack(void)
 	poProperty = oNormalPropertyFactory.NewProperty(oOwner, 1, eDataType_Int64);
 	LOG_PROCESS_ERROR(poProperty != nullptr);
 
-	poProperty->RegisterCallback(PropertyCB1, 1, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB2, 3, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB3, 5, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB4, 2, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB5, 2, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB6, 3, ILPDATALIST::NullDataList());
-	poProperty->RegisterCallback(PropertyCB7, 4, ILPDATALIST::NullDataList());
+	poProperty->RegisterCallback(PropertyCB1, 1, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB2, 3, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB3, 5, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB4, 2, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB5, 2, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB6, 3, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB7, 4, ILPDataList::NullDataList());
 
 	poProperty->SetInt64(0);
 	poProperty->SetInt64(1);

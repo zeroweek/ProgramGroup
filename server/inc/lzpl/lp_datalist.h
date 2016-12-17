@@ -20,7 +20,7 @@ NS_LZPL_BEGIN
 
 // Summary:
 //   ±í½Ó¿Ú
-class DECLARE LPDATALIST : public ILPDATALIST
+class DECLARE LPDataList : public ILPDataList
 {
 public:
 
@@ -38,7 +38,7 @@ public:
 			return new DATA_SIMPLE_LIST_NODE();
 		}
 
-		static void DeleteNode(DATA_SIMPLE_LIST_NODE* ptNode)
+		static void DeleteNode(DATA_SIMPLE_LIST_NODE* & ptNode)
 		{
 			SAFE_DELETE(ptNode);
 		}
@@ -46,13 +46,13 @@ public:
 
 public:
 
-	LPDATALIST();
-	virtual ~LPDATALIST();
+	LPDataList();
+	virtual ~LPDataList();
 
 	virtual void LPAPI Clear();
 	virtual BOOL LPAPI IsEmpty() const;
 	virtual UINT_32 LPAPI GetCount() const;
-	virtual E_DataType LPAPI Type(const INT_32 nIndex);
+	virtual E_DataType LPAPI Type(const INT_32 nIndex) const;
 
 	virtual BOOL LPAPI Add(const INT_64 value);
 	virtual BOOL LPAPI Add(const FLOAT value);
@@ -64,6 +64,12 @@ public:
 	virtual FLOAT LPAPI Float(const INT_32 nIndex) const;
 	virtual DOUBLE LPAPI Double(const INT_32 nIndex) const;
 	virtual const std::string& LPAPI String(const INT_32 nIndex) const;
+
+	virtual BOOL Concat(const ILPDataList& oSrc);
+	virtual BOOL Append(const ILPDataList& oSrc, UINT_32 dwStart, UINT_32 dwCount);
+	
+	LPDataList& operator=(const LPDataList& oSrc);
+	LPDataList& operator=(const ILPDataList& oSrc);
 
 protected:
 
