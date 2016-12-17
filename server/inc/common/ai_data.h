@@ -20,12 +20,12 @@ using namespace LZPL;
 
 struct AI_DATA
 {
-	INT_32 nAIID;
+	LPINT32 nAIID;
 	char szAIDesc[COMMON_NAME_LEN];
 	char szScriptName[COMMON_NAME_LEN];
 
 	static void Print(AI_DATA* pData);
-	static BOOL ReadLine(INT_32& rnId, AI_DATA* pData, LPTabFile* pTabFile, INT_32 nRow);
+	static BOOL ReadLine(LPINT32& rnId, AI_DATA* pData, LPTabFile* pTabFile, LPINT32 nRow);
 
 };
 

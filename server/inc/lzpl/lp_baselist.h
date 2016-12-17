@@ -92,7 +92,7 @@ public:
 
 	// Summary:
 	//		нч
-	inline UINT_32 LPAPI Size(void) const;
+	inline LPUINT32 LPAPI Size(void) const;
 
 	// Summary:
 	//		нч
@@ -124,7 +124,7 @@ public:
 
 private:
 
-	UINT_32             m_dwSize;
+	LPUINT32             m_dwSize;
 	BASE_LIST_NODE      m_stHead;
 	BASE_LIST_NODE      m_stRear;
 };
@@ -187,7 +187,7 @@ inline BASE_LIST_NODE &LPAPI LPBaseList::Rear(void)
 	return m_stRear;
 }
 
-inline UINT_32 LPAPI LPBaseList::Size(void) const
+inline LPUINT32 LPAPI LPBaseList::Size(void) const
 {
 	return m_dwSize;
 }

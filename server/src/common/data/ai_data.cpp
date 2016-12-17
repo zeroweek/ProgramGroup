@@ -12,7 +12,7 @@ Exit0:
 	return;
 }
 
-BOOL AI_DATA::ReadLine(INT_32 & rnId, AI_DATA * pData, LPTabFile * pTabFile, INT_32 nRow)
+BOOL AI_DATA::ReadLine(LPINT32 & rnId, AI_DATA * pData, LPTabFile * pTabFile, LPINT32 nRow)
 {
 	READ_DATA_START();
 

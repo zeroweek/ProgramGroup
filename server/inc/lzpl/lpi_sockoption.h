@@ -18,9 +18,9 @@ NS_LZPL_BEGIN
 //		socket选项信息结构
 struct SOCK_OPTION
 {
-	INT_32        nLevel;
-	INT_32        nOptName;
-	INT_32        nOptLen;
+	LPINT32        nLevel;
+	LPINT32        nOptName;
+	LPINT32        nOptLen;
 	const char*  pszOptValue;
 };
 

@@ -8,7 +8,7 @@ static void __test_nav_mesh(void)
 
 BOOL NavMesh::CalBoundingBox(lpIn const FLOAT* pfVerts, lpIn int nVertCount, lpOut FLOAT* pfMin, lpOut FLOAT* pfMax)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	const float* pfVert = NULL;
 
 	nResult = VCopy(pfMin, pfVerts);

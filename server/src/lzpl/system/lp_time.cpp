@@ -7,8 +7,8 @@ NS_LZPL_BEGIN
 
 
 
-INT_32 LZPL::LPTime::ms_nTimezone = 0;
-UINT_64 LZPL::LPTime::ms_qwTimezoneSec = 0;;
+LPINT32 LZPL::LPTime::ms_nTimezone = 0;
+LPUINT64 LZPL::LPTime::ms_qwTimezoneSec = 0;;
 
 
 
@@ -43,7 +43,7 @@ BOOL LPAPI LPTime::UsecEqualTo(const LPTime& t)
 		&& m_stTimeval.m_qwUsec == t.m_stTimeval.m_qwUsec);
 }
 
-BOOL LPAPI LPTime::GlobalInit(INT_32 nTimezone)
+BOOL LPAPI LPTime::GlobalInit(LPINT32 nTimezone)
 {
 	PROCESS_ERROR(TIME_ZONE_MIN <= nTimezone && nTimezone <= TIME_ZONE_MAX);
 	ms_nTimezone = nTimezone;
@@ -57,7 +57,7 @@ Exit0:
 
 LPTime LPAPI LPTime::GetNowTime()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPTime stTime;
 	time_t tTime = 0;;
 	struct tm stTm;
@@ -77,20 +77,20 @@ LPTime LPAPI LPTime::GetNowTime()
 	stTime.m_Year = stTm.tm_year + 1900;
 	stTime.m_Wday = stTm.tm_wday;
 	stTime.m_Yday = stTm.tm_yday;
-	stTime.m_Msec = (UINT_32)(stTime.m_stTimeval.m_qwUsec / 1000);
+	stTime.m_Msec = (LPUINT32)(stTime.m_stTimeval.m_qwUsec / 1000);
 
 Exit0:
 	return stTime;
 }
 
-UINT_64 LPAPI LPTime::GetNowTimetamp()
+LPUINT64 LPAPI LPTime::GetNowTimetamp()
 {
 	return time(NULL) + ms_qwTimezoneSec;
 }
 
 LPTime LPAPI LPTime::GetNowUTCTime()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPTime stTime;
 	time_t tTime = 0;;
 	struct tm stTm;
@@ -109,13 +109,13 @@ LPTime LPAPI LPTime::GetNowUTCTime()
 	stTime.m_Year = stTm.tm_year + 1900;
 	stTime.m_Wday = stTm.tm_wday;
 	stTime.m_Yday = stTm.tm_yday;
-	stTime.m_Msec = (UINT_32)(stTime.m_stTimeval.m_qwUsec / 1000);
+	stTime.m_Msec = (LPUINT32)(stTime.m_stTimeval.m_qwUsec / 1000);
 
 Exit0:
 	return stTime;
 }
 
-UINT_64 LPAPI LPTime::GetNowUTCTimestamp()
+LPUINT64 LPAPI LPTime::GetNowUTCTimestamp()
 {
 	return time(NULL);
 }

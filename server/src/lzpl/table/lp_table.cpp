@@ -23,7 +23,7 @@ LPTable::LPTable()
 	LOG_CHECK_ERROR(m_poPropertyFactory);
 }
 
-LPTable::LPTable(const LPIDENTID& oOwner, UINT_32 dwTableID, UINT_32 nColCount, ILPDataList& varColType)
+LPTable::LPTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, LPUINT32 nColCount, ILPDataList& varColType)
 {
 	++ms_dwTableCount;
 
@@ -46,7 +46,7 @@ LPTable::~LPTable()
 	
 }
 
-BOOL LPAPI LPTable::Init(const LPIDENTID& oOwner, UINT_32 dwTableID, UINT_32 nColCount, ILPDataList& varColType)
+BOOL LPAPI LPTable::Init(const LPIDENTID& oOwner, LPUINT32 dwTableID, LPUINT32 nColCount, ILPDataList& varColType)
 {
 	m_oOwner = oOwner;
 	m_dwTableID = dwTableID;
@@ -74,17 +74,17 @@ BOOL LPAPI LPTable::UnInit()
 	return TRUE;
 }
 
-UINT_32 LPTable::GetColCount() const
+LPUINT32 LPTable::GetColCount() const
 {
 	return m_dwColCount;
 }
 
-UINT_32 LPTable::GetRecordCount() const
+LPUINT32 LPTable::GetRecordCount() const
 {
 	return m_oRecordList.Size();
 }
 
-E_DataType LPTable::GetColType(const UINT_32 nCol) const
+E_DataType LPTable::GetColType(const LPUINT32 nCol) const
 {
 	return eDataType_Invalid;
 }
@@ -94,7 +94,7 @@ BOOL LPTable::AddRecord(const ILPDataList& var)
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::SetInt64(Iterator& iter, INT_64 value)
+BOOL LPAPI LPTable::SetInt64(Iterator& iter, LPINT64 value)
 {
 	return FALSE;
 }
@@ -114,7 +114,7 @@ BOOL LPAPI LPTable::SetString(Iterator& iter, const std::string& value)
 	return FALSE;
 }
 
-INT_64 LPAPI LPTable::GetInt64(Iterator& iter) const
+LPINT64 LPAPI LPTable::GetInt64(Iterator& iter) const
 {
 	return ZERO_INT;
 }
@@ -134,22 +134,22 @@ const std::string& LPAPI LPTable::GetString(Iterator& iter) const
 	return NULL_STR;
 }
 
-BOOL LPTable::FindInt64(const UINT_32 nCol, const INT_64 value, IteratorVect& vectIterRet)
+BOOL LPTable::FindInt64(const LPUINT32 nCol, const LPINT64 value, IteratorVect& vectIterRet)
 {
 	return FALSE;
 }
 
-BOOL LPTable::FindFloat(const UINT_32 nCol, const FLOAT value, IteratorVect& vectIterRet)
+BOOL LPTable::FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVect& vectIterRet)
 {
 	return FALSE;
 }
 
-BOOL LPTable::FindDouble(const UINT_32 nCol, const DOUBLE value, IteratorVect& vectIterRet)
+BOOL LPTable::FindDouble(const LPUINT32 nCol, const DOUBLE value, IteratorVect& vectIterRet)
 {
 	return FALSE;
 }
 
-BOOL LPTable::FindString(const UINT_32 nCol, const std::string& value, IteratorVect& vectIterRet)
+BOOL LPTable::FindString(const LPUINT32 nCol, const std::string& value, IteratorVect& vectIterRet)
 {
 	return FALSE;
 }
@@ -169,7 +169,7 @@ void LPTable::Clear()
 
 }
 
-UINT_32 LZPL::LPTable::ms_dwTableCount = 0;
+LPUINT32 LZPL::LPTable::ms_dwTableCount = 0;
 
 //end声明所处的名字空间
 NS_LZPL_END

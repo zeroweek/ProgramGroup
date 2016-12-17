@@ -31,7 +31,7 @@ public:
 
 	virtual E_DataType LPAPI GetType() const { return eDataType_Invalid; }
 
-	virtual BOOL LPAPI SetInt64(INT_64 value)
+	virtual BOOL LPAPI SetInt64(LPINT64 value)
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
@@ -60,7 +60,7 @@ public:
 	}
 
 
-	virtual INT_64 LPAPI GetInt64() const 
+	virtual LPINT64 LPAPI GetInt64() const 
 	{ 
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
@@ -90,13 +90,13 @@ public:
 
 private:
 
-	INT_64                        m_lData;
+	LPINT64                        m_lData;
 };
 
 
 
 // Summary:
-//   INT_64
+//   LPINT64
 class DECLARE LPDataInt64 : public ILPData
 {
 public:
@@ -108,12 +108,12 @@ public:
 
 	virtual E_DataType LPAPI GetType() const { return eDataType_Int64; }
 
-	virtual BOOL LPAPI SetInt64(INT_64 value);
+	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual INT_64 LPAPI GetInt64() const 
+	virtual LPINT64 LPAPI GetInt64() const 
 	{ 
 		return m_lData; 
 	}
@@ -141,7 +141,7 @@ public:
 
 private:
 
-	INT_64                        m_lData;
+	LPINT64                        m_lData;
 };
 
 
@@ -159,12 +159,12 @@ public:
 
 	virtual E_DataType LPAPI GetType() const { return eDataType_Float; }
 
-	virtual BOOL LPAPI SetInt64(INT_64 value);
+	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual INT_64 LPAPI GetInt64() const 
+	virtual LPINT64 LPAPI GetInt64() const 
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
@@ -210,12 +210,12 @@ public:
 
 	virtual E_DataType LPAPI GetType() const { return eDataType_Double; }
 
-	virtual BOOL LPAPI SetInt64(INT_64 value);
+	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual INT_64 LPAPI GetInt64() const 
+	virtual LPINT64 LPAPI GetInt64() const 
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
@@ -261,12 +261,12 @@ public:
 
 	virtual E_DataType LPAPI GetType() const { return eDataType_String; }
 
-	virtual BOOL LPAPI SetInt64(INT_64 value);
+	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual INT_64 LPAPI GetInt64() const { return ZERO_INT; }
+	virtual LPINT64 LPAPI GetInt64() const { return ZERO_INT; }
 	virtual FLOAT LPAPI GetFloat() const { return ZERO_FLOAT; }
 	virtual DOUBLE LPAPI GetDouble() const { return ZERO_DOUBLE; }
 	virtual const std::string& LPAPI GetString() const { return m_strData; }

@@ -27,11 +27,11 @@ CBTManager::~CBTManager()
 	UnInit();
 }
 
-INT_32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
+LPINT32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
 {
-	INT_32 nResult = btrvError;
-	INT_32 nLuaResult = 0;
-	INT_32 nParam[BT_MAX_PARAM];
+	LPINT32 nResult = btrvError;
+	LPINT32 nLuaResult = 0;
+	LPINT32 nParam[BT_MAX_PARAM];
 	char szFuncName[COMMON_NAME_LEN];
 	char szNodeInfo[256];
 	BT_CUSTOM_CTRL* pCustomCtrl = (BT_CUSTOM_CTRL*)pCtrl;
@@ -42,7 +42,7 @@ INT_32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
 	LOG_PROCESS_ERROR(Instance().m_ActionInfoList[pNode->type].eOwnerMask & (1 << pCustomCtrl->eOwnerType));
 
 	// prepare params
-	for (INT_32 nParamIndex = 0; nParamIndex < BT_MAX_PARAM; ++nParamIndex)
+	for (LPINT32 nParamIndex = 0; nParamIndex < BT_MAX_PARAM; ++nParamIndex)
 	{
 		if (pNode->luaParamMask & (1 << nParamIndex))
 		{
@@ -79,7 +79,7 @@ INT_32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
 	if (pCustomCtrl->debugging)
 	{
 		memset(szNodeInfo, 0, sizeof(szNodeInfo));
-		for (INT_32 i = 0; i < pCustomCtrl->runStackNodeCount - 1; ++i)
+		for (LPINT32 i = 0; i < pCustomCtrl->runStackNodeCount - 1; ++i)
 		{
 			szNodeInfo[i] = '\t';
 		}
@@ -124,7 +124,7 @@ BOOL CBTManager::Init(void)
 	lpBTRegisterUserDefinedNodeFunc(_BTNodeFunc);
 	m_nActionIdGenerator = btatEnd;
 
-	for (INT_32 nIndex = 0; nIndex < btatEnd; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < btatEnd; ++nIndex)
 	{
 		if (m_ActionInfoList[nIndex].szName[0])
 		{
@@ -164,9 +164,9 @@ BOOL CBTManager::Reload(void)
 	return FALSE;
 }
 
-BT_NODE* CBTManager::CreateBTNode(BT_NODE* pParent, INT_32 nType, INT_32 nTag, const char * pcszName, INT_32 nParam0, INT_32 nParam1, INT_32 nParam2, INT_32 nParam3, INT_32 nFlag)
+BT_NODE* CBTManager::CreateBTNode(BT_NODE* pParent, LPINT32 nType, LPINT32 nTag, const char * pcszName, LPINT32 nParam0, LPINT32 nParam1, LPINT32 nParam2, LPINT32 nParam3, LPINT32 nFlag)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BT_NODE* pResult = NULL;
 	const char* pcszActionName = NULL;
 
@@ -203,9 +203,9 @@ Exit0:
 	return NULL;
 }
 
-BOOL CBTManager::DestroyBTTree(BT_NODE* pRoot, INT_32 nLayer)
+BOOL CBTManager::DestroyBTTree(BT_NODE* pRoot, LPINT32 nLayer)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pRoot);
 	LOG_PROCESS_ERROR(nLayer < BT_MAX_LAYER);
@@ -231,7 +231,7 @@ Exit0:
 
 BT_NODE* CBTManager::CopyBTTree(BT_NODE* pRoot)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BT_NODE* pResult = NULL;
 
 	PROCESS_ERROR(pRoot);
@@ -270,9 +270,9 @@ Exit0:
 	return NULL;
 }
 
-void CBTManager::PrintBTTree(BT_NODE* pRoot, INT_32 nLayer)
+void CBTManager::PrintBTTree(BT_NODE* pRoot, LPINT32 nLayer)
 {
-	INT_32 nChildIndex = 0;
+	LPINT32 nChildIndex = 0;
 	BT_NODE* pNode = NULL;
 	char szTab[MAX_PATH] = { 0 };
 	const char* pcszName = NULL;
@@ -299,7 +299,7 @@ Exit0:
 	return;
 }
 
-INT_32 CBTManager::FindBTActionByName(const char * pcszName)
+LPINT32 CBTManager::FindBTActionByName(const char * pcszName)
 {
 	MAP_ACTION_NAME_2_INFO::iterator fit;
 
@@ -314,7 +314,7 @@ Exit0:
 	return btatInvalid;
 }
 
-INT_32 CBTManager::RegisterBTAction(const char * pcszName)
+LPINT32 CBTManager::RegisterBTAction(const char * pcszName)
 {
 	std::pair<MAP_ACTION_NAME_2_INFO::iterator, bool> InsRet;
 
@@ -334,7 +334,7 @@ Exit0:
 	return btntInvalid;
 }
 
-const char * CBTManager::GetBTActionName(INT_32 nActionId)
+const char * CBTManager::GetBTActionName(LPINT32 nActionId)
 {
 	ACTION_INFO* pActionInfo = NULL;
 
@@ -349,9 +349,9 @@ Exit0:
 	return NULL;
 }
 
-BOOL CBTManager::CallBTAction(INT_32 nBTNodeType, INT_32 nParam[])
+BOOL CBTManager::CallBTAction(LPINT32 nBTNodeType, LPINT32 nParam[])
 {
-	INT_32 nResult = btrvError;
+	LPINT32 nResult = btrvError;
 
 	LOG_PROCESS_ERROR(m_pCurrentCtrl);
 	LOG_PROCESS_ERROR(nBTNodeType > btntInvalid && nBTNodeType < btntTotal);
@@ -365,10 +365,10 @@ Exit0:
 	return nResult;
 }
 
-BOOL CBTManager::TestBTAction(void * pObj, INT_32 nBTNodeType, INT_32 nParam[])
+BOOL CBTManager::TestBTAction(void * pObj, LPINT32 nBTNodeType, LPINT32 nParam[])
 {
-	INT_32 nResult = btrvError;
-	INT_32 nMask = 0;
+	LPINT32 nResult = btrvError;
+	LPINT32 nMask = 0;
 
 	BT_CUSTOM_CTRL stCtrl;
 	BT_NODE* pRoot = NULL;
@@ -422,7 +422,7 @@ Exit0:
 	return nResult;
 }
 
-UINT_32 CBTManager::GetCtrlRoleId()
+LPUINT32 CBTManager::GetCtrlRoleId()
 {
 	LOG_PROCESS_ERROR(m_pCurrentCtrl);
 

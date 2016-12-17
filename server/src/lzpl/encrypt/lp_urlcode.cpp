@@ -8,11 +8,11 @@ NS_LZPL_BEGIN
 
 
 
-DECLARE BOOL lpUrlEncode(const char * pcszInStr, UINT_32 dwInSize, char * pszOutStr, UINT_32 & dwOutSize, eUrlCodeType eType)
+DECLARE BOOL lpUrlEncode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOutStr, LPUINT32 & dwOutSize, eUrlCodeType eType)
 {
-	INT_32 nResult = 0;
-	INT_32 nIndex = 0;
-	UINT_32 dwOutputCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nIndex = 0;
+	LPUINT32 dwOutputCount = 0;
 
 	LOG_PROCESS_ERROR(pcszInStr);
 	LOG_PROCESS_ERROR(pszOutStr);
@@ -49,14 +49,14 @@ Exit0:
 	return FALSE;
 }
 
-DECLARE BOOL LPAPI lpUrlDecode(const char * pcszInStr, UINT_32 dwInSize, char * pszOutStr, UINT_32 & dwOutSize, eUrlCodeType eType)
+DECLARE BOOL LPAPI lpUrlDecode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOutStr, LPUINT32 & dwOutSize, eUrlCodeType eType)
 {
-	INT_32 nResult = 0;
-	INT_32 nIndex = 0;
-	UINT_32 dwOutputCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nIndex = 0;
+	LPUINT32 dwOutputCount = 0;
 
-	UINT_8 byLow = 0;
-	UINT_8 byHigh = 0;
+	LPUINT8 byLow = 0;
+	LPUINT8 byHigh = 0;
 
 	LOG_PROCESS_ERROR(pcszInStr);
 	LOG_PROCESS_ERROR(pszOutStr);

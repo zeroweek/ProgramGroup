@@ -49,12 +49,12 @@ enum e_IoType
 //		
 struct NET_CONFIG
 {
-	UINT_32                       dwRecvBufSize;               // 接收缓冲区的大小
-	UINT_32                       dwSendBufSize;               // 发送缓冲区的大小
-	UINT_32                       dwConnectCount;              // 允许连接的数量
-	UINT_32                       dwNetEventPoolSize;          // 网络事件池大小
-	UINT_32                       dwNetEventListCount;         // 网络事件处理列表个数
-	UINT_32                       dwNetRecvEventBufSize;       // 网络接收事件缓冲区大小
+	LPUINT32                       dwRecvBufSize;               // 接收缓冲区的大小
+	LPUINT32                       dwSendBufSize;               // 发送缓冲区的大小
+	LPUINT32                       dwConnectCount;              // 允许连接的数量
+	LPUINT32                       dwNetEventPoolSize;          // 网络事件池大小
+	LPUINT32                       dwNetEventListCount;         // 网络事件处理列表个数
+	LPUINT32                       dwNetRecvEventBufSize;       // 网络接收事件缓冲区大小
 
 };
 
@@ -97,7 +97,7 @@ public:
 	//		nCount-每次检测处理网络包的最大数量，-1表示处理所有
 	//Return:
 	//		TRUE-所有网络包都已被处理，FALSE-有剩余未处理网络包
-	virtual BOOL LPAPI Run(INT_32 nCount = -1) = 0;
+	virtual BOOL LPAPI Run(LPINT32 nCount = -1) = 0;
 
 };
 

@@ -15,7 +15,7 @@ static char g_szHeaders[] =
 "<HTML><TITLE>index.html</TITLE>\r\n"\
 "<BODY><P>Welcome to here !</P>\r\n"\
 "</BODY></HTML>\r\n";
-static UINT_32 g_dwHeadersLen = (UINT_32)strlen(g_szHeaders);
+static LPUINT32 g_dwHeadersLen = (LPUINT32)strlen(g_szHeaders);
 
 static char g_szNotFound[] =
 "HTTP/1.0 404 NOT FOUND\r\n"\
@@ -27,7 +27,7 @@ static char g_szNotFound[] =
 "your request because the resource specified\r\n"\
 "is unavailable or nonexistent.</P>\r\n"\
 "</BODY></HTML>\r\n";
-static UINT_32 g_dwNotFoundLen = (UINT_32)strlen(g_szNotFound);
+static LPUINT32 g_dwNotFoundLen = (LPUINT32)strlen(g_szNotFound);
 
 static char g_szBadRequest[] =
 "HTTP/1.0 400 BAD REQUEST\r\n"\
@@ -35,14 +35,14 @@ static char g_szBadRequest[] =
 "\r\n"\
 "<P>Your browser sent a bad request, "\
 "such as a POST without a Content-Length.</P>\r\n";
-static UINT_32 g_dwBadRequestLen = (UINT_32)strlen(g_szBadRequest);
+static LPUINT32 g_dwBadRequestLen = (LPUINT32)strlen(g_szBadRequest);
 
 static char g_szCanNotExcute[] =
 "HTTP/1.0 500 Internal Server Error\r\n"\
 "Content-type: text/html\r\n"\
 "\r\n"\
 "<P>Error prohibited CGI execution.</P>\r\n";
-static UINT_32 g_dwCanNotExcuteLen = (UINT_32)strlen(g_szCanNotExcute);
+static LPUINT32 g_dwCanNotExcuteLen = (LPUINT32)strlen(g_szCanNotExcute);
 
 static char g_szUnImplemented[] =
 "HTTP/1.0 501 Method Not Implemented\r\n"\
@@ -53,7 +53,7 @@ static char g_szUnImplemented[] =
 "</TITLE></HEAD>\r\n"\
 "<BODY><P>HTTP request method not supported.</P>\r\n"\
 "</BODY></HTML>\r\n";
-static UINT_32 g_dwUnImplementedLen = (UINT_32)strlen(g_szUnImplemented);
+static LPUINT32 g_dwUnImplementedLen = (LPUINT32)strlen(g_szUnImplemented);
 
 
 
@@ -109,14 +109,14 @@ void LPAPI LPHttpObject::SetHaveUnResponseRequest(BOOL bHave)
 	m_bHaveUnResponseRequest = bHave;
 }
 
-void LPAPI LPHttpObject::ParseRequest(const char * szInputBuf, UINT_32 dwInputLen, char * szOutputBuf, UINT_32 & szOutputLen)
+void LPAPI LPHttpObject::ParseRequest(const char * szInputBuf, LPUINT32 dwInputLen, char * szOutputBuf, LPUINT32 & szOutputLen)
 {
 	return;
 }
 
 void LPAPI LPHttpObject::DoResponse_NotFound(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pSocker);
 	nResult = m_pSocker->Send(g_szNotFound, g_dwNotFoundLen);
@@ -128,7 +128,7 @@ Exit0:
 
 void LPAPI LPHttpObject::DoResponse_BadRequest(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pSocker);
 	nResult = m_pSocker->Send(g_szBadRequest, g_dwBadRequestLen);
@@ -140,7 +140,7 @@ Exit0:
 
 void LPAPI LPHttpObject::DoResponse_CanNotExcute(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pSocker);
 	nResult = m_pSocker->Send(g_szCanNotExcute, g_dwCanNotExcuteLen);
@@ -152,7 +152,7 @@ Exit0:
 
 void LPAPI LPHttpObject::DoResponse_Headers(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pSocker);
 	nResult = m_pSocker->Send(g_szHeaders, g_dwHeadersLen);
@@ -164,7 +164,7 @@ Exit0:
 
 void LPAPI LPHttpObject::DoResponse_UnImplemented(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pSocker);
 	nResult = m_pSocker->Send(g_szUnImplemented, g_dwUnImplementedLen);
@@ -174,18 +174,18 @@ Exit0:
 	return;
 }
 
-void LPAPI LPHttpObject::DoResponse_RecvSuccess(const char * pcszBuf, UINT_32 dwSize)
+void LPAPI LPHttpObject::DoResponse_RecvSuccess(const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	
 	char szMsg[1024] = { 0 };
 	char szStr1[] = "HTTP/1.0 200 OK\r\nServer: jdbhttpd/0.1.0\r\nContent-Type: text/html\r\n\r\n<HTML><TITLE>index.html</TITLE>\r\n<BODY><h1>";
 	char szStr2[] = "</h1>\r\n</BODY></HTML>\r\n";
 
-	INT_32 nStr1Count = 0;
-	INT_32 nStr2Count = 0;
-	INT_32 nMsgCount = 0;
-	INT_32 nMaxMsgCount = 0;
+	LPINT32 nStr1Count = 0;
+	LPINT32 nStr2Count = 0;
+	LPINT32 nMsgCount = 0;
+	LPINT32 nMaxMsgCount = 0;
 
 	nStr1Count = sizeof(szStr1) - 1;
 	nStr2Count = sizeof(szStr2) - 1;
@@ -217,7 +217,7 @@ CGTHttpMessageHandler::~CGTHttpMessageHandler()
 
 BOOL LPAPI CGTHttpMessageHandler::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_oHttpObjectPool.Init(100, TRUE);
 	LOG_PROCESS_ERROR(nResult);
@@ -237,7 +237,7 @@ void LPAPI CGTHttpMessageHandler::AddRef(void)
 	++m_dwRef;
 }
 
-UINT_32 LPAPI CGTHttpMessageHandler::QueryRef(void)
+LPUINT32 LPAPI CGTHttpMessageHandler::QueryRef(void)
 {
 	return m_dwRef;
 }
@@ -254,7 +254,7 @@ void LPAPI CGTHttpMessageHandler::Release(void)
 
 void LPAPI CGTHttpMessageHandler::OnAccepted(ILPSocker * pSocker)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPHttpObject* pHttpObject = NULL;
 	std::pair<MAP_HTTP_OBJECT::iterator, bool> InsRet;
 
@@ -296,7 +296,7 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnConnectError(ILPConnector * pConnector, UINT_32 dwErrorNo)
+void LPAPI CGTHttpMessageHandler::OnConnectError(ILPConnector * pConnector, LPUINT32 dwErrorNo)
 {
 	LOG_PROCESS_ERROR(pConnector);
 
@@ -306,9 +306,9 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void LPAPI CGTHttpMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	
 	__TRY__
 	{
@@ -375,12 +375,12 @@ Exit0:
 	return;
 }
 
-INT_32 LPAPI CGTHttpMessageHandler::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGTHttpMessageHandler::Parse(ILPLoopBuf * pLoopBuf)
 {
-	INT_32 nResult = 0;
-	INT_32 nParseCount = 0;
-	UINT_32 dwOnceReadableLen = 0;
-	UINT_32 dwTotalReadableLen = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nParseCount = 0;
+	LPUINT32 dwOnceReadableLen = 0;
+	LPUINT32 dwTotalReadableLen = 0;
 	const char* pszReadPtr = NULL;
 	const char* pszWritePtr = NULL;
 
@@ -447,18 +447,18 @@ LPHttpObject *LPAPI CGTHttpMessageHandler::_NewHttpObject(void)
 
 BOOL LPAPI CGTHttpMessageHandler::_DelHttpObject(LPHttpObject * pHttpObject)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_oHttpObjectPool.Free(pHttpObject);
 
 	return TRUE;
 }
 
-BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
-	INT_32 nIndex = 0;
-	INT_32 nIndexTemp = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nIndex = 0;
+	LPINT32 nIndexTemp = 0;
 	BOOL bGetMethod = FALSE;
 	BOOL bPostMethod = FALSE;
 	LPHttpObject* pHttpObject = NULL;
@@ -468,10 +468,10 @@ BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const c
 
 	static char method[8];
 	static char szMsgBuf[2048];
-	static UINT_32 dwMsgBufSize = 2048;
+	static LPUINT32 dwMsgBufSize = 2048;
 
-	INT_32 nMsgSize = 0;
-	UINT_32 dwRealMsgSize = 0;
+	LPINT32 nMsgSize = 0;
+	LPUINT32 dwRealMsgSize = 0;
 	const char* pFindStr = NULL;
 
 	LOG_PROCESS_ERROR(pSocker);
@@ -525,7 +525,7 @@ BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const c
 	}
 	LOG_PROCESS_ERROR(pFindStr > pcszBuf + nIndex);
 
-	nMsgSize = (INT_32)(pFindStr - pcszBuf - nIndex + 1);
+	nMsgSize = (LPINT32)(pFindStr - pcszBuf - nIndex + 1);
 	LOG_PROCESS_ERROR(nMsgSize < dwMsgBufSize);
 
 	dwRealMsgSize = dwMsgBufSize - 1;

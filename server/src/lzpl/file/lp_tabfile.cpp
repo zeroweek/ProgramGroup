@@ -24,17 +24,17 @@ LPTabFile::~LPTabFile()
 	UnInit();
 }
 
-BOOL LPAPI LPTabFile::Init(const char * pcszFileName, INT_32 nSkipLine, BOOL bZeroReplaceNull)
+BOOL LPAPI LPTabFile::Init(const char * pcszFileName, LPINT32 nSkipLine, BOOL bZeroReplaceNull)
 {
-	INT_32 nResult = 0;
-	INT_32 nIndex = 0;
-	INT_32 nTempIndex = 0;
-	INT_32 nStringIndex = 0;
-	INT_32 nOffsetIndex = 0;
-	INT_32 nTabCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nIndex = 0;
+	LPINT32 nTempIndex = 0;
+	LPINT32 nStringIndex = 0;
+	LPINT32 nOffsetIndex = 0;
+	LPINT32 nTabCount = 0;
 
 	BOOL bInQuote = FALSE;
-	UINT_32 uBOM = 0;
+	LPUINT32 uBOM = 0;
 	ILPFile* pFile = NULL;
 	char* pszTmp = NULL;
 	wchar_t* pwszData = NULL;
@@ -80,7 +80,7 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, INT_32 nSkipLine, BOOL bZe
 	LOG_PROCESS_ERROR(m_pData);
 	memset(m_pData, 0, m_uSize);
 
-	nResult = pFile->Read(m_pData, (UINT_32)m_uSize);
+	nResult = pFile->Read(m_pData, (LPUINT32)m_uSize);
 	LOG_PROCESS_ERROR(nResult == m_uSize);
 
 	pFile->Close();
@@ -108,7 +108,7 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, INT_32 nSkipLine, BOOL bZe
 	nIndex = 0;
 	m_nColCount = 1;
 	m_nRowCount = 0;
-	INT_32 n = m_pData[22];
+	LPINT32 n = m_pData[22];
 	n = m_pData[23];
 	n = m_pData[95];
 	n = m_pData[96];
@@ -238,7 +238,7 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, INT_32 nSkipLine, BOOL bZe
 		nIndex++;
 	}
 
-	for (INT_32 i = 0; i < m_nColCount; ++i)
+	for (LPINT32 i = 0; i < m_nColCount; ++i)
 	{
 		pcszValue = GetData(i, 0);
 		LOG_PROCESS_ERROR(pcszValue);
@@ -277,7 +277,7 @@ BOOL LPAPI LPTabFile::UnInit(void)
 	return TRUE;
 }
 
-INT_32 LPAPI LPTabFile::GetRowCount(void)
+LPINT32 LPAPI LPTabFile::GetRowCount(void)
 {
 	if (m_nRowCount >= (m_nSkipLine + 1))
 	{
@@ -289,17 +289,17 @@ INT_32 LPAPI LPTabFile::GetRowCount(void)
 	}
 }
 
-INT_32 LPAPI LPTabFile::GetColCount(void)
+LPINT32 LPAPI LPTabFile::GetColCount(void)
 {
 	return m_nColCount;
 }
 
-const char *LPAPI LPTabFile::GetColName(INT_32 nCol)
+const char *LPAPI LPTabFile::GetColName(LPINT32 nCol)
 {
 	return GetData(nCol, 0);
 }
 
-BOOL LPAPI LPTabFile::ReadData(INT_32 nCol, INT_32 nRow, INT_32 & rnValue)
+BOOL LPAPI LPTabFile::ReadData(LPINT32 nCol, LPINT32 nRow, LPINT32 & rnValue)
 {
 	LOG_PROCESS_ERROR(nCol >= 0 && nCol < m_nColCount);
 
@@ -321,7 +321,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTabFile::ReadData(const char * pcszColName, int nRow, INT_32 & rnValue)
+BOOL LPAPI LPTabFile::ReadData(const char * pcszColName, int nRow, LPINT32 & rnValue)
 {
 	MAP_NAME_2_COL::iterator it;
 
@@ -334,7 +334,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTabFile::ReadData(INT_32 nCol, INT_32 nRow, char * pszValue, INT_32 nSize)
+BOOL LPAPI LPTabFile::ReadData(LPINT32 nCol, LPINT32 nRow, char * pszValue, LPINT32 nSize)
 {
 	LOG_PROCESS_ERROR(pszValue);
 	LOG_PROCESS_ERROR(nCol >= 0 && nCol < m_nColCount);
@@ -364,7 +364,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTabFile::ReadData(const char * pcszColName, int nRow, char * pszValue, INT_32 nSize)
+BOOL LPAPI LPTabFile::ReadData(const char * pcszColName, int nRow, char * pszValue, LPINT32 nSize)
 {
 	MAP_NAME_2_COL::iterator it;
 
@@ -377,12 +377,12 @@ Exit0:
 	return FALSE;
 }
 
-UINT_32 LPAPI LPTabFile::GetCRC(void)
+LPUINT32 LPAPI LPTabFile::GetCRC(void)
 {
 	return m_dwCRC32;
 }
 
-const char *LPAPI LPTabFile::GetData(INT_32 nCol, INT_32 nRow)
+const char *LPAPI LPTabFile::GetData(LPINT32 nCol, LPINT32 nRow)
 {
 	LOG_PROCESS_ERROR(nCol >= 0 && nCol < m_nColCount);
 	LOG_PROCESS_ERROR(nRow >= 0 && nRow < m_nRowCount);
@@ -393,7 +393,7 @@ Exit0:
 	return NULL;
 }
 
-const char *LPAPI LPTabFile::GetData(const char * pcszColName, INT_32 nRow)
+const char *LPAPI LPTabFile::GetData(const char * pcszColName, LPINT32 nRow)
 {
 	MAP_NAME_2_COL::iterator it;
 

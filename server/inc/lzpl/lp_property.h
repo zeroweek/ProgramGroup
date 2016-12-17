@@ -25,7 +25,7 @@ class DECLARE LPProperty : public ILPProperty
 {
 public:
 
-	static UINT_32 ms_dwPropertyCount;
+	static LPUINT32 ms_dwPropertyCount;
 
 public:
 
@@ -44,7 +44,7 @@ public:
 
 		~LPPropertyCB() { }
 
-		static LPPropertyCB* LPAPI NewPropertyCB(INT_32 nPriority, pfunPropertyEvent pfPropertyCB)
+		static LPPropertyCB* LPAPI NewPropertyCB(LPINT32 nPriority, pfunPropertyEvent pfPropertyCB)
 		{
 			LPPropertyCB* poPropertyCB = new LPPropertyCB();
 			poPropertyCB->m_nPriority = nPriority;
@@ -62,33 +62,33 @@ public:
 
 	private:
 
-		INT_32                        m_nPriority;
+		LPINT32                        m_nPriority;
 		pfunPropertyEvent             m_pfPropertyCB;
 	};
 
 public:
 
 	LPProperty();
-	LPProperty(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType);
+	LPProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType);
 	~LPProperty();
 
-	virtual BOOL LPAPI Init(const LPIDENTID& oOwner, UINT_32 dwPropertyID, E_DataType eDataType);
+	virtual BOOL LPAPI Init(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType);
 	virtual BOOL LPAPI UnInit();
 
-	virtual UINT_32 LPAPI GetPropertyID() const;
+	virtual LPUINT32 LPAPI GetPropertyID() const;
 	virtual const E_DataType GetType() const;
 
-	virtual BOOL LPAPI SetInt64(INT_64 value);
+	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual INT_64 LPAPI GetInt64() const;
+	virtual LPINT64 LPAPI GetInt64() const;
 	virtual FLOAT LPAPI GetFloat() const;
 	virtual DOUBLE LPAPI GetDouble() const;
 	virtual const std::string& LPAPI GetString() const;
 
-	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, INT_32 nPriority, const ILPDataList& vars);
+	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& vars);
 
 protected:
 
@@ -97,7 +97,7 @@ protected:
 private:
 
 	LPIDENTID                     m_oOwner;
-	UINT_32                       m_dwPropertyID;
+	LPUINT32                       m_dwPropertyID;
 	ILPData*                      m_poData;
 
 	LPSimpleList*                 m_poCallbackList; //¼õÐ¡ÄÚ´æ

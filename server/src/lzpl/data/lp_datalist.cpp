@@ -39,16 +39,16 @@ BOOL LPAPI LPDataList::IsEmpty() const
 	return (m_oDataList.Size() == 0);
 }
 
-UINT_32 LPAPI LPDataList::GetCount() const
+LPUINT32 LPAPI LPDataList::GetCount() const
 {
 	return m_oDataList.Size();
 }
 
-E_DataType LPAPI LPDataList::Type(const INT_32 nIndex) const
+E_DataType LPAPI LPDataList::Type(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
-	INT_32 i = 0;
+	LPINT32 i = 0;
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -66,7 +66,7 @@ Exit0:
 	return eDataType_Invalid;
 }
 
-BOOL LPAPI LPDataList::Add(const INT_64 value)
+BOOL LPAPI LPDataList::Add(const LPINT64 value)
 {
 	ILPData* poData = nullptr;
 	DATA_SIMPLE_LIST_NODE* ptDataListNode = DATA_SIMPLE_LIST_NODE::NewNode();
@@ -166,11 +166,11 @@ Exit0:
 	return FALSE;
 }
 
-INT_64 LPAPI LPDataList::Int64(const INT_32 nIndex) const
+LPINT64 LPAPI LPDataList::Int64(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
-	INT_32 i = 0;
+	LPINT32 i = 0;
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -188,11 +188,11 @@ Exit0:
 	return ZERO_INT;
 }
 
-FLOAT LPAPI LPDataList::Float(const INT_32 nIndex) const
+FLOAT LPAPI LPDataList::Float(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
-	INT_32 i = 0;
+	LPINT32 i = 0;
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -210,11 +210,11 @@ Exit0:
 	return ZERO_FLOAT;
 }
 
-DOUBLE LPAPI LPDataList::Double(const INT_32 nIndex) const
+DOUBLE LPAPI LPDataList::Double(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
-	INT_32 i = 0;
+	LPINT32 i = 0;
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -232,11 +232,11 @@ Exit0:
 	return ZERO_DOUBLE;
 }
 
-const std::string& LPAPI LPDataList::String(const INT_32 nIndex) const
+const std::string& LPAPI LPDataList::String(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 
-	INT_32 i = 0;
+	LPINT32 i = 0;
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -254,15 +254,15 @@ Exit0:
 	return NULL_STR;
 }
 
-BOOL LPDataList::Append(const ILPDataList& oSrc, UINT_32 dwStart, UINT_32 dwCount)
+BOOL LPDataList::Append(const ILPDataList& oSrc, LPUINT32 dwStart, LPUINT32 dwCount)
 {
-	INT_32 nResult = FALSE;
-	UINT_32 dwEnd = dwStart + dwCount;
+	LPINT32 nResult = FALSE;
+	LPUINT32 dwEnd = dwStart + dwCount;
 
 	LOG_PROCESS_ERROR(dwStart < oSrc.GetCount());
 	LOG_PROCESS_ERROR(dwEnd <= oSrc.GetCount());
 
-	for (UINT_32 i = dwStart; i < dwEnd; i++)
+	for (LPUINT32 i = dwStart; i < dwEnd; i++)
 	{
 		E_DataType eDataType = oSrc.Type(i);
 		switch (eDataType)
@@ -312,11 +312,11 @@ LPDataList& LPDataList::operator=(const ILPDataList& oSrc)
 
 BOOL LPDataList::Concat(const ILPDataList& oSrc)
 {
-	INT_32 nResult = FALSE;
-	UINT_32 dwStart = 0;
-	UINT_32 dwEnd = oSrc.GetCount();
+	LPINT32 nResult = FALSE;
+	LPUINT32 dwStart = 0;
+	LPUINT32 dwEnd = oSrc.GetCount();
 
-	for (UINT_32 i = dwStart; i < dwEnd; i++)
+	for (LPUINT32 i = dwStart; i < dwEnd; i++)
 	{
 		E_DataType eDataType = oSrc.Type(i);
 		switch (eDataType)

@@ -22,7 +22,7 @@ void LPAPI CGTExternalPacketParser::AddRef(void)
 	++m_dwRef;
 }
 
-UINT_32 LPAPI CGTExternalPacketParser::QueryRef(void)
+LPUINT32 LPAPI CGTExternalPacketParser::QueryRef(void)
 {
 	return m_dwRef;
 }
@@ -39,11 +39,11 @@ void LPAPI CGTExternalPacketParser::Release(void)
 	}
 }
 
-INT_32 LPAPI CGTExternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGTExternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
 {
-	INT_32 nResult = 0;
-	INT_32 nParseCount = 0;
-	UINT_32 dwHeadSize = 4;
+	LPINT32 nResult = 0;
+	LPINT32 nParseCount = 0;
+	LPUINT32 dwHeadSize = 4;
 	LPExternalMessageSerializer oMessageSerializer;
 	char szPacketBuf[128];
 

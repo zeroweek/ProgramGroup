@@ -133,7 +133,7 @@ public:
 	//		比较两个点是否相同
 	inline BOOL VIsEqual(lpIn FLOAT* v1, lpIn const FLOAT* v2)
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 
 		LOG_PROCESS_ERROR(v1);
 		LOG_PROCESS_ERROR(v2);

@@ -45,7 +45,7 @@ static void _InvalidParamHandler(const wchar_t * pcszExpression, const wchar_t *
 
 BOOL LPAPI LPDumpMgr::Init(pfunDumpCheckFunc pDumpCheckFunc, const char* pcszDumpFloder)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char szWorkingDir[MAX_PATH] = { 0 };
 
 	LOG_PROCESS_ERROR(pcszDumpFloder);
@@ -88,8 +88,8 @@ BOOL LPAPI LPDumpMgr::UnInit(void)
 
 BOOL LPAPI LPDumpMgr::PushException(EXCEPTION_POINTERS * pExceptionPointers)
 {
-	INT_32 nResult = 0;
-	INT_32 nWaitTime = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nWaitTime = 0;
 
 	m_oDumpLock.Lock();
 	m_lstDump.push_back(pExceptionPointers);
@@ -112,9 +112,9 @@ Exit1:
 	return TRUE;
 }
 
-void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, UINT_32 dwProcessId, UINT_32 dwThreadId)
+void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, LPUINT32 dwProcessId, LPUINT32 dwThreadId)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char szFileName[MAX_PATH] = { 0 };
 	char szExePath[MAX_PATH] = { 0 };
 	char szWorkingDir[MAX_PATH] = { 0 };
@@ -122,7 +122,7 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, U
 	char* pszModuleName = NULL;
 	char szModuleName[MAX_PATH] = { 0 };
 
-	UINT_32 dwBufSize = MAX_PATH;
+	LPUINT32 dwBufSize = MAX_PATH;
 	HANDLE hDumpFile = INVALID_HANDLE_VALUE;
 	HANDLE hProcess = INVALID_HANDLE_VALUE;
 	BOOL bSmallDump = FALSE;
@@ -247,7 +247,7 @@ Exit0:
 
 THREAD_FUNC_DECLARE(LPDumpMgr::_DumpThreadProc)(void * pParam)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bEmpty = TRUE;
 	EXCEPTION_POINTERS* pExceptionPointers = NULL;
 

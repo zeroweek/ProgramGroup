@@ -20,7 +20,7 @@ CNavMeshObjLoader::~CNavMeshObjLoader()
 
 BOOL CNavMeshObjLoader::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_fScale = 1.0f;
 
@@ -39,7 +39,7 @@ Exit0:
 
 BOOL CNavMeshObjLoader::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_oVertexs.UnInit();
 	LOG_CHECK_ERROR(nResult);
@@ -52,7 +52,7 @@ BOOL CNavMeshObjLoader::UnInit(void)
 
 BOOL CNavMeshObjLoader::_AddVertex(FLOAT x, FLOAT y, FLOAT z)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_oVertexs.Push(x*m_fScale);
 	LOG_PROCESS_ERROR(nResult);
@@ -91,10 +91,10 @@ Exit0:
 	return pResultPolyPolygonData;
 }
 
-BOOL CNavMeshObjLoader::_FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut UINT_32& dwNeighborPolyCount)
+BOOL CNavMeshObjLoader::_FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut LPUINT32& dwNeighborPolyCount)
 {
-	INT_32 nResult = 0;
-	INT_32 nEqualVertCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nEqualVertCount = 0;
 	POLYGON_DATA* pPolygonData = NULL;
 	LST_POLYGON_DATA::iterator itr;
 
@@ -114,9 +114,9 @@ BOOL CNavMeshObjLoader::_FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPol
 		}
 
 		nEqualVertCount = 0;
-		for (UINT_8 byIndexDst = 0; byIndexDst < pPolygonData->byVertCount; ++byIndexDst)
+		for (LPUINT8 byIndexDst = 0; byIndexDst < pPolygonData->byVertCount; ++byIndexDst)
 		{
-			for (UINT_8 byIndexSrc = 0; byIndexSrc < pSrcPoly->byVertCount; ++byIndexSrc)
+			for (LPUINT8 byIndexSrc = 0; byIndexSrc < pSrcPoly->byVertCount; ++byIndexSrc)
 			{
 				if (pPolygonData->anVertIndex[byIndexDst] == pSrcPoly->anVertIndex[byIndexSrc])
 				{
@@ -139,10 +139,10 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, INT_32& nPolyIDGenerator)
+BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& nPolyIDGenerator)
 {
-	INT_32 nResult = 0;
-	UINT_32 dwNeighborPolyCount = 0;
+	LPINT32 nResult = 0;
+	LPUINT32 dwNeighborPolyCount = 0;
 	POLYGON_DATA* pNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
 	LPBaseList* pLstPolygonData = NULL;
 
@@ -181,7 +181,7 @@ BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, INT_32& n
 	nResult = _FindNeighborPolygonInRowList(pPolyData, pNeighborPoly, dwNeighborPolyCount);
 	LOG_PROCESS_ERROR(nResult);
 
-	for (UINT_32 dwIndex = 0; dwIndex < dwNeighborPolyCount; ++dwIndex)
+	for (LPUINT32 dwIndex = 0; dwIndex < dwNeighborPolyCount; ++dwIndex)
 	{
 		if (pNeighborPoly[dwIndex]->nID != INVALID_POLYGON_ID)
 		{
@@ -199,21 +199,21 @@ Exit0:
 
 BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pToPoly)
 {
-	INT_32 nResult = 0;
-	INT_32 nEqualVertCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nEqualVertCount = 0;
 
 	BOOL bRemove = FALSE;
-	UINT_8 byTempIndex = 0;
-	UINT_8 byFromBeMergeIndex = 0;
-	UINT_8 abyFromVertEqualIndex[2] = { 0 };
-	UINT_8 abyToVertEqualIndex[2] = { 0 };
-	UINT_8 byRemoveCount = 0;
-	UINT_8 abyRemoveVertIndex[MAX_VERTEX_PER_POLYGON] = { 0 };
+	LPUINT8 byTempIndex = 0;
+	LPUINT8 byFromBeMergeIndex = 0;
+	LPUINT8 abyFromVertEqualIndex[2] = { 0 };
+	LPUINT8 abyToVertEqualIndex[2] = { 0 };
+	LPUINT8 byRemoveCount = 0;
+	LPUINT8 abyRemoveVertIndex[MAX_VERTEX_PER_POLYGON] = { 0 };
 
-	UINT_8 byMergeVertCount = 0;
-	INT_32 anMergeVertIndex[MAX_VERTEX_PER_POLYGON];
-	UINT_8 byCalVertCount = 0;
-	INT_32 anCalVertIndex[MAX_VERTEX_PER_POLYGON * 2];
+	LPUINT8 byMergeVertCount = 0;
+	LPINT32 anMergeVertIndex[MAX_VERTEX_PER_POLYGON];
+	LPUINT8 byCalVertCount = 0;
+	LPINT32 anCalVertIndex[MAX_VERTEX_PER_POLYGON * 2];
 
 	DOUBLE k, b;
 	DOUBLE vertCalRet, vertCalRet1, vertCalRet2, vertCalRet3;
@@ -232,9 +232,9 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 	// 检测顶点是否满足合并条件
 	PROCESS_ERROR(pFromPoly->byVertCount + pToPoly->byVertCount - 2 <= MAX_VERTEX_PER_POLYGON);
 	PROCESS_ERROR(pFromPoly->byVertCount + pToPoly->byVertCount - 2 >= MIN_VERTEX_PER_POLYGON);
-	for (UINT_8 byIndexTo = 0; byIndexTo < pToPoly->byVertCount; ++byIndexTo)
+	for (LPUINT8 byIndexTo = 0; byIndexTo < pToPoly->byVertCount; ++byIndexTo)
 	{
-		for (UINT_8 byIndexFrom = 0; byIndexFrom < pFromPoly->byVertCount; ++byIndexFrom)
+		for (LPUINT8 byIndexFrom = 0; byIndexFrom < pFromPoly->byVertCount; ++byIndexFrom)
 		{
 			if (pFromPoly->anVertIndex[byIndexFrom] == pToPoly->anVertIndex[byIndexTo])
 			{
@@ -266,7 +266,7 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 	}
 	else
 	{
-		for (UINT_8 byIndex = pToPoly->byVertCount; byIndex - 1 >= 0 && byIndex > abyToVertEqualIndex[1]; --byIndex)
+		for (LPUINT8 byIndex = pToPoly->byVertCount; byIndex - 1 >= 0 && byIndex > abyToVertEqualIndex[1]; --byIndex)
 		{
 			anMergeVertIndex[byIndex] = anMergeVertIndex[byIndex - 1];
 		}
@@ -275,7 +275,7 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 	}
 
 	// 判断所有点共面
-	for (UINT_8 byIndex = 0; byIndex + 3 < byMergeVertCount; ++byIndex)
+	for (LPUINT8 byIndex = 0; byIndex + 3 < byMergeVertCount; ++byIndex)
 	{
 		LOG_PROCESS_ERROR(anMergeVertIndex[byIndex + 0] * 3 + 2 < m_oVertexs.Size());
 		LOG_PROCESS_ERROR(anMergeVertIndex[byIndex + 1] * 3 + 2 < m_oVertexs.Size());
@@ -327,7 +327,7 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 	memcpy(anCalVertIndex, anMergeVertIndex, sizeof(anCalVertIndex[0]) * byCalVertCount);
 	anCalVertIndex[byCalVertCount++] = anCalVertIndex[0];
 	anCalVertIndex[byCalVertCount++] = anCalVertIndex[1];
-	for (UINT_8 byIndex = 0; byIndex + 2 < byCalVertCount; ++byIndex)
+	for (LPUINT8 byIndex = 0; byIndex + 2 < byCalVertCount; ++byIndex)
 	{
 		//设三维中的三点为P1,P2,P3;
 		//P1到P2的向量为:V1=P2-P1；
@@ -387,10 +387,10 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 		LOG_PROCESS_ERROR(byCalVertCount - byRemoveCount >= MIN_VERTEX_PER_POLYGON);
 		memcpy(anCalVertIndex, anMergeVertIndex, sizeof(anCalVertIndex[0]) * byCalVertCount);
 		byMergeVertCount = 0;
-		for (UINT_8 byIndex = 0; byIndex < byCalVertCount; ++byIndex)
+		for (LPUINT8 byIndex = 0; byIndex < byCalVertCount; ++byIndex)
 		{
 			bRemove = FALSE;
-			for (UINT_8 j = 0; j < byRemoveCount; ++j)
+			for (LPUINT8 j = 0; j < byRemoveCount; ++j)
 			{
 				if (byIndex == abyRemoveVertIndex[j])
 				{
@@ -422,7 +422,7 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 		b = (z0 * x1 - z1 * x0) / (x1 - x0);
 	}
 	vertCalRet1 = k * x2 + b;
-	for (UINT_8 byIndex = 3; byIndex < byMergeVertCount; ++byIndex)
+	for (LPUINT8 byIndex = 3; byIndex < byMergeVertCount; ++byIndex)
 	{
 		x3 = m_oVertexs[anMergeVertIndex[byIndex] * 3 + 0];
 		z3 = m_oVertexs[anMergeVertIndex[byIndex] * 3 + 2];
@@ -455,21 +455,21 @@ Exit0:
 
 BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 {
-	INT_32 nResult = 0;
-	UINT_32 dwTotalPolyCount = 0;
-	INT_32 nPolyIDGenerator = INVALID_POLYGON_ID;
+	LPINT32 nResult = 0;
+	LPUINT32 dwTotalPolyCount = 0;
+	LPINT32 nPolyIDGenerator = INVALID_POLYGON_ID;
 	POLYGON_DATA* pPolyData = NULL;
 	POLYGON_DATA* pNextPolyData = NULL;
 	LST_LST_POLYGON_DATA::iterator llitr;
 	LPBaseList* pBaseList = NULL;
 
 	ILPFile* pFile = NULL;
-	INT_32 nLen = 0;
+	LPINT32 nLen = 0;
 	char szBuf[512];
 
 
 	// 1. tri列表转换成poly列表
-	for (INT_32 nIndex = 0; nIndex + 2 < m_oTrianglePoints.Size(); nIndex += 3)
+	for (LPINT32 nIndex = 0; nIndex + 2 < m_oTrianglePoints.Size(); nIndex += 3)
 	{
 		pPolyData = new POLYGON_DATA();
 		LOG_PROCESS_ERROR(pPolyData);
@@ -505,7 +505,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	{
 		dwTotalPolyCount += llitr->Size();
 	}
-	LOG_PROCESS_ERROR(dwTotalPolyCount == (UINT_32)m_lstRawPolygonData.size());
+	LOG_PROCESS_ERROR(dwTotalPolyCount == (LPUINT32)m_lstRawPolygonData.size());
 
 
 	// 3. 合并poly，相邻的poly尽可能多的合并（限制顶点数量之内）
@@ -557,21 +557,21 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 		}
 
 	}
-	LOG_PROCESS_ERROR(dwTotalPolyCount == (UINT_32)(nPolyIDGenerator));
+	LOG_PROCESS_ERROR(dwTotalPolyCount == (LPUINT32)(nPolyIDGenerator));
 
 	
 	// 5. 将最终的poly数据保存到文件
 	pFile = lpFileOpen("config/scene/new_navmesh.obj", "wb");
 	LOG_PROCESS_ERROR(pFile);
 
-	for (UINT_32 i = 0; i + 2 < m_oVertexs.Size(); i+=3)
+	for (LPUINT32 i = 0; i + 2 < m_oVertexs.Size(); i+=3)
 	{
 		nLen = sprintf_s(szBuf, sizeof(szBuf) - 1, "v %f %f %f\r\n", m_oVertexs[i + 0], m_oVertexs[i + 1], m_oVertexs[i + 2]);
 		LOG_PROCESS_ERROR(nLen > 0);
-		nResult = (UINT_32)pFile->Write(szBuf, (UINT_32)nLen);
+		nResult = (LPUINT32)pFile->Write(szBuf, (LPUINT32)nLen);
 		LOG_PROCESS_ERROR(nResult == nLen);
 	}
-	nResult = (UINT_32)pFile->Write("\r\n", 2);
+	nResult = (LPUINT32)pFile->Write("\r\n", 2);
 	LOG_PROCESS_ERROR(nResult == 2);
 
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
@@ -584,7 +584,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 			nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "f");
 			LOG_PROCESS_ERROR(nResult > 0);
 			nLen += nResult;
-			for (UINT_8 i = 0; i < pPolyData->byVertCount; i++)
+			for (LPUINT8 i = 0; i < pPolyData->byVertCount; i++)
 			{
 				nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, " %d/%d/%d", pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1);
 				LOG_PROCESS_ERROR(nResult > 0);
@@ -593,7 +593,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 			nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "\r\n");
 			LOG_PROCESS_ERROR(nResult > 0);
 			nLen += nResult;
-			nResult = (UINT_32)pFile->Write(szBuf, (UINT_32)nLen);
+			nResult = (LPUINT32)pFile->Write(szBuf, (LPUINT32)nLen);
 			LOG_PROCESS_ERROR(nResult == nLen);
 
 			pPolyData = (POLYGON_DATA*)pPolyData->pstNext;
@@ -622,9 +622,9 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CNavMeshObjLoader::_AddTriangle(INT_32 a, INT_32 b, INT_32 c)
+BOOL CNavMeshObjLoader::_AddTriangle(LPINT32 a, LPINT32 b, LPINT32 c)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_oTrianglePoints.Push(a);
 	LOG_PROCESS_ERROR(nResult);
@@ -640,10 +640,10 @@ Exit0:
 	return FALSE;
 }
 
-static char* _ParseRow(char* pszBuf, char* pszBufEnd, char* pszRow, INT_32 nMaxRowLen)
+static char* _ParseRow(char* pszBuf, char* pszBufEnd, char* pszRow, LPINT32 nMaxRowLen)
 {
 	char c = 0;
-	INT_32 nIndex = 0;
+	LPINT32 nIndex = 0;
 	BOOL bStart = true;
 	BOOL bDone = false;
 
@@ -695,10 +695,10 @@ Exit0:
 	return pszBuf;
 }
 
-static INT_32 _ParseFace(char* pszRow, INT_32* pnFaceData, INT_32 nMaxFacePoint, INT_32 nVertCount)
+static LPINT32 _ParseFace(char* pszRow, LPINT32* pnFaceData, LPINT32 nMaxFacePoint, LPINT32 nVertCount)
 {
-	INT_32 nIndex = 0;
-	INT_32 nVertIndex = 0;
+	LPINT32 nIndex = 0;
+	LPINT32 nVertIndex = 0;
 	char* pStr = NULL;
 
 	LOG_PROCESS_ERROR(pszRow);
@@ -745,9 +745,9 @@ Exit0:
 
 BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
-	UINT_32 dwFileSize = 0;
+	LPUINT32 dwFileSize = 0;
 	ILPFile* pFile = NULL;
 	char* pszFileData = NULL;
 
@@ -757,7 +757,7 @@ BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 
 	FLOAT x = 0, y = 0, z = 0;
 
-	INT_32 szFacePoint[MAX_VERTEX_PER_POLYGON], nVert = 0, a = 0, b = 0, c = 0;
+	LPINT32 szFacePoint[MAX_VERTEX_PER_POLYGON], nVert = 0, a = 0, b = 0, c = 0;
 
 	FLOAT* pV0 = NULL;
 	FLOAT* pV1 = NULL;
@@ -806,7 +806,7 @@ BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 		{
 			nVert = _ParseFace(szRow + 1, szFacePoint, MAX_VERTEX_PER_POLYGON, m_oVertexs.Size());
 			LOG_PROCESS_ERROR(nVert == 3);
-			for (INT_32 i = 2; i < nVert; ++i)
+			for (LPINT32 i = 2; i < nVert; ++i)
 			{
 				a = szFacePoint[0];
 				b = szFacePoint[i - 1];

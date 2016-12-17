@@ -37,7 +37,7 @@ public:
 	//		初始化，开始内存分配操作
 	// Return:
 	//		TRUE-内存分配成功，FALSE-内存分配失败
-	BOOL LPAPI Init(UINT_32 dwSize);
+	BOOL LPAPI Init(LPUINT32 dwSize);
 
 	// Summary:
 	//		反初始化
@@ -66,9 +66,9 @@ public:
 
 private:
 
-	UINT_32                  m_dwSize;
-	UINT_32                  m_dwPop;
-	UINT_32                  m_dwPush;
+	LPUINT32                  m_dwSize;
+	LPUINT32                  m_dwPop;
+	LPUINT32                  m_dwPush;
 	void**                   m_ppData;
 	volatile atomic_uint     m_dwValidCount;
 

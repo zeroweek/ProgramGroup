@@ -41,7 +41,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void);
+	virtual LPUINT32 LPAPI QueryRef(void);
 
 	// Summary:
 	//		释放
@@ -51,13 +51,13 @@ public:
 	//		记录日志
 	// Input:
 	//		pszLog：日志内容
-	virtual void LPAPI LogText(const char *pszLog, UINT_32 dwLen);
+	virtual void LPAPI LogText(const char *pszLog, LPUINT32 dwLen);
 
 	// Summary:
 	//		创建日志消息id
 	// Input:
 	//		pszLog：日志内容
-	virtual UINT_32 LPAPI CreateMsgId();
+	virtual LPUINT32 LPAPI CreateMsgId();
 
 	// Summary:
 	//   初始化
@@ -102,9 +102,9 @@ private:
 	volatile atomic_bool     m_bErrorLog;                  // 日志错误
 
 	LPThread                 m_oThread;
-	UINT_32                  m_dwRef;                      // 本日志对象引用计数
+	LPUINT32                  m_dwRef;                      // 本日志对象引用计数
 	e_LogMode                m_eLogMode;                   // 日志记录模式
-	UINT_32                  m_dwOutputMask;                // 输出掩码
+	LPUINT32                  m_dwOutputMask;                // 输出掩码
 
 	char                     m_szDir[MAX_PATH];            // 目录路径
 	char                     m_szFileName[MAX_FILE_NAME];  // 日志文件名
@@ -113,10 +113,10 @@ private:
 	FILE*                    m_fpFile;                     // 打开的文件句柄
 	BOOL                     m_bDirty;                     // 是否有数据还没fflush到文件
 	LPLoopBuf*               m_pLoopBuf;                   // 日志缓冲区
-	UINT_32                  m_dwSubFile;                  // 子文件编号（超过单个文件大小则需要分子文件记录）
+	LPUINT32                  m_dwSubFile;                  // 子文件编号（超过单个文件大小则需要分子文件记录）
 	LPTime                   m_oLastTime;                  // 上次时间
 	LPTime                   m_oCurTime;                   // 当前时间
-	UINT_32                  m_dwMsgId;                    // 消息id编号
+	LPUINT32                  m_dwMsgId;                    // 消息id编号
 	LOG_CONFIG               m_stLogConfig;                // 日志配置
 
 };

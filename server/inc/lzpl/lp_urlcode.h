@@ -27,13 +27,13 @@ enum eUrlCodeType
 //		url编码
 // Input:
 //		eType: 控制哪些特殊字符需要编码，哪些不需要编码
-DECLARE BOOL lpUrlEncode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eUrlCodeType eType);
+DECLARE BOOL lpUrlEncode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eUrlCodeType eType);
 
 // Summary:
 //		url解码
 // Input:
 //		eType: 控制哪些特殊字符需要编码，哪些不需要编码
-DECLARE BOOL LPAPI lpUrlDecode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eUrlCodeType eType);
+DECLARE BOOL LPAPI lpUrlDecode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eUrlCodeType eType);
 
 
 

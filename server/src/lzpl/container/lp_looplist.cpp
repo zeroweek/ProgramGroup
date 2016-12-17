@@ -21,7 +21,7 @@ LPLoopList::~LPLoopList()
 	UnInit();
 }
 
-BOOL LPAPI LPLoopList::Init(UINT_32 dwSize)
+BOOL LPAPI LPLoopList::Init(LPUINT32 dwSize)
 {
 	LOG_PROCESS_ERROR(dwSize > 0);
 

@@ -7,7 +7,7 @@ using namespace LZPL;
 
 
 
-INT_32 bfnTestAction(BT_CUSTOM_CTRL* pCtrl, INT_32 nParam[])
+LPINT32 bfnTestAction(BT_CUSTOM_CTRL* pCtrl, LPINT32 nParam[])
 {
 	LOG_PROCESS_ERROR(pCtrl);
 
@@ -16,19 +16,19 @@ Exit0:
 	return btrvError;
 }
 
-INT_32 bfnReturnSuccess(BT_CUSTOM_CTRL* pCtrl, INT_32 nParam[])
+LPINT32 bfnReturnSuccess(BT_CUSTOM_CTRL* pCtrl, LPINT32 nParam[])
 {
 	return btrvSuccess;
 }
 
-INT_32 bfnReturnFail(BT_CUSTOM_CTRL* pCtrl, INT_32 nParam[])
+LPINT32 bfnReturnFail(BT_CUSTOM_CTRL* pCtrl, LPINT32 nParam[])
 {
 	return btrvFail;
 }
 
 
 #define REGISTER_BT_FUNC(_type_, _func_, _owner_mask_) \
-	{_type_, #_type_, _func_, (INT_16)_owner_mask_}
+	{_type_, #_type_, _func_, (LPINT16)_owner_mask_}
 
 CBTManager::ACTION_INFO CBTManager::m_ActionInfoList[btntTotal] =
 {

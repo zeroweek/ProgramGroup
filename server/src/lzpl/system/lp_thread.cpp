@@ -37,7 +37,7 @@ static THREAD_HANDLE _CreateThread(pfunThrdProc pfThrdProc, void* pParam, THREAD
 #   endif
 }
 
-static INT_32 _WaitThread(THREAD_HANDLE hHandle, UINT_32 dwWaitTime)
+static LPINT32 _WaitThread(THREAD_HANDLE hHandle, LPUINT32 dwWaitTime)
 {
 #   ifdef _WIN32
 	{
@@ -92,7 +92,7 @@ Exit0:
 	return m_bStart;
 }
 
-void LPAPI LPThread::Wait(UINT_32 dwWaitTime)
+void LPAPI LPThread::Wait(LPUINT32 dwWaitTime)
 {
 #   ifdef _WIN32
 	{

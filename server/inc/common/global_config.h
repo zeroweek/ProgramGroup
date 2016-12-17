@@ -20,7 +20,7 @@
 struct COMMON
 {
 	char       szGuardAddr[COMMON_NAME_LEN];
-	UINT_32    dwGuardPort;
+	LPUINT32    dwGuardPort;
 };
 
 struct GLOBAL_CONFIG

@@ -99,12 +99,12 @@ SOCKET LPAPI LPSocker::GetSock()
 	return m_hSock;
 }
 
-UINT_32 LPAPI LPSocker::GetSockerId()
+LPUINT32 LPAPI LPSocker::GetSockerId()
 {
 	return m_dwSockerId;
 }
 
-UINT_32 LPAPI LPSocker::GetRemoteIp()
+LPUINT32 LPAPI LPSocker::GetRemoteIp()
 {
 	return m_dwRemoteIp;
 }
@@ -114,12 +114,12 @@ const char* LPAPI LPSocker::GetRemoteIpStr()
 	return m_szRemoteIpStr;
 }
 
-UINT_16 LPAPI LPSocker::GetRemotePort()
+LPUINT16 LPAPI LPSocker::GetRemotePort()
 {
 	return m_wRemotePort;
 }
 
-UINT_32 LPAPI LPSocker::GetLocalIp()
+LPUINT32 LPAPI LPSocker::GetLocalIp()
 {
 	return m_dwLocalIp;
 }
@@ -129,7 +129,7 @@ const char* LPAPI LPSocker::GetLocalIpStr()
 	return m_szLocalIpStr;
 }
 
-UINT_16 LPAPI LPSocker::GetLocalPort()
+LPUINT16 LPAPI LPSocker::GetLocalPort()
 {
 	return m_wLocalPort;
 }
@@ -139,9 +139,9 @@ BOOL LPAPI LPSocker::IsConnect()
 	return m_bConnect ? TRUE : FALSE;
 }
 
-BOOL LPAPI LPSocker::Send(const char* pData, UINT_32 dwLen)
+BOOL LPAPI LPSocker::Send(const char* pData, LPUINT32 dwLen)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bOverflow = FALSE;
 
 	LOG_PROCESS_ERROR(pData);
@@ -272,7 +272,7 @@ void LPAPI LPSocker::Reset()
 
 BOOL LPAPI LPSocker::PostRecv()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	DWORD dwReadLen;
 	DWORD dwFlags = 0;
 
@@ -310,10 +310,10 @@ Exit0:
 
 BOOL LPAPI LPSocker::PostSend()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bSend = FALSE;
 	DWORD dwNumberOfBytesSend = 0;
-	UINT_32 dwOnceReadableLen = 0;
+	LPUINT32 dwOnceReadableLen = 0;
 
 	LOG_PROCESS_ERROR(m_pSendLoopBuf);
 
@@ -367,8 +367,8 @@ Exit0:
 
 void LPAPI LPSocker::OnRecv(DWORD dwBytes)
 {
-	INT_32 nResult = 0;
-	INT_32 idwUsed = 0;
+	LPINT32 nResult = 0;
+	LPINT32 idwUsed = 0;
 
 	LOG_PROCESS_ERROR(m_pRecvLoopBuf);
 	LOG_PROCESS_ERROR(m_pPacketParser);
@@ -391,7 +391,7 @@ void LPAPI LPSocker::OnRecv(DWORD dwBytes)
 		}
 		else if (idwUsed > 0)
 		{
-			if ((UINT_32)idwUsed > m_pRecvLoopBuf->GetTotalReadableLen())
+			if ((LPUINT32)idwUsed > m_pRecvLoopBuf->GetTotalReadableLen())
 			{
 				Close(SOCK_ERR_CODE(eSockErrCode_RecvError, 2, 0), FALSE);
 				LOG_PROCESS_ERROR(FALSE);
@@ -461,69 +461,69 @@ LPLoopBuf* LPAPI LPSocker::DetachSendBuf()
 	return pLoopBuf;
 }
 
-void LPAPI LPSocker::SetRemoteIp(UINT_32 dwIp)
+void LPAPI LPSocker::SetRemoteIp(LPUINT32 dwIp)
 {
 	m_dwRemoteIp = dwIp;
 	lpStrCpyN(m_szRemoteIpStr, inet_ntoa((in_addr&)m_dwRemoteIp), IP_LEN);
 }
 
-void LPAPI LPSocker::SetRemotePort(UINT_16 wPort)
+void LPAPI LPSocker::SetRemotePort(LPUINT16 wPort)
 {
 	m_wRemotePort = wPort;
 }
 
-void LPAPI LPSocker::SetLocalIp(UINT_32 dwIp)
+void LPAPI LPSocker::SetLocalIp(LPUINT32 dwIp)
 {
 	m_dwLocalIp = dwIp;
 	memcpy(m_szLocalIpStr, inet_ntoa((in_addr&)m_dwLocalIp), IP_LEN);
 }
 
-void LPAPI LPSocker::SetLocalPort(UINT_16 wPort)
+void LPAPI LPSocker::SetLocalPort(LPUINT16 wPort)
 {
 	m_wLocalPort = wPort;
 }
 
-void LPAPI LPSocker::SetDelayCloseBeginTick(UINT_64 qwTick)
+void LPAPI LPSocker::SetDelayCloseBeginTick(LPUINT64 qwTick)
 {
 	m_qwDelayCloseBeginTick = qwTick;
 }
 
-UINT_64 LPAPI LPSocker::GetDelayCloseBeginTick()
+LPUINT64 LPAPI LPSocker::GetDelayCloseBeginTick()
 {
 	return m_qwDelayCloseBeginTick;
 }
 
-void LPAPI LPSocker::SetDelayCloseDuration(UINT_64 qwDuration)
+void LPAPI LPSocker::SetDelayCloseDuration(LPUINT64 qwDuration)
 {
 	m_qwDelayCloseDuration = qwDuration;
 }
 
-UINT_64 LPAPI LPSocker::GetDelayCloseDuration()
+LPUINT64 LPAPI LPSocker::GetDelayCloseDuration()
 {
 	return m_qwDelayCloseDuration;
 }
 
-void LPAPI LPSocker::SetDelayReleaseBeginTick(UINT_64 qwTick)
+void LPAPI LPSocker::SetDelayReleaseBeginTick(LPUINT64 qwTick)
 {
 	m_qwDelayReleaseBeginTick = qwTick;
 }
 
-UINT_64 LPAPI LPSocker::GetDelayReleaseBeginTick()
+LPUINT64 LPAPI LPSocker::GetDelayReleaseBeginTick()
 {
 	return m_qwDelayReleaseBeginTick;
 }
 
-void LPAPI LPSocker::SetDelayReleaseDuration(UINT_64 qwDuration)
+void LPAPI LPSocker::SetDelayReleaseDuration(LPUINT64 qwDuration)
 {
 	m_qwDelayReleaseDuration = qwDuration;
 }
 
-UINT_64 LPAPI LPSocker::GetDelayReleaseDuration()
+LPUINT64 LPAPI LPSocker::GetDelayReleaseDuration()
 {
 	return m_qwDelayReleaseDuration;
 }
 
-void LPAPI LPSocker::SetSockerId(UINT_32 dwSockerId)
+void LPAPI LPSocker::SetSockerId(LPUINT32 dwSockerId)
 {
 	m_dwSockerId = dwSockerId;
 }
@@ -538,12 +538,12 @@ Exit0:
 	return;
 }
 
-void LPAPI LPSocker::SetParentId(UINT_32 dwParentId)
+void LPAPI LPSocker::SetParentId(LPUINT32 dwParentId)
 {
 	m_dwParentId = dwParentId;
 }
 
-UINT_32 LPAPI LPSocker::GetParentId()
+LPUINT32 LPAPI LPSocker::GetParentId()
 {
 	return m_dwParentId;
 }
@@ -600,9 +600,9 @@ LPSockerMgr::~LPSockerMgr()
 	UnInit();
 }
 
-BOOL LPAPI LPSockerMgr::Init(LPNetImpl* pNetImpl, UINT_32 dwSize)
+BOOL LPAPI LPSockerMgr::Init(LPNetImpl* pNetImpl, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pNetImpl);
 	m_pNetImpl = pNetImpl;
@@ -660,9 +660,9 @@ BOOL LPAPI LPSockerMgr::UnInit()
 	return TRUE;
 }
 
-LPSocker* LPAPI LPSockerMgr::Create(ILPPacketParser* pPacketParser, UINT_32 dwParentId, BOOL bAcceptCreate)
+LPSocker* LPAPI LPSockerMgr::Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSocker* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pPacketParser);
@@ -741,14 +741,14 @@ Exit0:
 
 void LPAPI LPSockerMgr::CheckDelay()
 {
-	INT_32 nResult = 0;
-	UINT_64 qwTick = 0;
+	LPINT32 nResult = 0;
+	LPUINT64 qwTick = 0;
 	LPSocker* pSocker = NULL;
 	LPConnector* pConnector = NULL;
 	std::list<SOCKET> ltCancelHandle;
 	std::list<SOCKET>::iterator ch_lit;
-	std::list<UINT_32> ltConnectSockerParentId;
-	std::list<UINT_32>::iterator csp_lit;
+	std::list<LPUINT32> ltConnectSockerParentId;
+	std::list<LPUINT32>::iterator csp_lit;
 
 	qwTick = lpGetTickCountEx();
 
@@ -840,9 +840,9 @@ void LPAPI LPSockerMgr::CheckDelay()
 	return;
 }
 
-INT_32 LPAPI LPSockerMgr::PostSend()
+LPINT32 LPAPI LPSockerMgr::PostSend()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSocker* pSocker = NULL;
 
 	m_oLock.Lock();
@@ -875,9 +875,9 @@ INT_32 LPAPI LPSockerMgr::PostSend()
 	return nResult;
 }
 
-LPSocker* LPAPI LPSockerMgr::_Create(ILPPacketParser* pPacketParser, UINT_32 dwParentId, BOOL bAcceptCreate)
+LPSocker* LPAPI LPSockerMgr::_Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSocker* pSocker = NULL;
 	LPLoopBuf* pRecvLoopBuf = NULL;
 	LPLoopBuf* pSendLoopBuf = NULL;
@@ -923,7 +923,7 @@ Exit0:
 
 void LPAPI LPSockerMgr::_Release(LPSocker* pSocker)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPLoopBuf* pRecvLoopBuf = NULL;
 	LPLoopBuf* pSendLoopBuf = NULL;
 
@@ -956,7 +956,7 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPSockerMgr::_CreateSockId()
+LPUINT32 LPAPI LPSockerMgr::_CreateSockId()
 {
 	return ++m_dwMaxSockId;
 }
@@ -978,7 +978,7 @@ Exit0:
 }
 THREAD_FUNC_DECLARE(LPSockerMgr::_CheckDelayThreadProc)(void * pParam)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSockerMgr* pSockerMgr = NULL;
 
 	LOG_PROCESS_ERROR(pParam);
@@ -1007,7 +1007,7 @@ Exit0:
 }
 THREAD_FUNC_DECLARE(LPSockerMgr::_PostSendThreadProc)(void * pParam)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSockerMgr* pSockerMgr = NULL;
 
 	LOG_PROCESS_ERROR(pParam);
@@ -1028,7 +1028,7 @@ Exit0:
 
 	return 0;
 }
-LPSocker* LPSockerMgr::Find(UINT_32 dwSockerId)
+LPSocker* LPSockerMgr::Find(LPUINT32 dwSockerId)
 {
 	LPSocker* pSocker = NULL;
 	LPMapSocker::iterator fit;
@@ -1044,12 +1044,12 @@ LPSocker* LPSockerMgr::Find(UINT_32 dwSockerId)
 	return pSocker;
 }
 
-UINT_32 LPAPI LPSockerMgr::GetCurValidConnectCount()
+LPUINT32 LPAPI LPSockerMgr::GetCurValidConnectCount()
 {
-	UINT_32 dwValidCount = 0;
+	LPUINT32 dwValidCount = 0;
 
 	m_oLock.Lock();
-	dwValidCount = (UINT_32)m_oValidMap.size();
+	dwValidCount = (LPUINT32)m_oValidMap.size();
 	m_oLock.UnLock();
 
 	return dwValidCount;
@@ -1077,9 +1077,9 @@ LPConnector::~LPConnector()
 	UnInit();
 }
 
-BOOL LPAPI LPConnector::Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, UINT_32 dwId)
+BOOL LPAPI LPConnector::Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pPacketParser);
 	LOG_PROCESS_ERROR(pNetImpl);
@@ -1127,9 +1127,9 @@ Exit1:
 	return TRUE;
 }
 
-BOOL LPAPI LPConnector::Start(const char* pcszIp, UINT_32 dwPort, BOOL bReconnect)
+BOOL LPAPI LPConnector::Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReconnect)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pcszIp);
 
@@ -1188,7 +1188,7 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPConnector::GetId()
+LPUINT32 LPAPI LPConnector::GetId()
 {
 	return m_dwId;
 }
@@ -1205,7 +1205,7 @@ BOOL LPAPI LPConnector::IsReconnect()
 
 BOOL LPAPI LPConnector::Reconnect()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(eCommonState_Inited == GetState());
 	LOG_PROCESS_ERROR(NULL == GetSocker() && INVALID_SOCKET == m_hConnectSock);
@@ -1235,15 +1235,15 @@ e_EventHandlerType LPAPI LPConnector::GetEventHandlerType()
 
 void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
 	LPSocker* pSocker = NULL;
 	sockaddr_in stLocalAddr;
-	INT_32 idwLocalAddrLen = 0;
-	INT_32 idwRetLocal = 0;
+	LPINT32 idwLocalAddrLen = 0;
+	LPINT32 idwRetLocal = 0;
 	sockaddr_in stRemoteAddr;
-	INT_32 idwRemoteAddrLen = 0;
-	INT_32 idwRetRemote = 0;
+	LPINT32 idwRemoteAddrLen = 0;
+	LPINT32 idwRetRemote = 0;
 	const char cArg = 1;
 
 	LOG_PROCESS_ERROR(pstPerIoData);
@@ -1375,7 +1375,7 @@ Exit0:
 
 void LPAPI LPConnector::OnClose()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_hConnectSock = INVALID_SOCKET;
 	SetSocker(NULL);
@@ -1400,19 +1400,19 @@ LPSocker* LPAPI LPConnector::GetSocker()
 	return m_pSocker;
 }
 
-void LPAPI LPConnector::SetState(UINT_32 dwState)
+void LPAPI LPConnector::SetState(LPUINT32 dwState)
 {
 	m_dwState = dwState;
 }
 
-UINT_32 LPAPI LPConnector::GetState()
+LPUINT32 LPAPI LPConnector::GetState()
 {
 	return m_dwState;
 }
 
 BOOL LPAPI LPConnector::_InitConnectEx()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
 	DWORD dwBytes = 0;
 	GUID stGuidAcceptEx = WSAID_CONNECTEX;
@@ -1455,7 +1455,7 @@ Exit0:
 
 BOOL LPAPI LPConnector::_PostConnectEx(PER_IO_DATA* pstPerIoData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	DWORD dwBytes = 0;
 	sockaddr_in stAddr;
 	sockaddr_in stLocalAddr;
@@ -1551,9 +1551,9 @@ LPListener::~LPListener()
 	UnInit();
 }
 
-BOOL LPAPI LPListener::Init(LPNetImpl* pNetImpl, ILPPacketParser * pPacketParser, UINT_32 dwId)
+BOOL LPAPI LPListener::Init(LPNetImpl* pNetImpl, ILPPacketParser * pPacketParser, LPUINT32 dwId)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pPacketParser);
 	LOG_PROCESS_ERROR(pNetImpl);
@@ -1604,10 +1604,10 @@ Exit1:
 	return TRUE;
 }
 
-BOOL LPAPI LPListener::Start(const char* pcszIp, UINT_32 dwPort, BOOL bReUseAddr)
+BOOL LPAPI LPListener::Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReUseAddr)
 {
-	INT_32 nResult = 0;
-	INT_32 nReUse = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nReUse = 0;
 	LINGER stLinger;
 	sockaddr_in stAddr;
 
@@ -1681,7 +1681,7 @@ BOOL LPAPI LPListener::Start(const char* pcszIp, UINT_32 dwPort, BOOL bReUseAddr
 
 	IMP("start listening %s:%d !", m_szIp, m_dwPort);
 
-	for (INT_32 i = 0; i < POST_ACCEPTEX_COUNT; ++i)
+	for (LPINT32 i = 0; i < POST_ACCEPTEX_COUNT; ++i)
 	{
 		nResult = _PostAcceptEx(&m_pstPerIoDataArray[i]);
 		LOG_PROCESS_ERROR(nResult);
@@ -1714,7 +1714,7 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPListener::GetId()
+LPUINT32 LPAPI LPListener::GetId()
 {
 	return m_dwId;
 }
@@ -1736,15 +1736,15 @@ e_EventHandlerType LPAPI LPListener::GetEventHandlerType()
 
 void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
 	LPSocker* pSocker = NULL;
 	const char cArg = 1;
-	UINT_32 dwCurValidConnectCount = 0;
+	LPUINT32 dwCurValidConnectCount = 0;
 
-	INT_32 idwAddrLen = 0;
-	INT_32 idwRemoteAddrLen = 0;
-	INT_32 idwLocalAddrLen = 0;
+	LPINT32 idwAddrLen = 0;
+	LPINT32 idwRemoteAddrLen = 0;
+	LPINT32 idwLocalAddrLen = 0;
 	sockaddr_in* pstRemoteAddr = NULL;
 	sockaddr_in* pstLocalAddr = NULL;
 
@@ -1871,19 +1871,19 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPListener::_GetState()
+LPUINT32 LPAPI LPListener::_GetState()
 {
 	return m_dwState;
 }
 
-void LPAPI LPListener::_SetState(UINT_32 dwState)
+void LPAPI LPListener::_SetState(LPUINT32 dwState)
 {
 	m_dwState = dwState;
 }
 
 BOOL LPAPI LPListener::_InitAcceptEx()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
 	DWORD dwBytes = 0;
 	GUID stGuidAcceptEx = WSAID_ACCEPTEX;
@@ -1941,7 +1941,7 @@ Exit0:
 
 BOOL LPAPI LPListener::_PostAcceptEx(PER_IO_DATA* pstPerIoData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SOCKET hNewSock = INVALID_SOCKET;
 	DWORD dwBytes = 0;
 
@@ -2002,9 +2002,9 @@ LPEventMgr::~LPEventMgr()
 	UnInit();
 }
 
-BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, UINT_32 dwSize, INT_32 nEventListCount)
+BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, LPUINT32 dwSize, LPINT32 nEventListCount)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pNetMessageHandler);
 	LOG_PROCESS_ERROR(pNetImpl);
@@ -2056,11 +2056,11 @@ BOOL LPAPI LPEventMgr::UnInit()
 	return TRUE;
 }
 
-BOOL LPAPI LPEventMgr::PushRecvEvent(LPSocker* pSocker, UINT_32 dwSockerId, ILPLoopBuf* pLoopBuf, UINT_32 dwLen)
+BOOL LPAPI LPEventMgr::PushRecvEvent(LPSocker* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen)
 {
-	INT_32 nResult = 0;
-	INT_32 nRetryCount = 0;
-	UINT_32 dwLineSize = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nRetryCount = 0;
+	LPUINT32 dwLineSize = 0;
 	NET_EVENT* pstEvent = NULL;
 
 	PROCESS_SUCCESS(!m_bInit);
@@ -2126,9 +2126,9 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LPEventMgr::PushTerminateEvent(LPSocker* pSocker, UINT_32 dwSockerId, BOOL bPassiveClose)
+void LPAPI LPEventMgr::PushTerminateEvent(LPSocker* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
 
 	PROCESS_SUCCESS(!m_bInit);
@@ -2161,7 +2161,7 @@ Exit0:
 
 void LPAPI LPEventMgr::PushEstablishEvent(LPSocker* pSocker, BOOL bAccept)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
 
 	PROCESS_SUCCESS(!m_bInit);
@@ -2191,9 +2191,9 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::PushConnectErrorEvent(LPConnector * pConnector, UINT_32 dwErrorNo)
+void LPAPI LPEventMgr::PushConnectErrorEvent(LPConnector * pConnector, LPUINT32 dwErrorNo)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
 
 	PROCESS_SUCCESS(!m_bInit);
@@ -2225,7 +2225,7 @@ Exit0:
 
 BOOL LPEventMgr::HaveEventForHandled()
 {
-	for (INT_32 i = 0; i < m_nEventListCount; ++i)
+	for (LPINT32 i = 0; i < m_nEventListCount; ++i)
 	{
 		if (!m_pEventList[i].empty())
 		{
@@ -2238,12 +2238,12 @@ BOOL LPEventMgr::HaveEventForHandled()
 
 void LPEventMgr::HandleOneEvent()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
 
 	PROCESS_SUCCESS(!m_bInit);
 
-	for (INT_32 i = 0; i < m_nEventListCount; ++i)
+	for (LPINT32 i = 0; i < m_nEventListCount; ++i)
 	{
 		if (m_pEventList[i].empty())
 		{
@@ -2315,7 +2315,7 @@ void LPAPI LPEventMgr::_FreeEvent(NET_EVENT* pstEvent)
 
 void LPAPI LPEventMgr::_ProcRecvEvent(RECV_EVENT* pstRecvEvent)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSocker* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pstRecvEvent);
@@ -2337,7 +2337,7 @@ Exit0:
 
 void LPAPI LPEventMgr::_ProcTerminateEvent(TERMINATE_EVENT* pstTerminateEvent)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPConnector* pConnector = NULL;
 	LPSocker* pSocker = NULL;
 
@@ -2379,7 +2379,7 @@ Exit0:
 
 void LPAPI LPEventMgr::_ProcEstablishEvent(ESTABLISH_EVENT* pstEstablishEvent)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSocker* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pstEstablishEvent);
@@ -2407,7 +2407,7 @@ Exit0:
 
 void LPAPI LPEventMgr::_ProcConnectErrorEvent(CONNECT_ERROR_EVENT* pstConnectErrorEvent)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pstConnectErrorEvent);
 	LOG_PROCESS_ERROR(m_pNetMessageHandler);
@@ -2488,13 +2488,13 @@ Exit0:
 
 BOOL LPAPI LPReactorImpl::RegisterEventHandler(ILPEventHandler* pEventHandler)
 {
-	UINT_32 dwIndex = 0;
+	LPUINT32 dwIndex = 0;
 
 	LOG_PROCESS_ERROR(pEventHandler);
 	LOG_PROCESS_ERROR(m_pCompletionPort);
 	LOG_PROCESS_ERROR(m_nCompletionPortCount > 0);
 
-	dwIndex = (UINT_64)(pEventHandler->GetHandle()) % m_nCompletionPortCount;
+	dwIndex = (LPUINT64)(pEventHandler->GetHandle()) % m_nCompletionPortCount;
 
 	if (NULL == CreateIoCompletionPort(pEventHandler->GetHandle(), m_pCompletionPort[dwIndex], (ULONG_PTR)pEventHandler, 0))
 	{
@@ -2533,7 +2533,7 @@ Exit0:
 
 BOOL LPAPI LZPL::LPReactorImpl::Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPortOneThread)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	SYSTEM_INFO stSysInfo;
 	UINT dwThreadId = 0;
 
@@ -2558,11 +2558,11 @@ BOOL LPAPI LZPL::LPReactorImpl::Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPor
 
 	m_pCompletionPort = new HANDLE[m_nCompletionPortCount];
 	LOG_PROCESS_ERROR(m_pCompletionPort);
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		m_pCompletionPort[i] = INVALID_HANDLE_VALUE;
 	}
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		m_pCompletionPort[i] = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 		LOG_PROCESS_ERROR(m_pCompletionPort[i] != INVALID_HANDLE_VALUE);
@@ -2570,23 +2570,23 @@ BOOL LPAPI LZPL::LPReactorImpl::Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPor
 
 	m_ppWorkerArray = new HANDLE*[m_nCompletionPortCount];
 	LOG_PROCESS_ERROR(m_ppWorkerArray);
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		m_ppWorkerArray[i] = NULL;
 	}
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		m_ppWorkerArray[i] = new HANDLE[m_nWorkerCountPerCompIo];
 		LOG_PROCESS_ERROR(m_ppWorkerArray[i]);
-		for (INT_32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
+		for (LPINT32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
 		{
 			m_ppWorkerArray[i][j] = INVALID_HANDLE_VALUE;
 		}
 	}
 
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
-		for (INT_32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
+		for (LPINT32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
 		{
 			REACTOR_THREAD_PARAM* pThreadParam = new REACTOR_THREAD_PARAM();
 			LOG_PROCESS_ERROR(pThreadParam);
@@ -2616,7 +2616,7 @@ Exit0:
 
 BOOL LPAPI LZPL::LPReactorImpl::UnInit()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PROCESS_SUCCESS(_GetState() == eCommonState_NoInit || _GetState() >= eCommonState_UnIniting); 
 
@@ -2624,36 +2624,36 @@ BOOL LPAPI LZPL::LPReactorImpl::UnInit()
 	IMP("reactor uniniting ...");
 	LPPRINTF("reactor uniniting ...\n");
 
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
-		for (INT_32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
+		for (LPINT32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
 		{
 			nResult = PostQueuedCompletionStatus(m_pCompletionPort[i], 0, NULL, NULL);
 			LOG_CHECK_ERROR(nResult);
 		}
 	}
 
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		nResult = WaitForMultipleObjects(m_nWorkerCountPerCompIo, m_ppWorkerArray[i], TRUE, 60*1000);
 		LOG_CHECK_ERROR(nResult != WAIT_FAILED);
 		LOG_CHECK_ERROR(nResult != WAIT_TIMEOUT);
 
-		for (INT_32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
+		for (LPINT32 j = 0; j < m_nWorkerCountPerCompIo; ++j)
 		{
 			CloseHandle(m_ppWorkerArray[i][j]);
 			m_ppWorkerArray[i][j] = INVALID_HANDLE_VALUE;
 		}
 	}
 
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		SAFE_DELETE_SZ(m_ppWorkerArray[i]);
 	}
 	SAFE_DELETE_SZ(m_ppWorkerArray);
 
 
-	for (INT_32 i = 0; i < m_nCompletionPortCount; ++i)
+	for (LPINT32 i = 0; i < m_nCompletionPortCount; ++i)
 	{
 		CloseHandle(m_pCompletionPort[i]);
 		m_pCompletionPort[i] = INVALID_HANDLE_VALUE;
@@ -2668,7 +2668,7 @@ Exit1:
 	return TRUE;
 }
 
-void LPAPI LZPL::LPReactorImpl::OnExecute(INT_32 nCompletionPortIndex)
+void LPAPI LZPL::LPReactorImpl::OnExecute(LPINT32 nCompletionPortIndex)
 {
 	BOOL             bRet;
 	DWORD            dwByteTransferred;
@@ -2905,12 +2905,12 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPReactorImpl::_GetState()
+LPUINT32 LPAPI LPReactorImpl::_GetState()
 {
 	return m_dwState;
 }
 
-void LPAPI LPReactorImpl::_SetState(UINT_32 dwState)
+void LPAPI LPReactorImpl::_SetState(LPUINT32 dwState)
 {
 	m_dwState = dwState;
 }
@@ -2961,9 +2961,9 @@ Exit0:
 	return;
 }
 
-void LPAPI LPReactorImpl::_OnSendRecv(BOOL bOperateRet, ILPEventHandler * pEventHandler, PER_IO_DATA * pstPerIoData, UINT_32 dwByteTransferred)
+void LPAPI LPReactorImpl::_OnSendRecv(BOOL bOperateRet, ILPEventHandler * pEventHandler, PER_IO_DATA * pstPerIoData, LPUINT32 dwByteTransferred)
 {
-	INT_32 nLastError;
+	LPINT32 nLastError;
 	LPSocker* pSocker = NULL;
 	LPConnector* pConnector = NULL;
 
@@ -3047,7 +3047,7 @@ LZPL::LPReactorImpl::~LPReactorImpl()
 
 DECLARE ILPNet* LPAPI lpCreateNetModule(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPNetImpl* pNetImpl = NULL;
 
 	PRINTF_PROCESS_ERROR(lpGetLzplLoggerCtrl());
@@ -3099,7 +3099,7 @@ void LPAPI LZPL::LPNetImpl::AddRef(void)
 	++m_dwRef;
 }
 
-UINT_32 LPAPI LZPL::LPNetImpl::QueryRef(void)
+LPUINT32 LPAPI LZPL::LPNetImpl::QueryRef(void)
 {
 	return m_dwRef;
 }
@@ -3130,7 +3130,7 @@ const char* LPAPI LZPL::LPNetImpl::GetModuleName(void)
 
 ILPListener* LPAPI LPNetImpl::CreateListenerCtrl(e_IoType eIoType, ILPPacketParser* pPacketParser)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPListener* pListener = NULL;
 
 	LOG_PROCESS_ERROR(pPacketParser);
@@ -3151,7 +3151,7 @@ Exit0:
 
 ILPConnector* LPAPI LPNetImpl::CreateConnectorCtrl(e_IoType eIoType, ILPPacketParser* pPacketParser)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPConnector* pConnector = NULL;
 
 	LOG_PROCESS_ERROR(pPacketParser);
@@ -3170,7 +3170,7 @@ Exit0:
 	return NULL;
 }
 
-LPListener* LPAPI LPNetImpl::FindListener(UINT_32 dwId)
+LPListener* LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
 {
 	LPListener* pListener = NULL;
 	MAP_LISTENER::iterator fit;
@@ -3184,7 +3184,7 @@ LPListener* LPAPI LPNetImpl::FindListener(UINT_32 dwId)
 	return pListener;
 }
 
-LPConnector* LPAPI LPNetImpl::FindConnector(UINT_32 dwId)
+LPConnector* LPAPI LPNetImpl::FindConnector(LPUINT32 dwId)
 {
 	LPConnector* pConnector = NULL;
 	MAP_CONNECTOR::iterator fit;
@@ -3198,9 +3198,9 @@ LPConnector* LPAPI LPNetImpl::FindConnector(UINT_32 dwId)
 	return pConnector;
 }
 
-BOOL LPAPI LZPL::LPNetImpl::Run(INT_32 nCount /*= -1*/)
+BOOL LPAPI LZPL::LPNetImpl::Run(LPINT32 nCount /*= -1*/)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	do
 	{
@@ -3222,7 +3222,7 @@ Exit1:
 
 BOOL LPAPI LZPL::LPNetImpl::Init(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	WSADATA stData;
 
 	::WSAStartup(MAKEWORD(2, 2), &stData);
@@ -3273,8 +3273,8 @@ NET_CONFIG& LPAPI LPNetImpl::GetNetConfig(void)
 
 void LPAPI LZPL::LPNetImpl::UnInit()
 {
-	INT_32 nResult = 0;
-	UINT_64 qwTickStart = 0;
+	LPINT32 nResult = 0;
+	LPUINT64 qwTickStart = 0;
 	ILPListener* pListener = NULL;
 	ILPConnector* pConnector = NULL;
 	MAP_LISTENER::iterator iterListener;
@@ -3323,9 +3323,9 @@ void LPAPI LZPL::LPNetImpl::UnInit()
 	LPPRINTF("net uninit success !\n");
 }
 
-UINT_32 LPAPI LPNetImpl::_CreateId()
+LPUINT32 LPAPI LPNetImpl::_CreateId()
 {
-	UINT_32 dwNewId = 0;
+	LPUINT32 dwNewId = 0;
 
 	m_oLock.Lock();
 	dwNewId = ++m_dwMaxCreateId;

@@ -19,24 +19,24 @@ int lua_get_global_config(lua_State* L)
 
 int lua_create_bt_node(lua_State* L)
 {
-	INT_32 nType = 0;
-	INT_32 nParam0 = 0;
-	INT_32 nParam1 = 0;
-	INT_32 nParam2 = 0;
-	INT_32 nParam3 = 0;
-	INT_32 nFlag = 0;
+	LPINT32 nType = 0;
+	LPINT32 nParam0 = 0;
+	LPINT32 nParam1 = 0;
+	LPINT32 nParam2 = 0;
+	LPINT32 nParam3 = 0;
+	LPINT32 nFlag = 0;
 	BT_NODE* pNode = NULL;
 	BT_NODE* pParent = NULL;
 	const char* pcszName = NULL;
 
 	pParent = (BT_NODE*)lua_touserdata(L, 1);
-	nType = (INT_32)lua_tonumber(L, 2);
+	nType = (LPINT32)lua_tonumber(L, 2);
 	pcszName = lua_tostring(L, 3);
-	nParam0 = (INT_32)lua_tonumber(L, 4);
-	nParam1 = (INT_32)lua_tonumber(L, 5);
-	nParam2 = (INT_32)lua_tonumber(L, 6);
-	nParam3 = (INT_32)lua_tonumber(L, 7);
-	nFlag = (INT_32)lua_tonumber(L, 8);
+	nParam0 = (LPINT32)lua_tonumber(L, 4);
+	nParam1 = (LPINT32)lua_tonumber(L, 5);
+	nParam2 = (LPINT32)lua_tonumber(L, 6);
+	nParam3 = (LPINT32)lua_tonumber(L, 7);
+	nFlag = (LPINT32)lua_tonumber(L, 8);
 
 	pNode = CBTManager::Instance().CreateBTNode(pParent, nType, 0, pcszName, nParam0, nParam1, nParam2, nParam3, nFlag);
 	LOG_PROCESS_ERROR(pNode);
@@ -50,7 +50,7 @@ Exit0:
 
 int lua_destroy_bt_tree(lua_State* L)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BT_NODE* pNode = NULL;
 
 	pNode = (BT_NODE*)lua_touserdata(L, 1);
@@ -65,7 +65,7 @@ Exit0:
 
 int lua_find_bt_action_id(lua_State* L)
 {
-	INT_32 nActionId = btntInvalid;
+	LPINT32 nActionId = btntInvalid;
 	const char* pcszName = NULL;
 
 	pcszName = lua_tostring(L, 1);
@@ -81,7 +81,7 @@ Exit0:
 
 int lua_register_bt_action(lua_State* L)
 {
-	INT_32 nActionId = btntInvalid;
+	LPINT32 nActionId = btntInvalid;
 	const char* pcszName = NULL;
 
 	pcszName = lua_tostring(L, 1);
@@ -104,15 +104,15 @@ int lua_print_bt_tree(lua_State* L)
 
 int lua_call_bt_action(lua_State* L)
 {
-	INT_32 nResult = btrvError;
-	INT_32 nNodeType;
-	INT_32 nParam[BT_MAX_PARAM];
+	LPINT32 nResult = btrvError;
+	LPINT32 nNodeType;
+	LPINT32 nParam[BT_MAX_PARAM];
 
-	nNodeType = (INT_32)lua_tonumber(L, 1);
-	nParam[0] = (INT_32)lua_tonumber(L, 2);
-	nParam[1] = (INT_32)lua_tonumber(L, 3);
-	nParam[2] = (INT_32)lua_tonumber(L, 4);
-	nParam[3] = (INT_32)lua_tonumber(L, 5);
+	nNodeType = (LPINT32)lua_tonumber(L, 1);
+	nParam[0] = (LPINT32)lua_tonumber(L, 2);
+	nParam[1] = (LPINT32)lua_tonumber(L, 3);
+	nParam[2] = (LPINT32)lua_tonumber(L, 4);
+	nParam[3] = (LPINT32)lua_tonumber(L, 5);
 
 	nResult = CBTManager::Instance().CallBTAction(nNodeType, nParam);
 	
@@ -124,16 +124,16 @@ int lua_call_bt_action(lua_State* L)
 int lua_test_bt_action(lua_State* L)
 {
 	void* pObj = NULL;
-	INT_32 nResult = btrvError;
-	INT_32 nNodeType;
-	INT_32 nParam[BT_MAX_PARAM];
+	LPINT32 nResult = btrvError;
+	LPINT32 nNodeType;
+	LPINT32 nParam[BT_MAX_PARAM];
 
 	pObj = tolua_touserdata(L, 1, 0);
-	nNodeType = (INT_32)lua_tonumber(L, 1);
-	nParam[0] = (INT_32)lua_tonumber(L, 2);
-	nParam[1] = (INT_32)lua_tonumber(L, 3);
-	nParam[2] = (INT_32)lua_tonumber(L, 4);
-	nParam[3] = (INT_32)lua_tonumber(L, 5);
+	nNodeType = (LPINT32)lua_tonumber(L, 1);
+	nParam[0] = (LPINT32)lua_tonumber(L, 2);
+	nParam[1] = (LPINT32)lua_tonumber(L, 3);
+	nParam[2] = (LPINT32)lua_tonumber(L, 4);
+	nParam[3] = (LPINT32)lua_tonumber(L, 5);
 
 	nResult = CBTManager::Instance().TestBTAction(pObj, nNodeType, nParam);
 
@@ -144,7 +144,7 @@ int lua_test_bt_action(lua_State* L)
 
 int lua_get_ctrl_role_id(lua_State* L)
 {
-	UINT_32 dwRoleId = 0;
+	LPUINT32 dwRoleId = 0;
 
 	dwRoleId = CBTManager::Instance().GetCtrlRoleId();
 

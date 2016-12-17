@@ -54,11 +54,11 @@ public:
 
 	// Summary:
 	//		无
-	BOOL LPAPI LoadFromBuffer(const char* pcszScriptName, const char* pcszBuf, UINT_32 dwSize);
+	BOOL LPAPI LoadFromBuffer(const char* pcszScriptName, const char* pcszBuf, LPUINT32 dwSize);
 
 	// Summary:
 	//		无
-	BOOL LPAPI RegisterFunc(LUA_FUNC astFuncList[], INT_32 nFuncCount);
+	BOOL LPAPI RegisterFunc(LUA_FUNC astFuncList[], LPINT32 nFuncCount);
 
 	// Summary:
 	//		无
@@ -86,11 +86,11 @@ public:
 
 	// Summary:
 	//		无
-	BOOL LPAPI CollectGarbage(INT_32 nGCSize);
+	BOOL LPAPI CollectGarbage(LPINT32 nGCSize);
 
 	// Summary:
 	//		无
-	UINT_32 LPAPI GetCRC(void);
+	LPUINT32 LPAPI GetCRC(void);
 
 private:
 
@@ -100,7 +100,7 @@ private:
 
 	// Summary:
 	//		无
-	BOOL LPAPI _GetCRC(const char* pcszFileName, INT_32 nLevel);
+	BOOL LPAPI _GetCRC(const char* pcszFileName, LPINT32 nLevel);
 
 public:
 
@@ -112,11 +112,11 @@ private:
 
 	// Summary:
 	//		无
-	static INT_32 _Include(lua_State* L);
+	static LPINT32 _Include(lua_State* L);
 
 	// Summary:
 	//		无
-	static INT_32 _LuaErrFunc(lua_State* L);
+	static LPINT32 _LuaErrFunc(lua_State* L);
 
 	// Summary:
 	//		无
@@ -124,13 +124,13 @@ private:
 
 	// Summary:
 	//		无
-	static INT_32 _Print(lua_State* L);
+	static LPINT32 _Print(lua_State* L);
 
 private:
 
 	char                     m_szScriptName[MAX_FILE_NAME];
 	lua_State*               m_pLuaState;
-	UINT_32                  m_dwCRC;
+	LPUINT32                  m_dwCRC;
 };
 
 

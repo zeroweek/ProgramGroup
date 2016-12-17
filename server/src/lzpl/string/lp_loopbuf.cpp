@@ -21,9 +21,9 @@ LPLoopBuf::~LPLoopBuf()
 	UnInit();
 }
 
-BOOL LPAPI LPLoopBuf::Init(UINT_32 dwSize, UINT_32 dwPoolId)
+BOOL LPAPI LPLoopBuf::Init(LPUINT32 dwSize, LPUINT32 dwPoolId)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 
 	m_dwBufSize       = dwSize;
@@ -70,12 +70,12 @@ void LPAPI LPLoopBuf::Reset()
 	m_dwRefCount = 0;
 }
 
-UINT_32 LPAPI LPLoopBuf::GetPoolId()
+LPUINT32 LPAPI LPLoopBuf::GetPoolId()
 {
 	return m_dwPoolId;
 }
 
-UINT_32 LPAPI LPLoopBuf::QueryRef()
+LPUINT32 LPAPI LPLoopBuf::QueryRef()
 {
 	return m_dwRefCount;
 }
@@ -94,16 +94,16 @@ void LPAPI LPLoopBuf::DeductRef()
 	}
 }
 
-UINT_32 LPAPI LPLoopBuf::GetTotalReadableLen()
+LPUINT32 LPAPI LPLoopBuf::GetTotalReadableLen()
 {
 	return m_dwDataLen;
 }
 
-UINT_32 LPAPI LPLoopBuf::GetOnceReadableLen()
+LPUINT32 LPAPI LPLoopBuf::GetOnceReadableLen()
 {
 	//线性可读大小
-	UINT_32 dwLineReadableSize = m_dwBufSize - (UINT_32)(m_pRead - m_pBuf);
-	UINT_32 dwTotalReadableLen = GetTotalReadableLen();
+	LPUINT32 dwLineReadableSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
+	LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
 
 	if (dwLineReadableSize > dwTotalReadableLen)
 	{
@@ -113,16 +113,16 @@ UINT_32 LPAPI LPLoopBuf::GetOnceReadableLen()
 	return dwLineReadableSize;
 }
 
-UINT_32 LPAPI LPLoopBuf::GetTotalWritableLen()
+LPUINT32 LPAPI LPLoopBuf::GetTotalWritableLen()
 {
 	return m_dwBufSize - m_dwDataLen;
 }
 
-UINT_32 LPAPI LPLoopBuf::GetOnceWritableLen()
+LPUINT32 LPAPI LPLoopBuf::GetOnceWritableLen()
 {
 	//线性可写大小
-	UINT_32 dwLineWritableSize = m_dwBufSize - (UINT_32)(m_pWrite - m_pBuf);
-	UINT_32 dwTotalWritableLen = GetTotalWritableLen();
+	LPUINT32 dwLineWritableSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
+	LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
 
 	if (dwLineWritableSize > dwTotalWritableLen)
 	{
@@ -132,14 +132,14 @@ UINT_32 LPAPI LPLoopBuf::GetOnceWritableLen()
 	return dwLineWritableSize;
 }
 
-BOOL LPAPI LPLoopBuf::Read(char* pDst, UINT_32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate)
+BOOL LPAPI LPLoopBuf::Read(char* pDst, LPUINT32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate)
 {
-	UINT_32 dwLineSize = 0;
+	LPUINT32 dwLineSize = 0;
 
 	LOG_PROCESS_ERROR(pDst);
 	LOG_PROCESS_ERROR(GetTotalReadableLen() >= dwReadLen);
 
-	dwLineSize = m_dwBufSize - (UINT_32)(m_pRead - m_pBuf);
+	dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
 	if (dwLineSize >= dwReadLen)
 	{
 		memcpy(pDst, m_pRead, dwReadLen);
@@ -174,14 +174,14 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPLoopBuf::Write(const char* pSrc, UINT_32 dwWriteLen)
+BOOL LPAPI LPLoopBuf::Write(const char* pSrc, LPUINT32 dwWriteLen)
 {
-	UINT_32 dwLineSize = 0;
+	LPUINT32 dwLineSize = 0;
 
 	LOG_PROCESS_ERROR(pSrc);
 	LOG_PROCESS_ERROR(GetTotalWritableLen() >= dwWriteLen);
 
-	dwLineSize = m_dwBufSize - (UINT_32)(m_pWrite - m_pBuf);
+	dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
 	if (dwLineSize >= dwWriteLen)
 	{
 		memcpy(m_pWrite, pSrc, dwWriteLen);
@@ -212,10 +212,10 @@ char* LPAPI LPLoopBuf::WritePtr()
 	return m_pWrite;
 }
 
-void LPAPI LPLoopBuf::FinishRead(UINT_32 dwReadLen)
+void LPAPI LPLoopBuf::FinishRead(LPUINT32 dwReadLen)
 {
-	UINT_32 dwLineSize = 0;
-	UINT_32 dwTotalReadableLen = GetTotalReadableLen();
+	LPUINT32 dwLineSize = 0;
+	LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
 
 	LOG_CHECK_ERROR(dwReadLen <= dwTotalReadableLen);
 
@@ -224,7 +224,7 @@ void LPAPI LPLoopBuf::FinishRead(UINT_32 dwReadLen)
 		dwReadLen = dwTotalReadableLen;
 	}
 
-	dwLineSize = m_dwBufSize - (UINT_32)(m_pRead - m_pBuf);
+	dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
 	if (dwLineSize >= dwReadLen)
 	{
 		m_pRead = m_pRead + dwReadLen;
@@ -243,10 +243,10 @@ void LPAPI LPLoopBuf::FinishRead(UINT_32 dwReadLen)
 	m_dwDataLen -= dwReadLen;
 }
 
-void LPAPI LPLoopBuf::FinishWrite(UINT_32 dwWriteLen)
+void LPAPI LPLoopBuf::FinishWrite(LPUINT32 dwWriteLen)
 {
-	UINT_32 dwLineSize = 0;
-	UINT_32 dwTotalWritableLen = GetTotalWritableLen();
+	LPUINT32 dwLineSize = 0;
+	LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
 
 	LOG_CHECK_ERROR(dwWriteLen <= dwTotalWritableLen);
 
@@ -255,7 +255,7 @@ void LPAPI LPLoopBuf::FinishWrite(UINT_32 dwWriteLen)
 		dwWriteLen = dwTotalWritableLen;
 	}
 
-	dwLineSize = m_dwBufSize - (UINT_32)(m_pWrite - m_pBuf);
+	dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
 	if (dwLineSize >= dwWriteLen)
 	{
 		m_pWrite = m_pWrite + dwWriteLen;
@@ -285,14 +285,14 @@ LPLoopBufPool::~LPLoopBufPool()
 	UnInit();
 }
 
-BOOL LPAPI LPLoopBufPool::_PreBatchCreate(UINT_32 dwBatchCount)
+BOOL LPAPI LPLoopBufPool::_PreBatchCreate(LPUINT32 dwBatchCount)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPLoopBuf* pLoopBuf = NULL;
 
 	PROCESS_SUCCESS(!m_bUsePool);
 
-	for (UINT_32 i = 0; i < dwBatchCount; ++i)
+	for (LPUINT32 i = 0; i < dwBatchCount; ++i)
 	{
 		pLoopBuf = new LPLoopBuf();
 		LOG_PROCESS_ERROR(pLoopBuf);
@@ -310,9 +310,9 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPLoopBufPool::Init(UINT_32 dwBufSize, BOOL bUsePool, UINT_32 dwPoolInitCount)
+BOOL LPAPI LPLoopBufPool::Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_dwPoolId = CreatePoolId();
 	m_dwSizeBuf = dwBufSize;
@@ -331,7 +331,7 @@ Exit0:
 
 BOOL LPAPI LPLoopBufPool::UnInit()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSetBuf::iterator it;
 	LPLoopBuf* pLoopBuf = NULL;
 
@@ -352,14 +352,14 @@ Exit1:
 	return TRUE;
 }
 
-UINT_32 LPAPI LPLoopBufPool::GetBufSize()
+LPUINT32 LPAPI LPLoopBufPool::GetBufSize()
 {
 	return m_dwSizeBuf;
 }
 
 LPLoopBuf* LPAPI LPLoopBufPool::Create()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPLoopBuf* pLoopBuf = NULL;
 
 	if (m_bUsePool)
@@ -429,9 +429,9 @@ Exit0:
 	return;
 }
 
-UINT_32 LPAPI LPLoopBufPool::CreatePoolId()
+LPUINT32 LPAPI LPLoopBufPool::CreatePoolId()
 {
-	UINT_32 dwId = 0;
+	LPUINT32 dwId = 0;
 
 	LOG_PROCESS_ERROR(m_poLock);
 
@@ -444,7 +444,7 @@ Exit0:
 }
 
 LPLock* LPLoopBufPool::m_poLock = new LPLock();
-UINT_32 LPLoopBufPool::m_dwBaseId = BUF_INVALID_POOL_ID;
+LPUINT32 LPLoopBufPool::m_dwBaseId = BUF_INVALID_POOL_ID;
 
 
 

@@ -18,8 +18,8 @@ NS_LZPL_BEGIN
 
 
 #define READ_DATA_START()					\
-		INT_32 nResult = 0;					\
-		INT_32 nValue = 0;
+		LPINT32 nResult = 0;					\
+		LPINT32 nValue = 0;
 
 #define READ_INT_DATA(_field_, _var_)							\
 		nResult = pTabFile->ReadData(_field_, nRow, nValue);	\
@@ -52,8 +52,8 @@ NS_LZPL_BEGIN
 //		每条加载的配置数据的结构
 struct LOADED_DATA
 {
-	INT_32         nRowIndex;
-	INT_32         nId;
+	LPINT32         nRowIndex;
+	LPINT32         nId;
 	const char*    pcszName;
 	void*          pData;
 
@@ -68,8 +68,8 @@ struct LOADED_DATA
 struct LOADED_DATA_LIST
 {
 	BOOL                       bInit;
-	INT_32                     nRowCount;
-	UINT_64                    qwStartTick;
+	LPINT32                     nRowCount;
+	LPUINT64                    qwStartTick;
 	char                       szConfigName[MAX_PATH];
 	std::list<LOADED_DATA*> lstData;
 
@@ -131,23 +131,23 @@ public:
 
 	// Summary：
 	//		无
-	const T* LPAPI GetData(INT_32 nDataId);
+	const T* LPAPI GetData(LPINT32 nDataId);
 
 	// Summary：
 	//		无
-	T* LPAPI GetWritableData(INT_32 nDataId);
+	T* LPAPI GetWritableData(LPINT32 nDataId);
 
 	// Summary：
 	//		无
-	inline virtual INT_32 LPAPI GetDataCount(void);
+	inline virtual LPINT32 LPAPI GetDataCount(void);
 
 	// Summary：
 	//		无
-	inline virtual UINT_32 LPAPI GetDataSize(void);
+	inline virtual LPUINT32 LPAPI GetDataSize(void);
 
 	// Summary：
 	//		无
-	inline virtual UINT_32 LPAPI GetCRC(void);
+	inline virtual LPUINT32 LPAPI GetCRC(void);
 
 	// Summary：
 	//		遍历数据，执行相关操作
@@ -170,7 +170,7 @@ private:
 
 	// Summary：
 	//		第一次加载时调用，插入新数据
-	BOOL LPAPI _SetData(INT_32 nDataId, T* pData);
+	BOOL LPAPI _SetData(LPINT32 nDataId, T* pData);
 
 	// Summary：
 	//		加载配置文件数据
@@ -184,14 +184,14 @@ private:
 
 	static LPDataManger<T>             m_oInstance;
 
-	typedef std::map<INT_32, T*> MAP_ID_2_DATA;
+	typedef std::map<LPINT32, T*> MAP_ID_2_DATA;
 	MAP_ID_2_DATA                      m_mapId2Data;
 
 	char                               m_szConfigName[MAX_PATH];
 	char                               m_szPath[MAX_PATH];
 	pfunPostProcessDataFunc            m_pfnPostProcessDataFunc;
 	BOOL                               m_bNeedPostProcessData;
-	UINT_32                            m_dwCRC;
+	LPUINT32                            m_dwCRC;
 
 	typename MAP_ID_2_DATA::iterator   m_Id2DataIt;
 };
@@ -224,7 +224,7 @@ inline LPDataManger<T> & LPDataManger<T>::Instance(void)
 template<class T>
 BOOL LPAPI LPDataManger<T>::Init(const char * pcszConfigName, const char * pcszPath, pfunPostProcessDataFunc pFunc)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pcszConfigName);
 	LOG_PROCESS_ERROR(pcszPath);
@@ -263,7 +263,7 @@ BOOL LPAPI LPDataManger<T>::UnInit(void)
 template<class T>
 BOOL LPAPI LPDataManger<T>::Reload(BOOL bInit)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LOADED_DATA_LIST* pLoadedDataList = NULL;
 
 	pLoadedDataList = new LOADED_DATA_LIST;
@@ -294,7 +294,7 @@ Exit0:
 template<class T>
 BOOL LPAPI LPDataManger<T>::PostProcessData(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	typename MAP_ID_2_DATA::iterator it;
 
 	if(m_pfnPostProcessDataFunc && m_bNeedPostProcessData)
@@ -316,7 +316,7 @@ BOOL LPAPI LPDataManger<T>::PostProcessData(void)
 }
 
 template<class T>
-const T *LPAPI LPDataManger<T>::GetData(INT_32 nDataId)
+const T *LPAPI LPDataManger<T>::GetData(LPINT32 nDataId)
 {
 	typename MAP_ID_2_DATA::iterator fit;
 
@@ -330,7 +330,7 @@ const T *LPAPI LPDataManger<T>::GetData(INT_32 nDataId)
 }
 
 template<class T>
-T *LPAPI LPDataManger<T>::GetWritableData(INT_32 nDataId)
+T *LPAPI LPDataManger<T>::GetWritableData(LPINT32 nDataId)
 {
 	typename MAP_ID_2_DATA::iterator fit;
 
@@ -344,19 +344,19 @@ T *LPAPI LPDataManger<T>::GetWritableData(INT_32 nDataId)
 }
 
 template<class T>
-inline INT_32 LPAPI LPDataManger<T>::GetDataCount(void)
+inline LPINT32 LPAPI LPDataManger<T>::GetDataCount(void)
 {
-	return (INT_32)m_mapId2Data.size();
+	return (LPINT32)m_mapId2Data.size();
 }
 
 template<class T>
-inline UINT_32 LPAPI LPDataManger<T>::GetDataSize(void)
+inline LPUINT32 LPAPI LPDataManger<T>::GetDataSize(void)
 {
 	return sizeof(T);
 }
 
 template<class T>
-inline UINT_32 LPAPI LPDataManger<T>::GetCRC(void)
+inline LPUINT32 LPAPI LPDataManger<T>::GetCRC(void)
 {
 	return m_dwCRC;
 }
@@ -406,7 +406,7 @@ void LPAPI LPDataManger<T>::Print(void)
 }
 
 template<class T>
-BOOL LPAPI LPDataManger<T>::_SetData(INT_32 nDataId, T * pData)
+BOOL LPAPI LPDataManger<T>::_SetData(LPINT32 nDataId, T * pData)
 {
 	typename MAP_ID_2_DATA::iterator fitId;
 
@@ -425,8 +425,8 @@ Exit0:
 template<class T>
 BOOL LPAPI LPDataManger<T>::_Load(LOADED_DATA_LIST* pLoadedDataList)
 {
-	INT_32 nResult = 0;
-	INT_32 nRowIndex = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nRowIndex = 0;
 	LPTabFile oTabFile;
 	LOADED_DATA* pLoadedData = NULL;
 	char szFileName[MAX_PATH];
@@ -485,10 +485,10 @@ Exit0:
 template<class T>
 BOOL LPAPI LPDataManger<T>::_Insert(LOADED_DATA_LIST* pLoadedDataList)
 {
-	INT_32 nResult = 0;
-	INT_32 nCounter = 0;
-	UINT_64 qwStartTick = 0;
-	UINT_64 qwCurrentTick = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nCounter = 0;
+	LPUINT64 qwStartTick = 0;
+	LPUINT64 qwCurrentTick = 0;
 	LOADED_DATA* pLoadedData = NULL;
 	typename MAP_ID_2_DATA::iterator itData;
 
@@ -538,7 +538,7 @@ BOOL LPAPI LPDataManger<T>::_Insert(LOADED_DATA_LIST* pLoadedDataList)
 
 	qwCurrentTick = lpGetTickCountEx();
 	INF("read %d / %d data in %s.txt successfully (cost %d ms %d ms %.2f MB)", nCounter, pLoadedDataList->nRowCount, m_szConfigName,
-		(INT_32)(qwCurrentTick - pLoadedDataList->qwStartTick), (INT_32)(qwCurrentTick - qwStartTick), (sizeof(T) + sizeof(void*) * 4) * nCounter / (1024 * 1024.0f));
+		(LPINT32)(qwCurrentTick - pLoadedDataList->qwStartTick), (LPINT32)(qwCurrentTick - qwStartTick), (sizeof(T) + sizeof(void*) * 4) * nCounter / (1024 * 1024.0f));
 
 #ifdef _DEBUG
 	if (nCounter < pLoadedDataList->nRowCount)
@@ -565,7 +565,7 @@ template<class T>
 template<class TFunc>
 BOOL LPAPI LPDataManger<T>::Traverse(TFunc & rFunc)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	typename MAP_ID_2_DATA::iterator it;
 
 	for (it = m_mapId2Data.begin(); it != m_mapId2Data.end(); ++it)

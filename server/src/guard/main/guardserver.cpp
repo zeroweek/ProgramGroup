@@ -18,7 +18,7 @@ CGuardServer::~CGuardServer()
 
 BOOL LPAPI CGuardServer::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(FALSE);
 
@@ -34,7 +34,7 @@ Exit0:
 
 BOOL LPAPI CGuardServer::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	SetServerState(eServerState_UnIniting);
 
@@ -56,12 +56,12 @@ BOOL LPAPI CGuardServer::MainLoop(void)
 	return TRUE;
 }
 
-UINT_32 LPAPI CGuardServer::GetServerState(void)
+LPUINT32 LPAPI CGuardServer::GetServerState(void)
 {
 	return m_dwServerState;
 }
 
-void CGuardServer::SetServerState(UINT_32 dwServerState)
+void CGuardServer::SetServerState(LPUINT32 dwServerState)
 {
 	m_dwServerState = dwServerState;
 }
@@ -75,7 +75,7 @@ void CGuardServer::Close(void)
 
 int main(int argc, char* argv[])
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	RedefinedConsole();
 

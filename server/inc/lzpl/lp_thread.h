@@ -17,7 +17,7 @@
 NS_LZPL_BEGIN
 
 
-typedef UINT_32 THREAD_ID;
+typedef LPUINT32 THREAD_ID;
 typedef HANDLE THREAD_HANDLE;
 typedef unsigned int (LPAPI *pfunThrdProc)(void *);
 
@@ -51,7 +51,7 @@ public:
 	//		等待线程结束
 	// Input:
 	//		dwWaitTime-等待时间，单位毫秒
-	void LPAPI Wait(UINT_32 dwWaitTime = INFINITE_VALUE);
+	void LPAPI Wait(LPUINT32 dwWaitTime = INFINITE_VALUE);
 
 	// Summary:
 	//		无

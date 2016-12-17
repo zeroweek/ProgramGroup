@@ -20,25 +20,25 @@ NS_LZPL_BEGIN
 //		睡眠函数，单位毫秒
 // Input:
 //		dwMicSeconds：睡眠的毫秒数
-DECLARE void LPAPI lpSleep(UINT_32 dwMicSeconds);
+DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds);
 
 
 
 // Summary:
 //		关闭套接字
-DECLARE INT_32 LPAPI lpShutDown(SOCKET s, INT_32 nHowTo);
+DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo);
 
 
 
 // Summary:
 //		关闭套接字
-DECLARE INT_32 LPAPI lpCloseSocket(SOCKET s);
+DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s);
 
 
 
 // Summary:
 //		关闭句柄
-DECLARE INT_32 LPAPI lpCloseHandle(HANDLE h);
+DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h);
 
 
 
@@ -110,13 +110,13 @@ DECLARE const char* LPAPI lpGetWorkingDir();
 //		获取执行路径
 // Return:
 //		执行路径
-DECLARE UINT_64 LPAPI lpGetTickCountEx();
+DECLARE LPUINT64 LPAPI lpGetTickCountEx();
 
 
 
 // Summary:
 //		获取系统启动运行的滴答数
-DECLARE UINT_64 LPAPI lpRdtsc(void);
+DECLARE LPUINT64 LPAPI lpRdtsc(void);
 
 
 
@@ -128,19 +128,19 @@ DECLARE void LPAPI lpINT3(void);
 
 // Summary:
 //		获取当前进程id
-DECLARE UINT_32 LPAPI lpGetCurrentProcessId();
+DECLARE LPUINT32 LPAPI lpGetCurrentProcessId();
 
 
 
 // Summary:
 //		获取当前线程id
-DECLARE UINT_32 LPAPI lpGetCurrentThreadId();
+DECLARE LPUINT32 LPAPI lpGetCurrentThreadId();
 
 
 
 // Summary:
 //		获取上一次错误码
-DECLARE INT_32 LPAPI lpGetLastError();
+DECLARE LPINT32 LPAPI lpGetLastError();
 
 
 

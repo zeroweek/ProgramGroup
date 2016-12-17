@@ -7,9 +7,9 @@
 NS_LZPL_BEGIN
 
 
-DECLARE UINT_8 LPAPI lpNumToHex(UINT_8 n, BOOL bCapital)
+DECLARE LPUINT8 LPAPI lpNumToHex(LPUINT8 n, BOOL bCapital)
 {
-	UINT_8 cResult = 0;
+	LPUINT8 cResult = 0;
 
 	LOG_PROCESS_ERROR(n < 16);
 
@@ -26,9 +26,9 @@ Exit0:
 	return cResult;
 }
 
-DECLARE UINT_8 LPAPI lpHexToNum(UINT_8 h)
+DECLARE LPUINT8 LPAPI lpHexToNum(LPUINT8 h)
 {
-	UINT_8 n = 0;
+	LPUINT8 n = 0;
 
 	if (h >= 'A' && h <= 'Z')
 	{

@@ -50,7 +50,7 @@ public:
 
 private:
 
-	void LPAPI _CreateDumpFile(EXCEPTION_POINTERS* pExceptionPointers, UINT_32 dwProcessId, UINT_32 dwThreadId);
+	void LPAPI _CreateDumpFile(EXCEPTION_POINTERS* pExceptionPointers, LPUINT32 dwProcessId, LPUINT32 dwThreadId);
 
 private:
 
@@ -68,7 +68,7 @@ private:
 	char                m_szDumpFloder[MAX_PATH];
 	pfunDumpCheckFunc   m_pDumpCheckFunc = NULL;
 
-	INT_32              m_nLastDumpIndex;
+	LPINT32              m_nLastDumpIndex;
 	LPTime              m_oLastDumpTime;
 
 };

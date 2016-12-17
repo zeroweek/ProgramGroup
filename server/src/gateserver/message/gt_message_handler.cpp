@@ -83,7 +83,7 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTMessageHandler::OnConnectError(ILPConnector * pConnector, UINT_32 dwErrorNo)
+void LPAPI CGTMessageHandler::OnConnectError(ILPConnector * pConnector, LPUINT32 dwErrorNo)
 {
 	LOG_PROCESS_ERROR(pConnector);
 
@@ -93,16 +93,16 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void LPAPI CGTMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
-	UINT_16 wMsgId = 0;
+	LPINT32 nResult = 0;
+	LPUINT16 wMsgId = 0;
 
 	LOG_PROCESS_ERROR(pSocker);
 	LOG_PROCESS_ERROR(pcszBuf);
 	LOG_PROCESS_ERROR(dwSize >= sizeof(wMsgId));
 
-	wMsgId = *(UINT_16*)(pcszBuf);
+	wMsgId = *(LPUINT16*)(pcszBuf);
 	CONVERT_MSG_ID_ENDIAN(wMsgId);
 
 	LOG_PROCESS_ERROR(wMsgId > min_internal_message && wMsgId < max_internal_message
@@ -161,7 +161,7 @@ Exit0:
 
 BOOL CGTMessageHandler::DoGSRegisterAck(ILPSocker* pSocker)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	T2G_REGISTER_ACK tMsg;
 	 
 	LOG_PROCESS_ERROR(pSocker);
@@ -183,9 +183,9 @@ Exit0:
 	return FALSE;
 }
 
-void CGTMessageHandler::OnGameServerRegister(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void CGTMessageHandler::OnGameServerRegister(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	G2T_REGISTER* ptMsg = NULL;
 
 	LOG_PROCESS_ERROR(pSocker);
@@ -207,7 +207,7 @@ Exit0:
 
 BOOL CGTMessageHandler::DoCLientLoginAck(ILPSocker * pSocker)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	T2C_LOGIN_ACK stMsg;
 
 	LOG_PROCESS_ERROR(pSocker);
@@ -247,9 +247,9 @@ Exit0:
 	return FALSE;
 }
 
-void CGTMessageHandler::OnClientLoginReq(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void CGTMessageHandler::OnClientLoginReq(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	C2T_LOGIN_REQ stMsg;
 
 	LOG_PROCESS_ERROR(pSocker);

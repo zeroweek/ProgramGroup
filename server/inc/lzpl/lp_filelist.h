@@ -22,7 +22,7 @@ struct DECLARE FILE_LIST
 {
 	static const int MAX_FILE_LIST_COUNT = 256;
 
-	UINT_32      dwSize;
+	LPUINT32      dwSize;
 	char*        szFiles[MAX_FILE_LIST_COUNT];
 
 	FILE_LIST()

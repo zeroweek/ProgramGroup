@@ -9,14 +9,14 @@ NS_LZPL_BEGIN
 
 static void lpsGlobalAssert()
 {
-	LPASSERT(sizeof(INT_8) == 1);
-	LPASSERT(sizeof(INT_16) == 2);
-	LPASSERT(sizeof(INT_32) == 4);
-	LPASSERT(sizeof(INT_64) == 8);
-	LPASSERT(sizeof(UINT_8) == 1);
-	LPASSERT(sizeof(UINT_16) == 2);
-	LPASSERT(sizeof(UINT_32) == 4);
-	LPASSERT(sizeof(UINT_64) == 8);
+	LPASSERT(sizeof(LPINT8) == 1);
+	LPASSERT(sizeof(LPINT16) == 2);
+	LPASSERT(sizeof(LPINT32) == 4);
+	LPASSERT(sizeof(LPINT64) == 8);
+	LPASSERT(sizeof(LPUINT8) == 1);
+	LPASSERT(sizeof(LPUINT16) == 2);
+	LPASSERT(sizeof(LPUINT32) == 4);
+	LPASSERT(sizeof(LPUINT64) == 8);
 }
 
 // Summary:
@@ -28,7 +28,7 @@ static void lpsGlobalAssert()
 //		TRUE-³É¹¦£¬FALSE-Ê§°Ü
 DECLARE BOOL LPAPI lpInitLzpl(LOG_CONFIG& stLogConfig)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	lpsGlobalAssert();
 

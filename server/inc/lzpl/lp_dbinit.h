@@ -21,7 +21,7 @@ NS_LZPL_BEGIN
 
 DECLARE BOOL LPAPI lpDBExist(MYSQL* pMysql, const char* pcszDBName);
 DECLARE BOOL LPAPI lpDBCreate(MYSQL* pMysql, const char* pcszDBName);
-DECLARE BOOL LPAPI lpDBUpdate(MYSQL* pMysql, const char* pcszDBName, const char* pcszDBPrefix, INT_32 nNewDBVersion);
+DECLARE BOOL LPAPI lpDBUpdate(MYSQL* pMysql, const char* pcszDBName, const char* pcszDBPrefix, LPINT32 nNewDBVersion);
 
 
 

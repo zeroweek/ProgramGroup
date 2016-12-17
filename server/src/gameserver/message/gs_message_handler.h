@@ -53,11 +53,11 @@ public:
 
 	// Summary:
 	//		无
-	virtual void LPAPI OnConnectError(ILPConnector* pConnector, UINT_32 dwErrorNo);
+	virtual void LPAPI OnConnectError(ILPConnector* pConnector, LPUINT32 dwErrorNo);
 
 	// Summary:
 	//		无
-	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 	// Summary:
 	//		无
@@ -75,27 +75,27 @@ public:
 	//		pLoopBuf：待解析数据缓冲区
 	// Return:
 	//		"<0"-解析错误，"=0"-不完整包，">0"-完整包长度
-	virtual INT_32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
+	virtual LPINT32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
 
 public:
 
 	BOOL DoGTRegister(ILPSocker* pSocker);
-	void OnGTRegisterAck(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	void OnGTRegisterAck(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 
 public:
 
 	void CloseAllSocker(void);
 
-	UINT_32 GetSockerCount(void);
+	LPUINT32 GetSockerCount(void);
 
 private:
 
-	typedef std::map<UINT_32, ILPSocker*>  MAP_SOCKER;
+	typedef std::map<LPUINT32, ILPSocker*>  MAP_SOCKER;
 	MAP_SOCKER                         m_mapSocker;
 	MAP_SOCKER::iterator               m_iterSocker;
 
-	typedef void (CGSMessageHandler::*pfunMessageCallback)(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	typedef void (CGSMessageHandler::*pfunMessageCallback)(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 	pfunMessageCallback                m_MessageCallbackList[max_internal_message_count];
 };
 

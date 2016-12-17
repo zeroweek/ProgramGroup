@@ -49,8 +49,8 @@ inline DECLARE size_t LPAPI lpUTF16ToUTF8(const wchar_t* pcszSrc, size_t tSrcLen
 	return lpWcharToUTF8(pcszSrc, tSrcLen, pszDst, tDstLen, UTF8_IGNORE_ERROR | UTF8_SKIP_BOM);
 }
 
-DECLARE BOOL LPAPI lpUTF8ToGB2312(const char *pText, UINT_32 dwSize, string &pOut);
-DECLARE BOOL LPAPI lpGB2312ToUTF8(const char *pText, UINT_32 dwSize, string& pOut);
+DECLARE BOOL LPAPI lpUTF8ToGB2312(const char *pText, LPUINT32 dwSize, string &pOut);
+DECLARE BOOL LPAPI lpGB2312ToUTF8(const char *pText, LPUINT32 dwSize, string& pOut);
 
 
 

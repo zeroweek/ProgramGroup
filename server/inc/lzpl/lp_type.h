@@ -11,36 +11,36 @@
 #include <stdint.h>
 
 
-#ifndef INT_8
-	typedef int8_t               INT_8;
+#ifndef LPINT8
+	typedef int8_t               LPINT8;
 #endif
 
-#ifndef INT_16
-	typedef int16_t              INT_16;
+#ifndef LPINT16
+	typedef int16_t              LPINT16;
 #endif
 
-#ifndef INT_32
-	typedef int32_t              INT_32;
+#ifndef LPINT32
+	typedef int32_t              LPINT32;
 #endif
 
-#ifndef INT_64
-	typedef int64_t              INT_64;
+#ifndef LPINT64
+	typedef int64_t              LPINT64;
 #endif
 
-#ifndef UINT_8
-	typedef uint8_t              UINT_8;
+#ifndef LPUINT8
+	typedef uint8_t              LPUINT8;
 #endif
 
-#ifndef UINT_16
-	typedef uint16_t             UINT_16;
+#ifndef LPUINT16
+	typedef uint16_t             LPUINT16;
 #endif
 
-#ifndef UINT_32
-	typedef uint32_t             UINT_32;
+#ifndef LPUINT32
+	typedef uint32_t             LPUINT32;
 #endif
 
-#ifndef UINT_64
-	typedef uint64_t              UINT_64;
+#ifndef LPUINT64
+	typedef uint64_t              LPUINT64;
 #endif
 
 #ifndef FLOAT
@@ -57,8 +57,8 @@
 
 
 #ifndef _WIN32
-	typedef UINT_32              SOCKET;
-	typedef INT_32               HANDLE
+	typedef LPUINT32              SOCKET;
+	typedef LPINT32               HANDLE
 #endif
 
 

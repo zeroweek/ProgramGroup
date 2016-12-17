@@ -34,7 +34,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void);
+	virtual LPUINT32 LPAPI QueryRef(void);
 
 	// Summary:
 	//		释放对象
@@ -46,11 +46,11 @@ public:
 	//		pLoopBuf：待解析数据缓冲区
 	// Return:
 	//		"<0"-解析错误，"=0"-不完整包，">0"-完整包长度
-	virtual INT_32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
+	virtual LPINT32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
 
 private:
 
-	UINT_32                       m_dwRef;
+	LPUINT32                       m_dwRef;
 	EXTERNAL_MESSAGE_HEADER       m_stMessageHead;
 };
 

@@ -20,7 +20,7 @@ NS_LZPL_BEGIN
 
 
 #define PRINTF_DATA_LIST(__print_type, __datalist__) \
-	for (UINT_32 i = 0; i < ##__datalist__.GetCount(); ++i)\
+	for (LPUINT32 i = 0; i < ##__datalist__.GetCount(); ++i)\
 	{\
 		E_DataType eDataType = ##__datalist__.Type(i);\
 		switch (eDataType)\
@@ -67,24 +67,24 @@ public:
 
 	virtual void LPAPI Clear() = 0;
 	virtual BOOL LPAPI IsEmpty() const = 0;
-	virtual UINT_32 LPAPI GetCount() const = 0;
-	virtual E_DataType LPAPI Type(const INT_32 nIndex) const = 0;
+	virtual LPUINT32 LPAPI GetCount() const = 0;
+	virtual E_DataType LPAPI Type(const LPINT32 nIndex) const = 0;
 
-	virtual BOOL LPAPI Add(const INT_64 value) = 0;
+	virtual BOOL LPAPI Add(const LPINT64 value) = 0;
 	virtual BOOL LPAPI Add(const FLOAT value) = 0;
 	virtual BOOL LPAPI Add(const DOUBLE value) = 0;
 	virtual BOOL LPAPI Add(const char* value) = 0;
 	virtual BOOL LPAPI Add(const std::string& value) = 0;
 
-	virtual INT_64 LPAPI Int64(const INT_32 nIndex) const = 0;
-	virtual FLOAT LPAPI Float(const INT_32 nIndex) const = 0;
-	virtual DOUBLE LPAPI Double(const INT_32 nIndex) const = 0;
-	virtual const std::string& LPAPI String(const INT_32 nIndex) const = 0;
+	virtual LPINT64 LPAPI Int64(const LPINT32 nIndex) const = 0;
+	virtual FLOAT LPAPI Float(const LPINT32 nIndex) const = 0;
+	virtual DOUBLE LPAPI Double(const LPINT32 nIndex) const = 0;
+	virtual const std::string& LPAPI String(const LPINT32 nIndex) const = 0;
 
 	virtual BOOL Concat(const ILPDataList& oSrc) = 0;
-	virtual BOOL Append(const ILPDataList& oSrc, UINT_32 dwStart, UINT_32 dwCount) = 0;
+	virtual BOOL Append(const ILPDataList& oSrc, LPUINT32 dwStart, LPUINT32 dwCount) = 0;
 
-	inline BOOL LPAPI Compare(const UINT_32 nPos, const ILPDataList& oSrc) const
+	inline BOOL LPAPI Compare(const LPUINT32 nPos, const ILPDataList& oSrc) const
 	{
 		LPASSERT(FALSE);
 		return FALSE;
@@ -102,7 +102,7 @@ public:
 	//{
 	//	if (oSrc.GetCount() == GetCount())
 	//	{
-	//		for (INT_32 i = 0; i < GetCount(); i++)
+	//		for (LPINT32 i = 0; i < GetCount(); i++)
 	//		{
 	//			if (FALSE == Compare(i, oSrc))
 	//			{
@@ -119,45 +119,45 @@ public:
 	//	return !(*this == oSrc);
 	//}
 
-	inline ILPDataList& operator<<(const INT_8 value)
+	inline ILPDataList& operator<<(const LPINT8 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const UINT_8 value)
+	inline ILPDataList& operator<<(const LPUINT8 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const INT_16 value)
+	inline ILPDataList& operator<<(const LPINT16 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const UINT_16 value)
+	inline ILPDataList& operator<<(const LPUINT16 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const INT_32 value)
+	inline ILPDataList& operator<<(const LPINT32 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const UINT_32 value)
+	inline ILPDataList& operator<<(const LPUINT32 value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 
-	inline ILPDataList& operator<<(const INT_64& value)
+	inline ILPDataList& operator<<(const LPINT64& value)
 	{
-		Add((INT_64)value);
+		Add((LPINT64)value);
 		return *this;
 	}
 

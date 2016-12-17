@@ -33,10 +33,10 @@ NS_LZPL_BEGIN
 //		LZPL组件版本结构定义，此结构描述一个组件的版本号信息
 struct MODULE_VERSION
 {
-	UINT_16 wMajorVer;
-	UINT_16 wMinorVer;
-	UINT_16 wCompatibleVer;
-	UINT_16 wBuildNo;
+	LPUINT16 wMajorVer;
+	LPUINT16 wMinorVer;
+	LPUINT16 wCompatibleVer;
+	LPUINT16 wBuildNo;
 };
 
 
@@ -71,7 +71,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void) = 0;
+	virtual LPUINT32 LPAPI QueryRef(void) = 0;
 
 	// Summary:
 	//		释放对象

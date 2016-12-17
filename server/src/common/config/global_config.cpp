@@ -15,8 +15,8 @@ char g_szGlobalConfigFileName[MAX_PATH] = "config/globalconfig/global_config.lua
 
 BOOL g_LoadGlobalConfig(const char* pcszFileName)
 {
-	INT_32 nResult = 0;
-	INT_32 nStackTop = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nStackTop = 0;
 
 	LPLuaScript oScript;
 	char szRootPath[MAX_PATH] = { 0 };

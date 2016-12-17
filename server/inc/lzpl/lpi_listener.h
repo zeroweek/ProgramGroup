@@ -34,7 +34,7 @@ public:
 	//		bReUseAddr: 是否重复利用地址
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI Start(const char* pcszIp, UINT_32 dwPort, BOOL bReUseAddr) = 0;
+	virtual BOOL LPAPI Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReUseAddr) = 0;
 
 	// Summary:
 	//		停止监听
@@ -42,7 +42,7 @@ public:
 
 	// Summary:
 	//		获取id
-	virtual UINT_32 LPAPI GetId() = 0;
+	virtual LPUINT32 LPAPI GetId() = 0;
 
 	// Summary:
 	//		释放

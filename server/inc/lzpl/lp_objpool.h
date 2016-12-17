@@ -58,10 +58,10 @@ public:
 	{
 	}
 
-	LPObjPool(UINT_32 dwNextCount, BOOL bMutex) : m_dwElemCount(0), m_dwNextCount(dwNextCount), 
+	LPObjPool(LPUINT32 dwNextCount, BOOL bMutex) : m_dwElemCount(0), m_dwNextCount(dwNextCount), 
 		m_dwUseCount(0), m_pstFreeNode(NULL), m_poLock(NULL), m_bInit(FALSE)
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 
 		nResult = _Init();
 		LOG_CHECK_ERROR(nResult);
@@ -75,9 +75,9 @@ public:
 		m_bInit = TRUE;
 	}
 
-	BOOL LPAPI Init(UINT_32 dwNextCount, BOOL bMutex)
+	BOOL LPAPI Init(LPUINT32 dwNextCount, BOOL bMutex)
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 
 		PROCESS_SUCCESS(m_bInit);
 
@@ -210,7 +210,7 @@ public:
 
 	BOOL LPAPI IsInThisPool(char* pt)
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 
 		if (NULL == m_poLock) m_poLock->Lock();
 		nResult = _IsInThisPool(pt);
@@ -219,12 +219,12 @@ public:
 		return nResult;
 	}
 
-	UINT_32 LPAPI GetMemorySize() const
+	LPUINT32 LPAPI GetMemorySize() const
 	{
 		return m_dwElemCount * (max(sizeof(T), sizeof(T*)));
 	}
 
-	UINT_32 LPAPI GetUseCount() const
+	LPUINT32 LPAPI GetUseCount() const
 	{
 		return m_dwUseCount;
 	}
@@ -244,7 +244,7 @@ private:
 
 	BOOL LPAPI _IsInThisPool(char* pt)
 	{
-		INT_32 nResult = FALSE;
+		LPINT32 nResult = FALSE;
 		const POOL_NODE* pNode = NULL;
 		LIST::const_iterator cit, end = m_list.end();
 
@@ -263,11 +263,11 @@ private:
 
 	BOOL LPAPI _Init()
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 		POOL_NODE* pstPoolNode = NULL;
 		MEM_NODE* pstMemNode = NULL;
-		const UINT_32 size_T = max(sizeof(T), sizeof(T*));
-		const UINT_32 size = size_T * m_dwNextCount;
+		const LPUINT32 size_T = max(sizeof(T), sizeof(T*));
+		const LPUINT32 size = size_T * m_dwNextCount;
 
 		LOG_PROCESS_ERROR(0 != size);
 
@@ -285,7 +285,7 @@ private:
 		m_pstFreeNode->next = NULL;
 		pstMemNode = m_pstFreeNode;
 
-		for (UINT_32 i = 0; i < m_dwNextCount - 1; ++i)
+		for (LPUINT32 i = 0; i < m_dwNextCount - 1; ++i)
 		{
 			pstMemNode->next = (MEM_NODE*)((char*)pstMemNode + sizeof(T));
 			pstMemNode = pstMemNode->next;
@@ -309,7 +309,7 @@ private:
 
 	T* LPAPI _Malloc()
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 		T* p = NULL;
 
 		if (NULL == m_pstFreeNode)
@@ -337,9 +337,9 @@ private:
 private:
 
 	BOOL                           m_bInit;
-	UINT_32                        m_dwElemCount;
-	UINT_32                        m_dwNextCount;
-	UINT_32                        m_dwUseCount;
+	LPUINT32                        m_dwElemCount;
+	LPUINT32                        m_dwNextCount;
+	LPUINT32                        m_dwUseCount;
 	LIST                           m_list;
 	MEM_NODE*                   m_pstFreeNode;
 	e_ObjPoolErr                   m_eLastErr;

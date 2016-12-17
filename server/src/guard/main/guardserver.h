@@ -29,8 +29,8 @@ public:
 
 	BOOL LPAPI MainLoop(void);
 
-	UINT_32 LPAPI GetServerState(void);
-	void SetServerState(UINT_32 dwServerState);
+	LPUINT32 LPAPI GetServerState(void);
+	void SetServerState(LPUINT32 dwServerState);
 
 	void Close(void);
 
@@ -48,7 +48,7 @@ private:
 
 	ILPNet*                          m_pNet;
 
-	UINT_32                          m_dwServerState;
+	LPUINT32                          m_dwServerState;
 
 };
 

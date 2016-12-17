@@ -3,7 +3,7 @@
 
 
 
-INT_32  g_MessageSize[INTERNAL_MESSAGE::max_internal_message_count];
+LPINT32  g_MessageSize[INTERNAL_MESSAGE::max_internal_message_count];
 
 CGSInternalPacketParser::CGSInternalPacketParser()
 {
@@ -19,7 +19,7 @@ void LPAPI CGSInternalPacketParser::AddRef(void)
 	++m_dwRef;
 }
 
-UINT_32 LPAPI CGSInternalPacketParser::QueryRef(void)
+LPUINT32 LPAPI CGSInternalPacketParser::QueryRef(void)
 {
 	return m_dwRef;
 }
@@ -36,11 +36,11 @@ void LPAPI CGSInternalPacketParser::Release(void)
 	}
 }
 
-INT_32 LPAPI CGSInternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGSInternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
 {
-	INT_32 nResult = 0;
-	UINT_16 wMsgId = 0;
-	INT_32 nParseCount = 0;
+	LPINT32 nResult = 0;
+	LPUINT16 wMsgId = 0;
+	LPINT32 nParseCount = 0;
 
 	LOG_PROCESS_ERROR(pLoopBuf);
 

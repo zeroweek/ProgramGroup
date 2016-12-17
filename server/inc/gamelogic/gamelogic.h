@@ -72,7 +72,7 @@ inline BT_NODE* CGameLogic::NewBTNode(void)
 
 inline BOOL CGameLogic::DelBTNode(BT_NODE* pNode)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_oBTNodePool.Free(pNode);
 

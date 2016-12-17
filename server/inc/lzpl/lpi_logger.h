@@ -156,15 +156,15 @@ struct LOG_CONFIG
 	char                szFileName[MAX_FILE_NAME];       //日志文件名
 	char                szModulePrefix[COMMON_NAME_LEN]; //日志信息模块前缀
 	BOOL                bWrithLock;                      //日志是否写加锁
-	UINT_32             dwLogMode;                       //日志模式
-	UINT_32             dwLogLevelConfig;                //日志等级配置
-	UINT_32             dwOutputMask;                    //日志输出掩码
+	LPUINT32             dwLogMode;                       //日志模式
+	LPUINT32             dwLogLevelConfig;                //日志等级配置
+	LPUINT32             dwOutputMask;                    //日志输出掩码
 
-	UINT_32             dwMaxLogLoopBufSize;             //文件日志缓冲区大小，默认=10*1024*1024
-	UINT_32             dwMaxLogSingleFileSize;          //文件日志单个文件最大容量，默认=10*1024*1024
-	UINT_32             dwMaxLogOneMsgSize;              //日志消息最大字节数，默认=4096
-	UINT_32             dwLogFlushInterval;              //日志flush间隔（单位/毫秒），默认=3000
-	INT_32              nTimezone;                       //时区
+	LPUINT32             dwMaxLogLoopBufSize;             //文件日志缓冲区大小，默认=10*1024*1024
+	LPUINT32             dwMaxLogSingleFileSize;          //文件日志单个文件最大容量，默认=10*1024*1024
+	LPUINT32             dwMaxLogOneMsgSize;              //日志消息最大字节数，默认=4096
+	LPUINT32             dwLogFlushInterval;              //日志flush间隔（单位/毫秒），默认=3000
+	LPINT32              nTimezone;                       //时区
 };
 
 
@@ -196,7 +196,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void) = 0;
+	virtual LPUINT32 LPAPI QueryRef(void) = 0;
 
 	// Summary:
 	//		释放
@@ -206,13 +206,13 @@ public:
 	//		记录日志
 	// Input:
 	//		pszLog：日志内容
-	virtual void LPAPI LogText(const char *pszLog, UINT_32 dwLen) = 0;
+	virtual void LPAPI LogText(const char *pszLog, LPUINT32 dwLen) = 0;
 
 	// Summary:
 	//		创建日志消息id
 	// Input:
 	//		pszLog：日志内容
-	virtual UINT_32 LPAPI CreateMsgId() = 0;
+	virtual LPUINT32 LPAPI CreateMsgId() = 0;
 
 };
 

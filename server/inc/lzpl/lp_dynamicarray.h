@@ -26,20 +26,20 @@ public:
 	LPDynamicArray();
 	~LPDynamicArray();
 
-	BOOL LPAPI Init(UINT_32 dwCap);
+	BOOL LPAPI Init(LPUINT32 dwCap);
 	BOOL LPAPI UnInit(void);
 
 	inline BOOL LPAPI Push(T data);
 
-	BOOL LPAPI ReSize(UINT_32 dwSize);
-	inline UINT_32 LPAPI Size(void);
+	BOOL LPAPI ReSize(LPUINT32 dwSize);
+	inline LPUINT32 LPAPI Size(void);
 
-	inline const T& LPAPI operator[](UINT_32 i) const;
-	inline T& LPAPI operator[](UINT_32 i);
+	inline const T& LPAPI operator[](LPUINT32 i) const;
+	inline T& LPAPI operator[](LPUINT32 i);
 
 private:
 
-	BOOL LPAPI _CheckCapacity(UINT_32 dwSize);
+	BOOL LPAPI _CheckCapacity(LPUINT32 dwSize);
 
 	LPDynamicArray(const LPDynamicArray&);
 	LPDynamicArray& operator=(const LPDynamicArray&);
@@ -48,8 +48,8 @@ private:
 private:
 
 	T*          m_pData;
-	UINT_32     m_dwSize;
-	UINT_32     m_dwCap;
+	LPUINT32     m_dwSize;
+	LPUINT32     m_dwCap;
 };
 
 template<class T>
@@ -63,16 +63,16 @@ inline LPDynamicArray<T>::LPDynamicArray()
 template<class T>
 inline LPDynamicArray<T>::~LPDynamicArray()
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = UnInit();
 	LOG_CHECK_ERROR(nResult);
 }
 
 template<class T>
-inline BOOL LPAPI LPDynamicArray<T>::Init(UINT_32 dwCap)
+inline BOOL LPAPI LPDynamicArray<T>::Init(LPUINT32 dwCap)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = _CheckCapacity(dwCap);
 	LOG_PROCESS_ERROR(nResult);
@@ -98,7 +98,7 @@ inline BOOL LPAPI LPDynamicArray<T>::UnInit(void)
 template<class T>
 inline BOOL LPAPI LPDynamicArray<T>::Push(T data)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = ReSize(m_dwSize + 1);
 	LOG_PROCESS_ERROR(nResult);
@@ -111,25 +111,25 @@ Exit0:
 }
 
 template<class T>
-inline UINT_32 LPAPI LPDynamicArray<T>::Size(void)
+inline LPUINT32 LPAPI LPDynamicArray<T>::Size(void)
 {
 	return m_dwSize;
 }
 
 template<class T>
-inline const T& LPAPI LPDynamicArray<T>::operator[](UINT_32 i) const
+inline const T& LPAPI LPDynamicArray<T>::operator[](LPUINT32 i) const
 {
 	return m_pData[i];
 }
 
 template<class T>
-inline T& LPAPI LPDynamicArray<T>::operator[](UINT_32 i)
+inline T& LPAPI LPDynamicArray<T>::operator[](LPUINT32 i)
 {
 	return m_pData[i];
 }
 
 template<class T>
-inline BOOL LPAPI LPDynamicArray<T>::_CheckCapacity(UINT_32 dwCap)
+inline BOOL LPAPI LPDynamicArray<T>::_CheckCapacity(LPUINT32 dwCap)
 {
 	T* pNewArray = NULL;
 
@@ -166,9 +166,9 @@ Exit0:
 }
 
 template<class T>
-BOOL LPAPI LPDynamicArray<T>::ReSize(UINT_32 dwSize)
+BOOL LPAPI LPDynamicArray<T>::ReSize(LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	T* pNewArray = NULL;
 
 	nResult = _CheckCapacity(dwSize);

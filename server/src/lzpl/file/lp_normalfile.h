@@ -49,7 +49,7 @@ public:
 	//		dwLen：长度
 	// Return:
 	//		成功读取的长度，如果不成功或读到文件末尾返回0
-	virtual UINT_32 LPAPI Read(void* pData, UINT_32 dwLen);
+	virtual LPUINT32 LPAPI Read(void* pData, LPUINT32 dwLen);
 
 	// Summary:
 	//		写数据，函数以二进制形式对文件进行操作，不局限于文本文件
@@ -58,7 +58,7 @@ public:
 	//		dwLen：长度
 	// Return:
 	//		成功写入的长度
-	virtual UINT_32 LPAPI Write(const void* pData, UINT_32 dwLen);
+	virtual LPUINT32 LPAPI Write(const void* pData, LPUINT32 dwLen);
 
 	// Summary:
 	//		文件读指针定位
@@ -67,13 +67,13 @@ public:
 	//		nOrigin：基准原位置
 	// Return:
 	//		成功读取的长度，如果不成功或读到文件末尾返回0
-	virtual BOOL LPAPI Seek(INT_32 nOffset, INT_32 nOrigin);
+	virtual BOOL LPAPI Seek(LPINT32 nOffset, LPINT32 nOrigin);
 
 	// Summary:
 	//		文件数据指针当前位置
 	// Return:
 	//		文件数据指针当前位置
-	virtual UINT_32 LPAPI Tell(void);
+	virtual LPUINT32 LPAPI Tell(void);
 
 	// Summary:
 	//		是否遇到文件尾
@@ -85,7 +85,7 @@ public:
 	//		文件大小
 	// Return:
 	//		文件的总大小
-	virtual UINT_32 LPAPI Size(void);
+	virtual LPUINT32 LPAPI Size(void);
 
 private:
 

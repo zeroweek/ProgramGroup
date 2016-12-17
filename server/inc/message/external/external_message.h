@@ -42,10 +42,10 @@ enum T2C_MESSAGE_ID
 
 struct DECLARE C2T_LOGIN_REQ : public EXTERNAL_MESSAGE_HEADER
 {
-	UINT_8     byValue;
-	UINT_16    wValue;
-	UINT_32    dwValue;
-	UINT_64    qwValue;
+	LPUINT8     byValue;
+	LPUINT16    wValue;
+	LPUINT32    dwValue;
+	LPUINT64    qwValue;
 	char       szValue[MAX_PATH];
 
 public:
@@ -57,10 +57,10 @@ public:
 
 struct DECLARE T2C_LOGIN_ACK : public EXTERNAL_MESSAGE_HEADER
 {
-	UINT_8     byValue;
-	UINT_16    wValue;
-	UINT_32    dwValue;
-	UINT_64    qwValue;
+	LPUINT8     byValue;
+	LPUINT16    wValue;
+	LPUINT32    dwValue;
+	LPUINT64    qwValue;
 	char       szValue[MAX_PATH];
 
 	virtual BOOL LPAPI Serialize(ILPMessageSerializer* pMessageSerializer);

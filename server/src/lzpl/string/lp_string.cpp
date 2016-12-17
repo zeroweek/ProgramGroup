@@ -9,7 +9,7 @@ NS_LZPL_BEGIN
 
 std::string NULL_STR = "";
 
-DECLARE void LPAPI lpPathFilter(char * pszPath, UINT_32 dwMaxLen)
+DECLARE void LPAPI lpPathFilter(char * pszPath, LPUINT32 dwMaxLen)
 {
 	char* p = pszPath;
 	PROCESS_ERROR(pszPath);
@@ -96,7 +96,7 @@ DECLARE size_t LPAPI lpStrCatN(char * dst, const char * src, size_t size)
 	return dst - d - 1;
 }
 
-DECLARE BOOL LPAPI lpStrCharCheck(const char* pcszSrc, e_CharCheckType eCharCheckType, INT_32 nMaxLen, BOOL bIsEmptyMeet)
+DECLARE BOOL LPAPI lpStrCharCheck(const char* pcszSrc, e_CharCheckType eCharCheckType, LPINT32 nMaxLen, BOOL bIsEmptyMeet)
 {
 	PROCESS_ERROR(pcszSrc != NULL);
 	PROCESS_ERROR(eCharCheckType_None < eCharCheckType && eCharCheckType < eCharCheckType_Max);
@@ -106,7 +106,7 @@ DECLARE BOOL LPAPI lpStrCharCheck(const char* pcszSrc, e_CharCheckType eCharChec
 		return bIsEmptyMeet;
 	}
 
-	for (INT_32 i = nMaxLen; i != 0; --i)
+	for (LPINT32 i = nMaxLen; i != 0; --i)
 	{
 		PROCESS_SUCCESS('\0' == *pcszSrc);
 
@@ -151,9 +151,9 @@ Exit0:
 	return FALSE;
 }
 
-LPString::LPString(UINT_32 dwSize, bool bAutoExtend)
+LPString::LPString(LPUINT32 dwSize, bool bAutoExtend)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 
 	nResult = Init(dwSize, bAutoExtend);
 	LOG_CHECK_ERROR(nResult);
@@ -168,7 +168,7 @@ LPString::~LPString()
 	UnInit();
 }
 
-BOOL LPAPI LPString::Init(UINT_32 dwSize, bool bAutoExtend)
+BOOL LPAPI LPString::Init(LPUINT32 dwSize, bool bAutoExtend)
 {
 	if (dwSize < 1)
 	{
@@ -206,14 +206,14 @@ void LPAPI LPString::Reset()
 	}
 }
 
-BOOL LPAPI LPString::CheckExtend(UINT_32 dwWillAddSize)
+BOOL LPAPI LPString::CheckExtend(LPUINT32 dwWillAddSize)
 {
 	PROCESS_SUCCESS(m_dwDataSize + dwWillAddSize <= m_dwCapacity);
 
 	//多出1个字节，放终止符，方便读取
 	//数据量大时，尽量保证申请的字符串大小是512的倍数
-	UINT_32 dwMul = (UINT_32)(dwWillAddSize * 1.0 / m_dwCapacity + 1);
-	UINT_32 dwAddSize = dwMul * (m_dwCapacity + 1);
+	LPUINT32 dwMul = (LPUINT32)(dwWillAddSize * 1.0 / m_dwCapacity + 1);
+	LPUINT32 dwAddSize = dwMul * (m_dwCapacity + 1);
 	char* pBuf = new char[dwAddSize + m_dwCapacity + 1];
 	LOG_PROCESS_ERROR(pBuf != NULL);
 
@@ -232,14 +232,14 @@ Exit0:
 	return FALSE;
 }
 
-UINT_32 LPAPI LPString::GetFreeSize()
+LPUINT32 LPAPI LPString::GetFreeSize()
 {
 	return m_dwCapacity - m_dwDataSize;
 }
 
-BOOL LPAPI LPString::Read(LPString& oDstStr, UINT_32 dwDstStartPos, UINT_32 dwSrcStartPos, UINT_32 dwReadLen)
+BOOL LPAPI LPString::Read(LPString& oDstStr, LPUINT32 dwDstStartPos, LPUINT32 dwSrcStartPos, LPUINT32 dwReadLen)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 
 	nResult = oDstStr.Insert(dwDstStartPos, *this, dwSrcStartPos, dwReadLen);
 	LOG_PROCESS_ERROR(nResult);
@@ -249,7 +249,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPString::Read(char* pszDst, UINT_32 dwDstStartPos, UINT_32 dwDstMaxLen, UINT_32 dwStartPos, UINT_32 dwReadLen, BOOL bNullTerminate)
+BOOL LPAPI LPString::Read(char* pszDst, LPUINT32 dwDstStartPos, LPUINT32 dwDstMaxLen, LPUINT32 dwStartPos, LPUINT32 dwReadLen, BOOL bNullTerminate)
 {
 	LOG_PROCESS_ERROR(dwStartPos + dwReadLen <= m_dwDataSize);
 
@@ -293,7 +293,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPString::Append(const char* pszSrc, UINT_32 dwStartPos, UINT_32 dwLen)
+BOOL LPAPI LPString::Append(const char* pszSrc, LPUINT32 dwStartPos, LPUINT32 dwLen)
 {
 	if (m_bAutoExtend)
 	{
@@ -313,7 +313,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPString::Append(LPString& oStr, UINT_32 dwStartPos, UINT_32 dwLen)
+BOOL LPAPI LPString::Append(LPString& oStr, LPUINT32 dwStartPos, LPUINT32 dwLen)
 {
 	if (m_bAutoExtend)
 	{
@@ -335,7 +335,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPString::Insert(UINT_32 dwDstStartPos, LPString& oSrcStr, UINT_32 dwSrcStartPos, UINT_32 dwLen)
+BOOL LPAPI LPString::Insert(LPUINT32 dwDstStartPos, LPString& oSrcStr, LPUINT32 dwSrcStartPos, LPUINT32 dwLen)
 {
 	LOG_PROCESS_ERROR(dwDstStartPos <= m_dwDataSize);
 
@@ -359,7 +359,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPString::Insert(UINT_32 dwDstStartPos, const char* pszSrc, UINT_32 dwSrcStartPos, UINT_32 dwLen)
+BOOL LPAPI LPString::Insert(LPUINT32 dwDstStartPos, const char* pszSrc, LPUINT32 dwSrcStartPos, LPUINT32 dwLen)
 {
 	LOG_PROCESS_ERROR(pszSrc != NULL);
 	LOG_PROCESS_ERROR(dwDstStartPos <= m_dwDataSize);
@@ -386,9 +386,9 @@ char* LPAPI LPString::GetData()
 	return m_pBuf;
 }
 
-DECLARE std::string LPAPI lpSerializeToString(UINT_32 nMaxLen, const char * format, ...)
+DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char* pszBuf = nullptr;
 
 	if (nullptr == format || nMaxLen == 0)

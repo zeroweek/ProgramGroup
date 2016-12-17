@@ -8,7 +8,7 @@ NS_LZPL_BEGIN
 
 DECLARE ILPFile *LPAPI lpFileOpen(const char * pcszFileName, const char * pcszMode)
 {
-	INT_32 nRetCode = 0;
+	LPINT32 nRetCode = 0;
 	ILPFile* pFile = NULL;
 
 	LOG_PROCESS_ERROR(pcszFileName);
@@ -29,7 +29,7 @@ Exit0:
 
 DECLARE BOOL LPAPI lpFileIsExist(const char * pcszFileName)
 {
-	INT_32 nRetCode = 0;
+	LPINT32 nRetCode = 0;
 	FILE* fp = NULL;
 
 	LOG_PROCESS_ERROR(pcszFileName);
@@ -56,7 +56,7 @@ LPNormalFile::~LPNormalFile()
 
 BOOL LPAPI LPNormalFile::Init(const char * pcszFileName, const char * pcszMode)
 {
-	INT_32 nRetCode = 0;
+	LPINT32 nRetCode = 0;
 
 	LOG_PROCESS_ERROR(pcszFileName);
 	LOG_PROCESS_ERROR(pcszMode);
@@ -88,27 +88,27 @@ void LPAPI LPNormalFile::Close(void)
 	delete this;
 }
 
-UINT_32 LPAPI LPNormalFile::Read(void * pData, UINT_32 dwLen)
+LPUINT32 LPAPI LPNormalFile::Read(void * pData, LPUINT32 dwLen)
 {
 	LOG_PROCESS_ERROR(pData);
 
-	return (UINT_32)fread(pData, 1, dwLen, m_pFile);
+	return (LPUINT32)fread(pData, 1, dwLen, m_pFile);
 
 Exit0:
 	return 0;
 }
 
-UINT_32 LPAPI LPNormalFile::Write(const void * pData, UINT_32 dwLen)
+LPUINT32 LPAPI LPNormalFile::Write(const void * pData, LPUINT32 dwLen)
 {
 	LOG_PROCESS_ERROR(pData);
 
-	return (UINT_32)fwrite(pData, 1, dwLen, m_pFile);
+	return (LPUINT32)fwrite(pData, 1, dwLen, m_pFile);
 
 Exit0:
 	return 0;
 }
 
-BOOL LPAPI LPNormalFile::Seek(INT_32 nOffset, INT_32 nOrigin)
+BOOL LPAPI LPNormalFile::Seek(LPINT32 nOffset, LPINT32 nOrigin)
 {
 	LOG_PROCESS_ERROR(m_pFile);
 
@@ -118,7 +118,7 @@ Exit0:
 	return FALSE;
 }
 
-UINT_32 LPAPI LPNormalFile::Tell(void)
+LPUINT32 LPAPI LPNormalFile::Tell(void)
 {
 	LOG_PROCESS_ERROR(m_pFile);
 
@@ -138,11 +138,11 @@ BOOL LPAPI LPNormalFile::Eof(void)
 	return TRUE;
 }
 
-UINT_32 LPAPI LPNormalFile::Size(void)
+LPUINT32 LPAPI LPNormalFile::Size(void)
 {
-	INT_32 nRetCode = 0;
-	UINT_32 dwSize = 0;
-	UINT_32 dwCurrentPos = 0;
+	LPINT32 nRetCode = 0;
+	LPUINT32 dwSize = 0;
+	LPUINT32 dwCurrentPos = 0;
 
 	LOG_PROCESS_ERROR(m_pFile);
 

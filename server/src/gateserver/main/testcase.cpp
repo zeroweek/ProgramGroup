@@ -5,7 +5,7 @@
 
 struct TC_TEST_SIMPLE_LIST_NODE : SIMPLE_LIST_NODE
 {
-	INT_32 nIndex;
+	LPINT32 nIndex;
 
 	TC_TEST_SIMPLE_LIST_NODE()
 	{
@@ -15,7 +15,7 @@ struct TC_TEST_SIMPLE_LIST_NODE : SIMPLE_LIST_NODE
 
 BOOL TC_TestSimpleList(void)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 	LPSimpleList oSimpleList;
 
 	TC_TEST_SIMPLE_LIST_NODE* tNode0 = nullptr;
@@ -180,7 +180,7 @@ Exit0:
 
 struct TC_TEST_STACK_LIST_NODE : STACK_LIST_NODE
 {
-	INT_32 nIndex;
+	LPINT32 nIndex;
 
 	TC_TEST_STACK_LIST_NODE()
 	{
@@ -190,7 +190,7 @@ struct TC_TEST_STACK_LIST_NODE : STACK_LIST_NODE
 
 BOOL TC_TestStackList(void)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 	LPStackList oStackList;
 
 	TC_TEST_STACK_LIST_NODE* tNode0 = nullptr;
@@ -354,10 +354,10 @@ Exit0:
 }
 
 #define PROPERTY_CB_DEF(__index__) \
-	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const UINT_32& dwPropertyID, const ILPDataList& oldVar, const ILPDataList& newVar, const ILPDataList& nullVar)\
+	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const LPUINT32& dwPropertyID, const ILPDataList& oldVar, const ILPDataList& newVar, const ILPDataList& nullVar)\
 	{\
-		const INT_64 nOldValue = oldVar.Int64(0);\
-		const INT_64 nNewValue = newVar.Int64(0);\
+		const LPINT64 nOldValue = oldVar.Int64(0);\
+		const LPINT64 nNewValue = newVar.Int64(0);\
 		INF("PropertyCB"#__index__"  \n-> Owner: %s, PropertyID: %d OldValue: " FMT_I64 " NewValue: " FMT_I64,\
 			oOwner.ToString().c_str(), dwPropertyID, nOldValue, nNewValue);\
 		return TRUE;\
@@ -373,7 +373,7 @@ PROPERTY_CB_DEF(7)
 
 BOOL TC_TestPropertyCallBack(void)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 	LPIDENTID oOwner(1, 2);
 	ILPProperty* poProperty = nullptr;
 
@@ -402,17 +402,17 @@ Exit0:
 #include "lp_property.h"
 BOOL TC_TestNewDeleteProperty(void)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 	ILPProperty* poPropertyArray = nullptr;
 	LPNormalPropertyFactory oNormalPropertyFactory;
 	
 	LPProperty* pPropertyArray = new LPProperty[100];
-	INT_32 nSize1 = sizeof(pPropertyArray[0]);
+	LPINT32 nSize1 = sizeof(pPropertyArray[0]);
 
-	INT_32 nSize4 = sizeof(LPBaseList);
-	INT_32 nSize5 = sizeof(LPSimpleList);
-	INT_32 nSize6 = sizeof(LPStackList);
-	INT_32 nSize7 = sizeof(BASE_LIST_NODE);
+	LPINT32 nSize4 = sizeof(LPBaseList);
+	LPINT32 nSize5 = sizeof(LPSimpleList);
+	LPINT32 nSize6 = sizeof(LPStackList);
+	LPINT32 nSize7 = sizeof(BASE_LIST_NODE);
 
 	std::string strTest1 = "Test1";
 	std::string strTest2 = "Test2";
@@ -422,9 +422,9 @@ BOOL TC_TestNewDeleteProperty(void)
 
 	std::vector<LPProperty> vecProperty;
 	vecProperty.resize(100);
-	INT_32 nSize2 = sizeof(vecProperty);
+	LPINT32 nSize2 = sizeof(vecProperty);
 	ILPProperty& oProperty = vecProperty[0];
-	INT_32 nSize3 = sizeof(vecProperty[0]);
+	LPINT32 nSize3 = sizeof(vecProperty[0]);
 	LPIDENTID oOwner(0, 0);
 	nResult = oProperty.Init(oOwner, 1, eDataType_Int64);
 	LOG_PROCESS_ERROR(nResult);

@@ -18,8 +18,8 @@ struct AI_TEMPLATE
 {
 	LPLuaScript*      poScript;
 	BT_NODE*          pTreeList[btetAIEnd - btetAIBegin];
-	UINT_32           dwScriptCRC;
-	UINT_32           dwDataCRC;
+	LPUINT32           dwScriptCRC;
+	LPUINT32           dwDataCRC;
 
 };
 
@@ -34,14 +34,14 @@ public:
 
 	BOOL Reload(void);
 
-	inline const AI_TEMPLATE* GetTemplate(INT_32 nAIID);
+	inline const AI_TEMPLATE* GetTemplate(LPINT32 nAIID);
 
 private:
 
 	struct CLoadAIData
 	{
-		INT_32    m_nFailCount;
-		INT_32    m_nDataIndex;
+		LPINT32    m_nFailCount;
+		LPINT32    m_nDataIndex;
 		BOOL operator()(const AI_DATA* pAIData);
 	};
 
@@ -53,10 +53,10 @@ private:
 private:
 
 	AI_TEMPLATE           m_TemplateData[2][AI_MAX_ID];
-	INT_32                   m_nCurUsingTemplateDataIndex;
+	LPINT32                   m_nCurUsingTemplateDataIndex;
 };
 
-inline const AI_TEMPLATE* CAIManager::GetTemplate(INT_32 nAIID)
+inline const AI_TEMPLATE* CAIManager::GetTemplate(LPINT32 nAIID)
 {
 	return NULL;
 }

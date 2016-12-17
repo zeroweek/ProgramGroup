@@ -44,13 +44,13 @@ LPShareMemory::~LPShareMemory()
 {
 }
 
-BOOL LPAPI LPShareMemory::Init(const char* pcszName, UINT_64 qwSize)
+BOOL LPAPI LPShareMemory::Init(const char* pcszName, LPUINT64 qwSize)
 {
-	INT_32 nResult = 0;
-	UINT_32 dwHighSize = 0;
-	UINT_32 dwLowSize = 0;
+	LPINT32 nResult = 0;
+	LPUINT32 dwHighSize = 0;
+	LPUINT32 dwLowSize = 0;
 	SHARE_MEM_HEADER* pHeader = NULL;
-	UINT_32 dwLastError = 0;
+	LPUINT32 dwLastError = 0;
 
 #ifdef _WIN32
 
@@ -59,8 +59,8 @@ BOOL LPAPI LPShareMemory::Init(const char* pcszName, UINT_64 qwSize)
 	m_qwSize = qwSize;
 	lpStrCpyN(m_szName, pcszName, COMMON_NAME_LEN);
 
-	dwHighSize = (UINT_32)(qwSize >> 32);
-	dwLowSize = (UINT_32)(qwSize & 0x00000000ffffffff);
+	dwHighSize = (LPUINT32)(qwSize >> 32);
+	dwLowSize = (LPUINT32)(qwSize & 0x00000000ffffffff);
 	m_hHandle = ::CreateFileMapping(
 		INVALID_HANDLE_VALUE,
 		NULL,
@@ -142,7 +142,7 @@ BOOL LPAPI LPShareMemory::IsNew(void)
 	return m_bNew;
 }
 
-UINT_64 LPAPI LPShareMemory::Size(void)
+LPUINT64 LPAPI LPShareMemory::Size(void)
 {
 	return m_qwSize - sizeof(SHARE_MEM_HEADER);
 }

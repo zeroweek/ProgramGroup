@@ -22,7 +22,7 @@ DECLARE void LPAPI lpProfileStart(void);
 
 // Summary;
 //		none
-DECLARE void LPAPI lpProfilePoint(INT_32 nPid, INT_32 nLine, const char* pcszMsg);
+DECLARE void LPAPI lpProfilePoint(LPINT32 nPid, LPINT32 nLine, const char* pcszMsg);
 
 // Summary;
 //		none

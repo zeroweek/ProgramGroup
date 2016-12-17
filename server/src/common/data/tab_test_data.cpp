@@ -10,7 +10,7 @@ Exit0:
 	return;
 }
 
-BOOL TAB_TEST_DATA::ReadLine(INT_32 & rnId, TAB_TEST_DATA * pData, LPTabFile * pTabFile, INT_32 nRow)
+BOOL TAB_TEST_DATA::ReadLine(LPINT32 & rnId, TAB_TEST_DATA * pData, LPTabFile * pTabFile, LPINT32 nRow)
 {
 	READ_DATA_START();
 

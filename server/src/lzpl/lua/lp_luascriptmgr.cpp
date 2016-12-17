@@ -24,7 +24,7 @@ LPLuaScriptMgr::~LPLuaScriptMgr()
 
 BOOL LPAPI LPLuaScriptMgr::Init(const char * pcszRootPath)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pcszRootPath);
 
@@ -60,9 +60,9 @@ BOOL LPAPI LPLuaScriptMgr::UnInit(void)
 	return TRUE;
 }
 
-BOOL LPAPI LPLuaScriptMgr::Reload(INT_32 & nErrorCount)
+BOOL LPAPI LPLuaScriptMgr::Reload(LPINT32 & nErrorCount)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_bReload = FALSE;
 	nErrorCount = 0;
@@ -85,7 +85,7 @@ BOOL LPAPI LPLuaScriptMgr::Reload(INT_32 & nErrorCount)
 
 BOOL LPAPI LPLuaScriptMgr::Reload(const char * pcszSciptName)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPLuaScript* poScript = NULL;
 	MAP_NAME_2_SCRIPT::iterator it;
 
@@ -106,7 +106,7 @@ Exit0:
 
 LPLuaScript *LPAPI LPLuaScriptMgr::NewScript(const char * pcszSciptName)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 	char szFileName[MAX_FILE_NAME];
 	LPLuaScript* poScript = NULL;
 	std::pair<MAP_NAME_2_SCRIPT::iterator, bool> InsRet;
@@ -244,9 +244,9 @@ const char *LPAPI LPLuaScriptMgr::GetRootPath(void)
 	return m_szRootPath;
 }
 
-INT_64 LPAPI LPLuaScriptMgr::PrintMemoryStat(void)
+LPINT64 LPAPI LPLuaScriptMgr::PrintMemoryStat(void)
 {
-	INT_64 qwTotalSize = 0;
+	LPINT64 qwTotalSize = 0;
 
 	for (MAP_NAME_2_SCRIPT::iterator it = m_mapScript.begin();
 		it != m_mapScript.end(); ++it)
@@ -263,7 +263,7 @@ INT_64 LPAPI LPLuaScriptMgr::PrintMemoryStat(void)
 	return qwTotalSize;
 }
 
-INT_32 LPLuaScriptMgr::_LoadPackage(lua_State * L)
+LPINT32 LPLuaScriptMgr::_LoadPackage(lua_State * L)
 {
 	const char* pcszPackageName = NULL;
 	lua_CFunction pLoadPackage = NULL;

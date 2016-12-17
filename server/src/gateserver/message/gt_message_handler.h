@@ -56,11 +56,11 @@ public:
 
 	// Summary:
 	//		нч
-	virtual void LPAPI OnConnectError(ILPConnector* pConnector, UINT_32 dwErrorNo);
+	virtual void LPAPI OnConnectError(ILPConnector* pConnector, LPUINT32 dwErrorNo);
 
 	// Summary:
 	//		нч
-	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 	// Summary:
 	//		нч
@@ -74,13 +74,13 @@ public:
 public:
 
 	BOOL DoGSRegisterAck(ILPSocker* pSocker);
-	void OnGameServerRegister(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	void OnGameServerRegister(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 
 public:
 
 	BOOL DoCLientLoginAck(ILPSocker* pSocker);
-	void OnClientLoginReq(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	void OnClientLoginReq(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 
 public:
@@ -92,11 +92,11 @@ private:
 	LPExternalMessageSerializer      m_oRecvMessageSerializer;
 	LPExternalMessageSerializer      m_oSendMessageSerializer;
 
-	typedef std::map<UINT_32, ILPSocker*>  MAP_SOCKER;
+	typedef std::map<LPUINT32, ILPSocker*>  MAP_SOCKER;
 	MAP_SOCKER                       m_mapSocker;
 	MAP_SOCKER::iterator             m_iterSocker;
 
-	typedef void (CGTMessageHandler::*pfunMessageCallback)(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	typedef void (CGTMessageHandler::*pfunMessageCallback)(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 	pfunMessageCallback              m_MessageCallbackList[max_internal_message_count];
 };
 

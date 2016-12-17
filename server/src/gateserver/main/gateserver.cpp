@@ -40,7 +40,7 @@ CGateServer::~CGateServer()
 
 BOOL LPAPI CGateServer::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_CONFIG stNetConfig;
 
 	SetServerState(eServerState_Initing);
@@ -93,7 +93,7 @@ Exit0:
 
 BOOL LPAPI CGateServer::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	SetServerState(eServerState_UnIniting);
 
@@ -125,7 +125,7 @@ BOOL LPAPI CGateServer::UnInit(void)
 
 BOOL LPAPI CGateServer::MainLoop(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_pNet->Run(30);
 	if (nResult)
@@ -136,12 +136,12 @@ BOOL LPAPI CGateServer::MainLoop(void)
 	return TRUE;
 }
 
-UINT_32 LPAPI CGateServer::GetServerState(void)
+LPUINT32 LPAPI CGateServer::GetServerState(void)
 {
 	return m_dwServerState;
 }
 
-void CGateServer::SetServerState(UINT_32 dwServerState)
+void CGateServer::SetServerState(LPUINT32 dwServerState)
 {
 	m_dwServerState = dwServerState;
 }
@@ -205,9 +205,9 @@ Exit0:
 
 BOOL _Test_DumpCheckFunc(void)
 {
-	static UINT_32 s_dwLastCheckTime = 0;
+	static LPUINT32 s_dwLastCheckTime = 0;
 
-	UINT_32 dwTime = (UINT_32)time(NULL);
+	LPUINT32 dwTime = (LPUINT32)time(NULL);
 	if (dwTime > s_dwLastCheckTime + 3)
 	{
 		s_dwLastCheckTime = dwTime;
@@ -219,17 +219,17 @@ BOOL _Test_DumpCheckFunc(void)
 
 BOOL _Test_UrlCode(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	const char szStr[] = "1-_.~( )";
 	char szBuf1[12] = { 0 };
 	char szBuf2[8] = { 0 };
 
-	UINT_32 dwBuf1Size = 0;
-	UINT_32 dwBuf2Size = 0;
+	LPUINT32 dwBuf1Size = 0;
+	LPUINT32 dwBuf2Size = 0;
 
 	dwBuf1Size = sizeof(szBuf1);
-	nResult = lpUrlEncode(szStr, (UINT_32)strlen(szStr), szBuf1, dwBuf1Size, eUrlCode_Standard);
+	nResult = lpUrlEncode(szStr, (LPUINT32)strlen(szStr), szBuf1, dwBuf1Size, eUrlCode_Standard);
 	LOG_PROCESS_ERROR(nResult);
 
 	dwBuf2Size = sizeof(szBuf2);
@@ -243,17 +243,17 @@ Exit0:
 
 BOOL _Test_Base64(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	const char szStr[] = "4F60597D";
 	char szBuf1[100] = { 0 };
 	char szBuf2[100] = { 0 };
 
-	UINT_32 dwBuf1Size = 0;
-	UINT_32 dwBuf2Size = 0;
+	LPUINT32 dwBuf1Size = 0;
+	LPUINT32 dwBuf2Size = 0;
 
 	dwBuf1Size = sizeof(szBuf1);
-	nResult = lpBase64Encode(szStr, (UINT_32)strlen(szStr), szBuf1, dwBuf1Size, eBase64Code_Standard);
+	nResult = lpBase64Encode(szStr, (LPUINT32)strlen(szStr), szBuf1, dwBuf1Size, eBase64Code_Standard);
 	LOG_PROCESS_ERROR(nResult);
 
 	dwBuf2Size = sizeof(szBuf2);
@@ -266,11 +266,11 @@ Exit0:
 }
 
 static char gs_szHttpMessage[] = "GET /{\"id\":1} HTTP/1.1\r\n";
-BOOL LPAPI _Test_ParseHttpMessage(const char * pcszBuf, UINT_32 dwSize)
+BOOL LPAPI _Test_ParseHttpMessage(const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
-	INT_32 nIndex = 0;
-	INT_32 nIndexTemp = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nIndex = 0;
+	LPINT32 nIndexTemp = 0;
 	BOOL bGetMethod = FALSE;
 	BOOL bPostMethod = FALSE;
 	LPHttpObject* pHttpObject = NULL;
@@ -282,7 +282,7 @@ BOOL LPAPI _Test_ParseHttpMessage(const char * pcszBuf, UINT_32 dwSize)
 
 	char method[8];
 	char* pTempBuf = NULL;
-	INT_32 nTempBufSize = 0;
+	LPINT32 nTempBufSize = 0;
 	const char* pFindStr = NULL;
 
 	LOG_PROCESS_ERROR(pcszBuf);
@@ -331,7 +331,7 @@ BOOL LPAPI _Test_ParseHttpMessage(const char * pcszBuf, UINT_32 dwSize)
 	}
 	LOG_PROCESS_ERROR(pFindStr > pcszBuf + nIndex);
 
-	nTempBufSize = (INT_32)(pFindStr - pcszBuf - nIndex + 1 + 1);
+	nTempBufSize = (LPINT32)(pFindStr - pcszBuf - nIndex + 1 + 1);
 	pTempBuf = new char[nTempBufSize];
 	LOG_PROCESS_ERROR(pTempBuf);
 	memset(pTempBuf, 0, nTempBufSize);
@@ -373,46 +373,46 @@ BOOL LPAPI _Test_MD5(void)
 #define _TEST_MAP_COUNT_             (1000000)
 BOOL LPAPI _Test_Map(void)
 {
-	UINT_32 dwFindValue = 0;
-	std::map<UINT_32, UINT_32> mapID2ID;
-	std::unordered_map<UINT_32, UINT_32> mapUnorderID2ID;
-	std::set<UINT_32> setID;
-	std::unordered_set<UINT_32> setUnorderID;
+	LPUINT32 dwFindValue = 0;
+	std::map<LPUINT32, LPUINT32> mapID2ID;
+	std::unordered_map<LPUINT32, LPUINT32> mapUnorderID2ID;
+	std::set<LPUINT32> setID;
+	std::unordered_set<LPUINT32> setUnorderID;
 
 	cout << "profile start ..." << endl;
 
 	PROFILE_START();
 
 	PROFILE_POINT(1);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		mapID2ID.insert(std::make_pair(i + 1, i + 1));
 	}
 	PROFILE_POINT(1);
 
 	PROFILE_POINT(2);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
-		mapUnorderID2ID.insert(std::pair<UINT_32, UINT_32>(i + 1, i + 1));
+		mapUnorderID2ID.insert(std::pair<LPUINT32, LPUINT32>(i + 1, i + 1));
 	}
 	PROFILE_POINT(2);
 
 	PROFILE_POINT(3);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		setID.insert(i + 1);
 	}
 	PROFILE_POINT(3);
 
 	PROFILE_POINT(4);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		setUnorderID.insert(i + 1);
 	}
 	PROFILE_POINT(4);
 
 	PROFILE_POINT(6);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		auto fit = mapID2ID.find(i + 1);
 		if (fit != mapID2ID.end())
@@ -424,7 +424,7 @@ BOOL LPAPI _Test_Map(void)
 
 
 	PROFILE_POINT(7);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		auto fit = mapUnorderID2ID.find(i + 1);
 		if (fit != mapUnorderID2ID.end())
@@ -436,7 +436,7 @@ BOOL LPAPI _Test_Map(void)
 
 
 	PROFILE_POINT(8);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		auto fit = setID.find(i + 1);
 		if (fit != setID.end())
@@ -448,7 +448,7 @@ BOOL LPAPI _Test_Map(void)
 
 
 	PROFILE_POINT(9);
-	for (UINT_32 i = 0; i < _TEST_MAP_COUNT_; ++i)
+	for (LPUINT32 i = 0; i < _TEST_MAP_COUNT_; ++i)
 	{
 		auto fit = setUnorderID.find(i + 1);
 		if (fit != setUnorderID.end())
@@ -467,7 +467,7 @@ BOOL LPAPI _Test_Map(void)
 
 BOOL _Test_ConvertCode(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	string sUtf8;
 	string sGB2312;
 	char szGB2312[1024] = "Äã";
@@ -486,7 +486,7 @@ Exit0:
 
 BOOL _Test_FileList(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	FILE_LIST fileList;
 
@@ -501,7 +501,7 @@ Exit0:
 
 BOOL _Test_ShareMem(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LPShareMemory oShareMemory;
 
@@ -525,13 +525,13 @@ Exit0:
 
 BOOL _Test_Time(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LPTime::GlobalInit(8);
 	LPTime nowTime = LPTime::GetNowTime();
-	UINT_64 qwNowTimestamp = LPTime::GetNowTimetamp();
+	LPUINT64 qwNowTimestamp = LPTime::GetNowTimetamp();
 	LPTime nowUTCTime = LPTime::GetNowUTCTime();
-	UINT_64 qwNowUTCTimestamp = LPTime::GetNowUTCTimestamp();
+	LPUINT64 qwNowUTCTimestamp = LPTime::GetNowUTCTimestamp();
 
 	LPTime tempTime = nowTime;
 	nResult = tempTime.SecEqualTo(nowTime);
@@ -548,9 +548,9 @@ Exit0:
 
 BOOL _Test_WhileWriteLog(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
-	INT_32 nIndex = 0;
+	LPINT32 nIndex = 0;
 	while (true)
 	{
 		lpSleep(100);
@@ -565,7 +565,7 @@ Exit0:
 
 BOOL _Test_ConsoleColor(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	DBG("This is a INF message.");
 	WRN("This is a WRN message.");
@@ -583,7 +583,7 @@ Exit0:
 
 BOOL _Test_String(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPString str = LPString(2, true);
 
 	nResult = str.Append("abcdefghijklmnopqrstuvwxyz", 0, 3);
@@ -603,7 +603,7 @@ Exit0:
 
 BOOL _Test_VarData(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPString str = LPString(2, true);
 	std::string strTemp = NULL_STR;
 
@@ -659,7 +659,7 @@ Exit0:
 
 BOOL _Test_DataList(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	//LPDataList oDataList;
 	LPDataList oDataList2;
@@ -680,7 +680,7 @@ BOOL _Test_DataList(void)
 	//PRINTF_DATA_LIST(IMP, oDataList4);
 
 	//
-	//INT_64 lData = oDataList.Int64(0);
+	//LPINT64 lData = oDataList.Int64(0);
 	//FLOAT fData = oDataList.Float(1);
 	//DOUBLE dData = oDataList.Double(2);
 	//std::string strData = oDataList.String(3);
@@ -693,10 +693,10 @@ Exit0:
 
 BOOL _Test_Temp(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
-	std::map<UINT_32, UINT_32> mapTest1;
-	std::map<UINT_32, std::string> mapTest2;
+	std::map<LPUINT32, LPUINT32> mapTest1;
+	std::map<LPUINT32, std::string> mapTest2;
 	std::map<std::string, std::string> mapTest3;
 
 	nResult = sizeof(mapTest1);
@@ -711,7 +711,7 @@ Exit0:
 
 BOOL _Test(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = _Test_Temp();
 	LOG_PROCESS_ERROR(nResult);
@@ -725,7 +725,7 @@ Exit0:
 
 int main(int argc, char* argv[])
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LOG_CONFIG stLogConfig;
 	LPLuaScript* pScript = NULL;
 	LPLuaScriptMgr* pScriptMgr = NULL;

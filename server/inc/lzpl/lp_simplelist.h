@@ -46,7 +46,7 @@ public:
 
 	inline void LPAPI Clear(void);
 	inline BOOL LPAPI IsEmpty(void) const;
-	inline UINT_32 LPAPI Size(void) const;
+	inline LPUINT32 LPAPI Size(void) const;
 
 	inline BOOL LPAPI Append(SIMPLE_LIST_NODE* pstNode);
 	inline SIMPLE_LIST_NODE* LPAPI Head(void) const;
@@ -59,7 +59,7 @@ public:
 
 private:
 
-	UINT_32               m_dwSize;
+	LPUINT32               m_dwSize;
 	SIMPLE_LIST_NODE      m_stTop;
 	SIMPLE_LIST_NODE*     m_ptRear;
 };
@@ -98,7 +98,7 @@ inline BOOL LPAPI LPSimpleList::IsEmpty(void) const
 	return m_stTop.pstNext == nullptr;
 }
 
-inline UINT_32 LPAPI LPSimpleList::Size(void) const
+inline LPUINT32 LPAPI LPSimpleList::Size(void) const
 {
 	return m_dwSize;
 }

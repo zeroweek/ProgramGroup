@@ -46,7 +46,7 @@ public:
 
 	inline void LPAPI Clear(void);
 	inline BOOL LPAPI IsEmpty(void);
-	inline UINT_32 LPAPI Size(void) const;
+	inline LPUINT32 LPAPI Size(void) const;
 
 	inline BOOL LPAPI Push(STACK_LIST_NODE* pstNode);
 	inline STACK_LIST_NODE* LPAPI Pop(void);
@@ -59,7 +59,7 @@ public:
 
 private:
 
-	UINT_32               m_dwSize;
+	LPUINT32               m_dwSize;
 	STACK_LIST_NODE       m_stTop;
 };
 
@@ -96,7 +96,7 @@ inline BOOL LPAPI LPStackList::IsEmpty(void)
 	return m_stTop.pstNext == nullptr;
 }
 
-inline UINT_32 LPAPI LPStackList::Size(void) const
+inline LPUINT32 LPAPI LPStackList::Size(void) const
 {
 	return m_dwSize;
 }

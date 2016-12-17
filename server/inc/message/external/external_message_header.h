@@ -28,8 +28,8 @@ NS_EXTERNAL_MESSAGE_BEGIN
 #define MESSAGE_SERIALIZE_BEGIN(_class) \
 	BOOL LPAPI _class::Serialize(ILPMessageSerializer * pMessageSerializer)\
 	{\
-		INT_32 nResult = 0;\
-		UINT_16 wSize = 0;\
+		LPINT32 nResult = 0;\
+		LPUINT16 wSize = 0;\
 		char* pBuf = NULL;\
 		LOG_PROCESS_ERROR(pMessageSerializer);
 
@@ -42,7 +42,7 @@ NS_EXTERNAL_MESSAGE_BEGIN
 		LOG_PROCESS_ERROR(nResult);
 
 #define MESSAGE_WRITE_STRING_VALUE(_str) \
-		nResult = pMessageSerializer->WriteString(_str, (UINT_32)strlen(_str), MAX_PATH);\
+		nResult = pMessageSerializer->WriteString(_str, (LPUINT32)strlen(_str), MAX_PATH);\
 		LOG_PROCESS_ERROR(nResult);
 
 #define MESSAGE_SERIALIZE_END\
@@ -50,8 +50,8 @@ NS_EXTERNAL_MESSAGE_BEGIN
 		LOG_PROCESS_ERROR(pBuf);\
 		wSize = pMessageSerializer->GetSerializeSize();\
 		LOG_PROCESS_ERROR(wSize >= 4);\
-		*(UINT_8*)(pBuf + 2) = wSize >> 8;\
-		*(UINT_8*)(pBuf + 3) = (wSize << 8) >> 8;\
+		*(LPUINT8*)(pBuf + 2) = wSize >> 8;\
+		*(LPUINT8*)(pBuf + 3) = (wSize << 8) >> 8;\
 		return TRUE;\
 		Exit0:\
 		return FALSE;\
@@ -60,7 +60,7 @@ NS_EXTERNAL_MESSAGE_BEGIN
 #define MESSAGE_UNSERIALIZE_BEGIN(_class) \
 	BOOL LPAPI _class::UnSerialize(ILPMessageSerializer * pMessageSerializer)\
 	{\
-		INT_32 nResult = 0;\
+		LPINT32 nResult = 0;\
 		LOG_PROCESS_ERROR(pMessageSerializer);
 
 #define MESSAGE_PARENT_UNSERIALIZE(_parent_class)\
@@ -89,8 +89,8 @@ NS_EXTERNAL_MESSAGE_BEGIN
 //		消息接口类
 struct DECLARE EXTERNAL_MESSAGE_HEADER
 {
-	UINT_16   wMsgId;       // 消息id
-	UINT_16   wMsgSize;     // 
+	LPUINT16   wMsgId;       // 消息id
+	LPUINT16   wMsgSize;     // 
 
 public:
 

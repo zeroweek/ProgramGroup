@@ -30,7 +30,7 @@ CGameLogic::~CGameLogic()
 
 BOOL LPAPI CGameLogic::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	lpStrCpyN(m_szConfigPath, g_GlobalConfig.Server.Gl.szConfigPath, MAX_PATH);
 	
@@ -61,7 +61,7 @@ Exit0:
 
 BOOL LPAPI CGameLogic::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = CAIManager::Instance().UnInit();
 	LOG_CHECK_ERROR(nResult);
@@ -80,7 +80,7 @@ BOOL LPAPI CGameLogic::UnInit(void)
 
 BOOL LPAPI CGameLogic::MainLoop(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	lpSleep(1);
 
@@ -89,7 +89,7 @@ BOOL LPAPI CGameLogic::MainLoop(void)
 
 BOOL LPAPI CGameLogic::_InitObjPool(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_oBTNodePool.Init(1000, TRUE);
 	LOG_PROCESS_ERROR(nResult);
@@ -101,7 +101,7 @@ Exit0:
 
 BOOL LPAPI CGameLogic::_InitScript(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = LPLuaScriptMgr::Instance().Init(g_GlobalConfig.Server.Gl.szConfigPath);
 	LOG_PROCESS_ERROR(nResult);
@@ -122,7 +122,7 @@ Exit0:
 
 BOOL LPAPI CGameLogic::_UnInitScript(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = LPLuaScriptMgr::Instance().UnInit();
 	LOG_CHECK_ERROR(nResult);
@@ -132,7 +132,7 @@ BOOL LPAPI CGameLogic::_UnInitScript(void)
 
 BOOL LPAPI CGameLogic::_InitSettingData(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char szFilePath[MAX_PATH];
 
 	sprintf_s(szFilePath, MAX_PATH, "%s/%s", GetConfigPath(), DATA_FLODER_NAME);
@@ -152,7 +152,7 @@ Exit0:
 
 BOOL LPAPI CGameLogic::_UnInitSettingData(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = LPDataManger<TAB_TEST_DATA>::Instance().UnInit();
 	LOG_CHECK_ERROR(nResult);

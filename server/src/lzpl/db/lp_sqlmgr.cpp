@@ -43,13 +43,13 @@ BOOL LPAPI LPSqlMgr::Init(
 	const char * pcszPwd, 
 	const char * pcszDbName, 
 	const char * pcszCharSet, 
-	UINT_32 dwServerPort, 
+	LPUINT32 dwServerPort, 
 	SQL_STMT_DATA* pSqlStmtList, 
-	INT_32 nSqlStmtCount, 
-	INT_32 nThreadCount)
+	LPINT32 nSqlStmtCount, 
+	LPINT32 nThreadCount)
 {
 
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSqlStmt* pSqlStmt = NULL;
 
 	LOG_PROCESS_ERROR(pcszServerAddr);
@@ -73,7 +73,7 @@ BOOL LPAPI LPSqlMgr::Init(
 	m_pSqlStmtPool = new LPBaseList[m_nSqlStmtCount];
 	LOG_PROCESS_ERROR(m_pSqlStmtPool);
 
-	for (INT_32 nIndex = 0; nIndex < m_nSqlStmtCount; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < m_nSqlStmtCount; ++nIndex)
 	{
 		LOG_PROCESS_ERROR(nIndex == m_pSqlStmtList[nIndex].nSqlStmtId);
 
@@ -81,10 +81,10 @@ BOOL LPAPI LPSqlMgr::Init(
 		LOG_PROCESS_ERROR(nResult);
 	}
 
-	for (INT_32 nSqlStmtId = 0; nSqlStmtId < m_nSqlStmtCount; ++nSqlStmtId)
+	for (LPINT32 nSqlStmtId = 0; nSqlStmtId < m_nSqlStmtCount; ++nSqlStmtId)
 	{
 		m_pSqlStmtPool[nSqlStmtId].Clear();
-		for (INT_32 nIndex = 0; nIndex < SQL_PREALLOCATE_STMT_COUNT; ++nIndex)
+		for (LPINT32 nIndex = 0; nIndex < SQL_PREALLOCATE_STMT_COUNT; ++nIndex)
 		{
 			pSqlStmt = new LPSqlStmt();
 			LOG_PROCESS_ERROR(pSqlStmt);
@@ -109,7 +109,7 @@ BOOL LPAPI LPSqlMgr::Init(
 	m_bStopThread = FALSE;
 	m_nThreadCount = nThreadCount;
 	m_pThread = new std::thread*[m_nThreadCount];
-	for (INT_32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
 	{
 		nResult = m_PushList[nIndex].Init(SQL_MAX_DB_QUERY_COUNT);
 		LOG_PROCESS_ERROR(nResult);
@@ -136,17 +136,17 @@ Exit0:
 
 BOOL LPAPI LPSqlMgr::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_bStopThread = TRUE;
-	for (INT_32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
 	{
 		m_pThread[nIndex]->join();
 		SAFE_DELETE(m_pThread[nIndex]);
 	}
 	SAFE_DELETE_SZ(m_pThread);
 
-	for (INT_32 nIndex = 0; nIndex < m_nSqlStmtCount; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < m_nSqlStmtCount; ++nIndex)
 	{
 		BASE_LIST_FOR_BEGIN(m_pSqlStmtPool[nIndex])
 		{
@@ -175,9 +175,9 @@ BOOL LPAPI LPSqlMgr::UnInit(void)
 
 BOOL LPAPI LPSqlMgr::MainLoop(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
-	for (INT_32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
+	for (LPINT32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
 	{
 		while (m_PopList[nIndex].CanPop())
 		{
@@ -199,7 +199,7 @@ Exit0:
 	return TRUE;
 }
 
-BOOL LPAPI LPSqlMgr::AsyncExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, ...)
+BOOL LPAPI LPSqlMgr::AsyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, ...)
 {
 	va_list valist;
 	LPSqlStmt* pSqlStmt = NULL;
@@ -216,9 +216,9 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPSqlMgr::SyncExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, ...)
+BOOL LPAPI LPSqlMgr::SyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	va_list valist;
 	LPSqlStmt* pSqlStmt = NULL;
 	BOOL bCompleted = FALSE;
@@ -232,7 +232,7 @@ BOOL LPAPI LPSqlMgr::SyncExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnC
 
 	while (!bCompleted)
 	{
-		for (INT_32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
+		for (LPINT32 nIndex = 0; nIndex < m_nThreadCount; ++nIndex)
 		{
 			while (m_PopList[nIndex].CanPop())
 			{
@@ -261,7 +261,7 @@ Exit0:
 	return FALSE;
 }
 
-const SQL_STMT_DATA* LPAPI LPSqlMgr::GetSqlStmtData(INT_32 nSqlStmtId)
+const SQL_STMT_DATA* LPAPI LPSqlMgr::GetSqlStmtData(LPINT32 nSqlStmtId)
 {
 	LOG_PROCESS_ERROR(nSqlStmtId >= 0 && nSqlStmtId < m_nSqlStmtCount);
 
@@ -273,7 +273,7 @@ Exit0:
 
 BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	const char* pcszSql = NULL;
 	BOOL bParamEscaped = FALSE;
 	BOOL bResultEscaped = FALSE;
@@ -323,14 +323,14 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 				if (bParamEscaped)
 				{
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_TINY;
-					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(INT_8);
+					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(LPINT8);
 					pSqlStmtData->nParamBufSize += pSqlStmtData->nParamSize[pSqlStmtData->nParamCount];
 					pSqlStmtData->nParamCount++;
 				}
 				else if(bResultEscaped)
 				{
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_TINY;
-					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(INT_8);
+					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(LPINT8);
 					pSqlStmtData->nResultBufSize += pSqlStmtData->nResultSize[pSqlStmtData->nResultCount];
 					pSqlStmtData->nResultCount++;
 				}
@@ -341,14 +341,14 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 				if (bParamEscaped)
 				{
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_SHORT;
-					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(INT_16);
+					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(LPINT16);
 					pSqlStmtData->nParamBufSize += pSqlStmtData->nParamSize[pSqlStmtData->nParamCount];
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
 				{
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_SHORT;
-					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(INT_16);
+					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(LPINT16);
 					pSqlStmtData->nResultBufSize += pSqlStmtData->nResultSize[pSqlStmtData->nResultCount];
 					pSqlStmtData->nResultCount++;
 				}
@@ -359,14 +359,14 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 				if (bParamEscaped)
 				{
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_LONG;
-					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(INT_32);
+					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(LPINT32);
 					pSqlStmtData->nParamBufSize += pSqlStmtData->nParamSize[pSqlStmtData->nParamCount];
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
 				{
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_LONG;
-					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(INT_32);
+					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(LPINT32);
 					pSqlStmtData->nResultBufSize += pSqlStmtData->nResultSize[pSqlStmtData->nResultCount];
 					pSqlStmtData->nResultCount++;
 				}
@@ -377,14 +377,14 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 				if (bParamEscaped)
 				{
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_LONGLONG;
-					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(INT_64);
+					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = sizeof(LPINT64);
 					pSqlStmtData->nParamBufSize += pSqlStmtData->nParamSize[pSqlStmtData->nParamCount];
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
 				{
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_LONGLONG;
-					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(INT_64);
+					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = sizeof(LPINT64);
 					pSqlStmtData->nResultBufSize += pSqlStmtData->nResultSize[pSqlStmtData->nResultCount];
 					pSqlStmtData->nResultCount++;
 				}
@@ -397,7 +397,7 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_STRING;
 					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = atoi(pcszSql + 1) + 1;
 					LOG_PROCESS_ERROR(pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] > 0);
-					pSqlStmtData->nParamBufSize += (sizeof(UINT_32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
+					pSqlStmtData->nParamBufSize += (sizeof(LPUINT32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
@@ -417,7 +417,7 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_BLOB;
 					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = atoi(pcszSql + 1);
 					LOG_PROCESS_ERROR(pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] > 0);
-					pSqlStmtData->nParamBufSize += (sizeof(UINT_32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
+					pSqlStmtData->nParamBufSize += (sizeof(LPUINT32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
@@ -425,7 +425,7 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_BLOB;
 					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = atoi(pcszSql + 1);
 					LOG_PROCESS_ERROR(pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] > 0);
-					pSqlStmtData->nResultBufSize += (sizeof(UINT_32) + pSqlStmtData->nResultSize[pSqlStmtData->nResultCount]);
+					pSqlStmtData->nResultBufSize += (sizeof(LPUINT32) + pSqlStmtData->nResultSize[pSqlStmtData->nResultCount]);
 					pSqlStmtData->nResultCount++;
 				}
 			}
@@ -437,7 +437,7 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 					pSqlStmtData->nParamType[pSqlStmtData->nParamCount] = MYSQL_TYPE_LONG_BLOB;
 					pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] = atoi(pcszSql + 1);       // 还是使用原来buf的最大大小，超出概率小？
 					LOG_PROCESS_ERROR(pSqlStmtData->nParamSize[pSqlStmtData->nParamCount] > 0);
-					pSqlStmtData->nParamBufSize += (sizeof(UINT_32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
+					pSqlStmtData->nParamBufSize += (sizeof(LPUINT32) + pSqlStmtData->nParamSize[pSqlStmtData->nParamCount]);
 					pSqlStmtData->nParamCount++;
 				}
 				else if (bResultEscaped)
@@ -445,7 +445,7 @@ BOOL LPAPI LPSqlMgr::_ParseSqlStmt(SQL_STMT_DATA* pSqlStmtData)
 					pSqlStmtData->nResultType[pSqlStmtData->nResultCount] = MYSQL_TYPE_LONG_BLOB;
 					pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] = atoi(pcszSql + 1);
 					LOG_PROCESS_ERROR(pSqlStmtData->nResultSize[pSqlStmtData->nResultCount] > 0);
-					pSqlStmtData->nResultBufSize += (sizeof(UINT_32) + pSqlStmtData->nResultSize[pSqlStmtData->nResultCount]);
+					pSqlStmtData->nResultBufSize += (sizeof(LPUINT32) + pSqlStmtData->nResultSize[pSqlStmtData->nResultCount]);
 					pSqlStmtData->nResultCount++;
 				}
 			}
@@ -507,9 +507,9 @@ Exit0:
 	return FALSE;
 }
 
-LPSqlStmt *LPAPI LPSqlMgr::_NewSqlStmt(INT_32 nSqlStmtId)
+LPSqlStmt *LPAPI LPSqlMgr::_NewSqlStmt(LPINT32 nSqlStmtId)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSqlStmt* pSqlStmt = NULL;
 
 	LOG_PROCESS_ERROR(nSqlStmtId >= 0 && nSqlStmtId < m_nSqlStmtCount);
@@ -546,7 +546,7 @@ Exit0:
 
 BOOL LPAPI LPSqlMgr::_DelSqlStmt(LPSqlStmt * pSqlStmt)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pSqlStmt);
 	LOG_PROCESS_ERROR(pSqlStmt->m_pSqlStmtData);
@@ -569,9 +569,9 @@ Exit0:
 	return FALSE;
 }
 
-LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, va_list valist)
+LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void * pUserData, const char * pcszFormat, va_list valist)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LPSqlStmt* pSqlStmt = NULL;
 	BOOL bUnsigned = FALSE;
 
@@ -591,13 +591,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback p
 			{
 				if (bUnsigned)
 				{
-					UINT_8 ucValue = va_arg(valist, UINT_8);
+					LPUINT8 ucValue = va_arg(valist, LPUINT8);
 					nResult = pSqlStmt->PushParam(ucValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					INT_8 cValue = va_arg(valist, INT_8);
+					LPINT8 cValue = va_arg(valist, LPINT8);
 					nResult = pSqlStmt->PushParam(cValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
@@ -609,13 +609,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback p
 			{
 				if (bUnsigned)
 				{
-					UINT_16 uhValue = va_arg(valist, UINT_16);
+					LPUINT16 uhValue = va_arg(valist, LPUINT16);
 					nResult = pSqlStmt->PushParam(uhValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					INT_16 hValue = va_arg(valist, INT_16);
+					LPINT16 hValue = va_arg(valist, LPINT16);
 					nResult = pSqlStmt->PushParam(hValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
@@ -627,13 +627,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback p
 			{
 				if (bUnsigned)
 				{
-					UINT_32 udValue = va_arg(valist, UINT_32);
+					LPUINT32 udValue = va_arg(valist, LPUINT32);
 					nResult = pSqlStmt->PushParam(udValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					INT_32 dValue = va_arg(valist, INT_32);
+					LPINT32 dValue = va_arg(valist, LPINT32);
 					nResult = pSqlStmt->PushParam(dValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
@@ -645,13 +645,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback p
 			{
 				if (bUnsigned)
 				{
-					UINT_64 ulValue = va_arg(valist, UINT_64);
+					LPUINT64 ulValue = va_arg(valist, LPUINT64);
 					nResult = pSqlStmt->PushParam(ulValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					INT_64 lValue = va_arg(valist, INT_64);
+					LPINT64 lValue = va_arg(valist, LPINT64);
 					nResult = pSqlStmt->PushParam(lValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
@@ -677,16 +677,16 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback p
 			break;
 		case 'b':
 			{
-				UINT_8* pucValue = va_arg(valist, UINT_8*);
-				UINT_32 dwValueSize = va_arg(valist, UINT_32);
+				LPUINT8* pucValue = va_arg(valist, LPUINT8*);
+				LPUINT32 dwValueSize = va_arg(valist, LPUINT32);
 				nResult = pSqlStmt->PushParam(pucValue, dwValueSize);
 				LOG_PROCESS_ERROR(nResult);
 			}
 			break;
 		case 'z':
 			{
-				UINT_8* pucValue = va_arg(valist, UINT_8*);
-				UINT_32 dwValueSize = va_arg(valist, UINT_32);
+				LPUINT8* pucValue = va_arg(valist, LPUINT8*);
+				LPUINT32 dwValueSize = va_arg(valist, LPUINT32);
 				nResult = pSqlStmt->PushParamZ(pucValue, dwValueSize);
 				LOG_PROCESS_ERROR(nResult);
 			}
@@ -733,15 +733,15 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 {
 	struct SQL_THREAD_DATA
 	{
-		UINT_8*     pucBuf;
+		LPUINT8*     pucBuf;
 		MYSQL_STMT* pStmt;
 		MYSQL_BIND* pParamBind;
 		MYSQL_BIND* pResultBind;
 
 	};
 
-	INT_32                   nResult = 0;
-	INT_32                   nThreadIndex = 0;
+	LPINT32                   nResult = 0;
+	LPINT32                   nThreadIndex = 0;
 	BOOL                     bInited = FALSE;
 	MYSQL*                   pMysql = NULL;
 	LPSqlMgr*                pSqlMgr = NULL;
@@ -785,9 +785,9 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 			LOG_PROCESS_ERROR(pstThreadData);
 			memset(pstThreadData, 0, sizeof(SQL_THREAD_DATA) * pSqlMgr->m_nSqlStmtCount);
 
-			for (INT_32 nStmtIndex = 0; nStmtIndex < pSqlMgr->m_nSqlStmtCount; ++nStmtIndex)
+			for (LPINT32 nStmtIndex = 0; nStmtIndex < pSqlMgr->m_nSqlStmtCount; ++nStmtIndex)
 			{
-				INT_32 nBufSize = 0;
+				LPINT32 nBufSize = 0;
 				SQL_STMT_DATA* pstSqlStmtData = pSqlMgr->m_pSqlStmtList + nStmtIndex;
 
 				pstThreadData[nStmtIndex].pStmt = mysql_stmt_init(pMysql);
@@ -796,7 +796,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 				nResult = mysql_stmt_prepare(pstThreadData[nStmtIndex].pStmt, pstSqlStmtData->szQuery, pstSqlStmtData->nQuerySize);
 				LOG_PROCESS_ERROR(0 == nResult);
 
-				pstThreadData[nStmtIndex].pucBuf = new UINT_8[pstSqlStmtData->nBufSize];
+				pstThreadData[nStmtIndex].pucBuf = new LPUINT8[pstSqlStmtData->nBufSize];
 				LOG_PROCESS_ERROR(pstThreadData[nStmtIndex].pucBuf);
 
 				nResult = mysql_stmt_param_count(pstThreadData[nStmtIndex].pStmt);
@@ -808,7 +808,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 					LOG_PROCESS_ERROR(pstThreadData[nStmtIndex].pParamBind);
 					memset(pstThreadData[nStmtIndex].pParamBind, 0, sizeof(MYSQL_BIND) * pstSqlStmtData->nParamCount);
 
-					for (INT_32 nParamIndex = 0; nParamIndex < pstSqlStmtData->nParamCount; ++ nParamIndex)
+					for (LPINT32 nParamIndex = 0; nParamIndex < pstSqlStmtData->nParamCount; ++ nParamIndex)
 					{
 						pstThreadData[nStmtIndex].pParamBind[nParamIndex].buffer_type = (enum_field_types)pstSqlStmtData->nParamType[nParamIndex];
 
@@ -849,7 +849,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 
 					//<UNDONE>...
 					nBufSize = 0;
-					for (INT_32 nResultIndex = 0; nResultIndex < pstSqlStmtData->nResultCount; ++nResultIndex)
+					for (LPINT32 nResultIndex = 0; nResultIndex < pstSqlStmtData->nResultCount; ++nResultIndex)
 					{
 						pstThreadData[nStmtIndex].pResultBind[nResultIndex].buffer_type = (enum_field_types)pstSqlStmtData->nResultType[nResultIndex];
 
@@ -881,7 +881,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 
 		if (pSqlMgr->m_PushList[nThreadIndex].Check() && bInited)
 		{
-			INT_32 nSqlStmtId = 0;
+			LPINT32 nSqlStmtId = 0;
 			LPSqlStmt* pSqlStmt = (LPSqlStmt*)pSqlMgr->m_PushList[nThreadIndex].Check();
 			LOG_PROCESS_ERROR(pSqlStmt);
 			LOG_PROCESS_ERROR(pSqlStmt->m_pSqlStmtData);
@@ -891,7 +891,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 			if (pSqlStmt->m_nExecuteCount > SQL_MAX_RETRY_COUNT)
 			{
 				char szDumpData[SQL_MAX_PARAM_BUFFER_SIZE * 2];
-				for (INT_32 nIndex = 0; nIndex < pSqlStmt->m_nParamBufSize; ++nIndex)
+				for (LPINT32 nIndex = 0; nIndex < pSqlStmt->m_nParamBufSize; ++nIndex)
 				{
 					if (nIndex % 2 == 0)
 					{
@@ -925,11 +925,11 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 			{
 				LOG_CHECK_ERROR(MYSQL_DATA_TRUNCATED != nResult);
 
-				void* pData = new UINT_8[pSqlStmt->m_pSqlStmtData->nResultBufSize];
+				void* pData = new LPUINT8[pSqlStmt->m_pSqlStmtData->nResultBufSize];
 				LOG_PROCESS_ERROR(pData);
 
 				bool bHasZBlob = false;
-				for (INT_32 nResultIndex = 0; nResultIndex < pSqlStmt->m_pSqlStmtData->nResultCount; ++nResultIndex)
+				for (LPINT32 nResultIndex = 0; nResultIndex < pSqlStmt->m_pSqlStmtData->nResultCount; ++nResultIndex)
 				{
 					if ((enum_field_types)pSqlStmt->m_pSqlStmtData->nResultType[nResultIndex] == MYSQL_TYPE_LONG_BLOB)
 					{
@@ -940,11 +940,11 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 
 				if (bHasZBlob)
 				{
-					INT_32 nBufSize = 0;
+					LPINT32 nBufSize = 0;
 					unsigned long ulActualZipLength = 0;
 					unsigned long* pZBlobLength = 0;
 
-					for (INT_32 nResultIndex = 0; nResultIndex < pSqlStmt->m_pSqlStmtData->nResultCount; ++nResultIndex)
+					for (LPINT32 nResultIndex = 0; nResultIndex < pSqlStmt->m_pSqlStmtData->nResultCount; ++nResultIndex)
 					{
 						if (MYSQL_TYPE_BLOB == pstThreadData[nSqlStmtId].pResultBind[nResultIndex].buffer_type)
 						{
@@ -955,7 +955,7 @@ void LPAPI LPSqlMgr::_WorkerThreadFunc(SQL_THREAD_PARAM* pstSqlThreadParam)
 
 						if (MYSQL_TYPE_LONG_BLOB == pstThreadData[nSqlStmtId].pResultBind[nResultIndex].buffer_type)
 						{
-							INT_32 nRet = 0;
+							LPINT32 nRet = 0;
 							unsigned long ulLength = pSqlStmt->m_pSqlStmtData->nResultSize[nResultIndex];
 							nRet = uncompress((unsigned char*)pData + nBufSize, &ulLength,
 								(unsigned char*)pstThreadData[nSqlStmtId].pResultBind[nResultIndex].buffer, ulActualZipLength);
@@ -1020,7 +1020,7 @@ Exit0:
 
 	if (pstThreadData && pSqlMgr)
 	{
-		for (INT_32 nIndex = 0; nIndex < pSqlMgr->m_nSqlStmtCount; ++nIndex)
+		for (LPINT32 nIndex = 0; nIndex < pSqlMgr->m_nSqlStmtCount; ++nIndex)
 		{
 			if (pstThreadData[nIndex].pStmt)
 			{
@@ -1028,7 +1028,7 @@ Exit0:
 			}
 		}
 		
-		for (INT_32 nStmtIndex = 0; nStmtIndex < pSqlMgr->m_nSqlStmtCount; ++nStmtIndex)
+		for (LPINT32 nStmtIndex = 0; nStmtIndex < pSqlMgr->m_nSqlStmtCount; ++nStmtIndex)
 		{
 			SAFE_DELETE_SZ(pstThreadData[nStmtIndex].pucBuf);
 			SAFE_DELETE_SZ(pstThreadData[nStmtIndex].pParamBind);

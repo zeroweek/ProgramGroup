@@ -90,8 +90,8 @@ private:
 	ILPLogger*     m_pLogger;                             // 底层使用的日志对象
 	BOOL           m_bLogLock;                            // 是否使用锁 
 	LPLock         m_oLock;                               // 锁
-	UINT_32        m_dwLogLevelConfig;                    // 日志等级配置，控制各个等级日志的开关
-	UINT_32        m_dwOutputMask;
+	LPUINT32        m_dwLogLevelConfig;                    // 日志等级配置，控制各个等级日志的开关
+	LPUINT32        m_dwOutputMask;
 	char           m_szModulePrefix[COMMON_NAME_LEN];     // 日志模块前缀，表明是哪个模块记录的日志信息
 	LOG_CONFIG     m_stLogConfig;                         // 日志配置
 };

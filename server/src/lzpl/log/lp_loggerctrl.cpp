@@ -47,31 +47,31 @@ DECLARE BOOL LPAPI lpLoadLogConfig(const char* pszLogConfigDir, const char* pszL
 {
 	bool bResult = false;
 	BOOL nResult = FALSE;
-	//INT_32 nNodeValue = 0;
+	//LPINT32 nNodeValue = 0;
 	char szPath[MAX_PATH];
 	TiXmlDocument* poDocument = NULL;
 	TiXmlElement* poRootElement = NULL;
 	TiXmlNode* poNode = NULL;
 	const char* pcszNodeValue = NULL;
 
-	INT_32 nDefaultValue = 0;
-	INT_32 WrithLock = 0;
-	INT_32 LogMode = 0;
-	INT_32 LogLevel_DBG = 0;
-	INT_32 LogLevel_INF = 0;
-	INT_32 LogLevel_WRN = 0;
-	INT_32 LogLevel_IMP = 0;
-	INT_32 LogLevel_ERR = 0;
-	INT_32 LogLevel_FTL = 0;
-	INT_32 LogLevel_LUA = 0;
-	INT_32 OutputMask_File = 0;
-	INT_32 OutputMask_Console = 0;
-	INT_32 OutputMask_Debug = 0;
-	INT_32 MaxLogLoopBufSize = 0;
-	INT_32 MaxLogSingleFileSize = 0;
-	INT_32 MaxLogOneMsgSize = 0;
-	INT_32 LogFlushInterval = 0;
-	INT_32 Timezone = 0;
+	LPINT32 nDefaultValue = 0;
+	LPINT32 WrithLock = 0;
+	LPINT32 LogMode = 0;
+	LPINT32 LogLevel_DBG = 0;
+	LPINT32 LogLevel_INF = 0;
+	LPINT32 LogLevel_WRN = 0;
+	LPINT32 LogLevel_IMP = 0;
+	LPINT32 LogLevel_ERR = 0;
+	LPINT32 LogLevel_FTL = 0;
+	LPINT32 LogLevel_LUA = 0;
+	LPINT32 OutputMask_File = 0;
+	LPINT32 OutputMask_Console = 0;
+	LPINT32 OutputMask_Debug = 0;
+	LPINT32 MaxLogLoopBufSize = 0;
+	LPINT32 MaxLogSingleFileSize = 0;
+	LPINT32 MaxLogOneMsgSize = 0;
+	LPINT32 LogFlushInterval = 0;
+	LPINT32 Timezone = 0;
 
 	//设置默认值
 	memset(&stLogConfig, 0, sizeof(stLogConfig));
@@ -392,7 +392,7 @@ Exit0:
 
 DECLARE BOOL LPAPI lpInitLzplLoggerCtrl(LOG_CONFIG& stLogConfig)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	ILPFileLogger* pFileLogger = NULL;
 
 	g_poLzplLoggerCtrl = lpCreateLoggerCtrl();
@@ -493,7 +493,7 @@ BOOL LPAPI LPLoggerCtrl::UnInit(void)
 
 void LPAPI LPLoggerCtrl::Lua(const char * format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 	
@@ -512,7 +512,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Fatal(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -531,7 +531,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Error(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -550,7 +550,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Warn(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -569,7 +569,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Important(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -588,7 +588,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Info(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -607,7 +607,7 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Debug(const char* format, ...)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(format);
 
@@ -634,12 +634,12 @@ void LPAPI LPLoggerCtrl::_Log(e_LogLevel eLogLevel, const char* format, va_list 
 	static char s_szErrorFlag[] = "*** ";
 	static char s_szNormalFlag[] = "";
 
-	static INT_32 s_nMsgBufSize = m_stLogConfig.dwMaxLogOneMsgSize;
+	static LPINT32 s_nMsgBufSize = m_stLogConfig.dwMaxLogOneMsgSize;
 	static char* s_pszMsg = new char[s_nMsgBufSize];
 
-	INT_32 nResult = 0;
-	INT_32 nCount = 0;
-	INT_32 nTotalCount = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nCount = 0;
+	LPINT32 nTotalCount = 0;
 	char* pszFlag = s_szNormalFlag;
 	LPTime oCurTime = LPTime::GetNowTime();
 
@@ -695,7 +695,7 @@ void LPAPI LPLoggerCtrl::_Log(e_LogLevel eLogLevel, const char* format, va_list 
 	PRINTF_CHECK_ERROR(nTotalCount < s_nMsgBufSize);
 
 	// 这里多加一个null终止符字节，用于写file线程省略memcpy操作
-	m_pLogger->LogText(s_pszMsg, (UINT_32)(nTotalCount + 1));
+	m_pLogger->LogText(s_pszMsg, (LPUINT32)(nTotalCount + 1));
 
 	if (m_dwOutputMask & eOutputType_Console)
 	{

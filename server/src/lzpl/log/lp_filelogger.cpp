@@ -46,10 +46,10 @@ LPFileLogger::~LPFileLogger()
 	UnInit();
 }
 
-void LPAPI LPFileLogger::LogText(const char *pszLog, UINT_32 dwLen)
+void LPAPI LPFileLogger::LogText(const char *pszLog, LPUINT32 dwLen)
 {
-	INT_32 nResult = FALSE;
-	INT_32 nSleepCount = 0;
+	LPINT32 nResult = FALSE;
+	LPINT32 nSleepCount = 0;
 
 	PRINTF_PROCESS_ERROR(pszLog);
 	PRINTF_PROCESS_ERROR(m_pLoopBuf);
@@ -86,14 +86,14 @@ Exit0:
 	return ;
 }
 
-UINT_32 LPAPI LZPL::LPFileLogger::CreateMsgId()
+LPUINT32 LPAPI LZPL::LPFileLogger::CreateMsgId()
 {
 	return ++m_dwMsgId;
 }
 
 BOOL LPAPI LPFileLogger::Init(LOG_CONFIG& stLogConfig)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	PRINTF_PROCESS_ERROR(m_bInit == FALSE);
 	PRINTF_PROCESS_ERROR(strcmp(stLogConfig.szLogDir, "") != 0);
@@ -149,7 +149,7 @@ void LPAPI LPFileLogger::AddRef(void)
 	++m_dwRef;
 }
 
-UINT_32 LPAPI LPFileLogger::QueryRef(void)
+LPUINT32 LPAPI LPFileLogger::QueryRef(void)
 {
 	return m_dwRef;
 }
@@ -293,7 +293,7 @@ Exit0:
 
 const char* LPAPI LPFileLogger::_GetFilePath(LPTime& oTime)
 {
-	INT_32 nResult = FALSE;
+	LPINT32 nResult = FALSE;
 
 	lpFastZeroCharArray(m_szFilePath);
 
@@ -372,7 +372,7 @@ Exit0:
 
 FILE* LPAPI LZPL::LPFileLogger::_OpenOrCreateLogFile(LPTime& oTime)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	FILE* fpFile = NULL;
 
 	fpFile = _fsopen(_GetFilePath(oTime), "a", _SH_DENYNO);
@@ -389,13 +389,13 @@ Exit0:
 THREAD_FUNC_DECLARE(LPFileLogger::_ThreadProc)(void * pParam)
 {
 	char*    pszBuf = NULL;
-	INT_32   nBufSize = 0;
+	LPINT32   nBufSize = 0;
 
-	INT_32   nResult = 0;
-	UINT_32  dwLen = 0;
-	UINT_32  dwSleepMicSec = 10;                      // 每次睡眠毫秒数
-	UINT_32  dwFlushIntervalSec = 0;                  // flush间隔（毫秒）
-	UINT_32  dwLastFlushTimeMicSecInc = 0;            // 上次flush后的时间增量（毫秒）
+	LPINT32   nResult = 0;
+	LPUINT32  dwLen = 0;
+	LPUINT32  dwSleepMicSec = 10;                      // 每次睡眠毫秒数
+	LPUINT32  dwFlushIntervalSec = 0;                  // flush间隔（毫秒）
+	LPUINT32  dwLastFlushTimeMicSecInc = 0;            // 上次flush后的时间增量（毫秒）
 	LPFileLogger* pFileLogger = NULL;
 
 	PRINTF_PROCESS_ERROR(pParam);

@@ -322,11 +322,11 @@ DECLARE size_t LPAPI lpWcharToUTF8(const wchar_t *in, size_t insize, char *out, 
     return (total);  
 }  
 
-DECLARE BOOL LPAPI lpUTF8ToGB2312(const char *pText, UINT_32 dwSize, string &pOut)
+DECLARE BOOL LPAPI lpUTF8ToGB2312(const char *pText, LPUINT32 dwSize, string &pOut)
 {
 #ifdef _WIN32
-	INT_32 nLen = 0;
-	INT_32 nResult = 0;
+	LPINT32 nLen = 0;
+	LPINT32 nResult = 0;
 	wchar_t* pwStr = NULL;
 	char* pStr = NULL;
 
@@ -384,11 +384,11 @@ Exit0:
 #endif
 }
 
-DECLARE BOOL LPAPI lpGB2312ToUTF8(const char *pText, UINT_32 dwSize, string& pOut)
+DECLARE BOOL LPAPI lpGB2312ToUTF8(const char *pText, LPUINT32 dwSize, string& pOut)
 {
 #ifdef _WIN32
-	INT_32 nLen = 0;
-	INT_32 nResult = 0;
+	LPINT32 nLen = 0;
+	LPINT32 nResult = 0;
 	wchar_t* pwStr = NULL;
 	char* pStr = NULL;
 

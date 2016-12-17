@@ -40,7 +40,7 @@ public:
 	//		dwSerializeBufSize: 外部传入serialize buf大小（pszSerializeBuf为NULL时，此参数填0）
 	//		pszUnSerializeBuf: 外部传入unserialize buf（NULL则使用内部unserialize buf）
 	//		dwUnSerializeBufSize: 外部传入unserialize buf大小（pszUnSerializeBuf为NULL时，此参数填0）
-	BOOL LPAPI Init(char* pszSerializeBuf, UINT_32 dwSerializeBufSize, const char* pszUnSerializeBuf, UINT_32 dwUnSerializeBufSize);
+	BOOL LPAPI Init(char* pszSerializeBuf, LPUINT32 dwSerializeBufSize, const char* pszUnSerializeBuf, LPUINT32 dwUnSerializeBufSize);
 
 	// Summary:
 	//		反始化
@@ -48,35 +48,35 @@ public:
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint8(UINT_8* pbyValue);
+	virtual BOOL LPAPI ReadUint8(LPUINT8* pbyValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint8(UINT_8 byValue);
+	virtual BOOL LPAPI WriteUint8(LPUINT8 byValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint16(UINT_16* pwValue);
+	virtual BOOL LPAPI ReadUint16(LPUINT16* pwValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint16(UINT_16 wValue);
+	virtual BOOL LPAPI WriteUint16(LPUINT16 wValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint32(UINT_32* pdwValue);
+	virtual BOOL LPAPI ReadUint32(LPUINT32* pdwValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint32(UINT_32 dwValue);
+	virtual BOOL LPAPI WriteUint32(LPUINT32 dwValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint64(UINT_64* pqwValue);
+	virtual BOOL LPAPI ReadUint64(LPUINT64* pqwValue);
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint64(UINT_64 qwValue);
+	virtual BOOL LPAPI WriteUint64(LPUINT64 qwValue);
 
 	// Summary:
 	//		无
@@ -84,7 +84,7 @@ public:
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteString(const char* pcszData, UINT_32 dwLen, UINT_32 dwMaxLen);
+	virtual BOOL LPAPI WriteString(const char* pcszData, LPUINT32 dwLen, LPUINT32 dwMaxLen);
 
 	// Summary:
 	//		无
@@ -92,19 +92,19 @@ public:
 
 	// Summary:
 	//		无
-	virtual UINT_32 LPAPI GetSerializeSize(void);
+	virtual LPUINT32 LPAPI GetSerializeSize(void);
 
 private:
 
 	char                     m_szSerializeBuf[MESSAGE_MAX_LEN];
 	char                     m_szUnSerializeBuf[MESSAGE_MAX_LEN];
 
-	UINT_32                  m_dwSerializeSize;
-	UINT_32                  m_dwSerializeBufSize;
+	LPUINT32                  m_dwSerializeSize;
+	LPUINT32                  m_dwSerializeBufSize;
 	char*                    m_pSerializeBuf;
 
-	UINT_32                  m_dwUnSerializeSize;
-	UINT_32                  m_dwUnSerializeBufSize;
+	LPUINT32                  m_dwUnSerializeSize;
+	LPUINT32                  m_dwUnSerializeBufSize;
 	const char*              m_pUnSerializeBuf;
 };
 

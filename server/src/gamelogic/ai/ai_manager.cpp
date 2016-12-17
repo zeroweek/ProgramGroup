@@ -23,7 +23,7 @@ CAIManager::~CAIManager()
 
 BOOL CAIManager::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	m_nCurUsingTemplateDataIndex = 0;
 	memset(m_TemplateData, 0, sizeof(m_TemplateData));
@@ -43,8 +43,8 @@ BOOL CAIManager::UnInit(void)
 
 BOOL CAIManager::Reload(void)
 {
-	INT_32 nResult = 0;
-	UINT_64 qwStartTick = 0;
+	LPINT32 nResult = 0;
+	LPUINT64 qwStartTick = 0;
 	CLoadAIData oLoadAIData;
 
 	qwStartTick = lpGetTickCountEx();
@@ -68,7 +68,7 @@ Exit0:
 
 BOOL CAIManager::CLoadAIData::operator()(const AI_DATA* pAIData)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bLoaded = FALSE;
 	BOOL bNewScript = FALSE;
 	AI_TEMPLATE* pAITemplate = NULL;
@@ -100,7 +100,7 @@ BOOL CAIManager::CLoadAIData::operator()(const AI_DATA* pAIData)
 	if (pOldAITemplate->dwScriptCRC == pAITemplate->dwScriptCRC &&
 		pOldAITemplate->dwDataCRC == pAITemplate->dwDataCRC)
 	{
-		for (INT_32 nIndex = btetAIBegin; nIndex < btetAIEnd; ++nIndex)
+		for (LPINT32 nIndex = btetAIBegin; nIndex < btetAIEnd; ++nIndex)
 		{
 			if (pAITemplate->pTreeList[nIndex - btetAIBegin] != NULL)
 			{
@@ -122,7 +122,7 @@ BOOL CAIManager::CLoadAIData::operator()(const AI_DATA* pAIData)
 			LOG_PROCESS_ERROR(nResult);
 		}
 
-		for (INT_32 nIndex = btetAIBegin; nIndex < btetAIEnd; ++nIndex)
+		for (LPINT32 nIndex = btetAIBegin; nIndex < btetAIEnd; ++nIndex)
 		{
 			if (pAITemplate->pTreeList[nIndex - btetAIBegin] != NULL)
 			{

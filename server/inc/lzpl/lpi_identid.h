@@ -25,8 +25,8 @@ NS_LZPL_BEGIN
 
 struct LPIDENTID
 {
-	INT_64 nHead64;
-    INT_64 nData64;
+	LPINT64 nHead64;
+    LPINT64 nData64;
 
 	LPIDENTID()
     {
@@ -34,7 +34,7 @@ struct LPIDENTID
 		nData64 = 0;
     }
 
-	LPIDENTID(INT_64 nHeadData, INT_64 nData)
+	LPIDENTID(LPINT64 nHeadData, LPINT64 nData)
     {
         nHead64 = nHeadData;
         nData64 = nData;

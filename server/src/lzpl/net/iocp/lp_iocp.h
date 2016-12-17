@@ -126,11 +126,11 @@ public:
 	//		获取socker id
 	// Return:
 	//		返回socker id
-	virtual UINT_32 LPAPI GetSockerId();
+	virtual LPUINT32 LPAPI GetSockerId();
 
 	// Summary:
 	//		获取对端连接的ip
-	virtual UINT_32 LPAPI GetRemoteIp();
+	virtual LPUINT32 LPAPI GetRemoteIp();
 
 	// Summary:
 	//		获取对端连接的ip字符串
@@ -138,11 +138,11 @@ public:
 
 	// Summary:
 	//		获取对端连接的port
-	virtual UINT_16 LPAPI GetRemotePort();
+	virtual LPUINT16 LPAPI GetRemotePort();
 
 	// Summary:
 	//		获取本地连接的ip
-	virtual UINT_32 LPAPI GetLocalIp();
+	virtual LPUINT32 LPAPI GetLocalIp();
 
 	// Summary:
 	//		获取本地连接的ip字符串
@@ -150,7 +150,7 @@ public:
 
 	// Summary:
 	//		获取本地连接的port
-	virtual UINT_16 LPAPI GetLocalPort();
+	virtual LPUINT16 LPAPI GetLocalPort();
 
 	// Summary:
 	//		判断当前的socket是否处于连接状态
@@ -163,7 +163,7 @@ public:
 	// Input:
 	//		pData：数据
 	//		dwLen：长度
-	virtual BOOL LPAPI Send(const char* pData, UINT_32 dwLen);
+	virtual BOOL LPAPI Send(const char* pData, LPUINT32 dwLen);
 
 	// Summary:
 	//		关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker
@@ -255,63 +255,63 @@ public:
 	//		设置远端连接ip
 	// Input:
 	//		dwIp：ip
-	void LPAPI SetRemoteIp(UINT_32 dwIp);
+	void LPAPI SetRemoteIp(LPUINT32 dwIp);
 
 	// Summary:
 	//		设置远端连接端口
 	// Input:
 	//		wPort：端口
-	void LPAPI SetRemotePort(UINT_16 wPort);
+	void LPAPI SetRemotePort(LPUINT16 wPort);
 
 	// Summary:
 	//		设置本地连接ip
 	// Input:
 	//		dwIp：ip
-	void LPAPI SetLocalIp(UINT_32 dwIp);
+	void LPAPI SetLocalIp(LPUINT32 dwIp);
 
 	// Summary:
 	//		设置本地连接端口
 	// Input:
 	//		wPort：端口
-	void LPAPI SetLocalPort(UINT_16 wPort);
+	void LPAPI SetLocalPort(LPUINT16 wPort);
 
 	// Summary:
 	//		设置开始延迟关闭tick
-	void LPAPI SetDelayCloseBeginTick(UINT_64 qwTick);
+	void LPAPI SetDelayCloseBeginTick(LPUINT64 qwTick);
 
 	// Summary:
 	//		获取开始延迟关闭tick
-	UINT_64 LPAPI GetDelayCloseBeginTick();
+	LPUINT64 LPAPI GetDelayCloseBeginTick();
 
 	// Summary:
 	//		设置延迟关闭持续时间
-	void LPAPI SetDelayCloseDuration(UINT_64 qwDuration);
+	void LPAPI SetDelayCloseDuration(LPUINT64 qwDuration);
 
 	// Summary:
 	//		获取延迟关闭持续时间
-	UINT_64 LPAPI GetDelayCloseDuration();
+	LPUINT64 LPAPI GetDelayCloseDuration();
 
 	// Summary:
 	//		设置开始延迟释放tick
-	void LPAPI SetDelayReleaseBeginTick(UINT_64 qwTick);
+	void LPAPI SetDelayReleaseBeginTick(LPUINT64 qwTick);
 
 	// Summary:
 	//		获取开始延迟释放tick
-	UINT_64 LPAPI GetDelayReleaseBeginTick();
+	LPUINT64 LPAPI GetDelayReleaseBeginTick();
 
 	// Summary:
 	//		设置延迟释放持续时间
-	void LPAPI SetDelayReleaseDuration(UINT_64 qwDuration);
+	void LPAPI SetDelayReleaseDuration(LPUINT64 qwDuration);
 
 	// Summary:
 	//		获取延迟释放持续时间
-	UINT_64 LPAPI GetDelayReleaseDuration();
+	LPUINT64 LPAPI GetDelayReleaseDuration();
 
 	// Summary:
 	//		设置socker id
 	// Input:
 	//		dwSockerId：socker id
-	void LPAPI SetSockerId(UINT_32 dwSockerId);
+	void LPAPI SetSockerId(LPUINT32 dwSockerId);
 
 	// Summary:
 	//		异步关闭回调
@@ -321,13 +321,13 @@ public:
 	//		设置父级对象的id（连接器或监听器的id）
 	// Input:
 	//		dwParentId：id
-	void LPAPI SetParentId(UINT_32 dwParentId);
+	void LPAPI SetParentId(LPUINT32 dwParentId);
 
 	// Summary:
 	//		获取父级对象的id（连接器或监听器的id）
 	// Return:
 	//		id
-	UINT_32 LPAPI GetParentId();
+	LPUINT32 LPAPI GetParentId();
 
 	// Summary:
 	//		设置是否是accept创建的标记，accept还是connect创建
@@ -361,25 +361,25 @@ protected:
 	BOOL                      m_bAcceptCreate;            // 是否是accept创建
 	BOOL                      m_bPassiveClose;            // 是否被动关闭
 	SOCKET                    m_hSock;                    // sock句柄
-	UINT_32                   m_dwSockerId;               // socker id
-	UINT_32                   m_dwParentId;               // 父级对象的id（连接器或监听器的id）
+	LPUINT32                   m_dwSockerId;               // socker id
+	LPUINT32                   m_dwParentId;               // 父级对象的id（连接器或监听器的id）
 	ILPPacketParser*          m_pPacketParser;            // 解析对象
 	LPNetImpl*                m_pNetImpl;                 //
 
-	UINT_32                   m_dwRemoteIp;               // 远端ip
-	UINT_16                   m_wRemotePort;              // 远端端口
+	LPUINT32                   m_dwRemoteIp;               // 远端ip
+	LPUINT16                   m_wRemotePort;              // 远端端口
 	char                      m_szRemoteIpStr[IP_LEN];    // 远端ip字符串
-	UINT_32                   m_dwLocalIp;                // 本地ip
-	UINT_16                   m_wLocalPort;               // 本地端口
+	LPUINT32                   m_dwLocalIp;                // 本地ip
+	LPUINT16                   m_wLocalPort;               // 本地端口
 	char                      m_szLocalIpStr[IP_LEN];     // 本地ip字符串
 
 	LPLoopBuf*                m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
 	LPLoopBuf*                m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
 
-	UINT_64                   m_qwDelayCloseBeginTick;    // 延迟关闭开始tick
-	UINT_64                   m_qwDelayCloseDuration;     // 延迟关闭持续时间
-	UINT_64                   m_qwDelayReleaseBeginTick;  // 延迟释放开始tick
-	UINT_64                   m_qwDelayReleaseDuration;   // 延迟释放持续时间
+	LPUINT64                   m_qwDelayCloseBeginTick;    // 延迟关闭开始tick
+	LPUINT64                   m_qwDelayCloseDuration;     // 延迟关闭持续时间
+	LPUINT64                   m_qwDelayReleaseBeginTick;  // 延迟释放开始tick
+	LPUINT64                   m_qwDelayReleaseDuration;   // 延迟释放持续时间
 
 	PER_IO_DATA               m_stRecvPerIoData;          // io接收绑定的数据 
 	PER_IO_DATA               m_stSendPerIoData;          // io发送绑定的数据
@@ -410,7 +410,7 @@ public:
 public:
 
 	typedef std::list<LPSocker*> LPListSocker;
-	typedef std::map<UINT_32, LPSocker*> LPMapSocker;
+	typedef std::map<LPUINT32, LPSocker*> LPMapSocker;
 
 public:
 
@@ -421,7 +421,7 @@ public:
 	//		dwSize：socker对象池初始化大小
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, UINT_32 dwSize);
+	BOOL LPAPI Init(LPNetImpl* pNetImpl, LPUINT32 dwSize);
 
 	// Summary:
 	//		清除函数
@@ -435,7 +435,7 @@ public:
 	//		bAcceptCreate：是否accept创建
 	// Return:
 	//		socker对象
-	LPSocker* LPAPI Create(ILPPacketParser* pPacketParser, UINT_32 dwParentId, BOOL bAcceptCreate);
+	LPSocker* LPAPI Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
 
 	// Summary:
 	//		释放socker对象
@@ -463,16 +463,16 @@ public:
 	//		发送数据
 	// Return:
 	//		有数据发送的LPSocker对象个数
-	INT_32 LPAPI PostSend();
+	LPINT32 LPAPI PostSend();
 
 	// Summary:
 	//		查找socker
-	LPSocker* LPAPI Find(UINT_32 dwSockerId);
+	LPSocker* LPAPI Find(LPUINT32 dwSockerId);
 
 	// Summary:
 	//		获取当前有效的连接个数
 
-	UINT_32 LPAPI GetCurValidConnectCount();
+	LPUINT32 LPAPI GetCurValidConnectCount();
 
 private:
 
@@ -484,7 +484,7 @@ private:
 	//		bAcceptCreate：是否accept创建
 	// Return:
 	//		socker对象
-	LPSocker* LPAPI _Create(ILPPacketParser* pPacketParser, UINT_32 dwParentId, BOOL bAcceptCreate);
+	LPSocker* LPAPI _Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
 
 	// Summary:
 	//		释放socker对象
@@ -496,7 +496,7 @@ private:
 	//		创建sock id
 	// Return:
 	//		sock id
-	UINT_32 LPAPI _CreateSockId();
+	LPUINT32 LPAPI _CreateSockId();
 
 	// Summary:
 	//		Malloc
@@ -513,7 +513,7 @@ private:
 
 private:
 
-	UINT_32                    m_dwMaxSockId;        // 最大sock id
+	LPUINT32                    m_dwMaxSockId;        // 最大sock id
 	LPObjPool<LPSocker>        m_oSockerPool;        // socker对象池
 	LPListSocker               m_oValidList;         // 当前连接有效的socker列表
 	LPMapSocker                m_oValidMap;          // 当前连接有效的socker map
@@ -555,7 +555,7 @@ public:
 	//		pNetImpl: 
 	//		pPacketParser: 消息包解析对象
 	//		dwId: 连接器id
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, UINT_32 dwId);
+	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
 	BOOL LPAPI UnInit();
@@ -568,7 +568,7 @@ public:
 	//		bAutoReconnect: 是否自动重连接
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI Start(const char* pcszIp, UINT_32 dwPort, BOOL bReconnect);
+	virtual BOOL LPAPI Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReconnect);
 
 	// Summary:
 	//		停止连接
@@ -576,7 +576,7 @@ public:
 
 	// Summary:
 	//		获取id
-	virtual UINT_32 LPAPI GetId();
+	virtual LPUINT32 LPAPI GetId();
 
 	// Summary:
 	//		重连
@@ -620,11 +620,11 @@ public:
 
 	// Summary:
 	//		设置连接器当前状态
-	void LPAPI SetState(UINT_32 dwState);
+	void LPAPI SetState(LPUINT32 dwState);
 
 	//Summary:
 	//		获取连接器当前状态
-	UINT_32 LPAPI GetState();
+	LPUINT32 LPAPI GetState();
 
 protected:
 
@@ -642,11 +642,11 @@ protected:
 
 private:
 
-	UINT_32                     m_dwId;
+	LPUINT32                     m_dwId;
 	volatile atomic_uint        m_dwState;
 
 	char                        m_szIp[IP_LEN];
-	UINT_32                     m_dwPort;
+	LPUINT32                     m_dwPort;
 	BOOL                        m_bReconnect;
 	SOCKET                      m_hConnectSock;
 	ILPPacketParser*            m_pPacketParser;
@@ -657,7 +657,7 @@ private:
 	PER_IO_DATA*                m_pstPerIoData;
 };
 
-typedef std::map<UINT_32, LPConnector*> MAP_CONNECTOR;
+typedef std::map<LPUINT32, LPConnector*> MAP_CONNECTOR;
 
 
 
@@ -681,7 +681,7 @@ public:
 	//		pNetImpl: 
 	//		pPacketParser: 消息包解析对象
 	//		dwId: 监听器id
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, UINT_32 dwId);
+	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
 	BOOL LPAPI UnInit();
@@ -694,7 +694,7 @@ public:
 	//		bReUseAddr: 是否重复利用地址
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI Start(const char* pcszIp, UINT_32 dwPort, BOOL bReUseAddr);
+	virtual BOOL LPAPI Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReUseAddr);
 
 	// Summary:
 	//		停止监听
@@ -702,7 +702,7 @@ public:
 
 	// Summary:
 	//		获取id
-	virtual UINT_32 LPAPI GetId();
+	virtual LPUINT32 LPAPI GetId();
 
 	// Summary:
 	//		释放
@@ -724,11 +724,11 @@ protected:
 
 	//Summary:
 	//		获取监听器状态
-	UINT_32 LPAPI _GetState();
+	LPUINT32 LPAPI _GetState();
 
 	// Summary:
 	//		设置监听器状态
-	void LPAPI _SetState(UINT_32 dwState);
+	void LPAPI _SetState(LPUINT32 dwState);
 
 	// Summary:
 	//		获取AcceptEx和GetAcceptExSockaddrs函数指针，并且post异步accept操作
@@ -744,11 +744,11 @@ protected:
 
 private:
 
-	UINT_32                     m_dwId;
+	LPUINT32                     m_dwId;
 	volatile atomic_uint        m_dwState;
 
 	char                        m_szIp[IP_LEN];
-	UINT_32                     m_dwPort;
+	LPUINT32                     m_dwPort;
 	BOOL                        m_bReUseAddr;
 	SOCKET                      m_hListenSock;
 	ILPPacketParser*            m_pPacketParser;
@@ -760,7 +760,7 @@ private:
 
 };
 
-typedef std::map<UINT_32, LPListener*> MAP_LISTENER;
+typedef std::map<LPUINT32, LPListener*> MAP_LISTENER;
 
 
 
@@ -783,7 +783,7 @@ enum e_EventType
 struct RECV_EVENT
 {
 	LPSocker*                pSocker;
-	UINT_32                  dwLen;
+	LPUINT32                  dwLen;
 };
 
 
@@ -793,7 +793,7 @@ struct RECV_EVENT
 struct TERMINATE_EVENT
 {
 	LPSocker*                pSocker;
-	UINT_32                  dwSockerId;
+	LPUINT32                  dwSockerId;
 };
 
 
@@ -813,7 +813,7 @@ struct ESTABLISH_EVENT
 struct CONNECT_ERROR_EVENT
 {
 	LPConnector*             pConnector;
-	UINT_32                  dwErrorNo;
+	LPUINT32                  dwErrorNo;
 };
 
 
@@ -823,7 +823,7 @@ struct CONNECT_ERROR_EVENT
 struct NET_EVENT
 {
 	e_EventType              eEventType;
-	UINT_32                  dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
+	LPUINT32                  dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
 	union
 	{
 		RECV_EVENT             stRecvEvent;
@@ -865,7 +865,7 @@ public:
 	//		dwSize：批量创建的事件数量
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, UINT_32 dwSize, INT_32 nEventListCount);
+	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, LPUINT32 dwSize, LPINT32 nEventListCount);
 
 	// Summary:
 	//		清除函数
@@ -873,11 +873,11 @@ public:
 
 	// Summary:
 	//		push一个接收事件
-	BOOL LPAPI PushRecvEvent(LPSocker* pSocker, UINT_32 dwSockerId, ILPLoopBuf* pLoopBuf, UINT_32 dwLen);
+	BOOL LPAPI PushRecvEvent(LPSocker* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen);
 
 	// Summary:
 	//		push一个断开事件
-	void LPAPI PushTerminateEvent(LPSocker* pSocker, UINT_32 dwSockerId, BOOL bPassiveClose);
+	void LPAPI PushTerminateEvent(LPSocker* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose);
 
 	// Summary:
 	//		push一个连接建立事件
@@ -885,7 +885,7 @@ public:
 
 	// Summary:
 	//		push一个连接错误事件
-	void LPAPI PushConnectErrorEvent(LPConnector* pConnector, UINT_32 dwErrorNo);
+	void LPAPI PushConnectErrorEvent(LPConnector* pConnector, LPUINT32 dwErrorNo);
 
 	// Summary:
 	//		判断是否有事件待处理
@@ -928,7 +928,7 @@ private:
 	LPObjPool<NET_EVENT>         m_oEventPool;          // 事件对象池
 	LPLoopBuf*                  m_pRecvLoopBuf;        // 接收事件数据缓冲区
 	char*                       m_pPacketTempBuf;      // 数据包临时缓冲区
-	INT_32                      m_nEventListCount;     // 事件列表个数
+	LPINT32                      m_nEventListCount;     // 事件列表个数
 	LPListEvent*                m_pEventList;          // 事件列表
 	LPLock*                     m_pEventListLock;      // 事件列表锁
 	ILPNetMessageHandler*       m_pNetMessageHandler;  // 
@@ -943,7 +943,7 @@ class LPReactorImpl;
 struct REACTOR_THREAD_PARAM
 {
 	LPReactorImpl   *pReactorImpl;
-	INT_32           nCompletionPortIndex;
+	LPINT32           nCompletionPortIndex;
 };
 
 
@@ -999,21 +999,21 @@ public:
 
 	// Summary：
 	//     线程处理函数的主逻辑
-	void LPAPI OnExecute(INT_32 nCompletionPortIndex);
+	void LPAPI OnExecute(LPINT32 nCompletionPortIndex);
 
 private:
 
 	// Summary：
 	//		获取当前状态
-	UINT_32 LPAPI _GetState();
+	LPUINT32 LPAPI _GetState();
 
 	// Summary：
 	//		设置当前状态
-	void LPAPI _SetState(UINT_32 dwState);
+	void LPAPI _SetState(LPUINT32 dwState);
 
 	void LPAPI _OnConnect(BOOL bOperateRet, ILPEventHandler* pEventHandler, PER_IO_DATA* pstPerIoData);
 	void LPAPI _OnAccept(BOOL bOperateRet, ILPEventHandler* pEventHandler, PER_IO_DATA* pstPerIoData);
-	void LPAPI _OnSendRecv(BOOL bOperateRet, ILPEventHandler* pEventHandler, PER_IO_DATA* pstPerIoData, UINT_32 dwByteTransferred);
+	void LPAPI _OnSendRecv(BOOL bOperateRet, ILPEventHandler* pEventHandler, PER_IO_DATA* pstPerIoData, LPUINT32 dwByteTransferred);
 
 
 protected:
@@ -1021,9 +1021,9 @@ protected:
 	BOOL	               m_bInit;
 	volatile atomic_uint   m_dwState;
 
-	INT_32                 m_nCompletionPortCount;
+	LPINT32                 m_nCompletionPortCount;
 	HANDLE*                m_pCompletionPort;
-	INT_32                 m_nWorkerCountPerCompIo;
+	LPINT32                 m_nWorkerCountPerCompIo;
 	HANDLE**               m_ppWorkerArray;
 	LPNetImpl*             m_pNetImpl;
 };
@@ -1053,7 +1053,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void);
+	virtual LPUINT32 LPAPI QueryRef(void);
 
 	// Summary:
 	//		释放对象
@@ -1091,7 +1091,7 @@ public:
 	//		nCount-每次检测处理网络包的最大数量，-1表示处理所有
 	//Return:
 	//		TRUE-所有网络包都已被处理，FALSE-有剩余未处理网络包
-	virtual BOOL LPAPI Run(INT_32 nCount = -1);
+	virtual BOOL LPAPI Run(LPINT32 nCount = -1);
 
 	// Summary:
 	//		初始化函数
@@ -1107,11 +1107,11 @@ public:
 
 	// Summary:
 	//		查找监听器对象
-	LPListener* LPAPI FindListener(UINT_32 dwId);
+	LPListener* LPAPI FindListener(LPUINT32 dwId);
 
 	// Summary:
 	//		查找连接器对象
-	LPConnector* LPAPI FindConnector(UINT_32 dwId);
+	LPConnector* LPAPI FindConnector(LPUINT32 dwId);
 
 	// Summary:
 	//		无
@@ -1133,12 +1133,12 @@ protected:
 
 	// Summary:
 	//		创建id
-	UINT_32 LPAPI _CreateId();
+	LPUINT32 LPAPI _CreateId();
 
 protected:
 
-	UINT_32                  m_dwRef;
-	UINT_32                  m_dwMaxCreateId;
+	LPUINT32                  m_dwRef;
+	LPUINT32                  m_dwMaxCreateId;
 	LPLock                   m_oLock;
 	ILPNetMessageHandler*    m_pNetMessageHandler;
 	NET_CONFIG               m_oNetConfig;

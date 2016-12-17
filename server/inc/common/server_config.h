@@ -23,10 +23,10 @@ struct SERVER_CONFIG
 		NET_CONFIG     Net;
 
 		char           szListenIp[IP_LEN];
-		UINT_32        dwListenPort;
+		LPUINT32        dwListenPort;
 
 		char           szClientListenIp[IP_LEN];
-		UINT_32        dwClientListenPort;
+		LPUINT32        dwClientListenPort;
 	};
 	GS_CONFIG Gs;
 
@@ -41,10 +41,10 @@ struct SERVER_CONFIG
 		NET_CONFIG     Net;
 
 		char           szListenIp[IP_LEN];
-		UINT_32        dwListenPort;
+		LPUINT32        dwListenPort;
 
 		char           szClientListenIp[IP_LEN];
-		UINT_32        dwClientListenPort;
+		LPUINT32        dwClientListenPort;
 	};
 	GT_CONFIG Gt;
 };

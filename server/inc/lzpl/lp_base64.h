@@ -27,13 +27,13 @@ enum eBase64CodeType
 //		base64编码
 // Input:
 //		eType: 控制base64 table结尾两个字符以及填充字符的类型
-DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eBase64CodeType eType);
+DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eBase64CodeType eType);
 
 // Summary:
 //		base64解码
 // Input:
 //		eType: 控制base64 table结尾两个字符以及填充字符的类型
-DECLARE INT_32 LPAPI lpBase64Decode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eBase64CodeType eType);
+DECLARE LPINT32 LPAPI lpBase64Decode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eBase64CodeType eType);
 
 
 

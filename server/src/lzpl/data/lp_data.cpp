@@ -9,7 +9,7 @@ NS_LZPL_BEGIN
 
 
 
-UINT_32 ILPData::ms_dwDataCount = 0;;
+LPUINT32 ILPData::ms_dwDataCount = 0;;
 ILPData* ILPData::m_poInvalidData = new LPDataInvalid();
 
 ILPData* ILPData::NewData(E_DataType eType)
@@ -58,7 +58,7 @@ std::string LPAPI LPDataInt64::ToString()
 	return lpSerializeToString(MAX_INT64_LEN, FMT_I64, m_lData);
 }
 
-BOOL LPAPI LPDataInt64::SetInt64(INT_64 value)
+BOOL LPAPI LPDataInt64::SetInt64(LPINT64 value)
 {
 	m_lData = value;
 	return TRUE;
@@ -103,7 +103,7 @@ std::string LPAPI LPDataFloat::ToString()
 	return lpSerializeToString(MAX_FLOAT_LEN, FMT_FLT, m_fData);
 }
 
-BOOL LPAPI LPDataFloat::SetInt64(INT_64 value)
+BOOL LPAPI LPDataFloat::SetInt64(LPINT64 value)
 {
 	LOG_CHECK_ERROR(FALSE);
 	LPASSERT(FALSE);
@@ -148,7 +148,7 @@ std::string LPAPI LPDataDouble::ToString()
 	return lpSerializeToString(MAX_DOUBLE_LEN, FMT_DBE, m_dData);
 }
 
-BOOL LPAPI LPDataDouble::SetInt64(INT_64 value)
+BOOL LPAPI LPDataDouble::SetInt64(LPINT64 value)
 {
 	LOG_CHECK_ERROR(FALSE);
 	LPASSERT(FALSE);
@@ -193,7 +193,7 @@ std::string LPAPI LPDataString::ToString()
 	return lpSerializeToString(MAX_DOUBLE_LEN, "%s", m_strData.c_str());
 }
 
-BOOL LPAPI LPDataString::SetInt64(INT_64 value)
+BOOL LPAPI LPDataString::SetInt64(LPINT64 value)
 {
 	LOG_CHECK_ERROR(FALSE);
 	LPASSERT(FALSE);

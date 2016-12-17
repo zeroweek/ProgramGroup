@@ -34,7 +34,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前总共可读数据长度		
-	virtual UINT_32 LPAPI GetTotalReadableLen() = 0;
+	virtual LPUINT32 LPAPI GetTotalReadableLen() = 0;
 
 	// Summary:
 	//		获取当前一次可读数据长度，只计算读指针后面可读取的数据大小
@@ -42,7 +42,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前一次可读数据长度		
-	virtual UINT_32 LPAPI GetOnceReadableLen() = 0;
+	virtual LPUINT32 LPAPI GetOnceReadableLen() = 0;
 
 	// Summary:
 	//		获取当前总共可写长度，写指针前面以及后面的可写入的数据大小都计算在内
@@ -50,7 +50,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前总共可写长度
-	virtual UINT_32 LPAPI GetTotalWritableLen() = 0;
+	virtual LPUINT32 LPAPI GetTotalWritableLen() = 0;
 
 	// Summary:
 	//		获取当前一次可写长度，只计算写指针后面可写入的数据大小
@@ -58,7 +58,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前一次可写长度
-	virtual UINT_32 LPAPI GetOnceWritableLen() = 0;
+	virtual LPUINT32 LPAPI GetOnceWritableLen() = 0;
 
 	// Summary:
 	//		读取数据，该函数会自动调整<读指针>的位置，以及当前有效数据长度
@@ -70,7 +70,7 @@ public:
 	//		bNullTerminate：是否向pDst填入NULL结束符
 	// Return:
 	//		TRUE-成功读取指定长度数据，FALSE-无任何操作
-	virtual BOOL LPAPI Read(char* pDst, UINT_32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate) = 0;
+	virtual BOOL LPAPI Read(char* pDst, LPUINT32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate) = 0;
 
 	// Summary:
 	//		写入数据，该函数会自动调整<写指针>的位置，以及当前有效数据长度
@@ -79,7 +79,7 @@ public:
 	//		dwWriteLen：要写入的长度
 	// Return:
 	//		TRUE-成功写入指定长度数据，FALSE-无任何操作
-	virtual BOOL LPAPI Write(const char* pSrc, UINT_32 dwWriteLen) = 0;
+	virtual BOOL LPAPI Write(const char* pSrc, LPUINT32 dwWriteLen) = 0;
 
 	// Summary:
 	//		获取读指针，配套GetOnceReadableLen和FinishRead使用
@@ -94,14 +94,14 @@ public:
 	//		累加已读取数据大小，如果超过了实际可读的数据长度，则只累加实际可读长度
 	// Input:
 	//		dwReadLen：累加读取的大小
-	virtual void LPAPI FinishRead(UINT_32 dwReadLen) = 0;
+	virtual void LPAPI FinishRead(LPUINT32 dwReadLen) = 0;
 
 	// Summary:
 	//		配套GetOnceWritableLen和WritePtr使用
 	//		累加已写入数据大小，如果超过了实际可写的数据长度，则只累加实际可写长度
 	// Input:
 	//		dwWriteLen：累加写入的大小
-	virtual void LPAPI FinishWrite(UINT_32 dwWriteLen) = 0;
+	virtual void LPAPI FinishWrite(LPUINT32 dwWriteLen) = 0;
 };
 
 

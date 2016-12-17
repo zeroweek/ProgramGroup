@@ -76,9 +76,9 @@ BOOL LPAPI LPLuaScript::LoadFromFile(const char * pcszFileName)
 	char* pszBuf      = NULL;
 	ILPFile* pFile    = NULL;
 
-	INT_32 nResult    = 0;
-	UINT_32 dwSize    = 0;
-	UINT_32 dwOldCRC  = m_dwCRC;
+	LPINT32 nResult    = 0;
+	LPUINT32 dwSize    = 0;
+	LPUINT32 dwOldCRC  = m_dwCRC;
 
 	LOG_PROCESS_ERROR(pcszFileName);
 
@@ -98,7 +98,7 @@ BOOL LPAPI LPLuaScript::LoadFromFile(const char * pcszFileName)
 		nResult = pFile->Read(pszBuf, dwSize);
 		LOG_PROCESS_ERROR(nResult == dwSize);
 
-		if ((*(UINT_32*)pszBuf & 0x00FFFFFF) == UTF8_BOM)
+		if ((*(LPUINT32*)pszBuf & 0x00FFFFFF) == UTF8_BOM)
 		{
 			nResult = LoadFromBuffer(pcszFileName, pszBuf + 3, dwSize - 3);
 			LOG_PROCESS_ERROR(nResult);
@@ -143,9 +143,9 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPLuaScript::LoadFromBuffer(const char * pcszScriptName, const char * pcszBuf, UINT_32 dwSize)
+BOOL LPAPI LPLuaScript::LoadFromBuffer(const char * pcszScriptName, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(pcszBuf);
 
@@ -180,20 +180,20 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPLuaScript::RegisterFunc(LUA_FUNC astFuncList[], INT_32 nFuncCount)
+BOOL LPAPI LPLuaScript::RegisterFunc(LUA_FUNC astFuncList[], LPINT32 nFuncCount)
 {
 	LOG_PROCESS_ERROR(m_pLuaState);
 
 	if (nFuncCount == 0)
 	{
-		for (INT_32 nIndex = 0; astFuncList[nIndex].pcszFuncname != NULL; ++nIndex)
+		for (LPINT32 nIndex = 0; astFuncList[nIndex].pcszFuncname != NULL; ++nIndex)
 		{
 			lua_register(m_pLuaState, astFuncList[nIndex].pcszFuncname, astFuncList[nIndex].pFunc);
 		}
 	}
 	else
 	{
-		for (INT_32 nIndex = 0; nIndex < nFuncCount; ++nIndex)
+		for (LPINT32 nIndex = 0; nIndex < nFuncCount; ++nIndex)
 		{
 			lua_register(m_pLuaState, astFuncList[nIndex].pcszFuncname, astFuncList[nIndex].pFunc);
 		}
@@ -218,7 +218,7 @@ BOOL LPAPI LPLuaScript::CallFunction(const char * pcszFuncName, const char * pcs
 
 BOOL LPAPI LPLuaScript::Execute(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LOG_PROCESS_ERROR(m_pLuaState);
 
@@ -284,9 +284,9 @@ lua_State *LPAPI LPLuaScript::GetLuaState(void)
 	return m_pLuaState;
 }
 
-BOOL LPAPI LPLuaScript::CollectGarbage(INT_32 nGCSize)
+BOOL LPAPI LPLuaScript::CollectGarbage(LPINT32 nGCSize)
 {
-	INT_32 nMemoryAmount = lua_gc(m_pLuaState, LUA_GCCOUNT, 0);
+	LPINT32 nMemoryAmount = lua_gc(m_pLuaState, LUA_GCCOUNT, 0);
 
 	if (nMemoryAmount > nGCSize)
 	{
@@ -297,9 +297,9 @@ BOOL LPAPI LPLuaScript::CollectGarbage(INT_32 nGCSize)
 	return TRUE;
 }
 
-UINT_32 LPAPI LPLuaScript::GetCRC(void)
+LPUINT32 LPAPI LPLuaScript::GetCRC(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	if (m_dwCRC == 0)
 	{
@@ -313,14 +313,14 @@ Exit0:
 
 BOOL LPAPI LPLuaScript::_CallFunction(const char * pcszFuncName, const char * pcszFormat, va_list valist)
 {
-	INT_32 nRetCode      = 0;
-	INT_32 nResult       = 0;
-	INT_32 nStackTop     = -1;
-	INT_32 nIndex        = 0;
-	INT_32 nArgNum       = 0;
-	INT_32 nParam        = 0;
-	INT_32 nErrFunc      = 0;
-	INT_32 nStackIndex   = 0;
+	LPINT32 nRetCode      = 0;
+	LPINT32 nResult       = 0;
+	LPINT32 nStackTop     = -1;
+	LPINT32 nIndex        = 0;
+	LPINT32 nArgNum       = 0;
+	LPINT32 nParam        = 0;
+	LPINT32 nErrFunc      = 0;
+	LPINT32 nStackIndex   = 0;
 
 	LOG_PROCESS_ERROR(m_pLuaState);
 	nStackTop = nParam = lua_gettop(m_pLuaState);
@@ -344,7 +344,7 @@ BOOL LPAPI LPLuaScript::_CallFunction(const char * pcszFuncName, const char * pc
 			break;
 		case 'd':
 			{
-				double fNumber = (double)va_arg(valist, INT_32);
+				double fNumber = (double)va_arg(valist, LPINT32);
 				lua_pushnumber(m_pLuaState, fNumber);
 				nArgNum++;
 			}
@@ -413,7 +413,7 @@ BOOL LPAPI LPLuaScript::_CallFunction(const char * pcszFuncName, const char * pc
 		nIndex++;
 	}
 
-	nResult = (INT_32)strlen(pcszFormat + nIndex);
+	nResult = (LPINT32)strlen(pcszFormat + nIndex);
 	nRetCode = lua_pcall(m_pLuaState, nArgNum, nResult, nErrFunc);
 	LOG_PROCESS_ERROR(0 == nRetCode);
 
@@ -444,11 +444,11 @@ BOOL LPAPI LPLuaScript::_CallFunction(const char * pcszFuncName, const char * pc
 			break;
 		case 'd':
 			{
-				INT_32* pnInteger = va_arg(valist, INT_32*);
+				LPINT32* pnInteger = va_arg(valist, LPINT32*);
 				LOG_PROCESS_ERROR(pnInteger);
 				LOG_PROCESS_ERROR(lua_isnumber(m_pLuaState, nStackIndex));
 
-				*pnInteger = (INT_32)(m_pLuaState, nStackIndex++);
+				*pnInteger = (LPINT32)(m_pLuaState, nStackIndex++);
 			}
 			break;
 		case 's':
@@ -456,7 +456,7 @@ BOOL LPAPI LPLuaScript::_CallFunction(const char * pcszFuncName, const char * pc
 				char* pszString = va_arg(valist, char*);
 				LOG_PROCESS_ERROR(pszString);
 				LOG_PROCESS_ERROR(lua_isstring(m_pLuaState, nStackIndex));
-				INT_32 nStrLen = va_arg(valist, INT_32);
+				LPINT32 nStrLen = va_arg(valist, LPINT32);
 
 				lpStrCpyN(pszString, lua_tostring(m_pLuaState, nStackIndex++), nStrLen);
 			}
@@ -510,11 +510,11 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, INT_32 nLevel)
+BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 {
-	INT_32 nResult = 0;
-	UINT_32 dwPointer = 0;
-	UINT_32 dwSize = 0;
+	LPINT32 nResult = 0;
+	LPUINT32 dwPointer = 0;
+	LPUINT32 dwSize = 0;
 
 	ILPFile* pFile = NULL;
 	BOOL bInString = FALSE;
@@ -622,8 +622,8 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, INT_32 nLevel)
 			break;
 		default:
 			if (!bInString && (dwPointer + 8 < dwSize) &&
-				*(UINT_32*)(pszFileData + dwPointer) == 'lcnI' &&
-				*(UINT_32*)(pszFileData + dwPointer + 4) == '(edu')
+				*(LPUINT32*)(pszFileData + dwPointer) == 'lcnI' &&
+				*(LPUINT32*)(pszFileData + dwPointer + 4) == '(edu')
 			{
 				dwPointer += 8;
 				while (dwPointer < dwSize && pszFileData[dwPointer] != '\"')
@@ -684,7 +684,7 @@ Exit0:
 
 LPLuaScript *LPAPI LPLuaScript::GetScriptFromState(lua_State * L)
 {
-	INT_32 nTop = 0;
+	LPINT32 nTop = 0;
 	LPLuaScript* pLuaScript = NULL;
 	
 	LOG_PROCESS_ERROR(L);
@@ -703,11 +703,11 @@ Exit0:
 	return pLuaScript;
 }
 
-INT_32 LPLuaScript::_Include(lua_State * L)
+LPINT32 LPLuaScript::_Include(lua_State * L)
 {
-	INT_32 nResult = 0;
-	INT_32 nErrFunc = 0;
-	UINT_32 dwSize = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nErrFunc = 0;
+	LPUINT32 dwSize = 0;
 	ILPFile* pFile = NULL;
 	char* pszBuf = NULL;
 	const char* pcszFileName = NULL;
@@ -739,7 +739,7 @@ INT_32 LPLuaScript::_Include(lua_State * L)
 	nResult = pFile->Read(pszBuf, dwSize);
 	LOG_PROCESS_ERROR(nResult == dwSize);
 
-	if ((*(UINT_32*)pszBuf & 0x00FFFFFF) == UTF8_BOM)
+	if ((*(LPUINT32*)pszBuf & 0x00FFFFFF) == UTF8_BOM)
 	{
 		nResult = luaL_loadbuffer(L, pszBuf + 3, dwSize - 3, pcszFileName);
 		LOG_PROCESS_ERROR(0 == nResult);
@@ -786,10 +786,10 @@ Exit0:
 	return 0;
 }
 
-INT_32 LPLuaScript::_LuaErrFunc(lua_State * L)
+LPINT32 LPLuaScript::_LuaErrFunc(lua_State * L)
 {
 	lua_Debug ar;
-	INT_32 nLevel = 1;
+	LPINT32 nLevel = 1;
 	static BOOL s_bInErrFunc = FALSE;
 
 	if (s_bInErrFunc)
@@ -1028,7 +1028,7 @@ void LPAPI LPLuaScript::_EnumTable(lua_State * L, int nTableIndex, int nTableDep
 	return;
 }
 
-INT_32 LPLuaScript::_Print(lua_State * L)
+LPINT32 LPLuaScript::_Print(lua_State * L)
 {
 	const char* pcszMsg = NULL;
 

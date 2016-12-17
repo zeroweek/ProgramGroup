@@ -61,16 +61,16 @@ enum eBTNodeType
 
 struct BT_NODE
 {
-	INT_16            type;
-	INT_16            childCount;
+	LPINT16            type;
+	LPINT16            childCount;
 	BT_NODE*          pChild;
 	BT_NODE*          pSibling;
 
-	INT_32            params[BT_MAX_PARAM];
+	LPINT32            params[BT_MAX_PARAM];
 
 	union
 	{
-		INT_32        flag;
+		LPINT32        flag;
 		struct
 		{
 			unsigned     luaParamMask    : 8;
@@ -92,9 +92,9 @@ struct BT_RUN_NODE
 
 struct BT_CTRL
 {
-	UINT_8                 debugging;
-	INT_16                 returnValue;
-	UINT_8                 runStackNodeCount;
+	LPUINT8                 debugging;
+	LPINT16                 returnValue;
+	LPUINT8                 runStackNodeCount;
 
 	BT_RUN_NODE            nodeRunStack[BT_MAX_CALL_STACK_NODE];
 	
@@ -104,13 +104,13 @@ struct BT_CTRL
 
 DECLARE BOOL LPAPI lpBTAddChild(BT_NODE* pRootNode, BT_NODE* pChild);
 DECLARE BOOL LPAPI lpBTRemoveChild(BT_NODE* pRootNode, BT_NODE* pChild);
-DECLARE BOOL LPAPI lpBTInsertChildAtTag(BT_NODE* pParent, INT_32 nTag, BT_NODE* pNewChild);
+DECLARE BOOL LPAPI lpBTInsertChildAtTag(BT_NODE* pParent, LPINT32 nTag, BT_NODE* pNewChild);
 
-DECLARE BT_NODE* LPAPI lpBTGetChild(BT_NODE* pRootNode, INT_32 nIndex);
+DECLARE BT_NODE* LPAPI lpBTGetChild(BT_NODE* pRootNode, LPINT32 nIndex);
 
 DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL& ctrl);
 
-typedef INT_32 (*pfunBTUserDefinedNodeFunc)(BT_CTRL* pCtrl, BT_NODE* pNode);
+typedef LPINT32 (*pfunBTUserDefinedNodeFunc)(BT_CTRL* pCtrl, BT_NODE* pNode);
 DECLARE void lpBTRegisterUserDefinedNodeFunc(pfunBTUserDefinedNodeFunc pfNodeFunc);
 
 

@@ -29,7 +29,7 @@ LPSqlStmt::~LPSqlStmt()
 	UnInit();
 }
 
-BOOL LPAPI LPSqlStmt::Init(LPSqlMgr * pSqlMgr, INT_32 nSqlStmtId)
+BOOL LPAPI LPSqlStmt::Init(LPSqlMgr * pSqlMgr, LPINT32 nSqlStmtId)
 {
 	LOG_PROCESS_ERROR(pSqlMgr);
 
@@ -38,7 +38,7 @@ BOOL LPAPI LPSqlStmt::Init(LPSqlMgr * pSqlMgr, INT_32 nSqlStmtId)
 	m_pSqlStmtData = m_pSqlMgr->GetSqlStmtData(nSqlStmtId);
 	LOG_PROCESS_ERROR(m_pSqlStmtData);
 
-	m_pucParamBuf = new UINT_8[m_pSqlStmtData->nParamBufSize];
+	m_pucParamBuf = new LPUINT8[m_pSqlStmtData->nParamBufSize];
 	LOG_PROCESS_ERROR(m_pucParamBuf);
 
 	m_nParamCount = 0;
@@ -83,19 +83,19 @@ BOOL LPAPI LPSqlStmt::UnInit(void)
 		return FALSE;																				\
 	}
 
-IMPL_PUSH_PARAM_FUNC(INT_8, MYSQL_TYPE_TINY, FALSE);
-IMPL_PUSH_PARAM_FUNC(INT_16, MYSQL_TYPE_SHORT, FALSE);
-IMPL_PUSH_PARAM_FUNC(INT_32, MYSQL_TYPE_LONG, FALSE);
-IMPL_PUSH_PARAM_FUNC(INT_64, MYSQL_TYPE_LONGLONG, FALSE);
+IMPL_PUSH_PARAM_FUNC(LPINT8, MYSQL_TYPE_TINY, FALSE);
+IMPL_PUSH_PARAM_FUNC(LPINT16, MYSQL_TYPE_SHORT, FALSE);
+IMPL_PUSH_PARAM_FUNC(LPINT32, MYSQL_TYPE_LONG, FALSE);
+IMPL_PUSH_PARAM_FUNC(LPINT64, MYSQL_TYPE_LONGLONG, FALSE);
 
-IMPL_PUSH_PARAM_FUNC(UINT_8, MYSQL_TYPE_TINY, TRUE);
-IMPL_PUSH_PARAM_FUNC(UINT_16, MYSQL_TYPE_SHORT, TRUE);
-IMPL_PUSH_PARAM_FUNC(UINT_32, MYSQL_TYPE_LONG, TRUE);
-IMPL_PUSH_PARAM_FUNC(UINT_64, MYSQL_TYPE_LONGLONG, TRUE);
+IMPL_PUSH_PARAM_FUNC(LPUINT8, MYSQL_TYPE_TINY, TRUE);
+IMPL_PUSH_PARAM_FUNC(LPUINT16, MYSQL_TYPE_SHORT, TRUE);
+IMPL_PUSH_PARAM_FUNC(LPUINT32, MYSQL_TYPE_LONG, TRUE);
+IMPL_PUSH_PARAM_FUNC(LPUINT64, MYSQL_TYPE_LONGLONG, TRUE);
 
 BOOL LPAPI LPSqlStmt::PushTime(time_t tValue)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	MYSQL_TIME mysqlTime;
 	struct tm tTm;
 
@@ -126,17 +126,17 @@ Exit0:
 
 BOOL LPAPI LPSqlStmt::PushParam(const char * pcszValue)
 {
-	INT_32 nStrLen = 0;
+	LPINT32 nStrLen = 0;
 
 	LOG_PROCESS_ERROR(pcszValue);
 	LOG_PROCESS_ERROR(m_nParamCount < m_pSqlStmtData->nParamCount);
 	LOG_PROCESS_ERROR(m_pSqlStmtData->nParamType[m_nParamCount] == MYSQL_TYPE_STRING);
 
-	nStrLen = (INT_32)lpStrNLen(pcszValue, m_pSqlStmtData->nParamSize[m_nParamCount]);
+	nStrLen = (LPINT32)lpStrNLen(pcszValue, m_pSqlStmtData->nParamSize[m_nParamCount]);
 	LOG_PROCESS_ERROR(nStrLen < m_pSqlStmtData->nParamSize[m_nParamCount]);
 
-	*(INT_32*)(m_pucParamBuf + m_nParamBufSize) = nStrLen;
-	m_nParamBufSize += sizeof(INT_32);
+	*(LPINT32*)(m_pucParamBuf + m_nParamBufSize) = nStrLen;
+	m_nParamBufSize += sizeof(LPINT32);
 
 	memcpy(m_pucParamBuf + m_nParamBufSize, pcszValue, nStrLen + 1);
 	m_nParamBufSize += m_pSqlStmtData->nParamSize[m_nParamCount];
@@ -147,15 +147,15 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPSqlStmt::PushParam(UINT_8 * pucValue, UINT_32 dwValueSize)
+BOOL LPAPI LPSqlStmt::PushParam(LPUINT8 * pucValue, LPUINT32 dwValueSize)
 {
 	LOG_PROCESS_ERROR(pucValue);
 	LOG_PROCESS_ERROR(m_nParamCount < m_pSqlStmtData->nParamCount);
 	LOG_PROCESS_ERROR(m_pSqlStmtData->nParamType[m_nParamCount] == MYSQL_TYPE_BLOB);
-	LOG_PROCESS_ERROR(dwValueSize < (UINT_32)m_pSqlStmtData->nParamSize[m_nParamCount]);
+	LOG_PROCESS_ERROR(dwValueSize < (LPUINT32)m_pSqlStmtData->nParamSize[m_nParamCount]);
 
-	*(UINT_32*)(m_pucParamBuf + m_nParamBufSize) = dwValueSize;
-	m_nParamBufSize += sizeof(UINT_32);
+	*(LPUINT32*)(m_pucParamBuf + m_nParamBufSize) = dwValueSize;
+	m_nParamBufSize += sizeof(LPUINT32);
 
 	memcpy(m_pucParamBuf + m_nParamBufSize, pucValue, dwValueSize);
 	m_nParamBufSize += m_pSqlStmtData->nParamSize[m_nParamCount];
@@ -166,19 +166,19 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPSqlStmt::PushParamZ(UINT_8 * pucValue, UINT_32 dwValueSize)
+BOOL LPAPI LPSqlStmt::PushParamZ(LPUINT8 * pucValue, LPUINT32 dwValueSize)
 {
-	INT_32 nResult = 0;
-	UINT_32 *pdwSize = NULL;
+	LPINT32 nResult = 0;
+	LPUINT32 *pdwSize = NULL;
 	unsigned long ulBufLen = 0;
 
 	LOG_PROCESS_ERROR(pucValue);
 	LOG_PROCESS_ERROR(m_nParamCount < m_pSqlStmtData->nParamCount);
 	LOG_PROCESS_ERROR(m_pSqlStmtData->nParamType[m_nParamCount] == MYSQL_TYPE_LONG_BLOB);
-	LOG_PROCESS_ERROR(dwValueSize < (UINT_32)m_pSqlStmtData->nParamSize[m_nParamCount]);
+	LOG_PROCESS_ERROR(dwValueSize < (LPUINT32)m_pSqlStmtData->nParamSize[m_nParamCount]);
 
-	pdwSize = (UINT_32*)(m_pucParamBuf + m_nParamBufSize);
-	m_nParamBufSize += sizeof(UINT_32);
+	pdwSize = (LPUINT32*)(m_pucParamBuf + m_nParamBufSize);
+	m_nParamBufSize += sizeof(LPUINT32);
 	ulBufLen = m_pSqlStmtData->nParamSize[m_nParamCount];
 
 	nResult = compress((unsigned char*)(m_pucParamBuf + m_nParamBufSize), &ulBufLen, (unsigned char*)pucValue, dwValueSize);

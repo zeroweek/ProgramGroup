@@ -31,7 +31,7 @@ NS_LZPL_BEGIN
 struct SQL_THREAD_PARAM
 {
 	LPSqlMgr         *pSqlMgr;
-	INT_32           nIndex;
+	LPINT32           nIndex;
 };
 
 
@@ -60,10 +60,10 @@ public:
 		const char* pcszPwd,
 		const char* pcszDbName,
 		const char* pcszCharSet,
-		UINT_32 dwServerPort,
+		LPUINT32 dwServerPort,
 		SQL_STMT_DATA* pSqlStmtList,
-		INT_32 nSqlStmtCount,
-		INT_32 nThreadCount);
+		LPINT32 nSqlStmtCount,
+		LPINT32 nThreadCount);
 
 	// Summary:
 	//		反初始化
@@ -75,15 +75,15 @@ public:
 
 	// Summary:
 	//		无
-	BOOL LPAPI AsyncExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, ...);
+	BOOL LPAPI AsyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, ...);
 
 	// Summary:
 	//		无
-	BOOL LPAPI SyncExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, ...);
+	BOOL LPAPI SyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, ...);
 
 	// Summary:
 	//		无
-	const SQL_STMT_DATA* LPAPI GetSqlStmtData(INT_32 nSqlStmtId);
+	const SQL_STMT_DATA* LPAPI GetSqlStmtData(LPINT32 nSqlStmtId);
 
 	// Summary:
 	//		无
@@ -97,7 +97,7 @@ private:
 
 	// Summary:
 	//		无
-	LPSqlStmt* LPAPI _NewSqlStmt(INT_32 nSqlStmtId);
+	LPSqlStmt* LPAPI _NewSqlStmt(LPINT32 nSqlStmtId);
 
 	// Summary:
 	//		无
@@ -105,7 +105,7 @@ private:
 
 	// Summary:
 	//		无
-	LPSqlStmt* LPAPI _ExecSqlStmt(INT_32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, va_list valist);
+	LPSqlStmt* LPAPI _ExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfnCallback, void* pUserData, const char* pcszFormat, va_list valist);
 
 	// Summary:
 	//		无
@@ -113,7 +113,7 @@ private:
 
 private:
 
-	INT_32                      m_nSqlStmtCount;
+	LPINT32                      m_nSqlStmtCount;
 	SQL_STMT_DATA*           m_pSqlStmtList;
 
 	char                        m_szServerAddr[COMMON_NAME_LEN];
@@ -121,18 +121,18 @@ private:
 	char                        m_szPwd[COMMON_NAME_LEN];
 	char                        m_szDbName[COMMON_NAME_LEN];
 	char                        m_szCharSet[COMMON_NAME_LEN];
-	UINT_32                     m_dwServerPort;
+	LPUINT32                     m_dwServerPort;
 
-	INT_32                      m_nThreadCount;
+	LPINT32                      m_nThreadCount;
 	std::thread**               m_pThread;
 	BOOL                        m_bStopThread;
 	LPLoopList                  m_PushList[SQL_MAX_DB_WORKER_THREAD_COUNT];
 	LPLoopList                  m_PopList[SQL_MAX_DB_WORKER_THREAD_COUNT];
-	INT_32                      m_nThreadIndex;
+	LPINT32                      m_nThreadIndex;
 
 	LPBaseList*                 m_pSqlStmtPool;
-	INT_32                      m_nNewSqlStmtCount;
-	INT_32                      m_nDelSqlStmtCount;
+	LPINT32                      m_nNewSqlStmtCount;
+	LPINT32                      m_nDelSqlStmtCount;
 
 };
 

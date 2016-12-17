@@ -82,7 +82,7 @@ Exit0:
 	return;
 }
 
-void LPAPI CGSMessageHandler::OnConnectError(ILPConnector * pConnector, UINT_32 dwErrorNo)
+void LPAPI CGSMessageHandler::OnConnectError(ILPConnector * pConnector, LPUINT32 dwErrorNo)
 {
 	LOG_PROCESS_ERROR(pConnector);
 
@@ -92,16 +92,16 @@ Exit0:
 	return;
 }
 
-void LPAPI CGSMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void LPAPI CGSMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
-	UINT_16 wMsgId = 0;
+	LPINT32 nResult = 0;
+	LPUINT16 wMsgId = 0;
 
 	LOG_PROCESS_ERROR(pSocker);
 	LOG_PROCESS_ERROR(pcszBuf);
 	LOG_PROCESS_ERROR(dwSize >= sizeof(wMsgId));
 
-	wMsgId = *((UINT_16*)pcszBuf);
+	wMsgId = *((LPUINT16*)pcszBuf);
 	CONVERT_MSG_ID_ENDIAN(wMsgId);
 
 	LOG_PROCESS_ERROR(wMsgId > min_internal_message && wMsgId < max_internal_message
@@ -158,11 +158,11 @@ Exit0:
 	return;
 }
 
-INT_32 LPAPI CGSMessageHandler::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGSMessageHandler::Parse(ILPLoopBuf * pLoopBuf)
 {
-	INT_32 nResult = 0;
-	UINT_16 wMsgId = 0;
-	INT_32 nParseCount = 0;
+	LPINT32 nResult = 0;
+	LPUINT16 wMsgId = 0;
+	LPINT32 nParseCount = 0;
 
 	LOG_PROCESS_ERROR(pLoopBuf);
 
@@ -193,7 +193,7 @@ Exit1:
 
 BOOL CGSMessageHandler::DoGTRegister(ILPSocker* pSocker)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	G2T_REGISTER tMsg;
 
 	LOG_PROCESS_ERROR(pSocker);
@@ -215,9 +215,9 @@ Exit0:
 	return FALSE;
 }
 
-void CGSMessageHandler::OnGTRegisterAck(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize)
+void CGSMessageHandler::OnGTRegisterAck(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	T2G_REGISTER_ACK* ptMsg = NULL;
 
 	LOG_PROCESS_ERROR(pSocker);
@@ -249,8 +249,8 @@ void CGSMessageHandler::CloseAllSocker(void)
 	}
 }
 
-UINT_32 CGSMessageHandler::GetSockerCount(void)
+LPUINT32 CGSMessageHandler::GetSockerCount(void)
 {
-	return (UINT_32)m_mapSocker.size();
+	return (LPUINT32)m_mapSocker.size();
 }
 

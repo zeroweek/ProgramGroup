@@ -71,8 +71,8 @@ struct BT_CUSTOM_CTRL : BT_CTRL
 	unsigned int   eOwnerType     : 2;
 	unsigned int   eRunningType   : 8;
 	unsigned int   uReserved      : 16;
-	INT_32         nWaitFrame;
-	UINT_32        dwRoleId;
+	LPINT32         nWaitFrame;
+	LPUINT32        dwRoleId;
 
 	union
 	{
@@ -89,7 +89,7 @@ struct BT_CUSTOM_CTRL : BT_CTRL
 
 #pragma pack(pop)
 
-typedef INT_32(*pfunBtActionFunc)(BT_CUSTOM_CTRL* pCtrl, INT_32 nParam[]);
+typedef LPINT32(*pfunBtActionFunc)(BT_CUSTOM_CTRL* pCtrl, LPINT32 nParam[]);
 
 class CBTManager
 {
@@ -102,37 +102,37 @@ public:
 
 	BOOL Reload(void);
 
-	BT_NODE* CreateBTNode(BT_NODE* pParent, INT_32 nType, INT_32 nTag, const char* pcszName,
-		INT_32 nParam0, INT_32 nParam1, INT_32 nParam2, INT_32 nParam3, INT_32 nFlag);
-	BOOL DestroyBTTree(BT_NODE* pRoot, INT_32 nLayer = 0);
+	BT_NODE* CreateBTNode(BT_NODE* pParent, LPINT32 nType, LPINT32 nTag, const char* pcszName,
+		LPINT32 nParam0, LPINT32 nParam1, LPINT32 nParam2, LPINT32 nParam3, LPINT32 nFlag);
+	BOOL DestroyBTTree(BT_NODE* pRoot, LPINT32 nLayer = 0);
 	BT_NODE* CopyBTTree(BT_NODE* pRoot);
-	void PrintBTTree(BT_NODE* pRoot, INT_32 nLayer);
+	void PrintBTTree(BT_NODE* pRoot, LPINT32 nLayer);
 
-	INT_32 FindBTActionByName(const char* pcszName);
-	INT_32 RegisterBTAction(const char* pcszName);
-	const char* GetBTActionName(INT_32 nActionId);
+	LPINT32 FindBTActionByName(const char* pcszName);
+	LPINT32 RegisterBTAction(const char* pcszName);
+	const char* GetBTActionName(LPINT32 nActionId);
 
-	BOOL CallBTAction(INT_32 nBTNodeType, INT_32 nParam[]);
-	BOOL TestBTAction(void* pObj, INT_32 nBTNodeType, INT_32 nParam[]);
+	BOOL CallBTAction(LPINT32 nBTNodeType, LPINT32 nParam[]);
+	BOOL TestBTAction(void* pObj, LPINT32 nBTNodeType, LPINT32 nParam[]);
 
-	UINT_32 GetCtrlRoleId();
+	LPUINT32 GetCtrlRoleId();
 
 private:
 
 	CBTManager();
 	~CBTManager();
 
-	static INT_32 _BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode);
+	static LPINT32 _BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode);
 
 private:
 
 	struct ACTION_INFO
 	{
-		INT_32               nActionId;
+		LPINT32               nActionId;
 		char                 szName[BT_ACTION_NAME_LEN];
 		pfunBtActionFunc     pfnCallback;
-		INT_16               eOwnerMask;
-		INT_16               bIsLuaFunc;
+		LPINT16               eOwnerMask;
+		LPINT16               bIsLuaFunc;
 	};
 	static ACTION_INFO           m_ActionInfoList[btntTotal];
 
@@ -146,7 +146,7 @@ private:
 	typedef std::map<const char*, ACTION_INFO*, ltstr>  MAP_ACTION_NAME_2_INFO;
 	MAP_ACTION_NAME_2_INFO          m_mapActionName2Info;
 
-	INT_32                          m_nActionIdGenerator;
+	LPINT32                          m_nActionIdGenerator;
 	BT_CUSTOM_CTRL*              m_pCurrentCtrl;
 };
 

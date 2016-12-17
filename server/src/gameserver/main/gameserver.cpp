@@ -68,7 +68,7 @@ Exit0:
 
 BOOL LPAPI CGameServer::Init(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	NET_CONFIG stNetConfig;
 
 	SetServerState(eServerState_Initing);
@@ -122,7 +122,7 @@ Exit0:
 
 BOOL LPAPI CGameServer::UnInit(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	SetServerState(eServerState_UnIniting);
 
@@ -145,7 +145,7 @@ BOOL LPAPI CGameServer::UnInit(void)
 
 BOOL LPAPI CGameServer::MainLoop(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	nResult = m_pNet->Run(30);
 	if (nResult)
@@ -156,19 +156,19 @@ BOOL LPAPI CGameServer::MainLoop(void)
 	return TRUE;
 }
 
-UINT_32 LPAPI CGameServer::GetServerState(void)
+LPUINT32 LPAPI CGameServer::GetServerState(void)
 {
 	return m_dwServerState;
 }
 
-void CGameServer::SetServerState(UINT_32 dwServerState)
+void CGameServer::SetServerState(LPUINT32 dwServerState)
 {
 	m_dwServerState = dwServerState;
 }
 
 void CGameServer::Close(void)
 {
-	UINT_64 qwTickStart = 0;
+	LPUINT64 qwTickStart = 0;
 
 	//停止所有监听器和连接器
 	if (m_pListener)
@@ -196,7 +196,7 @@ void CGameServer::Close(void)
 
 void _Tabfile_Test(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char szFilePath[MAX_PATH];
 
 	lpStrCpyN(szFilePath, lpGetWorkingDir(), MAX_PATH);
@@ -207,12 +207,12 @@ void _Tabfile_Test(void)
 	nResult = oTabFile.Init(szFilePath, 0, TRUE);
 	LOG_PROCESS_ERROR(nResult);
 
-	INT_32 nID = 0;
+	LPINT32 nID = 0;
 	char szName[128] = { 0 };
 	char szBeginTime[128] = { 0 };
 	char szEndTime[128] = { 0 };
 
-	for (INT_32 nRowIndex = 0; nRowIndex < oTabFile.GetRowCount(); nRowIndex++)
+	for (LPINT32 nRowIndex = 0; nRowIndex < oTabFile.GetRowCount(); nRowIndex++)
 	{
 		nResult = oTabFile.ReadData(0, nRowIndex, nID);
 		LOG_PROCESS_ERROR(nResult);
@@ -232,7 +232,7 @@ void _Tabfile_Test(void)
 	oTabFile.UnInit();
 
 	nResult = oTabFile.Init(szFilePath, 0, FALSE);
-	for (INT_32 nRowIndex = 0; nRowIndex < oTabFile.GetRowCount(); nRowIndex++)
+	for (LPINT32 nRowIndex = 0; nRowIndex < oTabFile.GetRowCount(); nRowIndex++)
 	{
 		nResult = oTabFile.ReadData("id", nRowIndex, nID);
 		LOG_PROCESS_ERROR(nResult);
@@ -295,7 +295,7 @@ Exit0:
 
 BOOL _Test_Curl(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	char* pVersion = NULL;
 	CURL* pEasyCurl = NULL;
@@ -355,7 +355,7 @@ Exit0:
 
 BOOL _Test_MeshObjLoad(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	FILE_LIST fileList;
 	CNavMeshObjLoader oNavMeshObjLoader;
 
@@ -379,7 +379,7 @@ BOOL _Test_MeshObjLoad(void)
 	nResult = oNavMeshObjLoader.Load("config/scene/01 Exported NavMesh.obj");
 	LOG_PROCESS_ERROR(nResult);
 
-	//for (INT_32 i = 0; i < fileList.dwSize; ++i)
+	//for (LPINT32 i = 0; i < fileList.dwSize; ++i)
 	//{
 	//	nResult = oNavMeshObjLoader.Load(fileList.szFiles[i]);
 	//	LOG_PROCESS_ERROR(nResult);
@@ -392,7 +392,7 @@ Exit0:
 
 BOOL _Test_ShareMem(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	LPShareMemory oShareMemory;
 
@@ -416,7 +416,7 @@ Exit0:
 
 BOOL _Test(void)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 
 	__TRY__
 	{
@@ -437,7 +437,7 @@ Exit0:
 
 int main(int argc, char* argv[])
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	LOG_CONFIG stLogConfig;
 
 	RedefinedConsole();

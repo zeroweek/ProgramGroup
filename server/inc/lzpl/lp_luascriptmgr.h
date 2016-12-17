@@ -37,7 +37,7 @@ public:
 
 	// Summary:
 	//		无
-	BOOL LPAPI Reload(INT_32& nErrorCount);
+	BOOL LPAPI Reload(LPINT32& nErrorCount);
 
 	// Summary:
 	//		无
@@ -77,13 +77,13 @@ public:
 
 	// Summary:
 	//		无
-	INT_64 LPAPI PrintMemoryStat(void);
+	LPINT64 LPAPI PrintMemoryStat(void);
 
 private:
 
 	// Summary:
 	//		无
-	static INT_32 _LoadPackage(lua_State* L);
+	static LPINT32 _LoadPackage(lua_State* L);
 
 private:
 

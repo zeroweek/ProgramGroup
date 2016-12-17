@@ -45,7 +45,7 @@ public:
 	//		dwPoolId：所在池的id
 	// Return:
 	//		TRUE-内存分配成功，FALSE-内存分配失败
-	BOOL LPAPI Init(UINT_32 dwSize, UINT_32 dwPoolId = BUF_INVALID_POOL_ID);
+	BOOL LPAPI Init(LPUINT32 dwSize, LPUINT32 dwPoolId = BUF_INVALID_POOL_ID);
 
 	// Summary:
 	//		无
@@ -59,13 +59,13 @@ public:
 	//		获取所在池的id
 	// Return:
 	//		池id
-	UINT_32 LPAPI GetPoolId();
+	LPUINT32 LPAPI GetPoolId();
 
 	// Summary:
 	//		获取引用计数
 	// Return:
 	//		引用计数
-	UINT_32 LPAPI QueryRef();
+	LPUINT32 LPAPI QueryRef();
 
 	// Summary:
 	//		增加引用计数
@@ -81,7 +81,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前总共可读数据长度		
-	virtual UINT_32 LPAPI GetTotalReadableLen();
+	virtual LPUINT32 LPAPI GetTotalReadableLen();
 
 	// Summary:
 	//		获取当前一次可读数据长度，只计算读指针后面可读取的数据大小
@@ -89,7 +89,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前一次可读数据长度		
-	virtual UINT_32 LPAPI GetOnceReadableLen();
+	virtual LPUINT32 LPAPI GetOnceReadableLen();
 
 	// Summary:
 	//		获取当前总共可写长度，写指针前面以及后面的可写入的数据大小都计算在内
@@ -97,7 +97,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前总共可写长度
-	virtual UINT_32 LPAPI GetTotalWritableLen();
+	virtual LPUINT32 LPAPI GetTotalWritableLen();
 
 	// Summary:
 	//		获取当前一次可写长度，只计算写指针后面可写入的数据大小
@@ -105,7 +105,7 @@ public:
 	//				所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
 	// Return:
 	//		当前一次可写长度
-	virtual UINT_32 LPAPI GetOnceWritableLen();
+	virtual LPUINT32 LPAPI GetOnceWritableLen();
 
 	// Summary:
 	//		读取数据，该函数会自动调整<读指针>的位置，以及当前有效数据长度
@@ -117,7 +117,7 @@ public:
 	//		bNullTerminate：是否向pDst填入NULL结束符
 	// Return:
 	//		TRUE-成功读取指定长度数据，FALSE-无任何操作
-	virtual BOOL LPAPI Read(char* pDst, UINT_32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate);
+	virtual BOOL LPAPI Read(char* pDst, LPUINT32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate);
 
 	// Summary:
 	//		写入数据，该函数会自动调整<写指针>的位置，以及当前有效数据长度
@@ -126,7 +126,7 @@ public:
 	//		dwWriteLen：要写入的长度
 	// Return:
 	//		TRUE-成功写入指定长度数据，FALSE-无任何操作
-	virtual BOOL LPAPI Write(const char* pSrc, UINT_32 dwWriteLen);
+	virtual BOOL LPAPI Write(const char* pSrc, LPUINT32 dwWriteLen);
 
 	// Summary:
 	//		获取读指针，配套GetOnceReadableLen和FinishRead使用
@@ -142,14 +142,14 @@ public:
 	//		累加已读取数据大小，如果超过了实际可读的数据长度，则只累加实际可读长度
 	// Input:
 	//		dwReadLen：累加读取的大小
-	virtual void LPAPI FinishRead(UINT_32 dwReadLen);
+	virtual void LPAPI FinishRead(LPUINT32 dwReadLen);
 
 	// Summary:
 	//		配套GetOnceWritableLen和WritePtr使用
 	//		累加已写入数据大小，如果超过了实际可写的数据长度，则只累加实际可写长度
 	// Input:
 	//		dwWriteLen：累加写入的大小
-	virtual void LPAPI FinishWrite(UINT_32 dwWriteLen);
+	virtual void LPAPI FinishWrite(LPUINT32 dwWriteLen);
 
 private:
 
@@ -158,9 +158,9 @@ private:
 	char*                   m_pWrite;        // 写指针，数据从该位置开始写入
 	volatile atomic_uint    m_dwDataLen;     // 有效数据长度
 
-	UINT_32                 m_dwBufSize;     // 缓冲区大小
-	UINT_32                 m_dwRefCount;    // 引用计数
-	UINT_32                 m_dwPoolId;      // 所在池的id
+	LPUINT32                 m_dwBufSize;     // 缓冲区大小
+	LPUINT32                 m_dwRefCount;    // 引用计数
+	LPUINT32                 m_dwPoolId;      // 所在池的id
 };
 
 
@@ -192,7 +192,7 @@ public:
 	//		dwBufSize：缓冲区对象大小
 	//		bUsePool：是否使用对象池
 	//		dwPoolInitCount: 池初始化大小
-	BOOL LPAPI Init(UINT_32 dwBufSize, BOOL bUsePool, UINT_32 dwPoolInitCount);
+	BOOL LPAPI Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount);
 
 	// Summary:
 	//		无
@@ -202,7 +202,7 @@ public:
 	//		获取缓冲区对象大小
 	// Return:
 	//		缓冲区对象大小
-	UINT_32 LPAPI GetBufSize();
+	LPUINT32 LPAPI GetBufSize();
 
 	// Summary:
 	//		创建指定大小的缓冲区对象
@@ -222,24 +222,24 @@ private:
 	//		预先批量创建
 	// Input:
 	//		dwBatchCount: 创建个数
-	BOOL LPAPI _PreBatchCreate(UINT_32 dwBatchCount);
+	BOOL LPAPI _PreBatchCreate(LPUINT32 dwBatchCount);
 
 	// Summary:
 	//		获取池对象id
 	// Return:
 	//		id
-	static UINT_32 LPAPI CreatePoolId();
+	static LPUINT32 LPAPI CreatePoolId();
 
 private:
 
 	BOOL                     m_bUsePool;     // 是否使用对象池
-	UINT_32                  m_dwPoolId;     // 池id
-	UINT_32                  m_dwSizeBuf;    // 池中每个缓冲区对象的内存大小
-	UINT_32                  dwPoolInitCount;// 池初始化大小
+	LPUINT32                  m_dwPoolId;     // 池id
+	LPUINT32                  m_dwSizeBuf;    // 池中每个缓冲区对象的内存大小
+	LPUINT32                  dwPoolInitCount;// 池初始化大小
 	LPListBuf                m_oFreeBufList; // 空闲缓冲区对象列表
 	LPSetBuf                 m_oBufSet;      // 缓冲对象记录集，用于记录所有经由该池创建的对象
 
-	static UINT_32           m_dwBaseId;  // 基础ID
+	static LPUINT32           m_dwBaseId;  // 基础ID
 	static LPLock            *m_poLock;    // id创建锁
 
 };
@@ -248,7 +248,7 @@ private:
 
 // Summary:
 //		LPLoopBufPool池map
-typedef std::map<UINT_32, LPLoopBufPool*>   MAP_LOOP_BUF_POOL;
+typedef std::map<LPUINT32, LPLoopBufPool*>   MAP_LOOP_BUF_POOL;
 
 
 

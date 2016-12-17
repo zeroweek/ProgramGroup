@@ -33,7 +33,7 @@ DECLARE void LPAPI lpGetTimeEx(TIME_VALUE& stTime)
 #   endif
 }
 
-DECLARE void LPAPI lpSleep(UINT_32 dwMicSeconds)
+DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds)
 {
 #   ifdef _WIN32
 	{
@@ -46,7 +46,7 @@ DECLARE void LPAPI lpSleep(UINT_32 dwMicSeconds)
 #   endif
 }
 
-DECLARE INT_32 LPAPI lpShutDown(SOCKET s, INT_32 nHowTo)
+DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo)
 {
 #   ifdef _WIN32
 	{
@@ -59,7 +59,7 @@ DECLARE INT_32 LPAPI lpShutDown(SOCKET s, INT_32 nHowTo)
 #   endif
 }
 
-DECLARE INT_32 LPAPI lpCloseSocket(SOCKET s)
+DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s)
 {
 #   ifdef _WIN32
 	{
@@ -72,7 +72,7 @@ DECLARE INT_32 LPAPI lpCloseSocket(SOCKET s)
 #   endif
 }
 
-DECLARE INT_32 LPAPI lpCloseHandle(HANDLE h)
+DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h)
 {
 #   ifdef _WIN32
 	{
@@ -102,7 +102,7 @@ DECLARE BOOL LPAPI lpCreateDirectory(const char* pszDir)
 {
 #   ifdef _WIN32
 	{
-		INT_32 nResult = 0;
+		LPINT32 nResult = 0;
 		char szPath[MAX_PATH];
 		char* p1 = szPath;
 
@@ -303,7 +303,7 @@ DECLARE const char *LPAPI lpGetWorkingDir()
 #   endif
 }
 
-DECLARE UINT_64 LPAPI lpGetTickCountEx()
+DECLARE LPUINT64 LPAPI lpGetTickCountEx()
 {
 #   ifdef _WIN32
 	{
@@ -316,9 +316,9 @@ DECLARE UINT_64 LPAPI lpGetTickCountEx()
 #   endif
 }
 
-DECLARE UINT_64 LPAPI lpRdtsc(void)
+DECLARE LPUINT64 LPAPI lpRdtsc(void)
 {
-	UINT_64 qwTsc = 0;
+	LPUINT64 qwTsc = 0;
 
 #   ifdef _WIN32
 	{
@@ -346,7 +346,7 @@ DECLARE void LPAPI lpINT3(void)
 #   endif
 }
 
-DECLARE UINT_32 LPAPI lpGetCurrentProcessId()
+DECLARE LPUINT32 LPAPI lpGetCurrentProcessId()
 {
 #   ifdef _WIN32
 	{
@@ -359,7 +359,7 @@ DECLARE UINT_32 LPAPI lpGetCurrentProcessId()
 #   endif
 }
 
-DECLARE UINT_32 LPAPI lpGetCurrentThreadId()
+DECLARE LPUINT32 LPAPI lpGetCurrentThreadId()
 {
 #   ifdef _WIN32
 	{
@@ -372,7 +372,7 @@ DECLARE UINT_32 LPAPI lpGetCurrentThreadId()
 #   endif
 }
 
-DECLARE INT_32 LPAPI lpGetLastError()
+DECLARE LPINT32 LPAPI lpGetLastError()
 {
 #   ifdef _WIN32
 	{

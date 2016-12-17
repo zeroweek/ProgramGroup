@@ -12,7 +12,7 @@ NS_LZPL_BEGIN
 
 DECLARE BOOL LPAPI lpDBExist(MYSQL * pMysql, const char * pcszDBName)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bFound = FALSE;
 	MYSQL_RES* pMysqlRes = NULL;
 
@@ -31,9 +31,9 @@ Exit0:
 	return bFound;
 }
 
-static BOOL _GetDBVersion(MYSQL* pMysql, INT_32& nDBVersion)
+static BOOL _GetDBVersion(MYSQL* pMysql, LPINT32& nDBVersion)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	BOOL bFound = FALSE;
 	MYSQL_RES* pMysqlRes = NULL;
 	MYSQL_ROW ppRow = NULL;
@@ -86,12 +86,12 @@ Exit0:
 	return FALSE;
 }
 
-static BOOL _ExecuteUpdateDBSqlFile(MYSQL* pMysql, const char* pcszDBPrefix, INT_32 nVersion)
+static BOOL _ExecuteUpdateDBSqlFile(MYSQL* pMysql, const char* pcszDBPrefix, LPINT32 nVersion)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	MYSQL_RES* pMysqlRes = NULL;
 
-	UINT_32 dwFileSize = 0;
+	LPUINT32 dwFileSize = 0;
 	ILPFile* pFile = NULL;
 	char szFileName[MAX_FILE_NAME];
 	char* pszFileContent = NULL;
@@ -162,7 +162,7 @@ Exit0:
 
 DECLARE BOOL LPAPI lpDBCreate(MYSQL * pMysql, const char * pcszDBName)
 {
-	INT_32 nResult = 0;
+	LPINT32 nResult = 0;
 	char szDBSql[1024];
 
 	LOG_PROCESS_ERROR(pMysql);
@@ -184,10 +184,10 @@ Exit0:
 	return FALSE;
 }
 
-DECLARE BOOL LPAPI lpDBUpdate(MYSQL * pMysql, const char * pcszDBName, const char * pcszDBPrefix, INT_32 nNewDBVersion)
+DECLARE BOOL LPAPI lpDBUpdate(MYSQL * pMysql, const char * pcszDBName, const char * pcszDBPrefix, LPINT32 nNewDBVersion)
 {
-	INT_32 nResult = 0;
-	INT_32 nCurDBVersion = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nCurDBVersion = 0;
 	char szDBSql[1024];
 
 	LOG_PROCESS_ERROR(pMysql);

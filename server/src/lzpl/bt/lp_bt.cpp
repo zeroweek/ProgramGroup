@@ -11,7 +11,7 @@ static pfunBTUserDefinedNodeFunc g_pfUserDefinedNodeFunc = NULL;
 
 DECLARE BOOL LPAPI lpBTAddChild(BT_NODE* pRootNode, BT_NODE* pChild)
 {
-	INT_32 nChildIndex = 0;
+	LPINT32 nChildIndex = 0;
 	BT_NODE* pNode = NULL;
 
 	LOG_PROCESS_ERROR(pRootNode);
@@ -53,7 +53,7 @@ Exit0:
 
 DECLARE BOOL LPAPI lpBTRemoveChild(BT_NODE* pRootNode, BT_NODE* pChild)
 {
-	INT_32 nChildIndex = 0;
+	LPINT32 nChildIndex = 0;
 	BT_NODE* pNode = NULL;
 
 	LOG_PROCESS_ERROR(pRootNode);
@@ -94,15 +94,15 @@ Exit0:
 	return FALSE;
 }
 
-BT_NODE* LPAPI lpBTFindChildAtTag(BT_NODE* pRootNode, INT_32 nTag, BOOL bDepthFirst = FALSE)
+BT_NODE* LPAPI lpBTFindChildAtTag(BT_NODE* pRootNode, LPINT32 nTag, BOOL bDepthFirst = FALSE)
 {
 	BT_NODE* pResult = NULL;
 	BT_NODE* pNode = NULL;
 	BT_NODE* pChild = NULL;
 
 	BT_NODE* aChildArray[BT_MAX_CHILD_COUNT] = { NULL };
-	INT_32 nChildCount = 0;
-	INT_32 nChildIndex = 0;
+	LPINT32 nChildCount = 0;
+	LPINT32 nChildIndex = 0;
 
 	LOG_PROCESS_ERROR(pRootNode);
 	LOG_PROCESS_ERROR(nTag > 0);
@@ -160,10 +160,10 @@ Exit0:
 	return NULL;
 }
 
-DECLARE BOOL LPAPI lpBTInsertChildAtTag(BT_NODE* pParent, INT_32 nTag, BT_NODE* pNewChild)
+DECLARE BOOL LPAPI lpBTInsertChildAtTag(BT_NODE* pParent, LPINT32 nTag, BT_NODE* pNewChild)
 {
 	BT_NODE* pNode = NULL;
-	INT_32 nChildIndex = 0;
+	LPINT32 nChildIndex = 0;
 
 	LOG_PROCESS_ERROR(pParent);
 	LOG_PROCESS_ERROR(pNewChild);
@@ -225,7 +225,7 @@ Exit0:
 	return FALSE;
 }
 
-DECLARE BT_NODE* LPAPI lpBTGetChild(BT_NODE* pRootNode, INT_32 nIndex)
+DECLARE BT_NODE* LPAPI lpBTGetChild(BT_NODE* pRootNode, LPINT32 nIndex)
 {
 	BT_NODE* pNode = NULL;
 	BT_NODE* pResult = NULL;
@@ -273,11 +273,11 @@ Exit0:
 
 DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 {
-	INT_32 nResult = 0;
-	INT_32 nRepeatTimes = 0;
-	INT_32 nTotalWeight = 0;
-	INT_32 nCounter = 0;
-	INT_32 nRandom = 0;
+	LPINT32 nResult = 0;
+	LPINT32 nRepeatTimes = 0;
+	LPINT32 nTotalWeight = 0;
+	LPINT32 nCounter = 0;
+	LPINT32 nRandom = 0;
 	BT_NODE* pNode = NULL;
 
 	while (ctrl.runStackNodeCount > 0)
@@ -289,7 +289,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 		if (ctrl.debugging)
 		{
-			for (INT_32 i = 0; i < ctrl.runStackNodeCount - 1; ++i)
+			for (LPINT32 i = 0; i < ctrl.runStackNodeCount - 1; ++i)
 			{
 				szNodeInfo[i] = '\t';
 			}

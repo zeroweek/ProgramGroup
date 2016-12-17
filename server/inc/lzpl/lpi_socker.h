@@ -47,10 +47,10 @@ enum e_SockErrCode
 struct SOCK_ERR_CODE
 {
 	e_SockErrCode   eSockErrCode;  // 自定义错误码
-	UINT_32         dwParam;       // 附加参数，方便定位
-	UINT_32         dwErrno;       // 系统错误码（注意是否区分GetLastError()和WSAGetLastError()）
+	LPUINT32         dwParam;       // 附加参数，方便定位
+	LPUINT32         dwErrno;       // 系统错误码（注意是否区分GetLastError()和WSAGetLastError()）
 
-	SOCK_ERR_CODE(e_SockErrCode _eSockErrCode, UINT_32 _dwParam, UINT_32 _dwErrno)
+	SOCK_ERR_CODE(e_SockErrCode _eSockErrCode, LPUINT32 _dwParam, LPUINT32 _dwErrno)
 	{
 		eSockErrCode = _eSockErrCode;
 		dwParam      = _dwParam;
@@ -82,11 +82,11 @@ public:
 	//		获取sock id
 	// Return:
 	//		返回sock id
-	virtual UINT_32 LPAPI GetSockerId() = 0;
+	virtual LPUINT32 LPAPI GetSockerId() = 0;
 
 	// Summary:
 	//		获取对端连接的ip
-	virtual UINT_32 LPAPI GetRemoteIp() = 0;
+	virtual LPUINT32 LPAPI GetRemoteIp() = 0;
 
 	// Summary:
 	//		获取对端连接的ip字符串
@@ -94,11 +94,11 @@ public:
 
 	// Summary:
 	//		获取对端连接的port
-	virtual UINT_16 LPAPI GetRemotePort() = 0;
+	virtual LPUINT16 LPAPI GetRemotePort() = 0;
 
 	// Summary:
 	//		获取本地连接的ip
-	virtual UINT_32 LPAPI GetLocalIp() = 0;
+	virtual LPUINT32 LPAPI GetLocalIp() = 0;
 
 	// Summary:
 	//		获取本地连接的ip字符串
@@ -106,7 +106,7 @@ public:
 
 	// Summary:
 	//		获取本地连接的port
-	virtual UINT_16 LPAPI GetLocalPort() = 0;
+	virtual LPUINT16 LPAPI GetLocalPort() = 0;
 
 	// Summary:
 	//		判断当前的socket是否处于连接状态
@@ -125,7 +125,7 @@ public:
 	// Input:
 	//		pData：数据
 	//		dwLen：长度
-	virtual BOOL LPAPI Send(const char* pData, UINT_32 dwLen) = 0;
+	virtual BOOL LPAPI Send(const char* pData, LPUINT32 dwLen) = 0;
 
 	// Summary:
 	//		关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker

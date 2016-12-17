@@ -17,12 +17,12 @@
 
 struct REGION_DATA
 {
-	UINT_16             wRegionX;
-	UINT_16             wRegionY;
+	LPUINT16             wRegionX;
+	LPUINT16             wRegionY;
 
 	                    //地面上的格子的索引（格子高度方向上还可以有next格子）
-	UINT_16             GroundGrid[GRID_PER_REGION][GRID_PER_REGION];
-	UINT_16             wGridCount;
+	LPUINT16             GroundGrid[GRID_PER_REGION][GRID_PER_REGION];
+	LPUINT16             wGridCount;
 
 	GRID_DATA           GridData[0];
 };

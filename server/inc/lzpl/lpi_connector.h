@@ -31,7 +31,7 @@ public:
 	//		pcszIp: ip地址字符串（格式：192.168.1.1）
 	//		dwPort: 连接的端口
 	//		bReconnect: 是否自动重连，如果没有设置自动重连，需要在断开回调手动调用重连接口
-	virtual BOOL LPAPI Start(const char* pcszIp, UINT_32 dwPort, BOOL bReconnect) = 0;
+	virtual BOOL LPAPI Start(const char* pcszIp, LPUINT32 dwPort, BOOL bReconnect) = 0;
 
 	// Summary:
 	//		停止连接
@@ -41,7 +41,7 @@ public:
 
 	// Summary:
 	//		获取id
-	virtual UINT_32 LPAPI GetId() = 0;
+	virtual LPUINT32 LPAPI GetId() = 0;
 
 	// Summary:
 	//		重连

@@ -11,9 +11,9 @@ NS_LZPL_BEGIN
 const char gs_szBase64Table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 
-INT_32 _GetBase64TableIndex(char l)
+LPINT32 _GetBase64TableIndex(char l)
 {
-	INT_32 nIndex = -1;
+	LPINT32 nIndex = -1;
 
 	if (l == '+')
 	{
@@ -44,19 +44,19 @@ Exit0:
 	return nIndex;
 }
 
-DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eBase64CodeType eType)
+DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eBase64CodeType eType)
 {
-	UINT_8 byP0 = 0;
-	UINT_8 byP1 = 0;
-	UINT_8 byP2 = 0;
-	UINT_8 byTableIndex = 0;
+	LPUINT8 byP0 = 0;
+	LPUINT8 byP1 = 0;
+	LPUINT8 byP2 = 0;
+	LPUINT8 byTableIndex = 0;
 
-	UINT_32 dwIndex = 0;
-	UINT_32 dwMeetCount = 0;       // 前面可以被3整除的字节数
-	UINT_32 dwRemainCount = 0;     // 后面不可以被3整除剩下的字节数
-	UINT_32 dwEqualOptCount = 0;   // 需要补充的'='号个数
-	UINT_32 dwOutputIndex = 0;     // 
-	UINT_32 dwOutputCount = 0;     // 应该输出的字节数
+	LPUINT32 dwIndex = 0;
+	LPUINT32 dwMeetCount = 0;       // 前面可以被3整除的字节数
+	LPUINT32 dwRemainCount = 0;     // 后面不可以被3整除剩下的字节数
+	LPUINT32 dwEqualOptCount = 0;   // 需要补充的'='号个数
+	LPUINT32 dwOutputIndex = 0;     // 
+	LPUINT32 dwOutputCount = 0;     // 应该输出的字节数
 
 	LOG_PROCESS_ERROR(pcszInStr);
 	LOG_PROCESS_ERROR(pszOutStr);
@@ -156,18 +156,18 @@ Exit0:
 	return FALSE;
 }
 
-DECLARE INT_32 LPAPI lpBase64Decode(const char* pcszInStr, UINT_32 dwInSize, char* pszOutStr, lpInOut UINT_32& dwOutSize, eBase64CodeType eType)
+DECLARE LPINT32 LPAPI lpBase64Decode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eBase64CodeType eType)
 {
-	INT_32 nP0 = 0;
-	INT_32 nP1 = 0;
-	INT_32 nP2 = 0;
-	INT_32 nP3 = 0;
+	LPINT32 nP0 = 0;
+	LPINT32 nP1 = 0;
+	LPINT32 nP2 = 0;
+	LPINT32 nP3 = 0;
 
-	UINT_32 dwIndex = 0;
-	UINT_32 dwMeetCount = 0;       // 前面没有包含'='号的可以被4整除的字节数
-	UINT_32 dwEqualOptCount = 0;   // 末尾'='号的个数
-	UINT_32 dwOutputIndex = 0;
-	UINT_32 dwOutputCount = 0;     // 应该输出的字节数
+	LPUINT32 dwIndex = 0;
+	LPUINT32 dwMeetCount = 0;       // 前面没有包含'='号的可以被4整除的字节数
+	LPUINT32 dwEqualOptCount = 0;   // 末尾'='号的个数
+	LPUINT32 dwOutputIndex = 0;
+	LPUINT32 dwOutputCount = 0;     // 应该输出的字节数
 
 
 	LOG_PROCESS_ERROR(pcszInStr);

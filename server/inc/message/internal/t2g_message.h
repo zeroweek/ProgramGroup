@@ -30,10 +30,10 @@ enum T2G_MESSAGE_ID
 
 struct DECLARE T2G_REGISTER_ACK : public INTERNAL_MESSAGE_HEADER
 {
-	UINT_8     byValue;
-	UINT_16    wValue;
-	UINT_32    dwValue;
-	UINT_64    qwValue;
+	LPUINT8     byValue;
+	LPUINT16    wValue;
+	LPUINT32    dwValue;
+	LPUINT64    qwValue;
 	char       szValue[MAX_PATH];
 };
 

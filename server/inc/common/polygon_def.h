@@ -25,11 +25,11 @@
 
 struct POLYGON_DATA : public BASE_LIST_NODE
 {
-	INT_32              nID;
-	UINT_8              byVertCount;
-	INT_32              anVertIndex[MAX_VERTEX_PER_POLYGON];
-	UINT_8              byNeighborCount;
-	INT_32              anNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
+	LPINT32              nID;
+	LPUINT8              byVertCount;
+	LPINT32              anVertIndex[MAX_VERTEX_PER_POLYGON];
+	LPUINT8              byNeighborCount;
+	LPINT32              anNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
 };
 typedef std::list<POLYGON_DATA*> LST_POLYGON_DATA;
 typedef std::list<LPBaseList> LST_LST_POLYGON_DATA;

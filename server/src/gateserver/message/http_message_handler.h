@@ -56,14 +56,14 @@ public:
 	//		dwInputLen[in]: input缓冲区大小
 	//		szOutputBuf[out]: output缓冲区
 	//		szOutputLen[in out]: in-输入缓冲区大小，out-输出大小
-	void LPAPI ParseRequest(const char* szInputBuf, UINT_32 dwInputLen, char* szOutputBuf, UINT_32& szOutputLen);
+	void LPAPI ParseRequest(const char* szInputBuf, LPUINT32 dwInputLen, char* szOutputBuf, LPUINT32& szOutputLen);
 
 	void LPAPI DoResponse_NotFound(void);
 	void LPAPI DoResponse_BadRequest(void);
 	void LPAPI DoResponse_CanNotExcute(void);
 	void LPAPI DoResponse_Headers(void);
 	void LPAPI DoResponse_UnImplemented(void);
-	void LPAPI DoResponse_RecvSuccess(const char* pcszBuf, UINT_32 dwSize);
+	void LPAPI DoResponse_RecvSuccess(const char* pcszBuf, LPUINT32 dwSize);
 
 private:
 
@@ -104,7 +104,7 @@ public:
 
 	// Summary:
 	//		引用计数减1
-	virtual UINT_32 LPAPI QueryRef(void);
+	virtual LPUINT32 LPAPI QueryRef(void);
 
 	// Summary:
 	//		释放，此类的该函数实现仅为释放引用计数，不释放对象
@@ -122,11 +122,11 @@ public:
 
 	// Summary:
 	//		无
-	virtual void LPAPI OnConnectError(ILPConnector* pConnector, UINT_32 dwErrorNo);
+	virtual void LPAPI OnConnectError(ILPConnector* pConnector, LPUINT32 dwErrorNo);
 
 	// Summary:
 	//		无
-	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize);
+	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 	// Summary:
 	//		无
@@ -144,7 +144,7 @@ public:
 	//		pLoopBuf：待解析数据缓冲区
 	// Return:
 	//		"<0"-解析错误，"=0"-不完整包，">0"-完整包长度
-	virtual INT_32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
+	virtual LPINT32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
 
 public:
 
@@ -155,11 +155,11 @@ private:
 	LPHttpObject* LPAPI _NewHttpObject(void);
 	BOOL LPAPI _DelHttpObject(LPHttpObject* pHttpObject);
 
-	BOOL LPAPI _ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, UINT_32 dwSize);
+	BOOL LPAPI _ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize);
 
 private:
 
-	UINT_32                  m_dwRef;
+	LPUINT32                  m_dwRef;
 
 	typedef std::map<ILPSocker*, LPHttpObject*>  MAP_HTTP_OBJECT;
 	MAP_HTTP_OBJECT               m_mapHttpObject;

@@ -22,8 +22,8 @@ NS_LZPL_BEGIN
 
 struct SHARE_MEM_HEADER
 {
-	INT_32     nFlag;
-	UINT_64    qwSize;
+	LPINT32     nFlag;
+	LPUINT64    qwSize;
 };
 
 
@@ -48,7 +48,7 @@ public:
 
 	// Summary:
 	//		初始化
-	BOOL LPAPI Init(const char* pcszName, UINT_64 qwSize);
+	BOOL LPAPI Init(const char* pcszName, LPUINT64 qwSize);
 
 	// Summary:
 	//		反始化
@@ -64,7 +64,7 @@ public:
 
 	// Summary:
 	//		共享内存大小
-	UINT_64 LPAPI Size(void);
+	LPUINT64 LPAPI Size(void);
 
 	// Summary:
 	//		共享内存
@@ -78,7 +78,7 @@ private:
 
 	char                     m_szName[COMMON_NAME_LEN];
 	BOOL                     m_bNew;
-	UINT_64                  m_qwSize;
+	LPUINT64                  m_qwSize;
 	char*                    m_pszShareMem;
 	HANDLE                   m_hHandle;
 };

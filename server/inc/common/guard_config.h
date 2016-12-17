@@ -19,7 +19,7 @@
 struct GUARD_CONFIG
 {
 	char      szAddress[COMMON_NAME_LEN];
-	UINT_32   dwPort;
+	LPUINT32   dwPort;
 };
 
 

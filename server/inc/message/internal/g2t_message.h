@@ -30,10 +30,10 @@ enum G2T_MESSAGE_ID
 
 struct DECLARE G2T_REGISTER : public INTERNAL_MESSAGE_HEADER
 {
-	UINT_8     byValue;
-	UINT_16    wValue;
-	UINT_32    dwValue;
-	UINT_64    qwValue;
+	LPUINT8     byValue;
+	LPUINT16    wValue;
+	LPUINT32    dwValue;
+	LPUINT64    qwValue;
 	char       szValue[MAX_PATH];
 };
 

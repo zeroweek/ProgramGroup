@@ -28,35 +28,35 @@ public:
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint8(UINT_8* pbyValue) = 0;
+	virtual BOOL LPAPI ReadUint8(LPUINT8* pbyValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint8(UINT_8 byValue) = 0;
+	virtual BOOL LPAPI WriteUint8(LPUINT8 byValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint16(UINT_16* pwValue) = 0;
+	virtual BOOL LPAPI ReadUint16(LPUINT16* pwValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint16(UINT_16 wValue) = 0;
+	virtual BOOL LPAPI WriteUint16(LPUINT16 wValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint32(UINT_32* pdwValue) = 0;
+	virtual BOOL LPAPI ReadUint32(LPUINT32* pdwValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint32(UINT_32 dwValue) = 0;
+	virtual BOOL LPAPI WriteUint32(LPUINT32 dwValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI ReadUint64(UINT_64* pqwValue) = 0;
+	virtual BOOL LPAPI ReadUint64(LPUINT64* pqwValue) = 0;
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteUint64(UINT_64 qwValue) = 0;
+	virtual BOOL LPAPI WriteUint64(LPUINT64 qwValue) = 0;
 
 	// Summary:
 	//		无
@@ -64,7 +64,7 @@ public:
 
 	// Summary:
 	//		无
-	virtual BOOL LPAPI WriteString(const char* pcszData, UINT_32 dwLen, UINT_32 dwMaxLen) = 0;
+	virtual BOOL LPAPI WriteString(const char* pcszData, LPUINT32 dwLen, LPUINT32 dwMaxLen) = 0;
 
 	// Summary:
 	//		无
@@ -72,7 +72,7 @@ public:
 
 	// Summary:
 	//		无
-	virtual UINT_32 LPAPI GetSerializeSize(void) = 0;
+	virtual LPUINT32 LPAPI GetSerializeSize(void) = 0;
 
 };
 

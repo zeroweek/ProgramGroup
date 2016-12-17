@@ -6,10 +6,10 @@
     
   </ROLE_BASE_INFO>
   <C2T_LOGIN_REQ type="struct">
-    <ID type="UINT_32"></ID>
+    <ID type="LPUINT32"></ID>
     <Name type="string" length="20"></Name>
   </C2T_LOGIN_REQ>
-  <C2T_LOGIN_REQ type="INT_32"></C2T_LOGIN_REQ>
+  <C2T_LOGIN_REQ type="LPINT32"></C2T_LOGIN_REQ>
   
   <!-- c and g :  protocol bettwen client and gameserver -->
   

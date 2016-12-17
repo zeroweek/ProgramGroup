@@ -28,18 +28,18 @@ public:
 	BOOL Load(const char* pcszFileName);
 
 	inline const LPDynamicArray<FLOAT>& GetVertexs() const { return m_oVertexs; }
-	inline const LPDynamicArray<INT_32>& GetTrianglePoints() const { return m_oTrianglePoints; }
+	inline const LPDynamicArray<LPINT32>& GetTrianglePoints() const { return m_oTrianglePoints; }
 
 	inline const char* GetFileName() const { return m_szFileName; }
 
 private:
 
 	BOOL _AddVertex(FLOAT x, FLOAT y, FLOAT z);
-	BOOL _AddTriangle(INT_32 a, INT_32 b, INT_32 c);
+	BOOL _AddTriangle(LPINT32 a, LPINT32 b, LPINT32 c);
 
 	POLYGON_DATA* _FindFirstNotAssignIDInRowList(void);
-	BOOL _FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut UINT_32& dwNeighborPolyCount);
-	BOOL _SeparatePolysToLists(POLYGON_DATA* pPolyData, INT_32& nPolyIDGenerator);
+	BOOL _FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut LPUINT32& dwNeighborPolyCount);
+	BOOL _SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& nPolyIDGenerator);
 
 	BOOL _DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pToPoly);
 
@@ -52,10 +52,10 @@ private:
 
 	FLOAT                   m_fScale;
 	LPDynamicArray<FLOAT>   m_oVertexs;                 // NavMesh的顶点（vertex）信息
-	LPDynamicArray<INT_32>  m_oTrianglePoints;          // NavMesh的所有三角形（triangle）信息
+	LPDynamicArray<LPINT32>  m_oTrianglePoints;          // NavMesh的所有三角形（triangle）信息
 
 	LST_POLYGON_DATA        m_lstRawPolygonData;
-	typedef std::map<INT_32, INT_32> MAP_ID_2_ID;
+	typedef std::map<LPINT32, LPINT32> MAP_ID_2_ID;
 	MAP_ID_2_ID             m_mapPolyAlreadyFindNeighbor;
 	LST_LST_POLYGON_DATA    m_lstSepListPolygonData;
 };

@@ -17,12 +17,12 @@ NS_LZPL_BEGIN
 
 //	Summary:
 //		将数字转换为对应的16进制字符
-DECLARE UINT_8 LPAPI lpNumToHex(UINT_8 n, BOOL bCapital);
+DECLARE LPUINT8 LPAPI lpNumToHex(LPUINT8 n, BOOL bCapital);
 
 
 //	Summary:
 //		将16进制字符转换为对应的数字
-DECLARE UINT_8 LPAPI lpHexToNum(UINT_8 h);
+DECLARE LPUINT8 LPAPI lpHexToNum(LPUINT8 h);
 
 
 

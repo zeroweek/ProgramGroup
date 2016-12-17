@@ -35,11 +35,11 @@ public:
 
 	// Summary:
 	//		创建链接错误
-	virtual void LPAPI OnConnectError(ILPConnector* pConnector, UINT_32 dwErrorNo) = 0;
+	virtual void LPAPI OnConnectError(ILPConnector* pConnector, LPUINT32 dwErrorNo) = 0;
 
 	// Summary:
 	//		链接收到消息
-	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, UINT_32 dwSize) = 0;
+	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize) = 0;
 
 	// Summary:
 	//		链接断开（OnAccepted的连接）
