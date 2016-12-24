@@ -23,15 +23,17 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//   属性回调接口定义
-typedef BOOL(*pfunPropertyEvent)(const LPIDENTID&, const LPUINT32&, const ILPDataList&, const ILPDataList&, const ILPDataList&);
-
-
-
-// Summary:
 //   属性接口
 class DECLARE ILPProperty
 {
+public:
+
+	// Summary:
+	//   属性回调接口定义
+	// Params:
+	//   <拥有者,属性ID,旧值,新值,其他参数>
+	typedef BOOL(*pfunPropertyEvent)(const LPIDENTID&, const LPUINT32&, const ILPDataList&, const ILPDataList&, const ILPDataList&);
+
 public:
 
 	virtual ~ILPProperty() {}
@@ -54,7 +56,7 @@ public:
 	virtual DOUBLE LPAPI GetDouble() const = 0;
 	virtual const std::string& LPAPI GetString() const = 0;
 
-	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& vars) = 0;
+	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& oCBParams) = 0;
 
 public:
 

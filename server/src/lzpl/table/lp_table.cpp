@@ -18,6 +18,7 @@ LPTable::LPTable()
 	m_oVarColType.Clear();
 	m_oVarMakeIndexCol.Clear();
 	m_poTableMap = nullptr;
+	m_poCallbackList = nullptr;
 }
 
 LPTable::LPTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPDataList& varColType, const ILPDataList& varMakeIndexCol)
@@ -58,6 +59,8 @@ BOOL LPAPI LPTable::Init(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPD
 	nResult = InitTableMap();
 	LOG_PROCESS_ERROR(nResult);
 
+	m_poCallbackList = nullptr;
+
 	return TRUE;
 Exit0:
 
@@ -68,6 +71,18 @@ Exit0:
 BOOL LPAPI LPTable::UnInit()
 {
 	Clear();
+	
+	if (m_poCallbackList != nullptr)
+	{
+		SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+		{
+			LPTableCB* poTableCB = (LPTableCB*)ptNode;
+			LPTableCB::DeleteTableCB(poTableCB);
+		}
+		SIMPLE_LIST_FOR_END
+		(*m_poCallbackList).Clear();
+		SAFE_DELETE(m_poCallbackList);
+	}
 
 	LOG_CHECK_ERROR(m_poTableMap != nullptr);
 	for (LPUINT32 i = 0; m_poTableMap != nullptr && i < m_oVarMakeIndexCol.GetCount(); i++)
@@ -114,22 +129,22 @@ Exit0:
 	return 0;
 }
 
-E_DataType LPTable::GetColType(const LPUINT32 nCol) const
+E_DataType LPTable::GetColType(const LPUINT32 dwCol) const
 {
-	LOG_PROCESS_ERROR(nCol < m_oVarColType.GetCount());
-	LOG_PROCESS_ERROR(m_oVarColType.Type(nCol) == eDataType_Int64);
+	LOG_PROCESS_ERROR(dwCol < m_oVarColType.GetCount());
+	LOG_PROCESS_ERROR(m_oVarColType.Type(dwCol) == eDataType_Int64);
 	
-	return (E_DataType)m_oVarColType.Int64(nCol);
+	return (E_DataType)m_oVarColType.Int64(dwCol);
 Exit0:
 	return eDataType_Invalid;
 }
 
-E_TableMapType LPTable::GetColMapType(const LPUINT32 nCol) const
+E_TableMapType LPTable::GetColMapType(const LPUINT32 dwCol) const
 {
-	LOG_PROCESS_ERROR(nCol < m_oVarMakeIndexCol.GetCount());
-	LOG_PROCESS_ERROR(m_oVarMakeIndexCol.Type(nCol) == eDataType_Int64);
+	LOG_PROCESS_ERROR(dwCol < m_oVarMakeIndexCol.GetCount());
+	LOG_PROCESS_ERROR(m_oVarMakeIndexCol.Type(dwCol) == eDataType_Int64);
 
-	return (E_TableMapType)m_oVarMakeIndexCol.Int64(nCol);
+	return (E_TableMapType)m_oVarMakeIndexCol.Int64(dwCol);
 Exit0:
 	return eTableMapType_Invalid;
 }
@@ -137,6 +152,7 @@ Exit0:
 BOOL LPTable::AddRecord(const ILPDataList& var)
 {
 	LPINT32 nResult = FALSE;
+	Iterator recordIteratorRet;
 	PropertyVect vectProperty = nullptr;
 	LPUINT32 dwColCount = m_oVarColType.GetCount();
 
@@ -155,8 +171,10 @@ BOOL LPTable::AddRecord(const ILPDataList& var)
 		LOG_PROCESS_ERROR(nResult);
 	}
 
-	nResult = InsertIntoTableMap(vectProperty);
+	nResult = InsertIntoTableMap(vectProperty, recordIteratorRet);
 	LOG_PROCESS_ERROR(nResult);
+
+	OnEventHandler(eTableOptType_Add, recordIteratorRet, 0, ILPDataList::NullDataList(), var);
 
 	return TRUE;
 Exit0:
@@ -165,92 +183,116 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::SetInt64(Iterator& iter, const LPUINT32 nCol, LPINT64 value)
+BOOL LPAPI LPTable::SetInt64(Iterator& iter, const LPUINT32 dwCol, LPINT64 value)
 {
 	LPINT32 nResult = FALSE;
-	ILPProperty& pProperty = GetProperty(iter, nCol);
+	LPDataList oOldVals;
+	LPDataList oNewVals;
+	ILPProperty& pProperty = GetProperty(iter, dwCol);
 	LPINT64 oldValue = pProperty.GetInt64();
 
-	LOG_PROCESS_ERROR(IsColCanUpdate(nCol));
+	LOG_PROCESS_ERROR(IsColCanUpdate(dwCol));
 
 	nResult = pProperty.SetInt64(value);
 	LOG_PROCESS_ERROR(nResult);
+
+	oOldVals << oldValue;
+	oNewVals << pProperty.GetInt64();
+	OnEventHandler(eTableOptType_Update, iter, dwCol, oOldVals, oNewVals);
 
 	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::SetFloat(Iterator& iter, const LPUINT32 nCol, FLOAT value)
+BOOL LPAPI LPTable::SetFloat(Iterator& iter, const LPUINT32 dwCol, FLOAT value)
 {
 	LPINT32 nResult = FALSE;
-	ILPProperty& pProperty = GetProperty(iter, nCol);
+	LPDataList oOldVals;
+	LPDataList oNewVals;
+	ILPProperty& pProperty = GetProperty(iter, dwCol);
 	FLOAT oldValue = pProperty.GetFloat();
 
 	nResult = pProperty.SetFloat(value);
 	LOG_PROCESS_ERROR(nResult);
 
+	oOldVals << oldValue;
+	oNewVals << pProperty.GetFloat();
+	OnEventHandler(eTableOptType_Update, iter, dwCol, oOldVals, oNewVals);
+
 	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::SetDouble(Iterator& iter, const LPUINT32 nCol, DOUBLE value)
+BOOL LPAPI LPTable::SetDouble(Iterator& iter, const LPUINT32 dwCol, DOUBLE value)
 {
 	LPINT32 nResult = FALSE;
-	ILPProperty& pProperty = GetProperty(iter, nCol);
+	LPDataList oOldVals;
+	LPDataList oNewVals;
+	ILPProperty& pProperty = GetProperty(iter, dwCol);
 	DOUBLE oldValue = pProperty.GetDouble();
 
 	nResult = pProperty.SetDouble(value);
 	LOG_PROCESS_ERROR(nResult);
 
+	oOldVals << oldValue;
+	oNewVals << pProperty.GetDouble();
+	OnEventHandler(eTableOptType_Update, iter, dwCol, oOldVals, oNewVals);
+
 	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::SetString(Iterator& iter, const LPUINT32 nCol, const std::string& value)
+BOOL LPAPI LPTable::SetString(Iterator& iter, const LPUINT32 dwCol, const std::string& value)
 {
 	LPINT32 nResult = FALSE;
-	ILPProperty& pProperty = GetProperty(iter, nCol);
+	LPDataList oOldVals;
+	LPDataList oNewVals;
+	ILPProperty& pProperty = GetProperty(iter, dwCol);
 	std::string oldValue = pProperty.GetString();
 
-	LOG_PROCESS_ERROR(IsColCanUpdate(nCol));
+	LOG_PROCESS_ERROR(IsColCanUpdate(dwCol));
 
 	nResult = pProperty.SetString(value);
 	LOG_PROCESS_ERROR(nResult);
 
+	oOldVals << oldValue;
+	oNewVals << pProperty.GetString();
+	OnEventHandler(eTableOptType_Update, iter, dwCol, oOldVals, oNewVals);
+
 	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-ILPData& LPAPI LPTable::GetData(Iterator& iter, const LPUINT32 nCol) const
+ILPData& LPAPI LPTable::GetData(Iterator& iter, const LPUINT32 dwCol) const
 {
-	return GetPropertyConst(iter, nCol).GetData();
+	return GetPropertyConst(iter, dwCol).GetData();
 }
 
-LPINT64 LPAPI LPTable::GetInt64(Iterator& iter, const LPUINT32 nCol) const
+LPINT64 LPAPI LPTable::GetInt64(Iterator& iter, const LPUINT32 dwCol) const
 {
-	return GetPropertyConst(iter, nCol).GetInt64();
+	return GetPropertyConst(iter, dwCol).GetInt64();
 }
 
-FLOAT LPAPI LPTable::GetFloat(Iterator& iter, const LPUINT32 nCol) const
+FLOAT LPAPI LPTable::GetFloat(Iterator& iter, const LPUINT32 dwCol) const
 {
-	return GetPropertyConst(iter, nCol).GetFloat();
+	return GetPropertyConst(iter, dwCol).GetFloat();
 }
 
-DOUBLE LPAPI LPTable::GetDouble(Iterator& iter, const LPUINT32 nCol) const
+DOUBLE LPAPI LPTable::GetDouble(Iterator& iter, const LPUINT32 dwCol) const
 {
-	return GetPropertyConst(iter, nCol).GetDouble();
+	return GetPropertyConst(iter, dwCol).GetDouble();
 }
 
-const std::string& LPAPI LPTable::GetString(Iterator& iter, const LPUINT32 nCol) const
+const std::string& LPAPI LPTable::GetString(Iterator& iter, const LPUINT32 dwCol) const
 {
-	return GetPropertyConst(iter, nCol).GetString();
+	return GetPropertyConst(iter, dwCol).GetString();
 }
 
-BOOL LPAPI LPTable::FindInt64(const LPUINT32 nCol, const LPINT64 value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindInt64(const LPUINT32 dwCol, const LPINT64 value, IteratorVect& vectIterRet)
 {
 	LPINT32 nResult = FALSE;
 
@@ -261,7 +303,7 @@ BOOL LPAPI LPTable::FindInt64(const LPUINT32 nCol, const LPINT64 value, Iterator
 	nResult = poData->SetInt64(value);
 	LOG_PROCESS_ERROR(nResult);
 
-	nResult = FindDataFromColMap(nCol, *poData, vectIterRet);
+	nResult = FindDataFromColMap(dwCol, *poData, vectIterRet);
 	LOG_PROCESS_ERROR(nResult);
 
 	nResult = TRUE;
@@ -271,7 +313,7 @@ Exit0:
 	return nResult;
 }
 
-BOOL LPAPI LPTable::FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindFloat(const LPUINT32 dwCol, const FLOAT value, IteratorVect& vectIterRet)
 {
 	LPINT32 nResult = FALSE;
 
@@ -282,7 +324,7 @@ BOOL LPAPI LPTable::FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVe
 	nResult = poData->SetFloat(value);
 	LOG_PROCESS_ERROR(nResult);
 
-	nResult = FindDataFromColMap(nCol, *poData, vectIterRet);
+	nResult = FindDataFromColMap(dwCol, *poData, vectIterRet);
 	LOG_PROCESS_ERROR(nResult);
 
 	nResult = TRUE;
@@ -292,7 +334,7 @@ Exit0:
 	return nResult;
 }
 
-BOOL LPAPI LPTable::FindDouble(const LPUINT32 nCol, const DOUBLE value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindDouble(const LPUINT32 dwCol, const DOUBLE value, IteratorVect& vectIterRet)
 {
 	LPINT32 nResult = FALSE;
 
@@ -303,17 +345,17 @@ BOOL LPAPI LPTable::FindDouble(const LPUINT32 nCol, const DOUBLE value, Iterator
 	nResult = poData->SetDouble(value);
 	LOG_PROCESS_ERROR(nResult);
 
-	nResult = FindDataFromColMap(nCol, *poData, vectIterRet);
+	nResult = FindDataFromColMap(dwCol, *poData, vectIterRet);
 	LOG_PROCESS_ERROR(nResult);
 
 	nResult = TRUE;
 
 Exit0:
 	ILPData::DeleteData(poData);
-	return FALSE;
+	return nResult;
 }
 
-BOOL LPAPI LPTable::FindString(const LPUINT32 nCol, const std::string& value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindString(const LPUINT32 dwCol, const std::string& value, IteratorVect& vectIterRet)
 {
 	LPINT32 nResult = FALSE;
 
@@ -324,19 +366,20 @@ BOOL LPAPI LPTable::FindString(const LPUINT32 nCol, const std::string& value, It
 	nResult = poData->SetString(value);
 	LOG_PROCESS_ERROR(nResult);
 
-	nResult = FindDataFromColMap(nCol, *poData, vectIterRet);
+	nResult = FindDataFromColMap(dwCol, *poData, vectIterRet);
 	LOG_PROCESS_ERROR(nResult);
 
 	nResult = TRUE;
 
 Exit0:
 	ILPData::DeleteData(poData);
-	return FALSE;
+	return nResult;
 }
 
 BOOL LPAPI LPTable::Remove(Iterator& iter)
 {
 	LPINT32 nResult = FALSE;
+	LPDataList oVals;
 	PropertyVect vectProperty = nullptr;
 	
 	LOG_PROCESS_ERROR(m_poTableMap != nullptr);
@@ -387,10 +430,20 @@ BOOL LPAPI LPTable::Remove(Iterator& iter)
 	}
 
 	LOG_PROCESS_ERROR(vectProperty != nullptr);
+	if (IsCallbackListEmpty() == FALSE)
+	{
+		for (LPUINT32 i = 0; i < GetColCount(); i++)
+		{
+			nResult = oVals.AddData(vectProperty[i]->GetData());
+			LOG_PROCESS_ERROR(nResult);
+		}
+		OnEventHandler(eTableOptType_Del, iter, 0, oVals, ILPDataList::NullDataList());
+	}
+
 	nResult = RemoveFromNotDefaultMap(vectProperty);
 	LOG_CHECK_ERROR(nResult);
 
-	ILPData& poData = (*vectProperty[0]).GetData();
+	ILPData& poData = vectProperty[0]->GetData();
 	nResult = RemoveFromDefaultMap(poData);
 	LOG_CHECK_ERROR(nResult);
 
@@ -476,6 +529,43 @@ Exit0:
 	return;
 }
 
+BOOL LPAPI LPTable::RegisterCallback(const pfunTableEvent& cb, LPINT32 nPriority, const ILPDataList& oCBParams)
+{
+	LPINT32 nResult = FALSE;
+	BOOL bInsert = FALSE;
+	LPTableCB* poNewTableCB = LPTableCB::NewTableCB(nPriority, cb, oCBParams);
+
+	if (m_poCallbackList == nullptr)
+	{
+		m_poCallbackList = new LPSimpleList();
+		LOG_PROCESS_ERROR(m_poCallbackList);
+	}
+
+	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+	{
+		LPTableCB* poTableCB = (LPTableCB*)ptNode;
+		if (poNewTableCB->m_nPriority >= poTableCB->m_nPriority)
+		{
+			nResult = (*m_poCallbackList).InsertBefore(poNewTableCB, ptNode);
+			LOG_PROCESS_ERROR(nResult);
+
+			bInsert = TRUE;
+			break;
+		}
+	}
+	SIMPLE_LIST_FOR_END
+
+	if (bInsert == FALSE)
+	{
+		nResult = (*m_poCallbackList).Append(poNewTableCB);
+		LOG_PROCESS_ERROR(nResult);
+	}
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
 BOOL LPTable::InitTableMap()
 {
 	LOG_PROCESS_ERROR(m_oVarColType.GetCount() > 0 && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
@@ -537,7 +627,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPTable::InsertIntoTableMap(PropertyVect& vectProperty)
+BOOL LPTable::InsertIntoTableMap(PropertyVect& vectProperty, Iterator& recordIteratorRet)
 {
 	LPINT32 nResult = FALSE;
 
@@ -556,14 +646,34 @@ BOOL LPTable::InsertIntoTableMap(PropertyVect& vectProperty)
 			{
 				LOG_PROCESS_ERROR(m_poTableMap[i].PIntMap != nullptr);
 				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_Int64);
-				LOG_PROCESS_ERROR(m_poTableMap[i].PIntMap->insert(std::make_pair(vectProperty[i]->GetInt64(), vectProperty)).second == true);
+				std::pair<RecordIntKeyMap::iterator, bool> InsRet = m_poTableMap[i].PIntMap->insert(std::make_pair(vectProperty[i]->GetInt64(), vectProperty));
+				LOG_PROCESS_ERROR(InsRet.second == true);
+
+				//返回第0列的索引
+				if (i == 0)
+				{
+					ResetRecordIterator(recordIteratorRet);
+					recordIteratorRet.MapIndexCol = 0;
+					recordIteratorRet.PIntMapIter = std::make_shared<RecordIntKeyMap::iterator>();
+					*recordIteratorRet.PIntMapIter = InsRet.first;
+				}
 			}
 			break;
 		case LZPL::eTableMapType_MapString:
 			{
 				LOG_PROCESS_ERROR(m_poTableMap[i].PStrMap != nullptr);
 				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_String);
-				LOG_PROCESS_ERROR(m_poTableMap[i].PStrMap->insert(std::make_pair(vectProperty[i]->GetString(), vectProperty)).second == true);
+				std::pair<RecordStrKeyMap::iterator, bool> InsRet = m_poTableMap[i].PStrMap->insert(std::make_pair(vectProperty[i]->GetString(), vectProperty));
+				LOG_PROCESS_ERROR(InsRet.second == true);
+
+				//返回第0列的索引
+				if (i == 0)
+				{
+					ResetRecordIterator(recordIteratorRet);
+					recordIteratorRet.MapIndexCol = 0;
+					recordIteratorRet.PStrMapIter = std::make_shared<RecordStrKeyMap::iterator>();
+					*recordIteratorRet.PStrMapIter = InsRet.first;
+				}
 			}
 			break;
 		case LZPL::eTableMapType_MulmapInt64:
@@ -607,10 +717,10 @@ void LPTable::ResetRecordIterator(Iterator& iter)
 	iter.PStrMulmapIter = nullptr;
 }
 
-ILPProperty& LPTable::GetProperty(Iterator& iter, const LPUINT32 nCol)
+ILPProperty& LPTable::GetProperty(Iterator& iter, const LPUINT32 dwCol)
 {
 	LOG_PROCESS_ERROR(iter.MapIndexCol < m_oVarColType.GetCount());
-	LOG_PROCESS_ERROR(nCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
+	LOG_PROCESS_ERROR(dwCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
 
 	switch (GetColMapType(iter.MapIndexCol))
 	{
@@ -618,14 +728,14 @@ ILPProperty& LPTable::GetProperty(Iterator& iter, const LPUINT32 nCol)
 		{
 			LOG_PROCESS_ERROR(iter.PIntMapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PIntMapIter)->second != nullptr);
-			return *(*iter.PIntMapIter)->second[nCol];
+			return *((*iter.PIntMapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MapString:
 		{
 			LOG_PROCESS_ERROR(iter.PStrMapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PStrMapIter)->second != nullptr);
-			return *(*iter.PStrMapIter)->second[nCol];
+			return *((*iter.PStrMapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MulmapInt64:
@@ -634,7 +744,7 @@ ILPProperty& LPTable::GetProperty(Iterator& iter, const LPUINT32 nCol)
 			LOG_PROCESS_ERROR(iter.MapIndexCol != 0);
 			LOG_PROCESS_ERROR(iter.PIntMulmapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PIntMulmapIter)->second != nullptr);
-			return *(*iter.PIntMulmapIter)->second[nCol];
+			return *((*iter.PIntMulmapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MulmapString:
@@ -643,7 +753,7 @@ ILPProperty& LPTable::GetProperty(Iterator& iter, const LPUINT32 nCol)
 			LOG_PROCESS_ERROR(iter.MapIndexCol != 0);
 			LOG_PROCESS_ERROR(iter.PStrMulmapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PStrMulmapIter)->second != nullptr);
-			return *(*iter.PStrMulmapIter)->second[nCol];
+			return *((*iter.PStrMulmapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_NotMap:
@@ -659,10 +769,10 @@ Exit0:
 	return ILPProperty::InvalidProperty();
 }
 
-ILPProperty& LPTable::GetPropertyConst(Iterator& iter, const LPUINT32 nCol) const
+ILPProperty& LPTable::GetPropertyConst(Iterator& iter, const LPUINT32 dwCol) const
 {
 	LOG_PROCESS_ERROR(iter.MapIndexCol < m_oVarColType.GetCount());
-	LOG_PROCESS_ERROR(nCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
+	LOG_PROCESS_ERROR(dwCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
 
 	switch (GetColMapType(iter.MapIndexCol))
 	{
@@ -670,14 +780,14 @@ ILPProperty& LPTable::GetPropertyConst(Iterator& iter, const LPUINT32 nCol) cons
 		{
 			LOG_PROCESS_ERROR(iter.PIntMapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PIntMapIter)->second != nullptr);
-			return *(*iter.PIntMapIter)->second[nCol];
+			return *((*iter.PIntMapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MapString:
 		{
 			LOG_PROCESS_ERROR(iter.PStrMapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PStrMapIter)->second != nullptr);
-			return *(*iter.PStrMapIter)->second[nCol];
+			return *((*iter.PStrMapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MulmapInt64:
@@ -686,7 +796,7 @@ ILPProperty& LPTable::GetPropertyConst(Iterator& iter, const LPUINT32 nCol) cons
 			LOG_PROCESS_ERROR(iter.MapIndexCol != 0);
 			LOG_PROCESS_ERROR(iter.PIntMulmapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PIntMulmapIter)->second != nullptr);
-			return *(*iter.PIntMulmapIter)->second[nCol];
+			return *((*iter.PIntMulmapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_MulmapString:
@@ -695,7 +805,7 @@ ILPProperty& LPTable::GetPropertyConst(Iterator& iter, const LPUINT32 nCol) cons
 			LOG_PROCESS_ERROR(iter.MapIndexCol != 0);
 			LOG_PROCESS_ERROR(iter.PStrMulmapIter != nullptr);
 			LOG_PROCESS_ERROR((*iter.PStrMulmapIter)->second != nullptr);
-			return *(*iter.PStrMulmapIter)->second[nCol];
+			return *((*iter.PStrMulmapIter)->second[dwCol]);
 		}
 		break;
 	case LZPL::eTableMapType_NotMap:
@@ -711,34 +821,34 @@ Exit0:
 	return ILPProperty::InvalidProperty();
 }
 
-BOOL LPAPI LPTable::FindDataFromColMap(const LPUINT32 nCol, const ILPData& value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindDataFromColMap(const LPUINT32 dwCol, const ILPData& value, IteratorVect& vectIterRet)
 {
 	LPINT32 nResult = FALSE;
 	Iterator recordIterator;
 
 	LOG_PROCESS_ERROR(m_poTableMap != nullptr);
-	LOG_PROCESS_ERROR(nCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
-	LOG_PROCESS_ERROR(value.GetType() == GetColType(nCol));
+	LOG_PROCESS_ERROR(dwCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
+	LOG_PROCESS_ERROR(value.GetType() == GetColType(dwCol));
 
-	switch (GetColMapType(nCol))
+	switch (GetColMapType(dwCol))
 	{
 	case LZPL::eTableMapType_NotMap:
 		{
 			//第0列必须有索引
-			LOG_PROCESS_ERROR(nCol != 0);
-			nResult = FindDataFromDefaultMap(nCol, value, vectIterRet);
+			LOG_PROCESS_ERROR(dwCol != 0);
+			nResult = FindDataFromDefaultMap(dwCol, value, vectIterRet);
 			LOG_PROCESS_ERROR(nResult);
 		}
 		break;
 	case LZPL::eTableMapType_MapInt64:
 		{
-			LOG_PROCESS_ERROR(m_poTableMap[nCol].PIntMap != nullptr);
-			LOG_PROCESS_ERROR(GetColType(nCol) == eDataType_Int64);
-			RecordIntKeyMap::iterator fit = m_poTableMap[nCol].PIntMap->find(value.GetInt64());
-			if (fit != m_poTableMap[nCol].PIntMap->end())
+			LOG_PROCESS_ERROR(m_poTableMap[dwCol].PIntMap != nullptr);
+			LOG_PROCESS_ERROR(GetColType(dwCol) == eDataType_Int64);
+			RecordIntKeyMap::iterator fit = m_poTableMap[dwCol].PIntMap->find(value.GetInt64());
+			if (fit != m_poTableMap[dwCol].PIntMap->end())
 			{
 				ResetRecordIterator(recordIterator);
-				recordIterator.MapIndexCol = nCol;
+				recordIterator.MapIndexCol = dwCol;
 				recordIterator.PIntMapIter = std::make_shared<RecordIntKeyMap::iterator>();
 				*recordIterator.PIntMapIter = fit;
 				vectIterRet.push_back(recordIterator);
@@ -747,13 +857,13 @@ BOOL LPAPI LPTable::FindDataFromColMap(const LPUINT32 nCol, const ILPData& value
 		break;
 	case LZPL::eTableMapType_MapString:
 		{
-			LOG_PROCESS_ERROR(m_poTableMap[nCol].PStrMap != nullptr);
-			LOG_PROCESS_ERROR(GetColType(nCol) == eDataType_String);
-			RecordStrKeyMap::iterator fit = m_poTableMap[nCol].PStrMap->find(value.GetString());
-			if (fit != m_poTableMap[nCol].PStrMap->end())
+			LOG_PROCESS_ERROR(m_poTableMap[dwCol].PStrMap != nullptr);
+			LOG_PROCESS_ERROR(GetColType(dwCol) == eDataType_String);
+			RecordStrKeyMap::iterator fit = m_poTableMap[dwCol].PStrMap->find(value.GetString());
+			if (fit != m_poTableMap[dwCol].PStrMap->end())
 			{
 				ResetRecordIterator(recordIterator);
-				recordIterator.MapIndexCol = nCol;
+				recordIterator.MapIndexCol = dwCol;
 				recordIterator.PStrMapIter = std::make_shared<RecordStrKeyMap::iterator>();
 				*recordIterator.PStrMapIter = fit;
 				vectIterRet.push_back(recordIterator);
@@ -763,14 +873,14 @@ BOOL LPAPI LPTable::FindDataFromColMap(const LPUINT32 nCol, const ILPData& value
 	case LZPL::eTableMapType_MulmapInt64:
 		{
 			//第0列为单key索引
-			LOG_PROCESS_ERROR(nCol != 0);
-			LOG_PROCESS_ERROR(m_poTableMap[nCol].PIntMulmap != nullptr);
-			LOG_PROCESS_ERROR(GetColType(nCol) == eDataType_Int64);
-			std::pair<RecordIntKeyMulmap::iterator, RecordIntKeyMulmap::iterator> retFits = m_poTableMap[nCol].PIntMulmap->equal_range(value.GetInt64());
+			LOG_PROCESS_ERROR(dwCol != 0);
+			LOG_PROCESS_ERROR(m_poTableMap[dwCol].PIntMulmap != nullptr);
+			LOG_PROCESS_ERROR(GetColType(dwCol) == eDataType_Int64);
+			std::pair<RecordIntKeyMulmap::iterator, RecordIntKeyMulmap::iterator> retFits = m_poTableMap[dwCol].PIntMulmap->equal_range(value.GetInt64());
 			for (RecordIntKeyMulmap::iterator it = retFits.first; it != retFits.second; ++it)
 			{
 				ResetRecordIterator(recordIterator);
-				recordIterator.MapIndexCol = nCol;
+				recordIterator.MapIndexCol = dwCol;
 				recordIterator.PIntMulmapIter = std::make_shared<RecordIntKeyMulmap::iterator>();
 				*recordIterator.PIntMulmapIter = it;
 				vectIterRet.push_back(recordIterator);
@@ -780,14 +890,14 @@ BOOL LPAPI LPTable::FindDataFromColMap(const LPUINT32 nCol, const ILPData& value
 	case LZPL::eTableMapType_MulmapString:
 		{
 			//第0列为单key索引
-			LOG_PROCESS_ERROR(nCol != 0);
-			LOG_PROCESS_ERROR(m_poTableMap[nCol].PStrMulmap != nullptr);
-			LOG_PROCESS_ERROR(GetColType(nCol) == eDataType_String);
-			std::pair<RecordStrKeyMulmap::iterator, RecordStrKeyMulmap::iterator> retFits = m_poTableMap[nCol].PStrMulmap->equal_range(value.GetString());
+			LOG_PROCESS_ERROR(dwCol != 0);
+			LOG_PROCESS_ERROR(m_poTableMap[dwCol].PStrMulmap != nullptr);
+			LOG_PROCESS_ERROR(GetColType(dwCol) == eDataType_String);
+			std::pair<RecordStrKeyMulmap::iterator, RecordStrKeyMulmap::iterator> retFits = m_poTableMap[dwCol].PStrMulmap->equal_range(value.GetString());
 			for (RecordStrKeyMulmap::iterator it = retFits.first; it != retFits.second; ++it)
 			{
 				ResetRecordIterator(recordIterator);
-				recordIterator.MapIndexCol = nCol;
+				recordIterator.MapIndexCol = dwCol;
 				recordIterator.PStrMulmapIter = std::make_shared<RecordStrKeyMulmap::iterator>();
 				*recordIterator.PStrMulmapIter = it;
 				vectIterRet.push_back(recordIterator);
@@ -807,13 +917,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPTable::FindDataFromDefaultMap(const LPUINT32 nCol, const ILPData& value, IteratorVect& vectIterRet)
+BOOL LPAPI LPTable::FindDataFromDefaultMap(const LPUINT32 dwCol, const ILPData& value, IteratorVect& vectIterRet)
 {
 	Iterator recordIterator;
 
 	LOG_PROCESS_ERROR(m_poTableMap != nullptr);
-	LOG_PROCESS_ERROR(nCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
-	LOG_PROCESS_ERROR(value.GetType() == GetColType(nCol));
+	LOG_PROCESS_ERROR(dwCol < m_oVarColType.GetCount() && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
+	LOG_PROCESS_ERROR(value.GetType() == GetColType(dwCol));
 
 	switch (GetColMapType(0))
 	{
@@ -822,7 +932,7 @@ BOOL LPAPI LPTable::FindDataFromDefaultMap(const LPUINT32 nCol, const ILPData& v
 			LOG_PROCESS_ERROR(m_poTableMap[0].PIntMap != nullptr);
 			for (RecordIntKeyMap::iterator it = m_poTableMap[0].PIntMap->begin(); it != m_poTableMap[0].PIntMap->end(); ++it)
 			{
-				if (value == it->second[nCol]->GetData())
+				if (value == it->second[dwCol]->GetData())
 				{
 					ResetRecordIterator(recordIterator);
 					recordIterator.MapIndexCol = 0;
@@ -838,7 +948,7 @@ BOOL LPAPI LPTable::FindDataFromDefaultMap(const LPUINT32 nCol, const ILPData& v
 			LOG_PROCESS_ERROR(m_poTableMap[0].PStrMap != nullptr);
 			for (RecordStrKeyMap::iterator it = m_poTableMap[0].PStrMap->begin(); it != m_poTableMap[0].PStrMap->end(); ++it)
 			{
-				if (value == it->second[nCol]->GetData())
+				if (value == it->second[dwCol]->GetData())
 				{
 					ResetRecordIterator(recordIterator);
 					recordIterator.MapIndexCol = 0;
@@ -926,59 +1036,59 @@ BOOL LPAPI LPTable::RemoveFromNotDefaultMap(PropertyVect& vectProperty)
 			LOG_PROCESS_ERROR(i != 0);
 			break;
 		case LZPL::eTableMapType_MapInt64:
-		{
-			LOG_PROCESS_ERROR(m_poTableMap[i].PIntMap != nullptr);
-			LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_Int64);
-			m_poTableMap[i].PIntMap->erase((*vectProperty[i]).GetInt64());
-		}
-		break;
+			{
+				LOG_PROCESS_ERROR(m_poTableMap[i].PIntMap != nullptr);
+				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_Int64);
+				m_poTableMap[i].PIntMap->erase(vectProperty[i]->GetInt64());
+			}
+			break;
 		case LZPL::eTableMapType_MapString:
-		{
-			LOG_PROCESS_ERROR(m_poTableMap[i].PStrMap != nullptr);
-			LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_String);
-			m_poTableMap[i].PStrMap->erase((*vectProperty[i]).GetString());
-		}
-		break;
+			{
+				LOG_PROCESS_ERROR(m_poTableMap[i].PStrMap != nullptr);
+				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_String);
+				m_poTableMap[i].PStrMap->erase(vectProperty[i]->GetString());
+			}
+			break;
 		case LZPL::eTableMapType_MulmapInt64:
-		{
-			//第0列为单key索引
-			LOG_PROCESS_ERROR(i != 0);
-			LOG_PROCESS_ERROR(m_poTableMap[i].PIntMulmap != nullptr);
-			LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_Int64);
-
-			std::pair<RecordIntKeyMulmap::iterator, RecordIntKeyMulmap::iterator> retFits = m_poTableMap[i].PIntMulmap->equal_range((*vectProperty[i]).GetInt64());
-			RecordIntKeyMulmap::iterator doit;
-			for (RecordIntKeyMulmap::iterator it = retFits.first; it != retFits.second;)
 			{
-				doit = it;
-				++it;
-				if (doit->second == vectProperty)
+				//第0列为单key索引
+				LOG_PROCESS_ERROR(i != 0);
+				LOG_PROCESS_ERROR(m_poTableMap[i].PIntMulmap != nullptr);
+				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_Int64);
+
+				std::pair<RecordIntKeyMulmap::iterator, RecordIntKeyMulmap::iterator> retFits = m_poTableMap[i].PIntMulmap->equal_range(vectProperty[i]->GetInt64());
+				RecordIntKeyMulmap::iterator doit;
+				for (RecordIntKeyMulmap::iterator it = retFits.first; it != retFits.second;)
 				{
-					m_poTableMap[i].PIntMulmap->erase(doit);
+					doit = it;
+					++it;
+					if (doit->second == vectProperty)
+					{
+						m_poTableMap[i].PIntMulmap->erase(doit);
+					}
 				}
 			}
-		}
-		break;
+			break;
 		case LZPL::eTableMapType_MulmapString:
-		{
-			//第0列为单key索引
-			LOG_PROCESS_ERROR(i != 0);
-			LOG_PROCESS_ERROR(m_poTableMap[i].PStrMulmap != nullptr);
-			LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_String);
-
-			std::pair<RecordStrKeyMulmap::iterator, RecordStrKeyMulmap::iterator> retFits = m_poTableMap[i].PStrMulmap->equal_range((*vectProperty[i]).GetString());
-			RecordStrKeyMulmap::iterator doit;
-			for (RecordStrKeyMulmap::iterator it = retFits.first; it != retFits.second;)
 			{
-				doit = it;
-				++it;
-				if (doit->second == vectProperty)
+				//第0列为单key索引
+				LOG_PROCESS_ERROR(i != 0);
+				LOG_PROCESS_ERROR(m_poTableMap[i].PStrMulmap != nullptr);
+				LOG_PROCESS_ERROR(vectProperty[i]->GetType() == eDataType_String);
+
+				std::pair<RecordStrKeyMulmap::iterator, RecordStrKeyMulmap::iterator> retFits = m_poTableMap[i].PStrMulmap->equal_range(vectProperty[i]->GetString());
+				RecordStrKeyMulmap::iterator doit;
+				for (RecordStrKeyMulmap::iterator it = retFits.first; it != retFits.second;)
 				{
-					m_poTableMap[i].PStrMulmap->erase(doit);
+					doit = it;
+					++it;
+					if (doit->second == vectProperty)
+					{
+						m_poTableMap[i].PStrMulmap->erase(doit);
+					}
 				}
 			}
-		}
-		break;
+			break;
 		case LZPL::eTableMapType_Invalid:
 		case LZPL::eTableMapType_Total:
 		default:
@@ -991,6 +1101,32 @@ BOOL LPAPI LPTable::RemoveFromNotDefaultMap(PropertyVect& vectProperty)
 	return TRUE;
 Exit0:
 	return FALSE;
+}
+
+BOOL LPAPI LPTable::IsCallbackListEmpty()
+{
+	return m_poCallbackList == nullptr;
+}
+
+void LPAPI LPTable::OnEventHandler(const LPINT32& nOptType, const Iterator& iter, const LPUINT32& dwCol, const ILPDataList& oOldVar, const ILPDataList& oNewVar)
+{
+	LPINT32 nResult = FALSE;
+
+	if (m_poCallbackList == nullptr)
+	{
+		return;
+	}
+
+	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
+	{
+		LPTableCB* poTableCB = (LPTableCB*)ptNode;
+		nResult = poTableCB->m_pfTableCB(m_oOwner, m_dwTableID, nOptType, iter, dwCol, oOldVar, oNewVar, 
+			poTableCB->m_poCBParams != nullptr ? *poTableCB->m_poCBParams : ILPDataList::NullDataList());
+		LOG_CHECK_ERROR_WITH_MSG(nResult, "TableID[%d]", m_dwTableID);
+	}
+	SIMPLE_LIST_FOR_END
+
+	return;
 }
 
 LPUINT32 LPTable::ms_dwTableCount = 0;

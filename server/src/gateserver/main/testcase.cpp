@@ -355,12 +355,14 @@ Exit0:
 }
 
 #define PROPERTY_CB_DEF(__index__) \
-	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const LPUINT32& dwPropertyID, const ILPDataList& oldVar, const ILPDataList& newVar, const ILPDataList& nullVar)\
+	BOOL PropertyCB##__index__(const LPIDENTID& oOwner, const LPUINT32& dwPropertyID, const ILPDataList& oldVar, const ILPDataList& newVar, const ILPDataList& oCBParams)\
 	{\
 		const LPINT64 nOldValue = oldVar.Int64(0);\
 		const LPINT64 nNewValue = newVar.Int64(0);\
 		INF("PropertyCB"#__index__"  \n-> Owner: %s, PropertyID: %d OldValue: " FMT_I64 " NewValue: " FMT_I64,\
 			oOwner.ToString().c_str(), dwPropertyID, nOldValue, nNewValue);\
+		INF("CBParams ->");\
+		PRINTF_DATA_LIST(INF,oCBParams);\
 		return TRUE;\
 	}
 
@@ -378,17 +380,20 @@ BOOL TC_TestPropertyCallBack(void)
 	LPIDENTID oOwner(1, 2);
 	ILPProperty* poProperty = nullptr;
 
+	LPDataList oCBParams0;
+	LPDataList oCBParams1;
+	oCBParams1 << 1;
+	LPDataList oCBParams2;
+	oCBParams2 << "2";
+
 	LPNormalPropertyFactory oNormalPropertyFactory;
 	poProperty = oNormalPropertyFactory.NewProperty(oOwner, 1, eDataType_Int64);
 	LOG_PROCESS_ERROR(poProperty != nullptr);
 
-	poProperty->RegisterCallback(PropertyCB1, 1, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB2, 3, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB3, 5, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB4, 2, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB5, 2, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB6, 3, ILPDataList::NullDataList());
-	poProperty->RegisterCallback(PropertyCB7, 4, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB2, 3, oCBParams0);
+	poProperty->RegisterCallback(PropertyCB1, 1, oCBParams2);
+	poProperty->RegisterCallback(PropertyCB2, 4, ILPDataList::NullDataList());
+	poProperty->RegisterCallback(PropertyCB1, 2, oCBParams1);
 
 	poProperty->SetInt64(0);
 	poProperty->SetInt64(1);
@@ -414,6 +419,7 @@ BOOL TC_TestNewDeleteProperty(void)
 	LPINT32 nSize5 = sizeof(LPSimpleList);
 	LPINT32 nSize6 = sizeof(LPStackList);
 	LPINT32 nSize7 = sizeof(BASE_LIST_NODE);
+	nSize7 = sizeof(LPProperty);
 
 	std::string strTest1 = "Test1";
 	std::string strTest2 = "Test2";
@@ -1240,11 +1246,182 @@ Exit0:
 	return FALSE;
 }
 
+#include "lp_table.h"
+BOOL TC_TestNewDeleteTable()
+{
+	LPINT32 nResult = FALSE;
+
+	LPINT32 nSize = sizeof(LPTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+#define TABLE_CB_DEF(__index__) \
+	BOOL TableCB##__index__(const LPIDENTID& oOwner, const LPUINT32& dwTableID, const LPINT32& nOptType, const ILPTable::Iterator& iter,\
+		const LPUINT32& dwCol, const ILPDataList& oOldVar, const ILPDataList& oNewVar, const ILPDataList& oCBParams)\
+	{\
+		switch (nOptType)\
+		{\
+			case eTableOptType_Add:\
+				{\
+					INF("TableCB"#__index__"  \n-> Owner(%s), TableID(%d) add record :", oOwner.ToString().c_str(), dwTableID);\
+					INF("OldVal ->");\
+					PRINTF_DATA_LIST(INF, oOldVar);\
+					INF("NewVal ->");\
+					PRINTF_DATA_LIST(INF, oNewVar);\
+					INF("CBParamsVal ->");\
+					PRINTF_DATA_LIST(INF, oCBParams);\
+				}\
+				break;\
+			case eTableOptType_Del:\
+				{\
+					INF("TableCB"#__index__"  \n-> Owner(%s), TableID(%d) del record :", oOwner.ToString().c_str(), dwTableID);\
+					INF("OldVal ->");\
+					PRINTF_DATA_LIST(INF, oOldVar);\
+					INF("NewVal ->");\
+					PRINTF_DATA_LIST(INF, oNewVar);\
+					INF("CBParamsVal ->");\
+					PRINTF_DATA_LIST(INF, oCBParams);\
+				}\
+				break;\
+			case eTableOptType_Update:\
+				{\
+					INF("TableCB"#__index__"  \n-> Owner(%s), TableID(%d) update col(%d) :", oOwner.ToString().c_str(), dwTableID, dwCol);\
+					INF("OldVal ->");\
+					PRINTF_DATA_LIST(INF, oOldVar);\
+					INF("NewVal ->");\
+					PRINTF_DATA_LIST(INF, oNewVar);\
+					INF("CBParamsVal ->");\
+					PRINTF_DATA_LIST(INF, oCBParams);\
+				}\
+				break;\
+			case eTableOptType_Clear:\
+				{\
+					INF("TableCB"#__index__"  \n-> Owner(%s), TableID(%d) clear record :", oOwner.ToString().c_str(), dwTableID);\
+					INF("OldVal ->");\
+					PRINTF_DATA_LIST(INF, oOldVar);\
+					INF("NewVal ->");\
+					PRINTF_DATA_LIST(INF, oNewVar);\
+					INF("CBParamsVal ->");\
+					PRINTF_DATA_LIST(INF, oCBParams);\
+				}\
+				break;\
+			case eTableOptType_Invalid:\
+			case eTableOptType_Total:\
+			default:\
+				LOG_CHECK_ERROR(FALSE);\
+				LPASSERT(FALSE);\
+				break;\
+		}\
+		return TRUE;\
+	}
+
+TABLE_CB_DEF(1)
+TABLE_CB_DEF(2)
+TABLE_CB_DEF(3)
+TABLE_CB_DEF(4)
+
+BOOL TC_TestTableCB()
+{
+	LPINT32 nResult = FALSE;
+
+	LPDataList oColType;
+	oColType << eDataType_String << eDataType_String << eDataType_String << eDataType_Float << eDataType_Double << eDataType_Int64;
+
+	LPDataList oColIndex;
+	oColIndex << eTableMapType_MapString << eTableMapType_MapString << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_NotMap;
+	
+	LPDataList oRecord1;
+	oRecord1 << "1" << "2" << "3" << 4.0f << 5.0 << 6;
+
+	LPDataList oRecord2;
+	oRecord2 << "11" << "22" << "33" << 44.0f << 55.0 << 66;
+
+	LPDataList oRecord3;
+	oRecord3 << "111" << "222" << "333" << 444.0f << 555.0 << 666;
+
+	LPDataList oRecord4;
+	oRecord4 << "1111" << "2222" << "3333" << 4444.0f << 5555.0 << 6666;
+
+	LPDataList oRecord5;
+	oRecord5 << "11111" << "22222" << "33333" << 44444.0f << 55555.0 << 66666;
+
+	LPDataList oCBParams0;
+	LPDataList oCBParams1;
+	oCBParams1 << 1;
+	LPDataList oCBParams2;
+	oCBParams2 << "2";
+
+	ILPTable::IteratorVect vectRecordIter;
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(LPIDENTID(), 1, oColType, oColIndex);
+	LOG_PROCESS_ERROR(poTable);
+	
+	nResult = poTable->RegisterCallback(TableCB2, 4, ILPDataList::NullDataList());
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->RegisterCallback(TableCB2, 2, oCBParams0);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->RegisterCallback(TableCB1, 1, oCBParams1);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->RegisterCallback(TableCB2, 3, oCBParams2);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_PROCESS_ERROR(nResult);
+
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_PROCESS_ERROR(nResult);
+	
+	nResult = poTable->FindString(0, "11", vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+	nResult = poTable->FindString(2, "11", vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+	nResult = poTable->FindFloat(3, 44.0, vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+	nResult = poTable->FindDouble(4, 55.0, vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+	nResult = poTable->FindInt64(5, 66, vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetString((*iter), 2, "hello");
+		nResult = poTable->SetFloat((*iter), 3, 1.23f);
+		nResult = poTable->SetDouble((*iter), 4, 4.56);
+		nResult = poTable->SetInt64((*iter), 5, 888);
+		LOG_PROCESS_ERROR(nResult);
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	LOG_PROCESS_ERROR(nResult);
+
+	LOG_PROCESS_ERROR(TRUE);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
 BOOL TC_TestTable(void)
 {
 	LPINT32 nResult = FALSE;
 
-	nResult = TC_TestTable_Col4_Mulmap_String();
+	nResult = TC_TestTableCB();
 	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;

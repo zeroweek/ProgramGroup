@@ -713,7 +713,7 @@ BOOL _Test(void)
 {
 	LPINT32 nResult = 0;
 
-	nResult = TC_TestTable();
+	nResult = TC_TestPropertyCallBack();
 	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);

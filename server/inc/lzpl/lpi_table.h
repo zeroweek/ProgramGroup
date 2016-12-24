@@ -20,6 +20,23 @@ NS_LZPL_BEGIN
 
 
 
+
+
+
+// Summary:
+//
+enum DECLARE E_TableOptType
+{
+	eTableOptType_Invalid = -1,
+	eTableOptType_Add,
+	eTableOptType_Del,
+	eTableOptType_Update,
+	eTableOptType_Clear,
+	eTableOptType_Total 
+};
+
+
+
 // Summary:
 //   map类型
 enum DECLARE E_TableMapType
@@ -76,6 +93,12 @@ public:
 	typedef TABLE_INDEX Iterator;
 	typedef std::vector<TABLE_INDEX> IteratorVect;
 
+	// Summary:
+	//   表回调接口定义
+	// Params:
+	//   <拥有者,表ID,操作类型,列,旧值,新值,其他参数>
+	typedef BOOL(*pfunTableEvent)(const LPIDENTID&, const LPUINT32&, const LPINT32&, const Iterator&, const LPUINT32&, const ILPDataList&, const ILPDataList&, const ILPDataList&);
+
 public:
 
 	virtual ~ILPTable() {}
@@ -85,25 +108,25 @@ public:
 
 	virtual LPUINT32 GetColCount() const = 0;
 	virtual LPUINT32 GetRecordCount() const = 0;
-	virtual E_DataType GetColType(const LPUINT32 nCol) const = 0;
+	virtual E_DataType GetColType(const LPUINT32 dwCol) const = 0;
 
 	virtual BOOL AddRecord(const ILPDataList& var) = 0;
 
-	virtual BOOL LPAPI SetInt64(Iterator& iter, const LPUINT32 nCol, LPINT64 value) = 0;
-	virtual BOOL LPAPI SetFloat(Iterator& iter, const LPUINT32 nCol, FLOAT value) = 0;
-	virtual BOOL LPAPI SetDouble(Iterator& iter, const LPUINT32 nCol, DOUBLE value) = 0;
-	virtual BOOL LPAPI SetString(Iterator& iter, const LPUINT32 nCol, const std::string& value) = 0;
+	virtual BOOL LPAPI SetInt64(Iterator& iter, const LPUINT32 dwCol, LPINT64 value) = 0;
+	virtual BOOL LPAPI SetFloat(Iterator& iter, const LPUINT32 dwCol, FLOAT value) = 0;
+	virtual BOOL LPAPI SetDouble(Iterator& iter, const LPUINT32 dwCol, DOUBLE value) = 0;
+	virtual BOOL LPAPI SetString(Iterator& iter, const LPUINT32 dwCol, const std::string& value) = 0;
 
-	virtual ILPData& LPAPI GetData(Iterator& iter, const LPUINT32 nCol) const = 0;
-	virtual LPINT64 LPAPI GetInt64(Iterator& iter, const LPUINT32 nCol) const = 0;
-	virtual FLOAT LPAPI GetFloat(Iterator& iter, const LPUINT32 nCol) const = 0;
-	virtual DOUBLE LPAPI GetDouble(Iterator& iter, const LPUINT32 nCol) const = 0;
-	virtual const std::string& LPAPI GetString(Iterator& iter, const LPUINT32 nCol) const = 0;
+	virtual ILPData& LPAPI GetData(Iterator& iter, const LPUINT32 dwCol) const = 0;
+	virtual LPINT64 LPAPI GetInt64(Iterator& iter, const LPUINT32 dwCol) const = 0;
+	virtual FLOAT LPAPI GetFloat(Iterator& iter, const LPUINT32 dwCol) const = 0;
+	virtual DOUBLE LPAPI GetDouble(Iterator& iter, const LPUINT32 dwCol) const = 0;
+	virtual const std::string& LPAPI GetString(Iterator& iter, const LPUINT32 dwCol) const = 0;
 
-	virtual BOOL LPAPI FindInt64(const LPUINT32 nCol, const LPINT64 value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL LPAPI FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL LPAPI FindDouble(const LPUINT32 nCol, const DOUBLE value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL LPAPI FindString(const LPUINT32 nCol, const std::string& value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindInt64(const LPUINT32 dwCol, const LPINT64 value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindFloat(const LPUINT32 dwCol, const FLOAT value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindDouble(const LPUINT32 dwCol, const DOUBLE value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindString(const LPUINT32 dwCol, const std::string& value, IteratorVect& vectIterRet) = 0;
 
 	// Summary:
 	//   remove成功或失败，传入的iterator都会被设置成对应的end
@@ -115,6 +138,8 @@ public:
 	// Attention:
 	//   调用该函数后，之前所存储的iterator都无效，强行访问结果未知
 	virtual void LPAPI Clear() = 0;
+
+	virtual BOOL LPAPI RegisterCallback(const pfunTableEvent& cb, LPINT32 nPriority, const ILPDataList& oCBParams) = 0;
 };
 
 

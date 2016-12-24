@@ -40,15 +40,22 @@ public:
 		{
 			m_nPriority = 0;
 			m_pfPropertyCB = nullptr;
+			m_poCBParams = nullptr;
 		}
 
 		~LPPropertyCB() { }
 
-		static LPPropertyCB* LPAPI NewPropertyCB(LPINT32 nPriority, pfunPropertyEvent pfPropertyCB)
+		static LPPropertyCB* LPAPI NewPropertyCB(LPINT32 nPriority, pfunPropertyEvent pfPropertyCB, const ILPDataList& oCBParams)
 		{
 			LPPropertyCB* poPropertyCB = new LPPropertyCB();
 			poPropertyCB->m_nPriority = nPriority;
 			poPropertyCB->m_pfPropertyCB = pfPropertyCB;
+
+			if (&oCBParams != &ILPDataList::NullDataList())
+			{
+				poPropertyCB->m_poCBParams = std::make_shared<LPDataList>();
+				*poPropertyCB->m_poCBParams = oCBParams;
+			}
 
 			return poPropertyCB;
 		}
@@ -60,10 +67,9 @@ public:
 
 	private:
 
-	private:
-
 		LPINT32                        m_nPriority;
-		pfunPropertyEvent             m_pfPropertyCB;
+		pfunPropertyEvent              m_pfPropertyCB;
+		std::shared_ptr<ILPDataList>   m_poCBParams;
 	};
 
 public:
@@ -90,11 +96,11 @@ public:
 	virtual DOUBLE LPAPI GetDouble() const;
 	virtual const std::string& LPAPI GetString() const;
 
-	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& vars);
+	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& oCBParams);
 
 protected:
 
-	void LPAPI OnEventHandler(const ILPDataList& oldVar, const ILPDataList& newVar);
+	void LPAPI OnEventHandler(const ILPDataList& oOldVar, const ILPDataList& oNewVar);
 
 private:
 

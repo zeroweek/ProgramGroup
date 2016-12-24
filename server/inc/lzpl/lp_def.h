@@ -131,7 +131,6 @@
 #define MB                                                 (1024 * 1024)
 
 
-#define ZERO_INT                                           (0)
 #define ZERO_FLOAT                                         (0.0f)
 #define ZERO_DOUBLE                                        (0.0)
 

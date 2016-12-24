@@ -193,7 +193,7 @@ LPUINT32 LPAPI LPProperty::GetPropertyID() const
 	return m_dwPropertyID;
 }
 
-ILPData& LPAPI LZPL::LPProperty::GetData() const
+ILPData& LPAPI LPProperty::GetData() const
 {
 	return *m_poData;
 }
@@ -218,11 +218,11 @@ const std::string& LPAPI LPProperty::GetString() const
 	return m_poData->GetString();
 }
 
-BOOL LPAPI LPProperty::RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& vars)
+BOOL LPAPI LPProperty::RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& oCBParams)
 {
 	LPINT32 nResult = FALSE;
 	BOOL bInsert = FALSE;
-	LPPropertyCB* poNewPropertyCB = LPPropertyCB::NewPropertyCB(nPriority, cb);
+	LPPropertyCB* poNewPropertyCB = LPPropertyCB::NewPropertyCB(nPriority, cb, oCBParams);
 
 	if (m_poCallbackList == nullptr)
 	{
@@ -255,7 +255,7 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LPProperty::OnEventHandler(const ILPDataList & oldVar, const ILPDataList & newVar)
+void LPAPI LPProperty::OnEventHandler(const ILPDataList & oOldVar, const ILPDataList & oNewVar)
 {
 	LPINT32 nResult = FALSE;
 
@@ -267,7 +267,8 @@ void LPAPI LPProperty::OnEventHandler(const ILPDataList & oldVar, const ILPDataL
 	SIMPLE_LIST_FOR_BEGIN((*m_poCallbackList))
 	{
 		LPPropertyCB* poPropertyCB = (LPPropertyCB*)ptNode;
-		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, oldVar, newVar, ILPDataList::NullDataList());
+		nResult = poPropertyCB->m_pfPropertyCB(m_oOwner, m_dwPropertyID, oOldVar, oNewVar, 
+			poPropertyCB->m_poCBParams != nullptr ? *poPropertyCB->m_poCBParams : ILPDataList::NullDataList());
 		LOG_CHECK_ERROR_WITH_MSG(nResult, "PropertyID[%d]", m_dwPropertyID);
 	}
 	SIMPLE_LIST_FOR_END
