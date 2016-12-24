@@ -40,7 +40,7 @@ Exit0:
 	return;
 }
 
-DECLARE size_t LPAPI lpStrCpyN(char * dst, const char * src, size_t size)
+DECLARE LPUINT64 LPAPI lpStrCpyN(char * dst, const char * src, LPUINT64 size)
 {
 	const char* d = dst;
 
@@ -65,7 +65,7 @@ DECLARE size_t LPAPI lpStrCpyN(char * dst, const char * src, size_t size)
 	return dst - d - 1;
 }
 
-DECLARE size_t LPAPI lpStrCatN(char * dst, const char * src, size_t size)
+DECLARE LPUINT64 LPAPI lpStrCatN(char * dst, const char * src, LPUINT64 size)
 {
 	const char* d = dst;
 
@@ -414,7 +414,6 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
 	return strResult;
 }
-
 
 
 

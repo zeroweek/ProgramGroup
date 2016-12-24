@@ -10,6 +10,7 @@
 #include "lp_base.h"
 #include "lp_simplelist.h"
 #include "lpi_identid.h"
+#include "lp_global.h"
 
 
 
@@ -23,7 +24,7 @@ NS_LZPL_BEGIN
 //   数据类型
 enum E_DataType
 {
-	eDataType_Invalid,
+	eDataType_Invalid = -1,
 	eDataType_Int64,
 	eDataType_Float,
 	eDataType_Double,
@@ -57,12 +58,38 @@ public:
 	virtual FLOAT LPAPI GetFloat() const = 0;
 	virtual DOUBLE LPAPI GetDouble() const = 0;
 	virtual const std::string& LPAPI GetString() const = 0;
+	
+	inline BOOL operator==(const ILPData& oSrc) const
+	{
+		LOG_CHECK_ERROR(GetType() == oSrc.GetType());
+		switch (oSrc.GetType())
+		{
+		case LZPL::eDataType_Int64:
+			return GetInt64() == oSrc.GetInt64();
+		case LZPL::eDataType_Float:
+			return lpIsZeroFloat(GetFloat() - oSrc.GetFloat());
+		case LZPL::eDataType_Double:
+			return lpIsZeroDouble(GetDouble() - oSrc.GetDouble());
+		case LZPL::eDataType_String:
+			return GetString() == oSrc.GetString();
+		case LZPL::eDataType_Invalid:
+			return GetType() == oSrc.GetType();
+		case LZPL::eDataType_Object:
+		case LZPL::eDataType_Total:
+		default:
+			LOG_CHECK_ERROR(FALSE);
+			LPASSERT(FALSE);
+			break;
+		}
+
+		return FALSE;
+	}
 
 public:
 
-	static ILPData* LPAPI InvalidData()
+	static ILPData& LPAPI InvalidData()
 	{
-		return m_poInvalidData;
+		return *m_poInvalidData;
 	}
 
 	static ILPData* LPAPI NewData(E_DataType eType);

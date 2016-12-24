@@ -50,16 +50,19 @@ public:
 	virtual ~LPDataList();
 
 	virtual void LPAPI Clear();
-	virtual BOOL LPAPI IsEmpty() const;
-	virtual LPUINT32 LPAPI GetCount() const;
+	virtual BOOL LPAPI IsEmpty() const { return (m_oDataList.Size() == 0); }
+	virtual LPUINT32 LPAPI GetCount() const { return m_oDataList.Size(); }
 	virtual E_DataType LPAPI Type(const LPINT32 nIndex) const;
 
+	virtual BOOL LPAPI AddData(const ILPData& oData);
 	virtual BOOL LPAPI Add(const LPINT64 value);
 	virtual BOOL LPAPI Add(const FLOAT value);
 	virtual BOOL LPAPI Add(const DOUBLE value);
 	virtual BOOL LPAPI Add(const char* value);
 	virtual BOOL LPAPI Add(const std::string& value);
 
+
+	virtual ILPData& LPAPI Data(const LPINT32 nIndex) const;
 	virtual LPINT64 LPAPI Int64(const LPINT32 nIndex) const;
 	virtual FLOAT LPAPI Float(const LPINT32 nIndex) const;
 	virtual DOUBLE LPAPI Double(const LPINT32 nIndex) const;

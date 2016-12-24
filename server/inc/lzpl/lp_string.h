@@ -52,9 +52,9 @@ inline DECLARE void LPAPI lpStrFastZero(char* pStr)
 
 // Summary:
 //		获取字符串的长度，不包括NULL结束符，返回值最大不超过指定长度
-inline DECLARE size_t LPAPI lpStrNLen(const char* pStr, size_t tMaxLen)
+inline DECLARE LPUINT32 LPAPI lpStrNLen(const char* pStr, LPUINT32 tMaxLen)
 {
-	for (size_t i = 0; i < tMaxLen; ++i)
+	for (LPUINT32 i = 0; i < tMaxLen; ++i)
 	{
 		if ('\0' == *pStr)
 		{
@@ -80,7 +80,7 @@ DECLARE void LPAPI lpPathFilter(char* pszPath, LPUINT32 dwMaxLen);
 //		size: 最多拷贝字符个数（包括null字符）
 // Return:
 //		返回实际拷贝的字符个数（不包括null字符）
-DECLARE size_t LPAPI lpStrCpyN(char* dst, const char* src, size_t size);
+DECLARE LPUINT64 LPAPI lpStrCpyN(char* dst, const char* src, LPUINT64 size);
 
 
 
@@ -90,7 +90,7 @@ DECLARE size_t LPAPI lpStrCpyN(char* dst, const char* src, size_t size);
 //		size: 连接后，dst字符串最大字符个数（包括null字符）
 // Return:
 //		返回连接后，dst字符串的字符个数（不包括null字符）
-DECLARE size_t LPAPI lpStrCatN(char* dst, const char* src, size_t size);
+DECLARE LPUINT64 LPAPI lpStrCatN(char* dst, const char* src, LPUINT64 size);
 
 
 

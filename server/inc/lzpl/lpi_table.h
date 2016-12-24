@@ -20,6 +20,20 @@ NS_LZPL_BEGIN
 
 
 
+// Summary:
+//   map类型
+enum DECLARE E_TableMapType
+{
+	eTableMapType_Invalid = -1,
+	eTableMapType_NotMap,
+	eTableMapType_MapInt64,
+	eTableMapType_MapString,
+	eTableMapType_MulmapInt64,
+	eTableMapType_MulmapString,
+	eTableMapType_Total
+};
+
+
 
 // Summary:
 //   表接口
@@ -27,15 +41,38 @@ class DECLARE ILPTable
 {
 public:
 
-	struct DECLARE TABLE_INDEX
-	{
-		std::map<LPINT64, std::vector<ILPProperty*>>::iterator iterInt64ToProVect;
-		std::map<std::string, std::vector<ILPProperty*>>::iterator iterStringToProVect;
+	typedef ILPProperty** PropertyVect;
+	typedef std::map<LPINT64, PropertyVect> RecordIntKeyMap;
+	typedef std::map<std::string, PropertyVect> RecordStrKeyMap;
+	typedef std::multimap<LPINT64, PropertyVect> RecordIntKeyMulmap;
+	typedef std::multimap<std::string, PropertyVect> RecordStrKeyMulmap;
 
-		std::multimap<LPINT64, std::vector<ILPProperty*>>::iterator muliterInt64ToProVect;
-		std::multimap<std::string, std::vector<ILPProperty*>>::iterator muliterStringToProVect;
+	struct DECLARE TABLE_MAP
+	{
+		RecordIntKeyMap* PIntMap;
+		RecordStrKeyMap* PStrMap;
+
+		RecordIntKeyMulmap* PIntMulmap;
+		RecordStrKeyMulmap* PStrMulmap;
 	};
 
+	// Summary:
+	//   索引结构
+	// 注意：
+	//   1. 如果不使用指针，不确定默认值（不同map的iterator不能进行比较）
+	//   2. 如果不使用只能指针，则map查找或遍历返回的是临时变量
+	struct DECLARE TABLE_INDEX
+	{
+		LPUINT32 MapIndexCol;
+
+		std::shared_ptr<RecordIntKeyMap::iterator> PIntMapIter;
+		std::shared_ptr<RecordStrKeyMap::iterator> PStrMapIter;
+
+		std::shared_ptr<RecordIntKeyMulmap::iterator> PIntMulmapIter;
+		std::shared_ptr<RecordStrKeyMulmap::iterator> PStrMulmapIter;
+	};
+
+	typedef TABLE_MAP TableMap;
 	typedef TABLE_INDEX Iterator;
 	typedef std::vector<TABLE_INDEX> IteratorVect;
 
@@ -43,7 +80,7 @@ public:
 
 	virtual ~ILPTable() {}
 
-	virtual BOOL LPAPI Init(const LPIDENTID& oOwner, LPUINT32 dwTableID, LPUINT32 nColCount, ILPDataList& varColType) = 0;
+	virtual BOOL LPAPI Init(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPDataList& varColType, const ILPDataList& varMakeIndexCol) = 0;
 	virtual BOOL LPAPI UnInit() = 0;
 
 	virtual LPUINT32 GetColCount() const = 0;
@@ -52,25 +89,32 @@ public:
 
 	virtual BOOL AddRecord(const ILPDataList& var) = 0;
 
-	virtual BOOL LPAPI SetInt64(Iterator& iter, LPINT64 value) = 0;
-	virtual BOOL LPAPI SetFloat(Iterator& iter, FLOAT value) = 0;
-	virtual BOOL LPAPI SetDouble(Iterator& iter, DOUBLE value) = 0;
-	virtual BOOL LPAPI SetString(Iterator& iter, const std::string& value) = 0;
+	virtual BOOL LPAPI SetInt64(Iterator& iter, const LPUINT32 nCol, LPINT64 value) = 0;
+	virtual BOOL LPAPI SetFloat(Iterator& iter, const LPUINT32 nCol, FLOAT value) = 0;
+	virtual BOOL LPAPI SetDouble(Iterator& iter, const LPUINT32 nCol, DOUBLE value) = 0;
+	virtual BOOL LPAPI SetString(Iterator& iter, const LPUINT32 nCol, const std::string& value) = 0;
 
-	virtual LPINT64 LPAPI GetInt64(Iterator& iter) const = 0;
-	virtual FLOAT LPAPI GetFloat(Iterator& iter) const = 0;
-	virtual DOUBLE LPAPI GetDouble(Iterator& iter) const = 0;
-	virtual const std::string& LPAPI GetString(Iterator& iter) const = 0;
+	virtual ILPData& LPAPI GetData(Iterator& iter, const LPUINT32 nCol) const = 0;
+	virtual LPINT64 LPAPI GetInt64(Iterator& iter, const LPUINT32 nCol) const = 0;
+	virtual FLOAT LPAPI GetFloat(Iterator& iter, const LPUINT32 nCol) const = 0;
+	virtual DOUBLE LPAPI GetDouble(Iterator& iter, const LPUINT32 nCol) const = 0;
+	virtual const std::string& LPAPI GetString(Iterator& iter, const LPUINT32 nCol) const = 0;
 
-	virtual BOOL FindInt64(const LPUINT32 nCol, const LPINT64 value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL FindDouble(const LPUINT32 nCol, const DOUBLE value, IteratorVect& vectIterRet) = 0;
-	virtual BOOL FindString(const LPUINT32 nCol, const std::string& value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindInt64(const LPUINT32 nCol, const LPINT64 value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindFloat(const LPUINT32 nCol, const FLOAT value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindDouble(const LPUINT32 nCol, const DOUBLE value, IteratorVect& vectIterRet) = 0;
+	virtual BOOL LPAPI FindString(const LPUINT32 nCol, const std::string& value, IteratorVect& vectIterRet) = 0;
 
-	virtual BOOL Remove(Iterator& iter) = 0;
-	virtual BOOL Remove(IteratorVect& vectIter) = 0;
+	// Summary:
+	//   remove成功或失败，传入的iterator都会被设置成对应的end
+	virtual BOOL LPAPI Remove(Iterator& iter) = 0;
+	virtual BOOL LPAPI Remove(IteratorVect& vectIter) = 0;
 
-	virtual void Clear() = 0;
+	// Summary:
+	//   清空表数据
+	// Attention:
+	//   调用该函数后，之前所存储的iterator都无效，强行访问结果未知
+	virtual void LPAPI Clear() = 0;
 };
 
 
@@ -83,11 +127,28 @@ public:
 
 	virtual LPINT32 LPAPI GetTableInstanceCount() = 0;
 
-	virtual ILPTable* LPAPI NewTableArray(LPINT32 nSize) = 0;
-	virtual void LPAPI DeleteTableArray(ILPTable* & poTableArray) = 0;
+	virtual ILPTable** LPAPI NewTableArray(LPUINT32 dwSize) = 0;
+	virtual void LPAPI DeleteTableArray(ILPTable** & poTableArray, LPUINT32 dwSize) = 0;
 
-	virtual ILPTable* LPAPI NewTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, LPUINT32 nColCount, ILPDataList& varColType) = 0;
+	virtual ILPTable* LPAPI NewTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPDataList& varColType, const ILPDataList& varMakeIndexCol) = 0;
 	virtual void LPAPI DeleteTable(ILPTable* & poTable) = 0;
+};
+
+
+
+// Summary:
+//   普通talbe工厂
+class DECLARE LPNormalTableFactory : public ILPTableFactory
+{
+public:
+
+	virtual LPINT32 LPAPI GetTableInstanceCount();
+
+	virtual ILPTable** LPAPI NewTableArray(LPUINT32 dwSize);
+	virtual void LPAPI DeleteTableArray(ILPTable** & poTableArray, LPUINT32 dwSize);
+
+	virtual ILPTable* LPAPI NewTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPDataList& varColType, const ILPDataList& varMakeIndexCol);
+	virtual void LPAPI DeleteTable(ILPTable* & poTable);
 };
 
 

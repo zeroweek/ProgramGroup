@@ -34,16 +34,6 @@ void LPAPI LPDataList::Clear()
 	m_oDataList.Clear();
 }
 
-BOOL LPAPI LPDataList::IsEmpty() const
-{
-	return (m_oDataList.Size() == 0);
-}
-
-LPUINT32 LPAPI LPDataList::GetCount() const
-{
-	return m_oDataList.Size();
-}
-
 E_DataType LPAPI LPDataList::Type(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
@@ -64,6 +54,30 @@ E_DataType LPAPI LPDataList::Type(const LPINT32 nIndex) const
 
 Exit0:
 	return eDataType_Invalid;
+}
+
+BOOL LPAPI LPDataList::AddData(const ILPData& oData)
+{
+	switch (oData.GetType())
+	{
+	case LZPL::eDataType_Int64:
+		return Add(oData.GetInt64());
+	case LZPL::eDataType_Float:
+		return Add(oData.GetFloat());
+	case LZPL::eDataType_Double:
+		return Add(oData.GetDouble());
+	case LZPL::eDataType_String:
+		return Add(oData.GetString());
+	case LZPL::eDataType_Object:
+	case LZPL::eDataType_Invalid:
+	case LZPL::eDataType_Total:
+	default:
+		LOG_PROCESS_ERROR(FALSE);
+		LPASSERT(FALSE);
+	}
+
+Exit0:
+	return FALSE;
 }
 
 BOOL LPAPI LPDataList::Add(const LPINT64 value)
@@ -166,6 +180,28 @@ Exit0:
 	return FALSE;
 }
 
+ILPData& LPAPI LZPL::LPDataList::Data(const LPINT32 nIndex) const
+{
+	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
+
+	LPINT32 i = 0;
+	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
+	{
+		if (i == nIndex)
+		{
+			DATA_SIMPLE_LIST_NODE* poDataListNode = (DATA_SIMPLE_LIST_NODE*)ptNode;
+			LOG_PROCESS_ERROR(poDataListNode->poData);
+			return *poDataListNode->poData;
+		}
+
+		++i;
+	}
+	SIMPLE_LIST_FOR_END
+
+Exit0:
+	return ILPData::InvalidData();
+}
+
 LPINT64 LPAPI LPDataList::Int64(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
@@ -185,7 +221,7 @@ LPINT64 LPAPI LPDataList::Int64(const LPINT32 nIndex) const
 	SIMPLE_LIST_FOR_END
 
 Exit0:
-	return ZERO_INT;
+	return 0;
 }
 
 FLOAT LPAPI LPDataList::Float(const LPINT32 nIndex) const
@@ -259,36 +295,17 @@ BOOL LPDataList::Append(const ILPDataList& oSrc, LPUINT32 dwStart, LPUINT32 dwCo
 	LPINT32 nResult = FALSE;
 	LPUINT32 dwEnd = dwStart + dwCount;
 
+	PROCESS_SUCCESS(dwCount == 0);
 	LOG_PROCESS_ERROR(dwStart < oSrc.GetCount());
 	LOG_PROCESS_ERROR(dwEnd <= oSrc.GetCount());
 
 	for (LPUINT32 i = dwStart; i < dwEnd; i++)
 	{
-		E_DataType eDataType = oSrc.Type(i);
-		switch (eDataType)
-		{
-			break;
-		case LZPL::eDataType_Int64:
-			Add(oSrc.Int64(i));
-			break;
-		case LZPL::eDataType_Float:
-			Add(oSrc.Float(i));
-			break;
-		case LZPL::eDataType_Double:
-			Add(oSrc.Double(i));
-			break;
-		case LZPL::eDataType_String:
-			Add(oSrc.String(i));
-			break;
-		case LZPL::eDataType_Object:
-		case LZPL::eDataType_Invalid:
-		case LZPL::eDataType_Total:
-		default:
-			LOG_CHECK_ERROR(FALSE);
-			break;
-		}
+		nResult = AddData(oSrc.Data(i));
+		LOG_PROCESS_ERROR(nResult);
 	}
 
+Exit1:
 	return TRUE;
 Exit0:
 	return FALSE;
@@ -296,16 +313,22 @@ Exit0:
 
 LPDataList& LPDataList::operator=(const LPDataList& oSrc)
 {
+	LPINT32 nResult = FALSE;
+
 	Clear();
-	Append(oSrc, 0, oSrc.GetCount());
+	nResult = Append(oSrc, 0, oSrc.GetCount());
+	LOG_CHECK_ERROR(nResult);
 
 	return *this;
 }
 
 LPDataList& LPDataList::operator=(const ILPDataList& oSrc)
 {
+	LPINT32 nResult = FALSE;
+
 	Clear();
-	Append(oSrc, 0, oSrc.GetCount());
+	nResult = Append(oSrc, 0, oSrc.GetCount());
+	LOG_CHECK_ERROR(nResult);
 
 	return *this;
 }
@@ -313,37 +336,13 @@ LPDataList& LPDataList::operator=(const ILPDataList& oSrc)
 BOOL LPDataList::Concat(const ILPDataList& oSrc)
 {
 	LPINT32 nResult = FALSE;
-	LPUINT32 dwStart = 0;
-	LPUINT32 dwEnd = oSrc.GetCount();
 
-	for (LPUINT32 i = dwStart; i < dwEnd; i++)
-	{
-		E_DataType eDataType = oSrc.Type(i);
-		switch (eDataType)
-		{
-			break;
-		case LZPL::eDataType_Int64:
-			Add(oSrc.Int64(i));
-			break;
-		case LZPL::eDataType_Float:
-			Add(oSrc.Float(i));
-			break;
-		case LZPL::eDataType_Double:
-			Add(oSrc.Double(i));
-			break;
-		case LZPL::eDataType_String:
-			Add(oSrc.String(i));
-			break;
-		case LZPL::eDataType_Object:
-		case LZPL::eDataType_Invalid:
-		case LZPL::eDataType_Total:
-		default:
-			LOG_CHECK_ERROR(FALSE);
-			break;
-		}
-	}
+	nResult = Append(oSrc, 0, oSrc.GetCount());
+	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;
+Exit0:
+	return FALSE;
 }
 
 

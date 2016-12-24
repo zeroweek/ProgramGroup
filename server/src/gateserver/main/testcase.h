@@ -15,6 +15,8 @@ BOOL TC_TestSimpleList(void);
 BOOL TC_TestStackList(void);
 BOOL TC_TestPropertyCallBack(void);
 BOOL TC_TestNewDeleteProperty(void);
+BOOL TC_TestMapEfficiency(void);
+BOOL TC_TestTable(void);
 
 
 

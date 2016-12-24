@@ -36,13 +36,14 @@ NS_LZPL_BEGIN
 			##__print_type(FMT_DBE, ##__datalist__.Double(i));\
 			break;\
 		case LZPL::eDataType_String:\
-			##__print_type(FMT_STR, ##__datalist__.String(i).c_str());\
+			##__print_type("%s", ##__datalist__.String(i).c_str());\
 			break;\
 		case LZPL::eDataType_Object:\
 		case LZPL::eDataType_Invalid:\
 		case LZPL::eDataType_Total:\
 		default:\
 			LOG_CHECK_ERROR(FALSE);\
+			LPASSERT(FALSE);\
 			break;\
 		}\
 	}
@@ -70,12 +71,14 @@ public:
 	virtual LPUINT32 LPAPI GetCount() const = 0;
 	virtual E_DataType LPAPI Type(const LPINT32 nIndex) const = 0;
 
+	virtual BOOL LPAPI AddData(const ILPData& oData) = 0;
 	virtual BOOL LPAPI Add(const LPINT64 value) = 0;
 	virtual BOOL LPAPI Add(const FLOAT value) = 0;
 	virtual BOOL LPAPI Add(const DOUBLE value) = 0;
 	virtual BOOL LPAPI Add(const char* value) = 0;
 	virtual BOOL LPAPI Add(const std::string& value) = 0;
 
+	virtual ILPData& LPAPI Data(const LPINT32 nIndex) const = 0;
 	virtual LPINT64 LPAPI Int64(const LPINT32 nIndex) const = 0;
 	virtual FLOAT LPAPI Float(const LPINT32 nIndex) const = 0;
 	virtual DOUBLE LPAPI Double(const LPINT32 nIndex) const = 0;
@@ -90,13 +93,16 @@ public:
 		return FALSE;
 	}
 
-	//ILPDataList& operator=(const ILPDataList& oSrc)
-	//{
-	//	Clear();
-	//	Append(oSrc, 0, oSrc.GetCount());
+	ILPDataList& operator=(const ILPDataList& oSrc)
+	{
+		LPINT32 nResult = FALSE;
 
-	//	return *this;
-	//}
+		Clear();
+		nResult = Append(oSrc, 0, oSrc.GetCount());
+		LOG_CHECK_ERROR(nResult);
+
+		return *this;
+	}
 
 	//inline BOOL operator==(const ILPDataList& oSrc) const
 	//{

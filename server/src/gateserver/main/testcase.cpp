@@ -1,6 +1,7 @@
 #include "testcase.h"
 #include "lp_processerror.h"
 #include "lp_lzpl.h"
+#include "lp_profile.h"
 
 
 struct TC_TEST_SIMPLE_LIST_NODE : SIMPLE_LIST_NODE
@@ -403,7 +404,7 @@ Exit0:
 BOOL TC_TestNewDeleteProperty(void)
 {
 	LPINT32 nResult = FALSE;
-	ILPProperty* poPropertyArray = nullptr;
+	ILPProperty** poPropertyArray = nullptr;
 	LPNormalPropertyFactory oNormalPropertyFactory;
 	
 	LPProperty* pPropertyArray = new LPProperty[100];
@@ -436,9 +437,815 @@ BOOL TC_TestNewDeleteProperty(void)
 
 	WRN("PropertyInstanceCount = %d", oNormalPropertyFactory.GetPropertyInstanceCount());
 
-	oNormalPropertyFactory.DeletePropertyArray(poPropertyArray);
+	oNormalPropertyFactory.DeletePropertyArray(poPropertyArray, 100);
 
 	WRN("PropertyInstanceCount = %d", oNormalPropertyFactory.GetPropertyInstanceCount());
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+struct DECLARE StringCmpKey
+{
+	bool operator() (const std::string& strKey1, const std::string& strKey2) const
+	{
+		return strcmp(strKey1.c_str(), strKey2.c_str()) < 0;
+	}
+};
+
+BOOL TC_TestMapEfficiency(void)
+{
+	LPINT32 nResult = FALSE;
+	std::map<LPUINT64, std::string> mapInt2String;
+	std::map<std::string, std::string> mapString2String;
+	std::map<std::string, std::string, StringCmpKey> mapCmpString2String;
+
+	std::vector<std::string> vectString;
+	vectString.resize(100000);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		vectString[i] = lpSerializeToString(MAX_INT64_LEN, "%d", i);
+	}
+
+	PROFILE_START();
+
+	PROFILE_POINT(1);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapString2String.insert(std::make_pair(vectString[i], vectString[i])).second);
+	}
+	PROFILE_POINT(1);
+
+	PROFILE_POINT(2);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapCmpString2String.insert(std::make_pair(vectString[i], vectString[i])).second);
+	}
+	PROFILE_POINT(2);
+
+	PROFILE_POINT(3);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapInt2String.insert(std::make_pair(i, vectString[i])).second);
+	}
+	PROFILE_POINT(3);
+
+	PROFILE_POINT(4);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapString2String.find(vectString[i]) != mapString2String.end());
+	}
+	PROFILE_POINT(4);
+
+	PROFILE_POINT(5);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapCmpString2String.find(vectString[i]) != mapCmpString2String.end());
+	}
+	PROFILE_POINT(5);
+
+	PROFILE_POINT(6);
+	for (LPUINT64 i = 0; i < vectString.size(); ++i)
+	{
+		LOG_PROCESS_ERROR(mapInt2String.find(i) != mapInt2String.end());
+	}
+	PROFILE_POINT(6);
+
+
+	PROFILE_END();
+
+	LOG_PROCESS_ERROR(TRUE);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Invalid()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_String;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap;
+
+	LPDataList oRecord;
+	oRecord << 1 << 2.2f << 3.3 << "4";
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f;
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, ILPDataList::NullDataList());
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	nResult = poTable->FindFloat(1, 2.2f, vectRecordIter);
+	nResult = poTable->FindDouble(2, 3.3, vectRecordIter);
+	nResult = poTable->FindString(3, strTest, vectRecordIter);
+
+	ILPTable::Iterator iter1;
+	vectRecordIter.push_back(iter1);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetInt64((*iter), 0, 11);
+		nResult = poTable->SetInt64((*iter), 0, 2);
+		nResult = poTable->SetFloat((*iter), 1, 22.22f);
+		nResult = poTable->SetDouble((*iter), 2, 33.33);
+		nResult = poTable->SetString((*iter), 3, strTest);
+
+		ILPData& oValue = poTable->GetData((*iter), 0);
+		lValue = poTable->GetInt64((*iter), 0);
+		fValue = poTable->GetFloat((*iter), 1);
+		dValue = poTable->GetDouble((*iter), 2);
+		strValue = poTable->GetString((*iter), 3);
+
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col0_Map_Int64()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_String;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_NotMap;
+
+	LPDataList oRecord1;
+	oRecord1 << 1 << 1.1f << 1.1 << "1111";
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f << 2.2 << "2222";
+	LPDataList oRecord3;
+	oRecord3 << 3 << 3.3f << 3.3 << "3333";
+	LPDataList oRecord4;
+	oRecord4 << 4 << 4.4f << 4.4 << "4444";
+	LPDataList oRecord5;
+	oRecord5 << 5 << 5.5f << 5.5 << "5555";
+	LPDataList oRecord6;
+	oRecord6 << 6 << 6.6f << 6.6 << "6666";
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetInt64((*iter), 0, 123);
+		nResult = poTable->SetString((*iter), 0, strTest);
+		nResult = poTable->SetFloat((*iter), 1, 22.22f);
+		nResult = poTable->SetString((*iter), 1, strTest);
+		nResult = poTable->SetDouble((*iter), 2, 33.33);
+		nResult = poTable->SetString((*iter), 2, strTest);
+		nResult = poTable->SetString((*iter), 3, strTest);
+		nResult = poTable->SetInt64((*iter), 3, 123);
+
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindFloat(1, 2.2f, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetInt64((*iter), 0, 123);
+		nResult = poTable->SetString((*iter), 0, strTest);
+		nResult = poTable->SetFloat((*iter), 1, 22.22f);
+		nResult = poTable->SetString((*iter), 1, strTest);
+		nResult = poTable->SetDouble((*iter), 2, 33.33);
+		nResult = poTable->SetString((*iter), 2, strTest);
+		nResult = poTable->SetString((*iter), 3, strTest);
+		nResult = poTable->SetInt64((*iter), 3, 123);
+
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindDouble(2, 3.3, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetInt64((*iter), 0, 123);
+		nResult = poTable->SetString((*iter), 0, strTest);
+		nResult = poTable->SetFloat((*iter), 1, 22.22f);
+		nResult = poTable->SetString((*iter), 1, strTest);
+		nResult = poTable->SetDouble((*iter), 2, 33.33);
+		nResult = poTable->SetString((*iter), 2, strTest);
+		nResult = poTable->SetString((*iter), 3, strTest);
+		nResult = poTable->SetInt64((*iter), 3, 123);
+
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, strTest, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->SetInt64((*iter), 0, 123);
+		nResult = poTable->SetString((*iter), 0, strTest);
+		nResult = poTable->SetFloat((*iter), 1, 22.22f);
+		nResult = poTable->SetString((*iter), 1, strTest);
+		nResult = poTable->SetDouble((*iter), 2, 33.33);
+		nResult = poTable->SetString((*iter), 2, strTest);
+		nResult = poTable->SetString((*iter), 3, strTest);
+		nResult = poTable->SetInt64((*iter), 3, 123);
+
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col0_Map_String()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_String << eDataType_Float << eDataType_Double << eDataType_String;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapString << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_NotMap;
+
+	LPDataList oRecord1;
+	oRecord1 << "1" << 1.1f << 1.1 << "1111";
+	LPDataList oRecord2;
+	oRecord2 << "2" << 2.2f << 2.2 << "2222";
+	LPDataList oRecord3;
+	oRecord3 << "3" << 3.3f << 3.3 << "3333";
+	LPDataList oRecord4;
+	oRecord4 << "4" << 4.4f << 4.4 << "4444";
+	LPDataList oRecord5;
+	oRecord5 << "5" << 5.5f << 5.5 << "5555";
+	LPDataList oRecord6;
+	oRecord6 << "6" << 6.6f << 6.6 << "6666";
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindString(0, "1", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "1111", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "2222", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col4_Map_Int64()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_Int64;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_MapInt64;
+
+	LPDataList oRecord1;
+	oRecord1 << 1 << 1.1f << 1.1 << 1111;
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f << 2.2 << 2222;
+	LPDataList oRecord3;
+	oRecord3 << 3 << 3.3f << 3.3 << 3333;
+	LPDataList oRecord4;
+	oRecord4 << 4 << 4.4f << 4.4 << 4444;
+	LPDataList oRecord5;
+	oRecord5 << 5 << 5.5f << 5.5 << 5555;
+	LPDataList oRecord6;
+	oRecord6 << 6 << 6.6f << 6.6 << 6666;
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+	LPUINT32 dwRecordCount = 0;
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(3, 1111, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(3, 2222, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col4_Map_String()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_String;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_MapString;
+
+	LPDataList oRecord1;
+	oRecord1 << 1 << 1.1f << 1.1 << "1111";
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f << 2.2 << "2222";
+	LPDataList oRecord3;
+	oRecord3 << 3 << 3.3f << 3.3 << "3333";
+	LPDataList oRecord4;
+	oRecord4 << 4 << 4.4f << 4.4 << "4444";
+	LPDataList oRecord5;
+	oRecord5 << 5 << 5.5f << 5.5 << "5555";
+	LPDataList oRecord6;
+	oRecord6 << 6 << 6.6f << 6.6 << "6666";
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "1111", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "2222", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col4_Mulmap_Int64()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_Int64;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_MulmapInt64;
+
+	LPDataList oRecord1;
+	oRecord1 << 1 << 1.1f << 1.1 << 1111;
+	LPDataList oRecord11;
+	oRecord11 << 11 << 1.1f << 1.1 << 1111;
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f << 2.2 << 2222;
+	LPDataList oRecord22;
+	oRecord22 << 22 << 2.2f << 2.2 << 2222;
+	LPDataList oRecord3;
+	oRecord3 << 3 << 3.3f << 3.3 << 3333;
+	LPDataList oRecord33;
+	oRecord33 << 33 << 3.3f << 3.3 << 3333;
+	LPDataList oRecord4;
+	oRecord4 << 4 << 4.4f << 4.4 << 4444;
+	LPDataList oRecord5;
+	oRecord5 << 5 << 5.5f << 5.5 << 5555;
+	LPDataList oRecord6;
+	oRecord6 << 6 << 6.6f << 6.6 << 6666;
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord11);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord22);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord33);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(3, 1111, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(3, 2222, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(3, 2222, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable_Col4_Mulmap_String()
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = sizeof(ILPTable::TABLE_MAP);
+	nResult = sizeof(ILPTable::TABLE_INDEX);
+
+	LPIDENTID oIdentID(0, 0);
+	LPDataList oRecordType;
+	oRecordType << eDataType_Int64 << eDataType_Float << eDataType_Double << eDataType_String;
+	LPDataList oMapType;
+	oMapType << eTableMapType_MapInt64 << eTableMapType_NotMap << eTableMapType_NotMap << eTableMapType_MulmapString;
+
+	LPDataList oRecord1;
+	oRecord1 << 1 << 1.1f << 1.1 << "1111";
+	LPDataList oRecord11;
+	oRecord11 << 11 << 1.1f << 1.1 << "1111";
+	LPDataList oRecord2;
+	oRecord2 << 2 << 2.2f << 2.2 << "2222";
+	LPDataList oRecord22;
+	oRecord22 << 22 << 2.2f << 2.2 << "2222";
+	LPDataList oRecord3;
+	oRecord3 << 3 << 3.3f << 3.3 << "3333";
+	LPDataList oRecord33;
+	oRecord33 << 33 << 3.3f << 3.3 << "3333";
+	LPDataList oRecord4;
+	oRecord4 << 4 << 4.4f << 4.4 << "4444";
+	LPDataList oRecord5;
+	oRecord5 << 5 << 5.5f << 5.5 << "5555";
+	LPDataList oRecord6;
+	oRecord6 << 6 << 6.6f << 6.6 << "6666";
+
+	LPNormalTableFactory oNormalTableFactory;
+	ILPTable* poTable = oNormalTableFactory.NewTable(oIdentID, 1, oRecordType, oMapType);
+
+	ILPTable::IteratorVect vectRecordIter;
+
+	std::string strTest = "teststring";
+	LPUINT32 dwColCount = poTable->GetColCount();
+	LPUINT32 dwRecordCount = poTable->GetRecordCount();
+	E_DataType eDataType = poTable->GetColType(0);
+	eDataType = poTable->GetColType(1);
+	eDataType = poTable->GetColType(2);
+	eDataType = poTable->GetColType(3);
+
+	LPINT64 lValue = 0;
+	FLOAT fValue = ZERO_FLOAT;
+	DOUBLE dValue = ZERO_DOUBLE;
+	std::string strValue = NULL_STR;
+
+	nResult = poTable->AddRecord(oRecord1);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord11);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord2);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord22);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord3);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord33);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord4);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord5);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+	nResult = poTable->AddRecord(oRecord6);
+	LOG_CHECK_ERROR(nResult);
+	dwRecordCount = poTable->GetRecordCount();
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindInt64(0, 1, vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "1111", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "2222", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->FindString(3, "2222", vectRecordIter);
+	for (ILPTable::IteratorVect::iterator iter = vectRecordIter.begin(); iter != vectRecordIter.end(); ++iter)
+	{
+		nResult = poTable->Remove((*iter));
+	}
+
+	nResult = poTable->Remove(vectRecordIter);
+	poTable->Clear();
+
+	oNormalTableFactory.DeleteTable(poTable);
+
+	LOG_PROCESS_ERROR(TRUE);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL TC_TestTable(void)
+{
+	LPINT32 nResult = FALSE;
+
+	nResult = TC_TestTable_Col4_Mulmap_String();
+	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;
 Exit0:

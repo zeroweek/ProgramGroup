@@ -28,15 +28,17 @@ ILPData* ILPData::NewData(E_DataType eType)
 	case LZPL::eDataType_Invalid:
 	case LZPL::eDataType_Total:
 	default:
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 		break;
 	}
 
-	return InvalidData();
+	return &InvalidData();
 }
 
 void ILPData::DeleteData(ILPData* & poData)
 {
-	if (poData != InvalidData())
+	if (poData != &InvalidData())
 	{
 		SAFE_DELETE(poData);
 	}
@@ -45,7 +47,7 @@ void ILPData::DeleteData(ILPData* & poData)
 LPDataInt64::LPDataInt64()
 {
 	++ms_dwDataCount;
-	m_lData = ZERO_INT;
+	m_lData = 0;
 }
 
 LPDataInt64::~LPDataInt64()

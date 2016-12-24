@@ -42,17 +42,29 @@ public:
 	virtual LPUINT32 LPAPI GetPropertyID() const  = 0;
 	virtual const E_DataType GetType() const = 0;
 
+	virtual BOOL LPAPI SetData(ILPData& poData) = 0;
 	virtual BOOL LPAPI SetInt64(LPINT64 value) = 0;
 	virtual BOOL LPAPI SetFloat(FLOAT value) = 0;
 	virtual BOOL LPAPI SetDouble(DOUBLE value) = 0;
 	virtual BOOL LPAPI SetString(const std::string& value) = 0;
 
+	virtual ILPData& LPAPI GetData() const = 0;
 	virtual LPINT64 LPAPI GetInt64() const = 0;
 	virtual FLOAT LPAPI GetFloat() const = 0;
 	virtual DOUBLE LPAPI GetDouble() const = 0;
 	virtual const std::string& LPAPI GetString() const = 0;
 
 	virtual BOOL LPAPI RegisterCallback(const pfunPropertyEvent& cb, LPINT32 nPriority, const ILPDataList& vars) = 0;
+
+public:
+
+	static ILPProperty& LPAPI InvalidProperty()
+	{
+		return *m_poInvalidProperty;
+	}
+
+private:
+	static ILPProperty* m_poInvalidProperty;
 };
 
 
@@ -65,8 +77,8 @@ public:
 
 	virtual LPUINT32 LPAPI GetPropertyInstanceCount() = 0;
 
-	virtual ILPProperty* LPAPI NewPropertyArray(LPUINT32 dwSize) = 0;
-	virtual void LPAPI DeletePropertyArray(ILPProperty* & poProperty) = 0;
+	virtual ILPProperty** LPAPI NewPropertyArray(LPUINT32 dwSize) = 0;
+	virtual void LPAPI DeletePropertyArray(ILPProperty** & poPropertyArray, LPUINT32 dwSize) = 0;
 
 	virtual ILPProperty* LPAPI NewProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType) = 0;
 	virtual void LPAPI DeleteProperty(ILPProperty* & poProperty) = 0;
@@ -81,9 +93,9 @@ class DECLARE LPNormalPropertyFactory : public ILPPropertyFactory
 public:
 
 	virtual LPUINT32 LPAPI GetPropertyInstanceCount();
-	
-	virtual ILPProperty* LPAPI NewPropertyArray(LPUINT32 dwSize);
-	virtual void LPAPI DeletePropertyArray(ILPProperty* & poProperty);
+
+	virtual ILPProperty** LPAPI NewPropertyArray(LPUINT32 dwSize);
+	virtual void LPAPI DeletePropertyArray(ILPProperty** & poPropertyArray, LPUINT32 dwSize);
 
 	virtual ILPProperty* LPAPI NewProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType);
 	virtual void LPAPI DeleteProperty(ILPProperty* & poProperty);

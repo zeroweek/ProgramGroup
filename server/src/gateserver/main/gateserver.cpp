@@ -691,17 +691,17 @@ Exit0:
 	return FALSE;
 }
 
+class DECLARE TestClass
+{
+public:
+
+private:
+	LPINT32 m_nData;
+};
+
 BOOL _Test_Temp(void)
 {
 	LPINT32 nResult = 0;
-
-	std::map<LPUINT32, LPUINT32> mapTest1;
-	std::map<LPUINT32, std::string> mapTest2;
-	std::map<std::string, std::string> mapTest3;
-
-	nResult = sizeof(mapTest1);
-	nResult = sizeof(mapTest2);
-	nResult = sizeof(mapTest3);
 	
 	LOG_PROCESS_ERROR(TRUE);
 	return TRUE;
@@ -713,7 +713,7 @@ BOOL _Test(void)
 {
 	LPINT32 nResult = 0;
 
-	nResult = _Test_Temp();
+	nResult = TC_TestTable();
 	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);

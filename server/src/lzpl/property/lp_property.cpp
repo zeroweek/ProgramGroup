@@ -8,6 +8,8 @@ NS_LZPL_BEGIN
 
 
 
+ILPProperty* ILPProperty::m_poInvalidProperty = new LPProperty();
+
 LZPL::LPProperty::LPProperty()
 {
 	++ms_dwPropertyCount;
@@ -15,7 +17,7 @@ LZPL::LPProperty::LPProperty()
 	m_oOwner = LPIDENTID(0, 0);
 	m_dwPropertyID = INVALID_PROPERTY_ID;
 
-	m_poData = ILPData::InvalidData();
+	m_poData = &ILPData::InvalidData();
 	LOG_CHECK_ERROR(m_poData != nullptr);
 
 	m_poCallbackList = nullptr;
@@ -23,15 +25,15 @@ LZPL::LPProperty::LPProperty()
 
 LPProperty::LPProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType)
 {
+	LPINT32 nResult = FALSE;
+
 	++ms_dwPropertyCount;
 
-	m_oOwner = oOwner;
-	m_dwPropertyID = dwPropertyID;
-
-	m_poData = ILPData::NewData(eDataType);
-	LOG_CHECK_ERROR(m_poData != nullptr);
-
-	m_poCallbackList = nullptr;
+	nResult = Init(oOwner, dwPropertyID, eDataType);
+	LOG_PROCESS_ERROR(nResult);
+	
+Exit0:
+	return;
 }
 
 LPProperty::~LPProperty()
@@ -50,6 +52,8 @@ BOOL LPAPI LZPL::LPProperty::Init(const LPIDENTID& oOwner, LPUINT32 dwPropertyID
 
 	m_poData = ILPData::NewData(eDataType);
 	LOG_PROCESS_ERROR(m_poData != nullptr);
+
+	m_poCallbackList = nullptr;
 
 	return TRUE;
 Exit0:
@@ -77,6 +81,30 @@ BOOL LPAPI LPProperty::UnInit()
 	ILPData::DeleteData(m_poData);
 
 	return TRUE;
+}
+
+BOOL LPAPI LPProperty::SetData(ILPData& poData)
+{
+	switch (poData.GetType())
+	{
+	case LZPL::eDataType_Int64:
+		return SetInt64(poData.GetInt64());
+	case LZPL::eDataType_Float:
+		return SetFloat(poData.GetFloat());
+	case LZPL::eDataType_Double:
+		return SetDouble(poData.GetDouble());
+	case LZPL::eDataType_String:
+		return SetString(poData.GetString());
+	case LZPL::eDataType_Object:
+	case LZPL::eDataType_Invalid:
+	case LZPL::eDataType_Total:
+	default:
+		LOG_PROCESS_ERROR(FALSE);
+		LPASSERT(FALSE);
+	}
+
+Exit0:
+	return FALSE;
 }
 
 BOOL LPAPI LPProperty::SetInt64(LPINT64 value)
@@ -165,6 +193,11 @@ LPUINT32 LPAPI LPProperty::GetPropertyID() const
 	return m_dwPropertyID;
 }
 
+ILPData& LPAPI LZPL::LPProperty::GetData() const
+{
+	return *m_poData;
+}
+
 LPINT64 LPAPI LPProperty::GetInt64() const
 {
 	return m_poData->GetInt64();
@@ -251,14 +284,27 @@ LPUINT32 LPAPI LPNormalPropertyFactory::GetPropertyInstanceCount()
 	return LPProperty::ms_dwPropertyCount;
 }
 
-ILPProperty* LPAPI LPNormalPropertyFactory::NewPropertyArray(LPUINT32 dwSize)
+ILPProperty** LPAPI LPNormalPropertyFactory::NewPropertyArray(LPUINT32 dwSize)
 {
-	return new LPProperty[dwSize];
+	ILPProperty** poPropertyArray = new ILPProperty*[dwSize];
+	for (LPUINT32 i = 0; i < dwSize; ++i)
+	{
+		poPropertyArray[i] = new LPProperty();
+	}
+	return poPropertyArray;
 }
 
-void LPAPI LZPL::LPNormalPropertyFactory::DeletePropertyArray(ILPProperty* & poData)
+void LPAPI LPNormalPropertyFactory::DeletePropertyArray(ILPProperty** & poPropertyArray, LPUINT32 dwSize)
 {
-	SAFE_DELETE_SZ(poData);
+	LOG_PROCESS_ERROR(poPropertyArray != nullptr);
+	for (LPUINT32 i = 0; i < dwSize; ++i)
+	{
+		SAFE_DELETE(poPropertyArray[i]);
+	}
+	SAFE_DELETE_SZ(poPropertyArray);
+
+Exit0:
+	return;
 }
 
 ILPProperty* LPAPI LPNormalPropertyFactory::NewProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType)
@@ -266,9 +312,9 @@ ILPProperty* LPAPI LPNormalPropertyFactory::NewProperty(const LPIDENTID& oOwner,
 	return new LPProperty(oOwner, dwPropertyID, eDataType);
 }
 
-void LPAPI LZPL::LPNormalPropertyFactory::DeleteProperty(ILPProperty* & poData)
+void LPAPI LPNormalPropertyFactory::DeleteProperty(ILPProperty* & poProperty)
 {
-	SAFE_DELETE(poData);
+	SAFE_DELETE(poProperty);
 }
 
 //end声明所处的名字空间

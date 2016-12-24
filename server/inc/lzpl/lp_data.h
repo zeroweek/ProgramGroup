@@ -64,7 +64,7 @@ public:
 	{ 
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
-		return ZERO_INT; 
+		return 0; 
 	}
 
 	virtual FLOAT LPAPI GetFloat() const 
@@ -168,7 +168,7 @@ public:
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
-		return ZERO_INT; 
+		return 0; 
 	}
 
 	virtual FLOAT LPAPI GetFloat() const 
@@ -219,7 +219,7 @@ public:
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
-		return ZERO_INT; 
+		return 0; 
 	}
 
 	virtual FLOAT LPAPI GetFloat() const 
@@ -266,9 +266,27 @@ public:
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual LPINT64 LPAPI GetInt64() const { return ZERO_INT; }
-	virtual FLOAT LPAPI GetFloat() const { return ZERO_FLOAT; }
-	virtual DOUBLE LPAPI GetDouble() const { return ZERO_DOUBLE; }
+	virtual LPINT64 LPAPI GetInt64() const
+	{
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		return 0;
+	}
+
+	virtual FLOAT LPAPI GetFloat() const
+	{
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		return ZERO_FLOAT;
+	}
+
+	virtual DOUBLE LPAPI GetDouble() const
+	{
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		return ZERO_DOUBLE;
+	}
+
 	virtual const std::string& LPAPI GetString() const { return m_strData; }
 
 private:

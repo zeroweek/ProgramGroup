@@ -78,11 +78,13 @@ public:
 	virtual LPUINT32 LPAPI GetPropertyID() const;
 	virtual const E_DataType GetType() const;
 
+	virtual BOOL LPAPI SetData(ILPData& poData);
 	virtual BOOL LPAPI SetInt64(LPINT64 value);
 	virtual BOOL LPAPI SetFloat(FLOAT value);
 	virtual BOOL LPAPI SetDouble(DOUBLE value);
 	virtual BOOL LPAPI SetString(const std::string& value);
 
+	virtual ILPData& LPAPI GetData() const;
 	virtual LPINT64 LPAPI GetInt64() const;
 	virtual FLOAT LPAPI GetFloat() const;
 	virtual DOUBLE LPAPI GetDouble() const;
