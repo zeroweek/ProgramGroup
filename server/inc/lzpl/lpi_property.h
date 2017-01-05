@@ -101,6 +101,14 @@ public:
 
 	virtual ILPProperty* LPAPI NewProperty(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType);
 	virtual void LPAPI DeleteProperty(ILPProperty* & poProperty);
+
+public:
+
+	static ILPPropertyFactory& Factory() { return m_oNormalPropertyFactory; }
+
+private:
+
+	static LPNormalPropertyFactory m_oNormalPropertyFactory;
 };
 
 

@@ -174,6 +174,14 @@ public:
 
 	virtual ILPTable* LPAPI NewTable(const LPIDENTID& oOwner, LPUINT32 dwTableID, const ILPDataList& varColType, const ILPDataList& varMakeIndexCol);
 	virtual void LPAPI DeleteTable(ILPTable* & poTable);
+
+public:
+
+	static ILPTableFactory& Factory() { return m_oNormalTableFactory; }
+
+private:
+
+	static LPNormalTableFactory m_oNormalTableFactory;
 };
 
 

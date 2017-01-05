@@ -148,10 +148,7 @@ protected:
 	LPDataList                                      m_oVarColType;      // 各列的类型
 	LPDataList                                      m_oVarMakeIndexCol; // 需要设置索引的列（第0列默认有索引），有索引的列不允许修改值
 
-	LPNormalPropertyFactory                         m_oNormalPropertyFactory;
-
 	TableMap*                                       m_poTableMap;
-
 	LPSimpleList*                                   m_poCallbackList; //减小内存
 };
 

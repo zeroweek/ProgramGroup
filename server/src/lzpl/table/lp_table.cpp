@@ -159,7 +159,7 @@ BOOL LPTable::AddRecord(const ILPDataList& var)
 	LOG_PROCESS_ERROR(var.GetCount() == dwColCount);
 	LOG_PROCESS_ERROR(dwColCount > 0 && dwColCount == m_oVarMakeIndexCol.GetCount());
 	
-	vectProperty = m_oNormalPropertyFactory.NewPropertyArray(dwColCount);
+	vectProperty = LPNormalPropertyFactory::Factory().NewPropertyArray(dwColCount);
 	LOG_PROCESS_ERROR(vectProperty != nullptr);
 	for (LPUINT32 i = 0; i < dwColCount; ++i)
 	{
@@ -179,7 +179,7 @@ BOOL LPTable::AddRecord(const ILPDataList& var)
 	return TRUE;
 Exit0:
 
-	m_oNormalPropertyFactory.DeletePropertyArray(vectProperty, dwColCount);
+	LPNormalPropertyFactory::Factory().DeletePropertyArray(vectProperty, dwColCount);
 	return FALSE;
 }
 
@@ -484,7 +484,7 @@ void LPAPI LPTable::Clear()
 				doit = it;
 				++it;
 
-				m_oNormalPropertyFactory.DeletePropertyArray(doit->second, m_oVarColType.GetCount());
+				LPNormalPropertyFactory::Factory().DeletePropertyArray(doit->second, m_oVarColType.GetCount());
 				m_poTableMap[0].PIntMap->erase(doit);
 			}
 			m_poTableMap[0].PIntMap->clear();
@@ -500,7 +500,7 @@ void LPAPI LPTable::Clear()
 				doit = it;
 				++it;
 
-				m_oNormalPropertyFactory.DeletePropertyArray(doit->second, m_oVarColType.GetCount());
+				LPNormalPropertyFactory::Factory().DeletePropertyArray(doit->second, m_oVarColType.GetCount());
 				m_poTableMap[0].PStrMap->erase(doit);
 			}
 			m_poTableMap[0].PStrMap->clear();
@@ -989,7 +989,7 @@ BOOL LPAPI LPTable::RemoveFromDefaultMap(ILPData& poData)
 			LOG_PROCESS_ERROR(GetColType(0) == eDataType_Int64);
 			RecordIntKeyMap::iterator fit = m_poTableMap[0].PIntMap->find(poData.GetInt64());
 			LOG_PROCESS_ERROR(fit != m_poTableMap[0].PIntMap->end());
-			m_oNormalPropertyFactory.DeletePropertyArray(fit->second, m_oVarColType.GetCount());
+			LPNormalPropertyFactory::Factory().DeletePropertyArray(fit->second, m_oVarColType.GetCount());
 			m_poTableMap[0].PIntMap->erase(fit);
 		}
 		break;
@@ -999,7 +999,7 @@ BOOL LPAPI LPTable::RemoveFromDefaultMap(ILPData& poData)
 			LOG_PROCESS_ERROR(GetColType(0) == eDataType_String);
 			RecordStrKeyMap::iterator fit = m_poTableMap[0].PStrMap->find(poData.GetString());
 			LOG_PROCESS_ERROR(fit != m_poTableMap[0].PStrMap->end());
-			m_oNormalPropertyFactory.DeletePropertyArray(fit->second, m_oVarColType.GetCount());
+			LPNormalPropertyFactory::Factory().DeletePropertyArray(fit->second, m_oVarColType.GetCount());
 			m_poTableMap[0].PStrMap->erase(fit);
 		}
 		break;
@@ -1171,6 +1171,7 @@ void LPAPI LPNormalTableFactory::DeleteTable(ILPTable* & poTable)
 	SAFE_DELETE(poTable);
 }
 
+LPNormalTableFactory LPNormalTableFactory::m_oNormalTableFactory;
 
 //end声明所处的名字空间
 NS_LZPL_END

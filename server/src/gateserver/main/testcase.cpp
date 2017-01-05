@@ -1421,7 +1421,7 @@ BOOL TC_TestTable(void)
 {
 	LPINT32 nResult = FALSE;
 
-	nResult = TC_TestTableCB();
+	nResult = TC_TestTable_Col4_Mulmap_String();
 	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;

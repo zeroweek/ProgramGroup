@@ -318,6 +318,10 @@ void LPAPI LPNormalPropertyFactory::DeleteProperty(ILPProperty* & poProperty)
 	SAFE_DELETE(poProperty);
 }
 
+LPNormalPropertyFactory LPNormalPropertyFactory::m_oNormalPropertyFactory;
+
+
+
 //end声明所处的名字空间
 
 
