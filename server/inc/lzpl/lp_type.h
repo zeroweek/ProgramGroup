@@ -40,7 +40,7 @@
 #endif
 
 #ifndef LPUINT64
-	typedef uint64_t              LPUINT64;
+	typedef uint64_t             LPUINT64;
 #endif
 
 #ifndef FLOAT
@@ -55,10 +55,13 @@
 	typedef unsigned char BYTE;
 #endif
 
+#ifndef _WIN32
+	typedef LPUINT32             BOOL;
+#endif
 
 #ifndef _WIN32
-	typedef LPUINT32              SOCKET;
-	typedef LPINT32               HANDLE
+	typedef LPUINT32             SOCKET;
+	typedef LPINT32              HANDLE
 #endif
 
 
