@@ -12,6 +12,7 @@
 #include "lp_string.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -67,11 +68,11 @@ struct LOADED_DATA
 //		配置数据的列表
 struct LOADED_DATA_LIST
 {
-	BOOL                       bInit;
+	BOOL                        bInit;
 	LPINT32                     nRowCount;
 	LPUINT64                    qwStartTick;
-	char                       szConfigName[MAX_PATH];
-	std::list<LOADED_DATA*> lstData;
+	char                        szConfigName[MAX_PATH];
+	std::list<LOADED_DATA*>     lstData;
 
 	LOADED_DATA_LIST() {}
 	~LOADED_DATA_LIST()

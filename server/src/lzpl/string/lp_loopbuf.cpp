@@ -1,8 +1,11 @@
 #include "lp_loopbuf.h"
 #include "lp_processerror.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 LPLoopBuf::LPLoopBuf()
@@ -445,9 +448,6 @@ Exit0:
 
 LPLock* LPLoopBufPool::m_poLock = new LPLock();
 LPUINT32 LPLoopBufPool::m_dwBaseId = BUF_INVALID_POOL_ID;
-
-
-
 
 
 

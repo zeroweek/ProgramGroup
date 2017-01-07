@@ -12,6 +12,7 @@
 #include "lp_lock.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -249,11 +250,6 @@ private:
 // Summary:
 //		LPLoopBufPool池map
 typedef std::map<LPUINT32, LPLoopBufPool*>   MAP_LOOP_BUF_POOL;
-
-
-
-
-
 
 
 

@@ -7,7 +7,7 @@ SINGLETON_IMPLEMENT(CGuardServer)
 
 CGuardServer::CGuardServer()
 {
-	m_pNet          = NULL;
+	m_pNet          = nullptr;
 	m_dwServerState = eServerState_Invalid;
 }
 
@@ -38,11 +38,8 @@ BOOL LPAPI CGuardServer::UnInit(void)
 
 	SetServerState(eServerState_UnIniting);
 
-	if (NULL != m_pNet)
-	{
-		m_pNet->Release();
-		m_pNet = NULL;
-	}
+	//É¾³ıÊÍ·Ånet¶ÔÏó
+	ILPNet::DeleteNetModule(m_pNet);
 
 	SetServerState(eServerState_UnInited);
 

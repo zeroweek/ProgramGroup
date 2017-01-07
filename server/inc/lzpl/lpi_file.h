@@ -75,30 +75,25 @@ public:
 	//		文件的总大小
 	virtual LPUINT32 LPAPI Size(void) = 0;
 
-};
+public:
 
-
-
-// Summary:
-//		打开文件
+	// Summary:
+	//		打开文件
 	// Input:
 	//		pcszFileName：文件名
 	//		pcszMode：文件打开模式
-// Return:
-//		文件对象
-DECLARE ILPFile* LPAPI lpFileOpen(const char* pcszFileName, const char* pcszMode);
+	// Return:
+	//		文件对象
+	static ILPFile* LPAPI OpenFile(const char* pcszFileName, const char* pcszMode);
 
-
-
-// Summary:
-//		判断文件是否存在
-// Input:
-//		pcszFileName：文件名
-// Return:
-//		文件对象
-DECLARE BOOL LPAPI lpFileIsExist(const char* pcszFileName);
-
-
+	// Summary:
+	//		判断文件是否存在
+	// Input:
+	//		pcszFileName：文件名
+	// Return:
+	//		文件对象
+	static BOOL LPAPI IsFileExist(const char* pcszFileName);
+};
 
 
 

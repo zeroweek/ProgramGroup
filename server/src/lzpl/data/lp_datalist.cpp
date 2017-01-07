@@ -180,7 +180,7 @@ Exit0:
 	return FALSE;
 }
 
-ILPData& LPAPI LZPL::LPDataList::Data(const LPINT32 nIndex) const
+ILPData& LPAPI LPDataList::Data(const LPINT32 nIndex) const
 {
 	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
 

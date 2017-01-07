@@ -101,7 +101,7 @@ static BOOL _ExecuteUpdateDBSqlFile(MYSQL* pMysql, const char* pcszDBPrefix, LPI
 
 	sprintf_s(szFileName, sizeof(szFileName) - 1, "config/sql/%s%d.sql", pcszDBPrefix, nVersion);
 
-	pFile = lpFileOpen(szFileName, "rt");
+	pFile = ILPFile::OpenFile(szFileName, "rt");
 	LOG_PROCESS_ERROR(pFile);
 
 	dwFileSize = pFile->Size();
@@ -242,12 +242,6 @@ Exit0:
 
 	return FALSE;
 }
-
-
-
-
-
-
 
 
 

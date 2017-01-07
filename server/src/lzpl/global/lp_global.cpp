@@ -7,6 +7,7 @@
 NS_LZPL_BEGIN
 
 
+
 DECLARE LPUINT8 LPAPI lpNumToHex(LPUINT8 n, BOOL bCapital)
 {
 	LPUINT8 cResult = 0;
@@ -50,14 +51,6 @@ DECLARE LPUINT8 LPAPI lpHexToNum(LPUINT8 h)
 Exit0:
 	return n;
 }
-
-
-
-
-
-
-
-
 
 
 

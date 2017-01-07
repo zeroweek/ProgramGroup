@@ -15,8 +15,8 @@ SINGLETON_IMPLEMENT(CGameServer)
 
 CGameServer::CGameServer()
 {
-	m_pNet          = NULL;
-	m_pConnector    = NULL;
+	m_pNet          = nullptr;
+	m_pConnector    = nullptr;
 	m_pListener     = NULL;
 	m_dwServerState = eServerState_Invalid;
 }
@@ -89,17 +89,20 @@ BOOL LPAPI CGameServer::Init(void)
 	m_pGSExternalPacketParser = new CGSExternalPacketParser();
 	LOG_PROCESS_ERROR(m_pGSExternalPacketParser);
 
-	stNetConfig = g_GlobalConfig.Server.Gs.Net;
-	m_pNet = lpCreateNetModule(&m_oGSInternalMessageHandler, &stNetConfig);
-	LOG_PROCESS_ERROR(m_pNet);
+	nResult = ILPNet::NetGlobalInit();
+	LOG_PROCESS_ERROR(nResult);
 
-	m_pConnector = m_pNet->CreateConnectorCtrl(eIoType_CompletionPort, m_pGSInternalPacketParser);
-	LOG_PROCESS_ERROR(m_pConnector);
+	stNetConfig = g_GlobalConfig.Server.Gs.Net;
+	m_pNet = ILPNet::CreateNetModule(&m_oGSInternalMessageHandler, &stNetConfig);
+	LOG_PROCESS_ERROR(m_pNet != nullptr);
+
+	m_pConnector = m_pNet->CreateConnectorCtrl(m_pGSInternalPacketParser);
+	LOG_PROCESS_ERROR(m_pConnector != nullptr);
 
 	nResult = m_pConnector->Start(g_GlobalConfig.Server.Gt.szListenIp, g_GlobalConfig.Server.Gt.dwListenPort, TRUE);
 	LOG_PROCESS_ERROR(nResult);
 
-	//m_pListener = m_pNet->CreateListenerCtrl(eIoType_CompletionPort, m_pGSInternalPacketParser);
+	//m_pListener = m_pNet->CreateListenerCtrl(m_pGSInternalPacketParser);
 	//LOG_PROCESS_ERROR(m_pListener);
 
 	//nResult = m_pListener->Start(g_GlobalConfig.Server.Gs.szListenIp, g_GlobalConfig.Server.Gs.dwListenPort, TRUE);
@@ -132,11 +135,8 @@ BOOL LPAPI CGameServer::UnInit(void)
 	nResult = m_oGSInternalMessageHandler.UnInit();
 	LOG_CHECK_ERROR(nResult);
 
-	if (NULL != m_pNet)
-	{
-		m_pNet->Release();
-		m_pNet = NULL;
-	}
+	//删除释放net对象
+	ILPNet::DeleteNetModule(m_pNet);
 
 	SetServerState(eServerState_UnInited);
 
@@ -171,15 +171,16 @@ void CGameServer::Close(void)
 	LPUINT64 qwTickStart = 0;
 
 	//停止所有监听器和连接器
-	if (m_pListener)
+	if (m_pListener != nullptr)
 	{
 		m_pListener->Stop();
-		m_pListener = NULL;
+		m_pListener = nullptr;
 	}
-	if (m_pConnector)
+
+	if (m_pConnector != nullptr)
 	{
 		m_pConnector->Stop();
-		m_pConnector = NULL;
+		m_pConnector = nullptr;
 	}
 
 	//关闭所有链接

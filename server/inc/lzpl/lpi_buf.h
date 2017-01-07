@@ -10,6 +10,7 @@
 #include "lp_base.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -103,11 +104,6 @@ public:
 	//		dwWriteLen：累加写入的大小
 	virtual void LPAPI FinishWrite(LPUINT32 dwWriteLen) = 0;
 };
-
-
-
-
-
 
 
 

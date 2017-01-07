@@ -10,8 +10,10 @@
 #include "lp_base.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 #define TIME_ZONE_MIN               (-23)
@@ -107,10 +109,7 @@ private:
 
 
 
-
-
-
-
 //end声明所处的名字空间
 NS_LZPL_END
+
 #endif

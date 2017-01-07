@@ -7,6 +7,7 @@
 NS_LZPL_BEGIN
 
 
+
 std::string NULL_STR = "";
 
 DECLARE void LPAPI lpPathFilter(char * pszPath, LPUINT32 dwMaxLen)
@@ -414,9 +415,6 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
 	return strResult;
 }
-
-
-
 
 
 

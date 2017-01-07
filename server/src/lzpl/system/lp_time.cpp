@@ -2,15 +2,15 @@
 #include "lp_processerror.h"
 #include "lp_system.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
 
 
-LPINT32 LZPL::LPTime::ms_nTimezone = 0;
-LPUINT64 LZPL::LPTime::ms_qwTimezoneSec = 0;;
-
-
+LPINT32 LPTime::ms_nTimezone = 0;
+LPUINT64 LPTime::ms_qwTimezoneSec = 0;;
 
 LPTime::LPTime()
 {
@@ -123,6 +123,5 @@ LPUINT64 LPAPI LPTime::GetNowUTCTimestamp()
 
 
 //end声明所处的名字空间
-
 
 NS_LZPL_END

@@ -24,6 +24,7 @@ struct LUA_FUNC
 };
 
 
+
 // Summary:
 //		
 class DECLARE LPLuaScript
@@ -132,11 +133,6 @@ private:
 	lua_State*               m_pLuaState;
 	LPUINT32                  m_dwCRC;
 };
-
-
-
-
-
 
 
 

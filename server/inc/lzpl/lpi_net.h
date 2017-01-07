@@ -21,18 +21,6 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		net模块名称定义
-const char LPNET_MODULENAME[] = "LPNet";
-
-
-
-// Summary:
-//		net模块版本号定义
-const MODULE_VERSION LPNET_MODULEVERSION = { 0, 1, 0, 1 };
-
-
-
-// Summary:
 //		io类型枚举
 enum e_IoType
 {
@@ -49,6 +37,7 @@ enum e_IoType
 //		
 struct NET_CONFIG
 {
+	LPUINT32                       dwIoType;                    // io类型
 	LPUINT32                       dwRecvBufSize;               // 接收缓冲区的大小
 	LPUINT32                       dwSendBufSize;               // 发送缓冲区的大小
 	LPUINT32                       dwConnectCount;              // 允许连接的数量
@@ -65,7 +54,7 @@ struct NET_CONFIG
 
 // Summary:
 //		网络组件接口类
-class DECLARE ILPNet : public ILPBase
+class DECLARE ILPNet
 {
 public:
 
@@ -76,20 +65,18 @@ public:
 	// Summary:
 	//		创建ILPListener监听控制器对象
 	//Input:
-	//		eIoType：网络IO类型
 	//		pPacketParser：解析对象
 	//Return:
 	//		监听器对象
-	virtual ILPListener* LPAPI CreateListenerCtrl(e_IoType eIoType, ILPPacketParser* pPacketParser) = 0;
+	virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(ILPPacketParser* pPacketParser) = 0;
 
 	// Summary:
 	//		创建ILPConnector连接器对象
 	//Input:
-	//		eIoType：网络IO类型
 	//		pPacketParser：解析对象
 	//Return:
 	//		连接器对象
-	virtual ILPConnector* LPAPI CreateConnectorCtrl(e_IoType eIoType, ILPPacketParser* pPacketParser) = 0;
+	virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(ILPPacketParser* pPacketParser) = 0;
 
 	// Summary:
 	//		处理网络包函数
@@ -99,20 +86,26 @@ public:
 	//		TRUE-所有网络包都已被处理，FALSE-有剩余未处理网络包
 	virtual BOOL LPAPI Run(LPINT32 nCount = -1) = 0;
 
+public:
+
+	// Summary:
+	//  网络初始化接口，使用网络模块之前必须调用
+	static BOOL LPAPI NetGlobalInit();
+
+	// Summary:
+	//  网络反初始化接口，不再使用网络模块时必须调用
+	static void LPAPI NetGlobalUnInit();
+
+	// Summary:
+	//  创建网络组件对象
+	static std::shared_ptr<ILPNet> LPAPI CreateNetModule(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig);
+
+
+
+	// Summary:
+	//  删除网络组件对象
+	static void LPAPI DeleteNetModule(std::shared_ptr<ILPNet>& poNet);
 };
-
-
-
-// Summary:
-//		获取网络组件对象
-// Return:
-//		成功返回组件对象，失败返回NULL
-DECLARE ILPNet* LPAPI lpCreateNetModule(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig);
-
-
-
-
-
 
 
 

@@ -117,6 +117,7 @@
     <ClInclude Include="..\..\inc\lzpl\lp_def.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_dump.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_dynamicarray.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_errorstring.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_filelist.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_global.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_http.h" />
@@ -152,7 +153,13 @@
     <ClInclude Include="file\lp_normalfile.h" />
     <ClInclude Include="log\lp_filelogger.h" />
     <ClInclude Include="log\lp_loggerctrl.h" />
-    <ClInclude Include="net\iocp\lp_iocp.h" />
+    <ClInclude Include="net\lp_connector.h" />
+    <ClInclude Include="net\lp_listener.h" />
+    <ClInclude Include="net\lp_net.h" />
+    <ClInclude Include="net\lp_netevent.h" />
+    <ClInclude Include="net\lp_netoption.h" />
+    <ClInclude Include="net\lp_reactor.h" />
+    <ClInclude Include="net\lp_socker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\lp_lzpl.cpp" />
@@ -172,13 +179,20 @@
     <ClCompile Include="file\lp_tabfile.cpp" />
     <ClCompile Include="global\lp_global.cpp" />
     <ClCompile Include="http\lp_http.cpp" />
+    <ClCompile Include="log\lp_errorstring.cpp" />
     <ClCompile Include="log\lp_filelogger.cpp" />
     <ClCompile Include="log\lp_loggerctrl.cpp" />
     <ClCompile Include="log\lp_profile.cpp" />
     <ClCompile Include="lua\lp_luascript.cpp" />
     <ClCompile Include="lua\lp_luascriptmgr.cpp" />
     <ClCompile Include="message\lp_messageserializer.cpp" />
-    <ClCompile Include="net\iocp\lp_iocp.cpp" />
+    <ClCompile Include="net\lp_connector.cpp" />
+    <ClCompile Include="net\lp_listener.cpp" />
+    <ClCompile Include="net\lp_net.cpp" />
+    <ClCompile Include="net\lp_netevent.cpp" />
+    <ClCompile Include="net\lp_netoption.cpp" />
+    <ClCompile Include="net\lp_reactor.cpp" />
+    <ClCompile Include="net\lp_socker.cpp" />
     <ClCompile Include="property\lp_property.cpp" />
     <ClCompile Include="sharemem\lp_sharememory.cpp" />
     <ClCompile Include="string\lp_loopbuf.cpp" />

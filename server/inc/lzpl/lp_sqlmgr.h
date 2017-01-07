@@ -13,13 +13,16 @@
 #include "lp_sqlstmt.h"
 
 
+
 typedef struct st_mysql MYSQL;
 typedef struct st_mysql_stmt MYSQL_STMT;
 typedef struct st_mysql_bind MYSQL_BIND;
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 #define SQL_MAX_DB_WORKER_THREAD_COUNT        (8)
@@ -136,16 +139,10 @@ private:
 
 };
 
-
 inline BOOL LPAPI LPSqlMgr::IsCompleted(void)
 {
 	return m_nNewSqlStmtCount == m_nDelSqlStmtCount;
 }
-
-
-
-
-
 
 
 

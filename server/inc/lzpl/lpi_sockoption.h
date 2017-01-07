@@ -9,6 +9,8 @@
 
 #include "lp_base.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -36,7 +38,6 @@ public:
 	//		无
 	virtual ~ILPNetOption(){}
 };
-
 
 
 

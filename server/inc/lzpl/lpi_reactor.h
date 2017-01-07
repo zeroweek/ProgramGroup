@@ -11,28 +11,12 @@
 
 #include "lpi_socker.h"
 #include "lpi_eventhandler.h"
+#include "lp_netdef.h"
+
+
 
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
-
-
-
-// Summary:
-//		io操作类型枚举
-enum e_IoOptType
-{
-	eIoOptType_None = 0,
-	eIoOptType_Recv,
-	eIoOptType_Send,
-	eIoOptType_Accept,
-	eIoOptType_Connect,
-	eIoOptType_Max,
-};
-
-
-// Summary:
-//		无
-DECLARE const char * LPAPI lpGetIoOptTypeName(e_IoOptType eType);
 
 
 
@@ -57,8 +41,42 @@ public:
 	// Returns:
 	//     TRUE-成功，FALSE-失败
 	virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
-};
 
+public:
+
+	static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)
+	{
+		switch (eType)
+		{
+		case LZPL::eIoOptType_None:
+			LOG_CHECK_ERROR(FALSE);
+			return "eIoOptType_None";
+			break;
+		case LZPL::eIoOptType_Recv:
+			return "eIoOptType_Recv";
+			break;
+		case LZPL::eIoOptType_Send:
+			return "eIoOptType_Send";
+			break;
+		case LZPL::eIoOptType_Accept:
+			return "eIoOptType_Accept";
+			break;
+		case LZPL::eIoOptType_Connect:
+			return "eIoOptType_Connect";
+			break;
+		case LZPL::eIoOptType_Max:
+			LOG_CHECK_ERROR(FALSE);
+			return "eIoOptType_Max";
+			break;
+		default:
+			LOG_PROCESS_ERROR(FALSE);
+			break;
+		}
+
+	Exit0:
+		return "*** unknow e_IoOptType ***";
+	}
+};
 
 
 

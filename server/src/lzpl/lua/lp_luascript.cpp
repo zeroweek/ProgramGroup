@@ -13,6 +13,7 @@
 NS_LZPL_BEGIN
 
 
+
 #define LUA_SCRIPT_THIS            "LuaScriptThis"
 #define LUA_GLOBAL_BUFFER          "LuaGlobalBuffer"
 
@@ -88,7 +89,7 @@ BOOL LPAPI LPLuaScript::LoadFromFile(const char * pcszFileName)
 
 	if (dwOldCRC != m_dwCRC)
 	{
-		pFile = lpFileOpen(pcszFileName, "rb");
+		pFile = ILPFile::OpenFile(pcszFileName, "rb");
 		LOG_PROCESS_ERROR(pFile);
 
 		dwSize = pFile->Size();
@@ -524,7 +525,7 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 	char szIncludeFileName[MAX_PATH];
 	char szTab[MAX_PATH] = { 0 };
 
-	pFile = lpFileOpen(pcszFileName, "rb");
+	pFile = ILPFile::OpenFile(pcszFileName, "rb");
 	LOG_PROCESS_ERROR(pFile);
 
 	dwSize = pFile->Size();
@@ -727,7 +728,7 @@ LPINT32 LPLuaScript::_Include(lua_State * L)
 	{
 		sprintf_s(szFileName, MAX_FILE_NAME, "%s", pcszFileName);
 	}
-	pFile = lpFileOpen(szFileName, "rb");
+	pFile = ILPFile::OpenFile(szFileName, "rb");
 	LOG_PROCESS_ERROR(pFile);
 
 	dwSize = pFile->Size();
@@ -1049,10 +1050,6 @@ LPINT32 LPLuaScript::_Print(lua_State * L)
 Exit0:
 	return 0;
 }
-
-
-
-
 
 
 

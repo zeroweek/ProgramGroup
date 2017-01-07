@@ -17,8 +17,6 @@ NS_LZPL_BEGIN
 
 
 
-
-
 // Summary:
 //   数据表类
 // Attention:
@@ -151,11 +149,6 @@ protected:
 	TableMap*                                       m_poTableMap;
 	LPSimpleList*                                   m_poCallbackList; //减小内存
 };
-
-
-
-
-
 
 
 

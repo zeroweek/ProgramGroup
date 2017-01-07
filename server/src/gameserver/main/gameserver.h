@@ -53,9 +53,9 @@ private:
 
 private:
 
-	ILPNet*                          m_pNet;
-	ILPConnector*                    m_pConnector;
-	ILPListener*                     m_pListener;
+	std::shared_ptr<ILPNet>          m_pNet;
+	std::shared_ptr<ILPConnector>    m_pConnector;
+	std::shared_ptr<ILPListener>     m_pListener;
 	CGSMessageHandler                m_oGSInternalMessageHandler;
 	CGSInternalPacketParser*         m_pGSInternalPacketParser;
 	CGSExternalPacketParser*         m_pGSExternalPacketParser;

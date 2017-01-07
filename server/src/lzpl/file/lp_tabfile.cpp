@@ -5,8 +5,10 @@
 #include "lp_codeconvert.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 LPTabFile::LPTabFile()
@@ -48,7 +50,7 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, LPINT32 nSkipLine, BOOL bZ
 
 	LOG_PROCESS_ERROR(pcszFileName);
 
-	pFile = lpFileOpen(pcszFileName, "rb");
+	pFile = ILPFile::OpenFile(pcszFileName, "rb");
 	LOG_PROCESS_ERROR(pFile);
 
 	m_uSize = pFile->Size();
@@ -405,10 +407,6 @@ const char *LPAPI LPTabFile::GetData(const char * pcszColName, LPINT32 nRow)
 Exit0:
 	return NULL;
 }
-
-
-
-
 
 
 

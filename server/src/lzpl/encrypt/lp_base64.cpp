@@ -10,7 +10,6 @@ NS_LZPL_BEGIN
 
 const char gs_szBase64Table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-
 LPINT32 _GetBase64TableIndex(char l)
 {
 	LPINT32 nIndex = -1;
@@ -254,9 +253,6 @@ DECLARE LPINT32 LPAPI lpBase64Decode(const char* pcszInStr, LPUINT32 dwInSize, c
 Exit0:
 	return FALSE;
 }
-
-
-
 
 
 

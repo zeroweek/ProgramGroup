@@ -10,6 +10,7 @@ NS_LZPL_BEGIN
 #define MAX_PROFILE_POINT_COUNT			(1024)
 
 
+
 // Summary;
 //		分析点结构体
 struct PROFILE_POINT
@@ -61,6 +62,8 @@ DECLARE void LPAPI lpProfileEnd(void)
 		}
 	}
 }
+
+
 
 //end声明所处的名字空间
 NS_LZPL_END

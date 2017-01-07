@@ -34,9 +34,6 @@
     <Filter Include="net\interface">
       <UniqueIdentifier>{66fad60a-0668-440f-9919-ec2f94eef7fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="net\iocp">
-      <UniqueIdentifier>{55da0c10-7c85-482d-a9d4-ec60035e1999}</UniqueIdentifier>
-    </Filter>
     <Filter Include="string">
       <UniqueIdentifier>{01617dc5-7bd7-4f63-ad89-5780267d7055}</UniqueIdentifier>
     </Filter>
@@ -189,9 +186,6 @@
     <ClInclude Include="log\lp_loggerctrl.h">
       <Filter>log</Filter>
     </ClInclude>
-    <ClInclude Include="net\iocp\lp_iocp.h">
-      <Filter>net\iocp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\lzpl\lp_datamanager.h">
       <Filter>file</Filter>
     </ClInclude>
@@ -276,6 +270,30 @@
     <ClInclude Include="..\..\inc\lzpl\lp_stacklist.h">
       <Filter>container</Filter>
     </ClInclude>
+    <ClInclude Include="net\lp_net.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_netevent.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_connector.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_listener.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_socker.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_netoption.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_reactor.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_errorstring.h">
+      <Filter>log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt\lp_bt.cpp">
@@ -310,9 +328,6 @@
     </ClCompile>
     <ClCompile Include="lua\lp_luascriptmgr.cpp">
       <Filter>lua</Filter>
-    </ClCompile>
-    <ClCompile Include="net\iocp\lp_iocp.cpp">
-      <Filter>net\iocp</Filter>
     </ClCompile>
     <ClCompile Include="string\lp_loopbuf.cpp">
       <Filter>string</Filter>
@@ -391,6 +406,30 @@
     </ClCompile>
     <ClCompile Include="data\lp_data.cpp">
       <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_netevent.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_connector.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_listener.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_socker.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_netoption.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_reactor.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_net.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="log\lp_errorstring.cpp">
+      <Filter>log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

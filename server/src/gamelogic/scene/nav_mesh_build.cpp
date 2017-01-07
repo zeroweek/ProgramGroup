@@ -561,7 +561,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 
 	
 	// 5. 将最终的poly数据保存到文件
-	pFile = lpFileOpen("config/scene/new_navmesh.obj", "wb");
+	pFile = ILPFile::OpenFile("config/scene/new_navmesh.obj", "wb");
 	LOG_PROCESS_ERROR(pFile);
 
 	for (LPUINT32 i = 0; i + 2 < m_oVertexs.Size(); i+=3)
@@ -766,7 +766,7 @@ BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 
 	LOG_PROCESS_ERROR(pcszFileName);
 
-	pFile = lpFileOpen(pcszFileName, "rb");
+	pFile = ILPFile::OpenFile(pcszFileName, "rb");
 	LOG_PROCESS_ERROR(pFile);
 
 	dwFileSize = pFile->Size();

@@ -3,7 +3,6 @@
 
 
 
-
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -1172,6 +1171,8 @@ void LPAPI LPNormalTableFactory::DeleteTable(ILPTable* & poTable)
 }
 
 LPNormalTableFactory LPNormalTableFactory::m_oNormalTableFactory;
+
+
 
 //end声明所处的名字空间
 NS_LZPL_END

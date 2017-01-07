@@ -21,12 +21,8 @@ const char* g_pLogLevelPrompt_Error     = "[ERR]";
 const char* g_pLogLevelPrompt_Fatal     = "[FTL]";
 const char* g_pLogLevelPrompt_Lua       = "[LUA]";
 
-
-
 //LZPL组件内部日志控制器对象
 ILPLoggerCtrl* g_poLzplLoggerCtrl = NULL;
-
-
 
 DECLARE void LPAPI lpSetConsoleColor(e_ConsoleTextColor textColor /*= CTC_WHITE*/, e_ConsoleBackGroundColor backgroundColor /*= CBC_BLACK*/)
 {
@@ -790,14 +786,6 @@ const char *LPAPI LPLoggerCtrl::_GetLogLevelPrompt(e_LogLevel eLogLevel)
 Exit0:
 	return g_pLogLevelPrompt_Unknow;
 }
-
-
-
-
-
-
-
-
 
 
 

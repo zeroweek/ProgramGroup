@@ -10,7 +10,7 @@ NS_LZPL_BEGIN
 
 ILPProperty* ILPProperty::m_poInvalidProperty = new LPProperty();
 
-LZPL::LPProperty::LPProperty()
+LPProperty::LPProperty()
 {
 	++ms_dwPropertyCount;
 
@@ -43,7 +43,7 @@ LPProperty::~LPProperty()
 	--ms_dwPropertyCount;
 }
 
-BOOL LPAPI LZPL::LPProperty::Init(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType)
+BOOL LPAPI LPProperty::Init(const LPIDENTID& oOwner, LPUINT32 dwPropertyID, E_DataType eDataType)
 {
 	LPINT32 nResult = FALSE;
 

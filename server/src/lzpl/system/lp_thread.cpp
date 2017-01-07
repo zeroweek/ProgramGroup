@@ -2,8 +2,11 @@
 #include "lp_system.h"
 #include "lp_processerror.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 LPThread::LPThread()
@@ -32,6 +35,7 @@ static THREAD_HANDLE _CreateThread(pfunThrdProc pfThrdProc, void* pParam, THREAD
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -45,6 +49,7 @@ static LPINT32 _WaitThread(THREAD_HANDLE hHandle, LPUINT32 dwWaitTime)
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -55,10 +60,11 @@ static void _TerminateThread(THREAD_HANDLE hHandle)
 #   ifdef _WIN32
 	{
 		TerminateThread(hHandle, 0);
-		CloseHandle(hHandle);
+		lpCloseHandle(hHandle);
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -104,6 +110,7 @@ void LPAPI LPThread::Wait(LPUINT32 dwWaitTime)
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -126,6 +133,7 @@ THREAD_ID LPAPI LPThread::GetThreadId(void)
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -141,12 +149,6 @@ THREAD_FUNC_DECLARE(LPThread::DefaultThrdProc)(void * pParam)
 
 	return 0;
 }
-
-
-
-
-
-
 
 
 

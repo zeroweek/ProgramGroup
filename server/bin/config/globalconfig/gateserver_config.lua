@@ -2,6 +2,7 @@ GlobalConfig.Server.Gt = {
 
 	Net = {
 	
+		dwIoType = 1,                               -- eIoType_CompletionPort
 		dwRecvBufSize = 64 * 1024,
 		dwSendBufSize = 64 * 1024,
 		dwConnectCount = 100,

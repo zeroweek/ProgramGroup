@@ -20,9 +20,6 @@ NS_LZPL_BEGIN
 
 
 
-
-
-
 // Summary:
 //
 enum DECLARE E_TableOptType
@@ -183,11 +180,6 @@ private:
 
 	static LPNormalTableFactory m_oNormalTableFactory;
 };
-
-
-
-
-
 
 
 

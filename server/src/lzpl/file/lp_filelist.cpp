@@ -3,10 +3,11 @@
 #include "lp_string.h"
 
 #ifdef _WIN32
-#include <io.h>
+#   include <io.h>
 #else
-#include <dirent.h>
+#   include <dirent.h>
 #endif
+
 
 
 //begin声明所处的名字空间
@@ -131,9 +132,6 @@ int FILE_LIST::_Compare(const void * s1, const void * s2)
 {
 	return strcmp(*(const char**)s1, *(const char**)s2);
 }
-
-
-
 
 
 

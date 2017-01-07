@@ -296,9 +296,9 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnConnectError(ILPConnector * pConnector, LPUINT32 dwErrorNo)
+void LPAPI CGTHttpMessageHandler::OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo)
 {
-	LOG_PROCESS_ERROR(pConnector);
+	LOG_PROCESS_ERROR(pConnector != nullptr);
 
 	ERR("connect fail, connector id %d, errno %d", pConnector->GetId(), dwErrorNo);
 
@@ -352,10 +352,10 @@ Exit0:
 	return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnConnectDisconnected(ILPSocker * pSocker, ILPConnector * pConnector)
+void LPAPI CGTHttpMessageHandler::OnConnectDisconnected(ILPSocker * pSocker, std::shared_ptr<ILPConnector> pConnector)
 {
 	LOG_PROCESS_ERROR(pSocker);
-	LOG_PROCESS_ERROR(pConnector);
+	LOG_PROCESS_ERROR(pConnector != nullptr);
 
 	if (pSocker->IsPassiveClose())
 	{

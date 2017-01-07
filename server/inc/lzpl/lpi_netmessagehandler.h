@@ -35,7 +35,7 @@ public:
 
 	// Summary:
 	//		创建链接错误
-	virtual void LPAPI OnConnectError(ILPConnector* pConnector, LPUINT32 dwErrorNo) = 0;
+	virtual void LPAPI OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo) = 0;
 
 	// Summary:
 	//		链接收到消息
@@ -47,7 +47,7 @@ public:
 
 	// Summary:
 	//		链接断开（OnConnected的连接）
-	virtual void LPAPI OnConnectDisconnected(ILPSocker* pSocker, ILPConnector* pConnector) = 0;
+	virtual void LPAPI OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector) = 0;
 
 };
 

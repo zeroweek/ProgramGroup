@@ -9,27 +9,12 @@
 
 #include "lp_base.h"
 #include "lp_processerror.h"
+#include "lp_netdef.h"
+
+
 
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
-
-
-
-// Summary:
-//		事件处理器类型
-enum e_EventHandlerType
-{
-	eEventHandlerType_None         = 0,
-	eEventHandlerType_Connector    = 1,
-	eEventHandlerType_Listener     = 2,
-	eEventHandlerType_Socker       = 3,
-	eEventHandlerType_Max
-};
-
-
-// Summary:
-//		无
-DECLARE const char * LPAPI lpGetEventHandlerTypeName(e_EventHandlerType eType);
 
 
 
@@ -39,19 +24,46 @@ class DECLARE ILPEventHandler
 {
 public:
 
-	// Summary:
-	//		无
 	virtual ~ILPEventHandler(){}
 
-	// Summary:
-	//		获取句柄
 	virtual HANDLE LPAPI GetHandle() = 0;
 
-	// Summary:
-	//		获取事件处理器类型
 	virtual e_EventHandlerType LPAPI GetEventHandlerType() = 0;
-};
 
+	virtual void LPAPI OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData) = 0;
+
+public:
+
+	static const char * LPAPI GetEventHandlerTypeName(e_EventHandlerType eType)
+	{
+		switch (eType)
+		{
+		case LZPL::eEventHandlerType_None:
+			LOG_CHECK_ERROR(FALSE);
+			return "eEventHandlerType_None";
+			break;
+		case LZPL::eEventHandlerType_Connector:
+			return "eEventHandlerType_Connector";
+			break;
+		case LZPL::eEventHandlerType_Listener:
+			return "eEventHandlerType_Listener";
+			break;
+		case LZPL::eEventHandlerType_Socker:
+			return "eEventHandlerType_Socker";
+			break;
+		case LZPL::eEventHandlerType_Max:
+			LOG_CHECK_ERROR(FALSE);
+			return "eEventHandlerType_Max";
+			break;
+		default:
+			LOG_PROCESS_ERROR(FALSE);
+			break;
+		}
+
+	Exit0:
+		return "*** Unknow e_EventHandlerType ***";
+	}
+};
 
 
 

@@ -82,9 +82,9 @@ Exit0:
 	return;
 }
 
-void LPAPI CGSMessageHandler::OnConnectError(ILPConnector * pConnector, LPUINT32 dwErrorNo)
+void LPAPI CGSMessageHandler::OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo)
 {
-	LOG_PROCESS_ERROR(pConnector);
+	LOG_PROCESS_ERROR(pConnector != nullptr);
 
 	ERR("connect to gt fail, connector id %d, errno %d", pConnector->GetId(), dwErrorNo);
 	
@@ -136,10 +136,10 @@ Exit0:
 	return;
 }
 
-void LPAPI CGSMessageHandler::OnConnectDisconnected(ILPSocker* pSocker, ILPConnector * pConnector)
+void LPAPI CGSMessageHandler::OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector)
 {
 	LOG_PROCESS_ERROR(pSocker);
-	LOG_PROCESS_ERROR(pConnector);
+	LOG_PROCESS_ERROR(pConnector != nullptr);
 
 	if (pSocker->IsPassiveClose())
 	{

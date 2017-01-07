@@ -10,8 +10,10 @@
 #include "lp_global.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 enum eUrlCodeType
@@ -34,15 +36,6 @@ DECLARE BOOL lpUrlEncode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutS
 // Input:
 //		eType: 控制哪些特殊字符需要编码，哪些不需要编码
 DECLARE BOOL LPAPI lpUrlDecode(const char* pcszInStr, LPUINT32 dwInSize, char* pszOutStr, lpInOut LPUINT32& dwOutSize, eUrlCodeType eType);
-
-
-
-
-
-
-
-
-
 
 
 

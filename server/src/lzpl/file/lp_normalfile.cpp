@@ -2,11 +2,13 @@
 #include "lp_processerror.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
 
-DECLARE ILPFile *LPAPI lpFileOpen(const char * pcszFileName, const char * pcszMode)
+
+ILPFile* LPAPI ILPFile::OpenFile(const char* pcszFileName, const char* pcszMode)
 {
 	LPINT32 nRetCode = 0;
 	ILPFile* pFile = NULL;
@@ -27,7 +29,7 @@ Exit0:
 	return NULL;
 }
 
-DECLARE BOOL LPAPI lpFileIsExist(const char * pcszFileName)
+BOOL LPAPI ILPFile::IsFileExist(const char* pcszFileName)
 {
 	LPINT32 nRetCode = 0;
 	FILE* fp = NULL;
@@ -159,11 +161,6 @@ LPUINT32 LPAPI LPNormalFile::Size(void)
 Exit0:
 	return dwSize;
 }
-
-
-
-
-
 
 
 

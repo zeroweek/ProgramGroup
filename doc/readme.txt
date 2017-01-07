@@ -14,9 +14,9 @@
 
 2. socker关闭流程
 	
-	* *** closesocket和释放socker的操作分开执行，先close
-	* 被动关闭：无延迟closesocket，无延迟释放socker（但需要对io退回事件过滤拦截）
-	* 主动关闭：延迟closesocket等待未发送的数据发送完，延迟释放socker防止未关闭的recv访问已被释放的socker
+	* *** lpCloseSocket和释放socker的操作分开执行，先close
+	* 被动关闭：无延迟lpCloseSocket，无延迟释放socker（但需要对io退回事件过滤拦截）
+	* 主动关闭：延迟lpCloseSocket等待未发送的数据发送完，延迟释放socker防止未关闭的recv访问已被释放的socker
 
 
 3. 网络各个类的关系

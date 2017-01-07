@@ -196,9 +196,6 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
 
 
-
-
-
 //end声明所处的名字空间
 NS_LZPL_END
 

@@ -6,7 +6,7 @@
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
-static pfunBTUserDefinedNodeFunc g_pfUserDefinedNodeFunc = NULL;
+static pfunBTUserDefinedNodeFunc gs_pfUserDefinedNodeFunc = NULL;
 
 
 DECLARE BOOL LPAPI lpBTAddChild(BT_NODE* pRootNode, BT_NODE* pChild)
@@ -645,9 +645,9 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 				break;
 			default:
 				{
-					LOG_PROCESS_ERROR(g_pfUserDefinedNodeFunc);
+					LOG_PROCESS_ERROR(gs_pfUserDefinedNodeFunc);
 
-					ctrl.returnValue = g_pfUserDefinedNodeFunc(&ctrl, currentRunNode.pNode);
+					ctrl.returnValue = gs_pfUserDefinedNodeFunc(&ctrl, currentRunNode.pNode);
 					LOG_PROCESS_ERROR(ctrl.returnValue != btrvError);
 
 					nResult = lpBTCtrlPopNode(ctrl);
@@ -687,7 +687,7 @@ Exit0:
 
 DECLARE void lpBTRegisterUserDefinedNodeFunc(pfunBTUserDefinedNodeFunc pfNodeFunc)
 {
-	g_pfUserDefinedNodeFunc = pfNodeFunc;
+	gs_pfUserDefinedNodeFunc = pfNodeFunc;
 }
 
 

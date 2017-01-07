@@ -2,11 +2,15 @@
 #include "lp_processerror.h"
 #include "lp_string.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
 
+
 #define EPOCHFILETIME           (116444736000000000i64)
+
 
 
 DECLARE void LPAPI lpGetTimeEx(TIME_VALUE& stTime)
@@ -28,7 +32,8 @@ DECLARE void LPAPI lpGetTimeEx(TIME_VALUE& stTime)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -41,7 +46,8 @@ DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -54,7 +60,8 @@ DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -67,7 +74,8 @@ DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -80,7 +88,8 @@ DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -93,7 +102,8 @@ DECLARE void LPAPI lpCancelIoEx(SOCKET s)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -172,7 +182,8 @@ DECLARE BOOL LPAPI lpCreateDirectory(const char* pszDir)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -195,7 +206,8 @@ DECLARE const char* LPAPI lpGetExePath()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -221,7 +233,8 @@ DECLARE const char *LPAPI lpGetExeDir()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -247,7 +260,8 @@ DECLARE const char *LPAPI lpGetExeFileName()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -275,7 +289,8 @@ DECLARE const char *LPAPI lpGetExeProcessName()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -298,7 +313,8 @@ DECLARE const char *LPAPI lpGetWorkingDir()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -311,7 +327,8 @@ DECLARE LPUINT64 LPAPI lpGetTickCountEx()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -326,6 +343,7 @@ DECLARE LPUINT64 LPAPI lpRdtsc(void)
 	}
 #   else
 	{
+		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
 	}
 #   endif
@@ -341,7 +359,8 @@ DECLARE void LPAPI lpINT3(void)
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -354,7 +373,8 @@ DECLARE LPUINT32 LPAPI lpGetCurrentProcessId()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -367,7 +387,8 @@ DECLARE LPUINT32 LPAPI lpGetCurrentThreadId()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -380,11 +401,12 @@ DECLARE LPINT32 LPAPI lpGetLastError()
 	}
 #   else
 	{
-
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		return -1;
 	}
 #   endif
 }
-
 
 
 

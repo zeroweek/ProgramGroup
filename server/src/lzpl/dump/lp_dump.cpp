@@ -14,7 +14,9 @@
 NS_LZPL_BEGIN
 
 
+
 #define DUMP_MAX_WAIT_TIME             (100)
+
 
 
 SINGLETON_IMPLEMENT(LPDumpMgr)
@@ -56,12 +58,14 @@ BOOL LPAPI LPDumpMgr::Init(pfunDumpCheckFunc pDumpCheckFunc, const char* pcszDum
 	m_nLastDumpIndex = 0;
 
 #if defined(_WIN32)
-	SetErrorMode(SEM_NOGPFAULTERRORBOX);
-	SetUnhandledExceptionFilter(lpDUMPExceptionFilter);
-	_set_purecall_handler(_CrtHandler);
-	set_terminate(_CrtHandler);
-	set_unexpected(_CrtHandler);
-	_set_invalid_parameter_handler(_InvalidParamHandler);
+	{
+		SetErrorMode(SEM_NOGPFAULTERRORBOX);
+		SetUnhandledExceptionFilter(lpDUMPExceptionFilter);
+		_set_purecall_handler(_CrtHandler);
+		set_terminate(_CrtHandler);
+		set_unexpected(_CrtHandler);
+		_set_invalid_parameter_handler(_InvalidParamHandler);
+	}
 #endif
 
 	nResult = m_oCreateDumpThread.Start(_DumpThreadProc, this);
@@ -130,7 +134,7 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, L
 	LPTime oLocalTime = LPTime::GetNowTime();
 	MINIDUMP_EXCEPTION_INFORMATION stExceptionInfo;
 
-#if defined(_FINAL)
+#if !defined(_DEBUG)
 #ifdef _WIN32
 	ULARGE_INTEGER FreeBytes;
 	GetDiskFreeSpaceEx(szWorkingDir, &FreeBytes, NULL, NULL);
@@ -139,7 +143,7 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, L
 		bSmallDump = TRUE;
 	}
 #else
-	LOG_PROCESS_ERROR(FALSE);
+	LOG_CHECK_ERROR(FALSE);
 #endif
 #endif
 
@@ -191,39 +195,40 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, L
 		oLocalTime.GetSec(),
 		m_nLastDumpIndex);
 
-#ifdef _WIN32
-	hProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, dwProcessId);
-	LOG_PROCESS_ERROR(hProcess);
-
-	hDumpFile = CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, CREATE_ALWAYS, 0, 0);
-	LOG_PROCESS_ERROR(INVALID_HANDLE_VALUE != hDumpFile);
-
-	stExceptionInfo.ThreadId = dwThreadId;
-	stExceptionInfo.ExceptionPointers = pExceptionPointers;
-	stExceptionInfo.ClientPointers = NULL;
-
-	if (NULL == pExceptionPointers)
+#   ifdef _WIN32
 	{
-		nResult = MiniDumpWriteDump(hProcess, dwProcessId, hDumpFile,
-			(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo), NULL, NULL, NULL);
-		LOG_PROCESS_ERROR(nResult);
-	}
-	else
-	{
-		if (bSmallDump)
+		hProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, dwProcessId);
+		LOG_PROCESS_ERROR(hProcess);
+
+		hDumpFile = CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, CREATE_ALWAYS, 0, 0);
+		LOG_PROCESS_ERROR(INVALID_HANDLE_VALUE != hDumpFile);
+
+		stExceptionInfo.ThreadId = dwThreadId;
+		stExceptionInfo.ExceptionPointers = pExceptionPointers;
+		stExceptionInfo.ClientPointers = NULL;
+
+		if (NULL == pExceptionPointers)
 		{
 			nResult = MiniDumpWriteDump(hProcess, dwProcessId, hDumpFile,
-				(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo), &stExceptionInfo, NULL, NULL);
+				(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo), NULL, NULL, NULL);
 			LOG_PROCESS_ERROR(nResult);
 		}
 		else
 		{
-			nResult = MiniDumpWriteDump(hProcess, dwProcessId, hDumpFile,
-				(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo | MiniDumpWithDataSegs | MiniDumpWithFullMemory), &stExceptionInfo, NULL, NULL);
-			LOG_PROCESS_ERROR(nResult);
+			if (bSmallDump)
+			{
+				nResult = MiniDumpWriteDump(hProcess, dwProcessId, hDumpFile,
+					(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo), &stExceptionInfo, NULL, NULL);
+				LOG_PROCESS_ERROR(nResult);
+			}
+			else
+			{
+				nResult = MiniDumpWriteDump(hProcess, dwProcessId, hDumpFile,
+					(MINIDUMP_TYPE)(MiniDumpNormal | MiniDumpWithThreadInfo | MiniDumpWithDataSegs | MiniDumpWithFullMemory), &stExceptionInfo, NULL, NULL);
+				LOG_PROCESS_ERROR(nResult);
+			}
 		}
 	}
-
 #else
 	LPASSERT(FALSE);
 #endif
@@ -294,19 +299,18 @@ DECLARE long LPAPI lpDUMPExceptionFilter(EXCEPTION_POINTERS* pExceptionPointers)
 
 	FTL("*** detected a new exception %p ***", pExceptionPointers);
 
-
-#ifdef _WIN32
-	if (IsDebuggerPresent())
+#   ifdef _WIN32
 	{
-		//lpINT3();
+		if (IsDebuggerPresent())
+		{
+			//lpINT3();
+		}
 	}
+
 #endif
 
 	return EXCEPTION_EXECUTE_HANDLER;
 }
-
-
-
 
 
 

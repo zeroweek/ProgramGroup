@@ -10,6 +10,7 @@
 NS_LZPL_BEGIN
 
 
+
 LPSqlStmt::LPSqlStmt()
 {
 	pstPrev              = NULL;
@@ -192,11 +193,6 @@ BOOL LPAPI LPSqlStmt::PushParamZ(LPUINT8 * pucValue, LPUINT32 dwValueSize)
 Exit0:
 	return FALSE;
 }
-
-
-
-
-
 
 
 

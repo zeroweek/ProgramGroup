@@ -16,10 +16,14 @@ BOOL LPShareMemory::IsExisting(const char* pcszName)
 
 	LOG_PROCESS_ERROR(pcszName);
 
-	hMap = ::OpenFileMapping(FILE_MAP_READ | FILE_MAP_WRITE, FALSE, pcszName);
-	PROCESS_ERROR(hMap);
+#   ifdef _WIN32
+	{
+		hMap = ::OpenFileMapping(FILE_MAP_READ | FILE_MAP_WRITE, FALSE, pcszName);
+		PROCESS_ERROR(hMap);
 
-	lpCloseHandle(hMap);
+		lpCloseHandle(hMap);
+	}
+#   endif
 
 	return TRUE;
 Exit0:
@@ -52,57 +56,58 @@ BOOL LPAPI LPShareMemory::Init(const char* pcszName, LPUINT64 qwSize)
 	SHARE_MEM_HEADER* pHeader = NULL;
 	LPUINT32 dwLastError = 0;
 
-#ifdef _WIN32
-
 	LOG_PROCESS_ERROR(pcszName);
 
-	m_qwSize = qwSize;
-	lpStrCpyN(m_szName, pcszName, COMMON_NAME_LEN);
+#   ifdef _WIN32
+	{
+		m_qwSize = qwSize;
+		lpStrCpyN(m_szName, pcszName, COMMON_NAME_LEN);
 
-	dwHighSize = (LPUINT32)(qwSize >> 32);
-	dwLowSize = (LPUINT32)(qwSize & 0x00000000ffffffff);
-	m_hHandle = ::CreateFileMapping(
-		INVALID_HANDLE_VALUE,
-		NULL,
-		PAGE_READWRITE,
-		dwHighSize,
-		dwLowSize,
-		pcszName
+		dwHighSize = (LPUINT32)(qwSize >> 32);
+		dwLowSize = (LPUINT32)(qwSize & 0x00000000ffffffff);
+		m_hHandle = ::CreateFileMapping(
+			INVALID_HANDLE_VALUE,
+			NULL,
+			PAGE_READWRITE,
+			dwHighSize,
+			dwLowSize,
+			pcszName
 		);
-	LOG_PROCESS_ERROR(m_hHandle);
+		LOG_PROCESS_ERROR(m_hHandle);
 
-	if(GetLastError() == ERROR_ALREADY_EXISTS)
-	{
-		m_bNew = FALSE;
+		if (GetLastError() == ERROR_ALREADY_EXISTS)
+		{
+			m_bNew = FALSE;
 
-		//防止第一、二次创建同步问题
-		lpSleep(500);
+			//防止第一、二次创建同步问题
+			lpSleep(500);
+		}
+		else
+		{
+			m_bNew = TRUE;
+		}
+
+		m_pszShareMem = (char*)::MapViewOfFile(m_hHandle, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+		LOG_PROCESS_ERROR(m_pszShareMem);
+
+		pHeader = (SHARE_MEM_HEADER*)m_pszShareMem;
+
+		if (pHeader->nFlag != SHARE_MEMORY_FLAG)
+		{
+			pHeader->nFlag = SHARE_MEMORY_FLAG;
+			pHeader->qwSize = qwSize - sizeof(SHARE_MEM_HEADER);
+		}
+		else
+		{
+			LOG_PROCESS_ERROR(pHeader->qwSize + sizeof(SHARE_MEM_HEADER) == qwSize);
+		}
 	}
-	else
+#   else
 	{
-		m_bNew = TRUE;
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
 	}
-
-	m_pszShareMem = (char*)::MapViewOfFile(m_hHandle, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
-	LOG_PROCESS_ERROR(m_pszShareMem);
-
-	pHeader = (SHARE_MEM_HEADER*)m_pszShareMem;
-
-	if (pHeader->nFlag != SHARE_MEMORY_FLAG)
-	{
-		pHeader->nFlag = SHARE_MEMORY_FLAG;
-		pHeader->qwSize = qwSize - sizeof(SHARE_MEM_HEADER);
-	}
-	else
-	{
-		LOG_PROCESS_ERROR(pHeader->qwSize + sizeof(SHARE_MEM_HEADER) == qwSize);
-	}
-
-#else
-
-	LPASSERT(FALSE);
-
-#endif
+#   endif
 
 	return TRUE;
 Exit0:
@@ -120,7 +125,11 @@ BOOL LPAPI LPShareMemory::UnInit(void)
 {
 	if (m_pszShareMem)
 	{
-		UnmapViewOfFile(m_pszShareMem);
+#       ifdef _WIN32
+		{
+			UnmapViewOfFile(m_pszShareMem);
+		}
+#       endif
 		m_pszShareMem = NULL;
 	}
 
@@ -160,14 +169,6 @@ HANDLE LPAPI LPShareMemory::Handle(void)
 {
 	return m_hHandle;
 }
-
-
-
-
-
-
-
-
 
 
 

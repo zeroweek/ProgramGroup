@@ -18,17 +18,17 @@ NS_LZPL_BEGIN
 
 //临界区相关函数定义
 #if defined _WIN32
-#		define INIT_CRITICAL_SECTION                           InitializeCriticalSection
-#		define DELETE_CRITICAL_SECTION                         DeleteCriticalSection
-#		define ENTER_CRITICAL_SECTION                          EnterCriticalSection
-#		define LEAVE_CRITICAL_SECTION                          LeaveCriticalSection
-#		define COM_CRITICAL_SECTION                            CRITICAL_SECTION
+#    define INIT_CRITICAL_SECTION                           InitializeCriticalSection
+#    define DELETE_CRITICAL_SECTION                         DeleteCriticalSection
+#    define ENTER_CRITICAL_SECTION                          EnterCriticalSection
+#    define LEAVE_CRITICAL_SECTION                          LeaveCriticalSection
+#    define COM_CRITICAL_SECTION                            CRITICAL_SECTION
 #else	    
-#		define INIT_CRITICAL_SECTION                           pthread_mutex_init
-#		define DELETE_CRITICAL_SECTION                         pthread_mutex_destroy
-#		define ENTER_CRITICAL_SECTION                          pthread_mutex_lock
-#		define LEAVE_CRITICAL_SECTION                          pthread_mutex_unlock
-#		define COM_CRITICAL_SECTION                            pthread_mutex_t     
+#    define INIT_CRITICAL_SECTION                           pthread_mutex_init
+#    define DELETE_CRITICAL_SECTION                         pthread_mutex_destroy
+#    define ENTER_CRITICAL_SECTION                          pthread_mutex_lock
+#    define LEAVE_CRITICAL_SECTION                          pthread_mutex_unlock
+#    define COM_CRITICAL_SECTION                            pthread_mutex_t     
 #endif
 
 
@@ -95,9 +95,6 @@ private:
 	BOOL                     m_bNew;
 	LPLock*                  m_poLock;
 };
-
-
-
 
 
 

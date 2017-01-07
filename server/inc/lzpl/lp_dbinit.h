@@ -25,13 +25,6 @@ DECLARE BOOL LPAPI lpDBUpdate(MYSQL* pMysql, const char* pcszDBName, const char*
 
 
 
-
-
-
-
-
-
-
 //end声明所处的名字空间
 NS_LZPL_END
 

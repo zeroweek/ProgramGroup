@@ -50,9 +50,9 @@ private:
 
 private:
 
-	ILPNet*                          m_pNet;
-	ILPListener*                     m_pListener;
-	ILPListener*                     m_pClientListener;
+	std::shared_ptr<ILPNet>          m_pNet;
+	std::shared_ptr<ILPListener>     m_pListener;
+	std::shared_ptr<ILPListener>     m_pClientListener;
 	CGTMessageHandler                m_oGTMessageHandler;
 	CGTInternalPacketParser *        m_pGTInternalPacketParser;
 	CGTExternalPacketParser *        m_pGTExternalPacketParser;

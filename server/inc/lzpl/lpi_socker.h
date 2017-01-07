@@ -11,6 +11,7 @@
 #include "lp_processerror.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -37,7 +38,7 @@ enum e_SockErrCode
 	eSockErrCode_PostSendFail                = 6,    // post异步发送失败
 	eSockErrCode_ReactorErrorEvent           = 7,    // 反应器错误事件
 	eSockErrCode_RecvError                   = 8,    // 接收数据错误
-	eSockErrCode_Max                                 // 无
+	eSockErrCode_Total                               // 无
 };
 
 
@@ -46,7 +47,7 @@ enum e_SockErrCode
 //		sock错误码信息结构体
 struct SOCK_ERR_CODE
 {
-	e_SockErrCode   eSockErrCode;  // 自定义错误码
+	e_SockErrCode    eSockErrCode;  // 自定义错误码
 	LPUINT32         dwParam;       // 附加参数，方便定位
 	LPUINT32         dwErrno;       // 系统错误码（注意是否区分GetLastError()和WSAGetLastError()）
 
@@ -130,8 +131,33 @@ public:
 	// Summary:
 	//		关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker
 	virtual void LPAPI Close(SOCK_ERR_CODE stSockErrCode, BOOL bPassiveClose) = 0;
-};
 
+	// Summary:
+	//   post异步接收数据操作
+	// Return:
+	//   TRUE-成功，FALSE-失败
+	virtual BOOL LPAPI PostRecv() = 0;
+
+	// Summary:
+	//		获取父级对象的id（连接器或监听器的id）
+	// Return:
+	//		id
+	virtual LPUINT32 LPAPI GetParentId() = 0;
+
+	// Summary:
+	//		设置是否被动关闭
+	virtual void LPAPI SetPassiveClose(BOOL bPassiveClose) = 0;
+
+	// Summary:
+	//		判断是否是accept创建
+	//	Return:
+	//		TRUE-是，FALSE-不是
+	virtual BOOL LPAPI IsAcceptCreate() = 0;
+
+	// Summary:
+	//		异步关闭回调
+	virtual void LPAPI OnClose() = 0;
+};
 
 
 

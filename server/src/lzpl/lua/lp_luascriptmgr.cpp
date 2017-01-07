@@ -9,6 +9,8 @@
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
+
+
 SINGLETON_IMPLEMENT(LPLuaScriptMgr)
 
 LPLuaScriptMgr::LPLuaScriptMgr()
@@ -287,11 +289,6 @@ Exit0:
 
 	return 0;
 }
-
-
-
-
-
 
 
 

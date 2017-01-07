@@ -23,6 +23,7 @@
 #include "lp_base.h"
 
 
+
  //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -34,6 +35,7 @@ NS_LZPL_BEGIN
 #define UTF8_BOM                            (0XBFBBEF)
 #define UTF16_BOM                           (0XFEFF)
 #define UTF32_BOM                           (0X0000FEFF)
+
 
 
 DECLARE size_t LPAPI lpUTF8ToWchar(const char *in, size_t insize, wchar_t *out, size_t outsize, int flags);
@@ -54,13 +56,8 @@ DECLARE BOOL LPAPI lpGB2312ToUTF8(const char *pText, LPUINT32 dwSize, string& pO
 
 
 
-
-
-
-
 //end声明所处的名字空间
 NS_LZPL_END
-
 
 #endif /* !_UTF8_H_ */
 

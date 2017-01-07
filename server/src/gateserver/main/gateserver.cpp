@@ -26,9 +26,10 @@ SINGLETON_IMPLEMENT(CGateServer)
 
 CGateServer::CGateServer()
 {
-	m_pNet          = NULL;
-	m_pListener     = NULL;
-	m_dwServerState = eServerState_Invalid;
+	m_pNet                   = nullptr;
+	m_pListener              = nullptr;
+	m_pClientListener        = nullptr;
+	m_dwServerState          = eServerState_Invalid;
 }
 
 CGateServer::~CGateServer()
@@ -63,18 +64,21 @@ BOOL LPAPI CGateServer::Init(void)
 	nResult = m_oGTHttpMessageHandler.Init();
 	LOG_PROCESS_ERROR(nResult);
 
-	stNetConfig = g_GlobalConfig.Server.Gt.Net;
-	m_pNet = lpCreateNetModule(&m_oGTMessageHandler, &stNetConfig);
-	LOG_PROCESS_ERROR(m_pNet);
+	nResult = ILPNet::NetGlobalInit();
+	LOG_PROCESS_ERROR(nResult);
 
-	m_pListener = m_pNet->CreateListenerCtrl(eIoType_CompletionPort, m_pGTInternalPacketParser);
-	LOG_PROCESS_ERROR(m_pListener);
+	stNetConfig = g_GlobalConfig.Server.Gt.Net;
+	m_pNet = ILPNet::CreateNetModule(&m_oGTMessageHandler, &stNetConfig);
+	LOG_PROCESS_ERROR(m_pNet != nullptr);
+
+	m_pListener = m_pNet->CreateListenerCtrl(m_pGTInternalPacketParser);
+	LOG_PROCESS_ERROR(m_pListener != nullptr);
 
 	nResult = m_pListener->Start(g_GlobalConfig.Server.Gt.szListenIp, g_GlobalConfig.Server.Gt.dwListenPort, TRUE);
 	LOG_PROCESS_ERROR(nResult);
 
-	m_pClientListener = m_pNet->CreateListenerCtrl(eIoType_CompletionPort, m_pGTExternalPacketParser);
-	LOG_PROCESS_ERROR(m_pListener);
+	m_pClientListener = m_pNet->CreateListenerCtrl(m_pGTExternalPacketParser);
+	LOG_PROCESS_ERROR(m_pClientListener != nullptr);
 
 	nResult = m_pClientListener->Start(g_GlobalConfig.Server.Gt.szClientListenIp, g_GlobalConfig.Server.Gt.dwClientListenPort, TRUE);
 	LOG_PROCESS_ERROR(nResult);
@@ -112,11 +116,8 @@ BOOL LPAPI CGateServer::UnInit(void)
 		m_pGTExternalPacketParser = NULL;
 	}
 
-	if (NULL != m_pNet)
-	{
-		m_pNet->Release();
-		m_pNet = NULL;
-	}
+	//删除释放net对象
+	ILPNet::DeleteNetModule(m_pNet);
 
 	SetServerState(eServerState_UnInited);
 
@@ -154,12 +155,13 @@ void CGateServer::Close(void)
 	if (m_pListener)
 	{
 		m_pListener->Stop();
-		m_pListener = NULL;
+		m_pListener = nullptr;
 	}
+
 	if (m_pClientListener)
 	{
 		m_pClientListener->Stop();
-		m_pClientListener = NULL;
+		m_pClientListener = nullptr;
 	}
 
 	//关闭所有链接
@@ -713,7 +715,7 @@ BOOL _Test(void)
 {
 	LPINT32 nResult = 0;
 
-	nResult = TC_TestTable();
+	nResult = _Test_String();
 	LOG_PROCESS_ERROR(nResult);
 
 	LOG_PROCESS_ERROR(TRUE);

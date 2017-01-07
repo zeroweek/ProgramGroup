@@ -88,6 +88,20 @@ public:
 
 
 
+// Summary:
+//   通用状态定义
+enum eCommonState
+{
+	eCommonState_NoInit,
+	eCommonState_Initing,
+	eCommonState_Inited,
+	eCommonState_Close,
+	eCommonState_UnIniting,
+	eCommonState_UnInited,
+};
+
+
+
 
 
 

@@ -12,6 +12,7 @@
 #include "curl/curl.h"
 
 
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -40,15 +41,6 @@ public:
 	BOOL LPAPI UnInit(void);
 
 };
-
-
-
-
-
-
-
-
-
 
 
 

@@ -8,10 +8,13 @@
 #define _LP_PROCESSERROR_H_
 
 #include "lpi_logger.h"
+#include "lp_errorstring.h"
+
 
 
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 #define PROCESS_ERROR(_condition_)\
@@ -208,7 +211,7 @@ NS_LZPL_BEGIN
 
 
 
-
 //end声明所处的名字空间
 NS_LZPL_END
+
 #endif

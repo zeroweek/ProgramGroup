@@ -10,13 +10,21 @@ NS_LZPL_BEGIN
 static void lpsGlobalAssert()
 {
 	LPASSERT(sizeof(LPINT8) == 1);
+	PRINTF_CHECK_ERROR(sizeof(LPINT8) == 1);
 	LPASSERT(sizeof(LPINT16) == 2);
+	PRINTF_CHECK_ERROR(sizeof(LPINT16) == 2);
 	LPASSERT(sizeof(LPINT32) == 4);
+	PRINTF_CHECK_ERROR(sizeof(LPINT32) == 4);
 	LPASSERT(sizeof(LPINT64) == 8);
+	PRINTF_CHECK_ERROR(sizeof(LPINT64) == 8);
 	LPASSERT(sizeof(LPUINT8) == 1);
+	PRINTF_CHECK_ERROR(sizeof(LPUINT8) == 1);
 	LPASSERT(sizeof(LPUINT16) == 2);
+	PRINTF_CHECK_ERROR(sizeof(LPUINT16) == 2);
 	LPASSERT(sizeof(LPUINT32) == 4);
+	PRINTF_CHECK_ERROR(sizeof(LPUINT32) == 4);
 	LPASSERT(sizeof(LPUINT64) == 8);
+	PRINTF_CHECK_ERROR(sizeof(LPUINT64) == 8);
 }
 
 // Summary:

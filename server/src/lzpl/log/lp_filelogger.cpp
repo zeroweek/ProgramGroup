@@ -3,8 +3,11 @@
 #include "lp_string.h"
 #include "lp_processerror.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 DECLARE ILPFileLogger* LPAPI lpCreateFileLogger()
@@ -17,7 +20,6 @@ DECLARE ILPFileLogger* LPAPI lpCreateFileLogger()
 Exit0:
 	return pFileLogger;
 }
-
 
 LPFileLogger::LPFileLogger()
 {
@@ -86,7 +88,7 @@ Exit0:
 	return ;
 }
 
-LPUINT32 LPAPI LZPL::LPFileLogger::CreateMsgId()
+LPUINT32 LPAPI LPFileLogger::CreateMsgId()
 {
 	return ++m_dwMsgId;
 }
@@ -370,7 +372,7 @@ Exit0:
 	return m_szFilePath;
 }
 
-FILE* LPAPI LZPL::LPFileLogger::_OpenOrCreateLogFile(LPTime& oTime)
+FILE* LPAPI LPFileLogger::_OpenOrCreateLogFile(LPTime& oTime)
 {
 	LPINT32 nResult = 0;
 	FILE* fpFile = NULL;
@@ -485,10 +487,6 @@ Exit0:
 
 	return 0;
 }
-
-
-
-
 
 
 

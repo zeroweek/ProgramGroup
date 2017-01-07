@@ -11,6 +11,8 @@
 #include "lp_base.h"
 #include "lp_time.h"
 
+
+
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
 
@@ -149,4 +151,3 @@ DECLARE LPINT32 LPAPI lpGetLastError();
 NS_LZPL_END
 
 #endif
-

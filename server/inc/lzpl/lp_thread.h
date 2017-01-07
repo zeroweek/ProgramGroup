@@ -7,14 +7,13 @@
 #ifndef _LP_THREAD_H_
 #define _LP_THREAD_H_
 
-#ifdef _WIN32
-
-
 #include "lp_base.h"
+
 
 
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
 
 
 typedef LPUINT32 THREAD_ID;
@@ -92,18 +91,7 @@ protected:
 
 
 
-
-
-
-
-
-
-
 //end声明所处的名字空间
 NS_LZPL_END
 
-
-
 #endif /* END OF _WIN32*/
-
-#endif

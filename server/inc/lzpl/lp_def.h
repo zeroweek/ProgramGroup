@@ -150,6 +150,15 @@
 #   define INVALID_SOCKET                                  (NULL)
 #endif
 
+#if defined _WIN32
+#   define SOCK_RECE                                       (0x00)
+#   define SOCK_SEND                                       (0x01)
+#   define SOCK_BOTH                                       (0x02)
+#else
+#   define SOCK_RECE                                       (0x00)
+#   define SOCK_SEND                                       (0x01)
+#   define SOCK_BOTH                                       (0x02)
+#endif
 
 
 //消息相关

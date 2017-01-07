@@ -176,7 +176,7 @@
 
 # version : Lzpl_20150618.162500.zip
 
- 1. 关闭事件完善：主动连接关闭时通知连接器位置修改，改在调用closesocket之后通知，
+ 1. 关闭事件完善：主动连接关闭时通知连接器位置修改，改在调用lpCloseSocket之后通知，
 		简化ILPConnector与LPSocker的关系处理
  2. 新增连接建立事件，将连接回调也放到事件模块去，与接收事件在同一线程处理
  3. LPSockerMgr中socker数组换成对象池，以及去掉句柄数组
