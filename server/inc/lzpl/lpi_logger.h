@@ -103,6 +103,7 @@ enum e_ConsoleTextColor
 		CTC_YELLOW = 0,
 		CTC_PURPLE = 0,
 		CTC_CYAN = 0,
+		CTC_GRAY = 0,
 		CTC_WHITE = 0,
 		CTC_HIGH_WHITE = 0,
 		CTC_BLACK = 0

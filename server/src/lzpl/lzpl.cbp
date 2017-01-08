@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="lzpl" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../lib/linux64/lzpld" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Debug/lzpl/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="-Wsign-compare" />
+					<Add option="-Wunused-but-set-variable" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../lib/linux64/lzpl" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Release/lzpl/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-Wsign-compare" />
+					<Add option="-Wunused-but-set-variable" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../inc/lzpl/lp_base.h">
+			<Option virtualFolder="base/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_base64.h">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_baselist.h">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_bt.h">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_codeconvert.h">
+			<Option virtualFolder="unicode/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_data.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_datalist.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_datamanager.h">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_def.h">
+			<Option virtualFolder="base/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_dynamicarray.h">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_errorstring.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_filelist.h">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_global.h">
+			<Option virtualFolder="global/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_lock.h">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_loopbuf.h">
+			<Option virtualFolder="string/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_looplist.h">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_md5.h">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_objpool.h">
+			<Option virtualFolder="utility/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_processerror.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_profile.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_property.h">
+			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_simplelist.h">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_singleton.h">
+			<Option virtualFolder="utility/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_stacklist.h">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_string.h">
+			<Option virtualFolder="string/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_system.h">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_tabfile.h">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_table.h">
+			<Option virtualFolder="table/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_thread.h">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_time.h">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_type.h">
+			<Option virtualFolder="base/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_urlcode.h">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_buf.h">
+			<Option virtualFolder="string/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_data.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_datalist.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_file.h">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_identid.h">
+			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_logger.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_property.h">
+			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_table.h">
+			<Option virtualFolder="table/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/tinystr.h">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/tinyxml.h">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="bt/lp_bt.cpp">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="container/lp_looplist.cpp">
+			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="data/lp_data.cpp">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="data/lp_datalist.cpp">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="encrypt/lp_base64.cpp">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="encrypt/lp_md5.cpp">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="encrypt/lp_urlcode.cpp">
+			<Option virtualFolder="encrypt/" />
+		</Unit>
+		<Unit filename="file/lp_filelist.cpp">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="file/lp_normalfile.cpp">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="file/lp_normalfile.h">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="file/lp_tabfile.cpp">
+			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="global/lp_global.cpp">
+			<Option virtualFolder="global/" />
+		</Unit>
+		<Unit filename="log/lp_errorstring.cpp">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="log/lp_filelogger.cpp">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="log/lp_filelogger.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="log/lp_loggerctrl.cpp">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="log/lp_loggerctrl.h">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="log/lp_profile.cpp">
+			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="property/lp_property.cpp">
+			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="string/lp_loopbuf.cpp">
+			<Option virtualFolder="string/" />
+		</Unit>
+		<Unit filename="string/lp_string.cpp">
+			<Option virtualFolder="string/" />
+		</Unit>
+		<Unit filename="system/lp_lock.cpp">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="system/lp_system.cpp">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="system/lp_thread.cpp">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="system/lp_time.cpp">
+			<Option virtualFolder="system/" />
+		</Unit>
+		<Unit filename="table/lp_table.cpp">
+			<Option virtualFolder="table/" />
+		</Unit>
+		<Unit filename="tinyxml/tinystr.cpp">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="tinyxml/tinyxml.cpp">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="tinyxml/tinyxmlerror.cpp">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="tinyxml/tinyxmlparser.cpp">
+			<Option virtualFolder="tinyxml/" />
+		</Unit>
+		<Unit filename="unicode/lp_codeconvert.cpp">
+			<Option virtualFolder="unicode/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

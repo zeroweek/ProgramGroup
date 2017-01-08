@@ -17,18 +17,17 @@ NS_LZPL_BEGIN
 
 BOOL LPAPI FILE_LIST::ScanDirectory(const char * pcszDir, const char * pcszExt, BOOL bFilenameWithDir)
 {
-	LPINT32 nResult = 0;
 	char szPathWithExt[MAX_PATH];
 
-#ifdef _WIN32
-	_finddata_t dir;
-	LPINT64 lHandle;
-#else
-	dirent* current = 0;
-	DIR* pDir = NULL;
-	LPINT32 nExtLen = 0;
-	LPINT32 nNameLen = 0;
-#endif
+#	ifdef _WIN32
+		_finddata_t dir;
+		LPINT64 lHandle;
+#	else
+		dirent* current = 0;
+		DIR* pDir = NULL;
+		LPINT32 nExtLen = 0;
+		LPINT32 nNameLen = 0;
+#	endif
 
 	LOG_PROCESS_ERROR(pcszDir);
 	LOG_PROCESS_ERROR(pcszExt);
@@ -39,38 +38,42 @@ BOOL LPAPI FILE_LIST::ScanDirectory(const char * pcszDir, const char * pcszExt, 
 	lpStrCatN(szPathWithExt, "/*", MAX_PATH);
 	lpStrCatN(szPathWithExt, pcszExt, MAX_PATH);
 
-#ifdef _WIN32
-	lHandle = _findfirst(szPathWithExt, &dir);
-	LOG_PROCESS_ERROR(lHandle != -1L);
-
-	do
+#	ifdef _WIN32
 	{
-		nResult = _FileListAdd(pcszDir, dir.name, bFilenameWithDir);
-		LOG_CHECK_ERROR(nResult);
+		lHandle = _findfirst(szPathWithExt, &dir);
+		LOG_PROCESS_ERROR(lHandle != -1L);
 
-	} while (_findnext(lHandle, &dir) == 0);
-	_findclose(lHandle);
-#else
-	pDir = opendir(pcszDir);
-	LOG_PROCESS_ERROR(pDir);
-
-	nExtLen = lpStrNLen(pcszExt, MAX_PATH);
-	while ((current = readdir(pDir)) != 0)
-	{
-		if (nExtLen == 0)
+		do
 		{
-			_FileListAdd(pcszDir, current->d_name, bFilenameWithDir);
-			continue;
-		}
+			LPINT32 nResult = _FileListAdd(pcszDir, dir.name, bFilenameWithDir);
+			LOG_CHECK_ERROR(nResult);
 
-		nLen = lpStrNLen(current->d_name, MAX_PATH);
-		if (nLen > nExtLen && strncmp(current->d_name + nLen - nExtLen, pcszExt, nExtLen) == 0)
-		{
-			_FileListAdd(pcszDir, current->d_name, bFilenameWithDir);
-		}
+		} while (_findnext(lHandle, &dir) == 0);
+		_findclose(lHandle);
 	}
-	closedir(pDir);
-#endif
+#	else
+	{
+		pDir = opendir(pcszDir);
+		LOG_PROCESS_ERROR(pDir);
+
+		nExtLen = lpStrNLen(pcszExt, MAX_PATH);
+		while ((current = readdir(pDir)) != 0)
+		{
+			if (nExtLen == 0)
+			{
+				_FileListAdd(pcszDir, current->d_name, bFilenameWithDir);
+				continue;
+			}
+
+			nNameLen = lpStrNLen(current->d_name, MAX_PATH);
+			if (nNameLen > nExtLen && strncmp(current->d_name + nNameLen - nExtLen, pcszExt, nExtLen) == 0)
+			{
+				_FileListAdd(pcszDir, current->d_name, bFilenameWithDir);
+			}
+		}
+		closedir(pDir);
+	}
+#	endif
 
 	if (dwSize > 1)
 	{
@@ -84,7 +87,7 @@ Exit0:
 
 void FILE_LIST::_CleanUp(void)
 {
-	for (LPINT32 i = 0; i < dwSize; ++i)
+	for (LPUINT32 i = 0; i < dwSize; ++i)
 	{
 		SAFE_DELETE_SZ(szFiles[i]);
 	}

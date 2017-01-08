@@ -643,11 +643,11 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 
 				if (LPLuaScriptMgr::Instance().GetRootPath()[0])
 				{
-					sprintf_s(szIncludeFileName, MAX_PATH, "%s/%s", LPLuaScriptMgr::Instance().GetRootPath(), pszFileName);
+					snprintf(szIncludeFileName, MAX_PATH, "%s/%s", LPLuaScriptMgr::Instance().GetRootPath(), pszFileName);
 				}
 				else
 				{
-					sprintf_s(szIncludeFileName, MAX_PATH, "%s", pszFileName);
+					snprintf(szIncludeFileName, MAX_PATH, "%s", pszFileName);
 				}
 
 				nResult = _GetCRC(szIncludeFileName, nLevel + 1);
@@ -722,11 +722,11 @@ LPINT32 LPLuaScript::_Include(lua_State * L)
 
 	if (LPLuaScriptMgr::Instance().GetRootPath()[0])
 	{
-		sprintf_s(szFileName, MAX_FILE_NAME, "%s/%s", LPLuaScriptMgr::Instance().GetRootPath(), pcszFileName);
+		snprintf(szFileName, MAX_FILE_NAME, "%s/%s", LPLuaScriptMgr::Instance().GetRootPath(), pcszFileName);
 	}
 	else
 	{
-		sprintf_s(szFileName, MAX_FILE_NAME, "%s", pcszFileName);
+		snprintf(szFileName, MAX_FILE_NAME, "%s", pcszFileName);
 	}
 	pFile = ILPFile::OpenFile(szFileName, "rb");
 	LOG_PROCESS_ERROR(pFile);
@@ -807,19 +807,19 @@ LPINT32 LPLuaScript::_LuaErrFunc(lua_State * L)
 			char szMsg[1024] = { 0 };
 			if (ar.namewhat[0] != 0)
 			{
-				sprintf_s(szMsg, 1024, "[%d]%s:%d in function %s", nLevel, ar.short_src, ar.currentline, ar.name);
+				snprintf(szMsg, 1024, "[%d]%s:%d in function %s", nLevel, ar.short_src, ar.currentline, ar.name);
 			}
 			else if (*ar.what == 'm')
 			{
-				sprintf_s(szMsg, 1024, "[%d]%s:%d in main chunk", nLevel, ar.short_src, ar.currentline);
+				snprintf(szMsg, 1024, "[%d]%s:%d in main chunk", nLevel, ar.short_src, ar.currentline);
 			}
 			else if (*ar.what == 'C' || *ar.what == 't')
 			{
-				sprintf_s(szMsg, 1024, "[%d]%s:?", nLevel, ar.short_src);
+				snprintf(szMsg, 1024, "[%d]%s:?", nLevel, ar.short_src);
 			}
 			else
 			{
-				sprintf_s(szMsg, 1024, "[%d]%s:%d in function <%s:%d>", nLevel, ar.short_src, ar.currentline, ar.short_src, ar.linedefined);
+				snprintf(szMsg, 1024, "[%d]%s:%d in function <%s:%d>", nLevel, ar.short_src, ar.currentline, ar.short_src, ar.linedefined);
 			}
 
 			LUA(szMsg);
@@ -834,22 +834,22 @@ LPINT32 LPLuaScript::_LuaErrFunc(lua_State * L)
 			{
 			case LUA_TNONE:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TNONE", pcszVarName);
+					snprintf(szMsg, 1024, "\t%s : LUA_TNONE", pcszVarName);
 				}
 				break;
 			case LUA_TUSERDATA:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TUSERDATA", pcszVarName);
+					snprintf(szMsg, 1024, "\t%s : LUA_TUSERDATA", pcszVarName);
 				}
 				break;
 			case LUA_TNIL:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TNIL", pcszVarName);
+					snprintf(szMsg, 1024, "\t%s : LUA_TNIL", pcszVarName);
 				}
 				break;
 			case LUA_TNUMBER:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TNUMBER %f", pcszVarName, lua_tonumber(L, -1));
+					snprintf(szMsg, 1024, "\t%s : LUA_TNUMBER %f", pcszVarName, lua_tonumber(L, -1));
 				}
 				break;
 			case LUA_TSTRING:
@@ -857,22 +857,22 @@ LPINT32 LPLuaScript::_LuaErrFunc(lua_State * L)
 					const char* pszValue = lua_tostring(L, -1);
 					if (pszValue)
 					{
-						sprintf_s(szMsg, 1024, "\t%s : LUA_TSTRING %s", pcszVarName, pszValue);
+						snprintf(szMsg, 1024, "\t%s : LUA_TSTRING %s", pcszVarName, pszValue);
 					}
 					else
 					{
-						sprintf_s(szMsg, 1024, "\t%s : LUA_TSTRING NULL", pcszVarName);
+						snprintf(szMsg, 1024, "\t%s : LUA_TSTRING NULL", pcszVarName);
 					}
 				}
 				break;
 			case LUA_TTABLE:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TTABLE", pcszVarName);
+					snprintf(szMsg, 1024, "\t%s : LUA_TTABLE", pcszVarName);
 				}
 				break;
 			case LUA_TFUNCTION:
 				{
-					sprintf_s(szMsg, 1024, "\t%s : LUA_TFUNCTION", pcszVarName);
+					snprintf(szMsg, 1024, "\t%s : LUA_TFUNCTION", pcszVarName);
 				}
 				break;
 			default:
@@ -952,29 +952,29 @@ void LPAPI LPLuaScript::_EnumTable(lua_State * L, int nTableIndex, int nTableDep
 		{
 		case LUA_TNIL:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TNIL", szTab, pcszName);
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TNIL", szTab, pcszName);
 			}
 			break;
 		case LUA_TBOOLEAN:
 			{
 				if (lua_toboolean(L, -1))
 				{
-					sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TBOOLEAN true", szTab, pcszName);
+					snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TBOOLEAN true", szTab, pcszName);
 				}
 				else
 				{
-					sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TBOOLEAN false", szTab, pcszName);
+					snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TBOOLEAN false", szTab, pcszName);
 				}
 			}
 			break;
 		case LUA_TLIGHTUSERDATA:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TLIGHTUSERDATA %p", szTab, pcszName, lua_touserdata(L, -1));
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TLIGHTUSERDATA %p", szTab, pcszName, lua_touserdata(L, -1));
 			}
 			break;
 		case LUA_TNUMBER:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TNUMBER %f", szTab, pcszName, lua_tonumber(L, -1));
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TNUMBER %f", szTab, pcszName, lua_tonumber(L, -1));
 			}
 			break;
 		case LUA_TSTRING:
@@ -982,32 +982,32 @@ void LPAPI LPLuaScript::_EnumTable(lua_State * L, int nTableIndex, int nTableDep
 				const char* pcszStr = lua_tostring(L, -1);
 				if (pcszStr)
 				{
-					sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TSTRING %s", szTab, pcszName, pcszStr);
+					snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TSTRING %s", szTab, pcszName, pcszStr);
 				}
 				else
 				{
-					sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TSTRING NULL", szTab, pcszName);
+					snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TSTRING NULL", szTab, pcszName);
 				}
 			}
 			break;
 		case LUA_TTABLE:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TTABLE", szTab, pcszName);
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TTABLE", szTab, pcszName);
 			}
 			break;
 		case LUA_TFUNCTION:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TFUNCTION", szTab, pcszName);
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TFUNCTION", szTab, pcszName);
 			}
 			break;
 		case LUA_TUSERDATA:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TUSERDATA %p", szTab, pcszName, lua_touserdata(L, -1));
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TUSERDATA %p", szTab, pcszName, lua_touserdata(L, -1));
 			}
 			break;
 		case LUA_TTHREAD:
 			{
-				sprintf_s(szMsg, MAX_FILE_NAME, "%s%s : LUA_TTHREAD %p", szTab, pcszName, lua_tothread(L, -1));
+				snprintf(szMsg, MAX_FILE_NAME, "%s%s : LUA_TTHREAD %p", szTab, pcszName, lua_tothread(L, -1));
 			}
 			break;
 		default:

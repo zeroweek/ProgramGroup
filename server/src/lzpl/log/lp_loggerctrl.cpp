@@ -4,6 +4,7 @@
 #include "lp_processerror.h"
 #include "tinyxml.h"
 #include "tinystr.h"
+#include <stdarg.h>
 
 
 
@@ -50,7 +51,6 @@ DECLARE BOOL LPAPI lpLoadLogConfig(const char* pszLogConfigDir, const char* pszL
 	TiXmlNode* poNode = NULL;
 	const char* pcszNodeValue = NULL;
 
-	LPINT32 nDefaultValue = 0;
 	LPINT32 WrithLock = 0;
 	LPINT32 LogMode = 0;
 	LPINT32 LogLevel_DBG = 0;
@@ -489,8 +489,6 @@ BOOL LPAPI LPLoggerCtrl::UnInit(void)
 
 void LPAPI LPLoggerCtrl::Lua(const char * format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 	
 	if (eLogLevel_Lua & m_dwLogLevelConfig)
@@ -508,8 +506,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Fatal(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Fatal & m_dwLogLevelConfig)
@@ -527,8 +523,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Error(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Error & m_dwLogLevelConfig)
@@ -546,8 +540,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Warn(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Warn & m_dwLogLevelConfig)
@@ -565,8 +557,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Important(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Important & m_dwLogLevelConfig)
@@ -584,8 +574,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Info(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Info & m_dwLogLevelConfig)
@@ -603,8 +591,6 @@ Exit0:
 
 void LPAPI LPLoggerCtrl::Debug(const char* format, ...)
 {
-	LPINT32 nResult = 0;
-
 	PRINTF_PROCESS_ERROR(format);
 
 	if (eLogLevel_Debug & m_dwLogLevelConfig)
@@ -685,8 +671,19 @@ void LPAPI LPLoggerCtrl::_Log(e_LogLevel eLogLevel, const char* format, va_list 
 	nTotalCount += nCount;
 
 	PRINTF_PROCESS_ERROR(s_nMsgBufSize >= nCount);
-	nResult = vsnprintf_s(s_pszMsg + nCount, s_nMsgBufSize - nCount, s_nMsgBufSize - nCount, format, argptr);
-	PRINTF_PROCESS_ERROR(nResult >= 0);
+#   ifdef _WIN32
+	{
+		//缓冲区大小m（包含终止符），最多输入n长度（会在后面加上终止符，但是n不包含终止符）
+		nResult = vsnprintf_s(s_pszMsg + nCount, s_nMsgBufSize - nCount, s_nMsgBufSize - nCount, format, argptr);
+		PRINTF_PROCESS_ERROR(nResult >= 0);
+	}
+#   else
+	{
+		//不指定缓冲区，最多输入n长度（会在后面加上终止符，n包含终止符）
+		nResult = vsnprintf(s_pszMsg + nCount, s_nMsgBufSize - nCount, format, argptr);
+		PRINTF_PROCESS_ERROR(nResult >= 0 && nResult < s_nMsgBufSize - nCount);
+	}
+#   endif
 	nTotalCount += nResult;
 	PRINTF_CHECK_ERROR(nTotalCount < s_nMsgBufSize);
 

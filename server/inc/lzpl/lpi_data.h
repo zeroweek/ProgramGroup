@@ -54,7 +54,7 @@ public:
 	virtual BOOL LPAPI SetDouble(DOUBLE value) = 0;
 	virtual BOOL LPAPI SetString(const std::string& value) = 0;
 
-	inline virtual LPINT64 LPAPI GetInt64() const = 0;
+	virtual LPINT64 LPAPI GetInt64() const = 0;
 	virtual FLOAT LPAPI GetFloat() const = 0;
 	virtual DOUBLE LPAPI GetDouble() const = 0;
 	virtual const std::string& LPAPI GetString() const = 0;

@@ -64,7 +64,7 @@ NS_LZPL_BEGIN
 		else\
 		{\
 			ERR("LOG_PROCESS_ERROR_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"",\
-				__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
 			goto Exit0;\
 		}\
 	}while(0)
@@ -93,7 +93,7 @@ NS_LZPL_BEGIN
 		else\
 		{\
 			ERR("LOG_CHECK_ERROR_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"",\
-				__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
 		}\
 	}while(0)
 
@@ -138,7 +138,7 @@ NS_LZPL_BEGIN
 		{\
 			nResult = _result_;\
 			ERR("LOG_PROCESS_ERROR_RET_CODE_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"",\
-				__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
 			goto Exit0;\
 		}\
 	}while(0)
@@ -171,7 +171,7 @@ NS_LZPL_BEGIN
 		{\
 			lpSetConsoleColor(CTC_RED);\
 			LPPRINTF("PRINTF_PROCESS_ERROR_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"\n",\
-				__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
 			lpSetConsoleColor();\
 			goto Exit0;\
 		}\
@@ -204,7 +204,7 @@ NS_LZPL_BEGIN
 		{\
 			lpSetConsoleColor(CTC_RED);\
 			LPPRINTF("PRINTF_CHECK_ERROR_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"\n",\
-				__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
 			lpSetConsoleColor();\
 		}\
 	}while(0)

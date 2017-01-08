@@ -130,7 +130,7 @@ LPLuaScript *LPAPI LPLuaScriptMgr::NewScript(const char * pcszSciptName)
 		LOG_PROCESS_ERROR(nResult);
 	}
 
-	sprintf_s(szFileName, MAX_FILE_NAME, "%s/%s", m_szRootPath, pcszSciptName);
+	snprintf(szFileName, MAX_FILE_NAME, "%s/%s", m_szRootPath, pcszSciptName);
 	nResult = poScript->LoadFromFile(szFileName);
 	LOG_PROCESS_ERROR(nResult);
 
@@ -172,7 +172,7 @@ LPLuaScript *LPAPI LPLuaScriptMgr::FindScript(const char * pcszSciptName)
 	MAP_NAME_2_SCRIPT::iterator it;
 	char szFileName[MAX_FILE_NAME];
 
-	sprintf_s(szFileName, MAX_FILE_NAME, "%s/%s", m_szRootPath, pcszSciptName);
+	snprintf(szFileName, MAX_FILE_NAME, "%s/%s", m_szRootPath, pcszSciptName);
 	it = m_mapScript.find(szFileName);
 	PROCESS_ERROR(it != m_mapScript.end());
 

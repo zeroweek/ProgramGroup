@@ -73,7 +73,7 @@ private:
 // Summary:
 //   forÑ­»·¿ªÊ¼ºê
 #define STACK_LIST_FOR_BEGIN(__base_list__) \
-	for (STACK_LIST_NODE* ptNode = ##__base_list__.Top(); ptNode != nullptr;)\
+	for (STACK_LIST_NODE* ptNode = __base_list__.Top(); ptNode != nullptr;)\
 	{\
 		STACK_LIST_NODE* ptNextNode = ptNode->pstNext;
 

@@ -303,7 +303,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector child %d", currentRunNode.pNode->childCount);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector child %d", currentRunNode.pNode->childCount);
 							INF(szNodeInfo);
 						}
 
@@ -321,7 +321,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector return %d", ctrl.returnValue);
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector return %d", ctrl.returnValue);
 								INF(szNodeInfo);
 							}
 
@@ -340,7 +340,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector return %d", ctrl.returnValue);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSelector return %d", ctrl.returnValue);
 							INF(szNodeInfo);
 						}
 
@@ -355,7 +355,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer child %d", currentRunNode.pNode->childCount);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer child %d", currentRunNode.pNode->childCount);
 							INF(szNodeInfo);
 						}
 
@@ -373,7 +373,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer return %d", ctrl.returnValue);
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer return %d", ctrl.returnValue);
 								INF(szNodeInfo);
 							}
 
@@ -392,7 +392,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer return %d", ctrl.returnValue);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntSequencer return %d", ctrl.returnValue);
 							INF(szNodeInfo);
 						}
 
@@ -407,7 +407,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel child %d", currentRunNode.pNode->childCount);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel child %d", currentRunNode.pNode->childCount);
 							INF(szNodeInfo);
 						}
 
@@ -425,7 +425,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel return %d", ctrl.returnValue);
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel return %d", ctrl.returnValue);
 								INF(szNodeInfo);
 							}
 
@@ -446,7 +446,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel return %d", ctrl.returnValue);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntParallel return %d", ctrl.returnValue);
 							INF(szNodeInfo);
 						}
 
@@ -481,7 +481,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntNot child %d", currentRunNode.pNode->childCount);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntNot child %d", currentRunNode.pNode->childCount);
 							INF(szNodeInfo);
 						}
 
@@ -497,7 +497,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntNot return %d", ctrl.returnValue);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntNot return %d", ctrl.returnValue);
 							INF(szNodeInfo);
 						}
 
@@ -520,7 +520,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times %d", currentRunNode.pNode->params[0]);
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times %d", currentRunNode.pNode->params[0]);
 								INF(szNodeInfo);
 							}
 
@@ -536,7 +536,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times %d do nothing return %d", 
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times %d do nothing return %d",
 									currentRunNode.pNode->params[0], ctrl.returnValue);
 								INF(szNodeInfo);
 							}
@@ -550,7 +550,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 						--currentRunNode.pNode->repeatCounter;
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times(%d/%d) return %d",
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat times(%d/%d) return %d",
 								currentRunNode.pNode->params[0] - currentRunNode.pNode->repeatCounter, currentRunNode.pNode->params[0], ctrl.returnValue);
 							INF(szNodeInfo);
 						}
@@ -605,7 +605,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRandom choose child %d on (%d/%d)", 
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRandom choose child %d on (%d/%d)",
 									nCounter, currentRunNode.pNode->params[nCounter], nTotalWeight);
 								INF(szNodeInfo);
 							}
@@ -622,7 +622,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 
 							if (ctrl.debugging)
 							{
-								sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRandom no child to choose return %d", ctrl.returnValue);
+								snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRandom no child to choose return %d", ctrl.returnValue);
 								INF(szNodeInfo);
 							}
 
@@ -634,7 +634,7 @@ DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL & ctrl)
 					{
 						if (ctrl.debugging)
 						{
-							sprintf_s(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat return %d", ctrl.returnValue);
+							snprintf(szNodeInfo + ctrl.runStackNodeCount - 1, 200, "btntRepeat return %d", ctrl.returnValue);
 							INF(szNodeInfo);
 						}
 

@@ -84,7 +84,7 @@ BOOL CAIManager::CLoadAIData::operator()(const AI_DATA* pAIData)
 	pAITemplate->dwDataCRC = crc32(0, (const Bytef*)pAIData, (uInt)sizeof(AI_DATA));
 	g_pstLoadingNewAIData = pAIData;
 
-	sprintf_s(szFilePath, MAX_PATH, "%s/%s/main.lua", SCRIPT_AI_FLODER_NAME, pAIData->szScriptName);
+	snprintf(szFilePath, MAX_PATH, "%s/%s/main.lua", SCRIPT_AI_FLODER_NAME, pAIData->szScriptName);
 
 	pAITemplate->poScript = LPLuaScriptMgr::Instance().FindScript(szFilePath);
 	if (pAITemplate->poScript == NULL)

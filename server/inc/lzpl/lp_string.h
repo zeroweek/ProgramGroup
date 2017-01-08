@@ -29,7 +29,11 @@ template <class T>
 inline DECLARE void LPAPI lpFastZeroCharArray(T& dst) throw()
 {
 	// Use static_cast to ensure the function only allow character arrays
-	(static_cast<char[sizeof(dst)]>(dst));
+#   ifdef _WIN32
+	{
+		(static_cast<char[sizeof(dst)]>(dst));
+	}
+#   endif
 	
 	dst[0] = '\0';
 	dst[sizeof(dst) - 1] = '\0';

@@ -23,6 +23,7 @@
 #   include <windows.h>
 #   include <process.h>
 #else
+
 #endif
 
 #include <iostream>
@@ -35,8 +36,10 @@
 #include <thread>
 #include <assert.h>
 #include <stdio.h>
-#include <malloc.h>
-#include <wchar.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <math.h>
+#include <string.h>
 
 
 
@@ -73,6 +76,12 @@
 #   define DECLARE   
 #endif
 
+#ifndef TRUE
+#   define TRUE                                            1
+#endif // !TRUE
+#ifndef FALSE 
+#   define FALSE                                           0
+#endif // !FALSE
 
 //函数传递方向标识符
 #define lpIn
@@ -113,12 +122,13 @@
 #define IF_FALSE_RETURN_VALUE(e, v)                        if(!e){return v;}
 
 //文件名字最大长度、路径最大长度宏定义
-#define MAX_FILE_NAME                                      (256)
-#if defined _WIN32	
+#ifndef MAX_FILE_NAME
+#   define MAX_FILE_NAME                                   (256)
+#endif
+#ifndef _WIN32	
 #   ifndef MAX_PATH
 #       define MAX_PATH                                    PATH_MAX
 #   endif
-#else
 #endif
 
 

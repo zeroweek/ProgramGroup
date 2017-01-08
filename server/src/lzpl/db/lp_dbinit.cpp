@@ -99,7 +99,7 @@ static BOOL _ExecuteUpdateDBSqlFile(MYSQL* pMysql, const char* pcszDBPrefix, LPI
 	LOG_PROCESS_ERROR(pMysql);
 	LOG_PROCESS_ERROR(pcszDBPrefix);
 
-	sprintf_s(szFileName, sizeof(szFileName) - 1, "config/sql/%s%d.sql", pcszDBPrefix, nVersion);
+	snprintf(szFileName, sizeof(szFileName) - 1, "config/sql/%s%d.sql", pcszDBPrefix, nVersion);
 
 	pFile = ILPFile::OpenFile(szFileName, "rt");
 	LOG_PROCESS_ERROR(pFile);
@@ -168,7 +168,7 @@ DECLARE BOOL LPAPI lpDBCreate(MYSQL * pMysql, const char * pcszDBName)
 	LOG_PROCESS_ERROR(pMysql);
 	LOG_PROCESS_ERROR(pcszDBName);
 
-	sprintf_s(szDBSql, sizeof(szDBSql) - 1, "CREATE DATABASE %s;", pcszDBName);
+	snprintf(szDBSql, sizeof(szDBSql) - 1, "CREATE DATABASE %s;", pcszDBName);
 
 	nResult = mysql_query(pMysql, szDBSql);
 	LOG_PROCESS_ERROR(nResult == 0);
@@ -194,7 +194,7 @@ DECLARE BOOL LPAPI lpDBUpdate(MYSQL * pMysql, const char * pcszDBName, const cha
 	LOG_PROCESS_ERROR(pcszDBName);
 	LOG_PROCESS_ERROR(pcszDBPrefix);
 
-	sprintf_s(szDBSql, sizeof(szDBSql) - 1, "USE %s;", pcszDBName);
+	snprintf(szDBSql, sizeof(szDBSql) - 1, "USE %s;", pcszDBName);
 
 	nResult = mysql_query(pMysql, szDBSql);
 	LOG_PROCESS_ERROR(nResult == 0);

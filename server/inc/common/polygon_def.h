@@ -32,7 +32,7 @@ struct POLYGON_DATA : public BASE_LIST_NODE
 	LPINT32              anNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
 };
 typedef std::list<POLYGON_DATA*> LST_POLYGON_DATA;
-typedef std::list<LPBaseList> LST_LST_POLYGON_DATA;
+typedef std::list<std::shared_ptr<LPBaseList>> LST_LST_POLYGON_DATA;
 
 //#pragma pack(pop)
 

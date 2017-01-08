@@ -36,9 +36,9 @@ void LPAPI LPDataList::Clear()
 
 E_DataType LPAPI LPDataList::Type(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -182,9 +182,9 @@ Exit0:
 
 ILPData& LPAPI LPDataList::Data(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -204,9 +204,9 @@ Exit0:
 
 LPINT64 LPAPI LPDataList::Int64(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -226,9 +226,9 @@ Exit0:
 
 FLOAT LPAPI LPDataList::Float(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -248,9 +248,9 @@ Exit0:
 
 DOUBLE LPAPI LPDataList::Double(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)
@@ -270,9 +270,9 @@ Exit0:
 
 const std::string& LPAPI LPDataList::String(const LPINT32 nIndex) const
 {
-	LOG_PROCESS_ERROR(nIndex < m_oDataList.Size());
-
 	LPINT32 i = 0;
+	LOG_PROCESS_ERROR(nIndex < (LPINT32)m_oDataList.Size());
+
 	SIMPLE_LIST_FOR_BEGIN(m_oDataList)
 	{
 		if (i == nIndex)

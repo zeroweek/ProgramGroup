@@ -151,7 +151,7 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, L
 	nResult = lpCreateDirectory(m_szDumpFloder);
 	LOG_PROCESS_ERROR(nResult);
 
-	sprintf_s(szFileName, MAX_PATH, "%s/dump_%04d_%02d_%02d",
+	snprintf(szFileName, MAX_PATH, "%s/dump_%04d_%02d_%02d",
 		m_szDumpFloder,
 		oLocalTime.GetYear(),
 		oLocalTime.GetMon(),
@@ -180,7 +180,7 @@ void LPAPI LPDumpMgr::_CreateDumpFile(EXCEPTION_POINTERS * pExceptionPointers, L
 		m_oLastDumpTime = oLocalTime;
 		m_nLastDumpIndex = 1;
 	}
-	sprintf_s(szFileName, MAX_PATH, "%s/dump_%04d_%02d_%02d/%s_%d_%04d_%02d_%02d_%02d_%02d_%02d_%03d.dmp",
+	snprintf(szFileName, MAX_PATH, "%s/dump_%04d_%02d_%02d/%s_%d_%04d_%02d_%02d_%02d_%02d_%02d_%03d.dmp",
 		m_szDumpFloder,
 		oLocalTime.GetYear(),
 		oLocalTime.GetMon(),

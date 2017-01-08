@@ -31,13 +31,21 @@ Exit0:
 
 BOOL LPAPI ILPFile::IsFileExist(const char* pcszFileName)
 {
-	LPINT32 nRetCode = 0;
 	FILE* fp = NULL;
 
 	LOG_PROCESS_ERROR(pcszFileName);
 
-	nRetCode = fopen_s(&fp, pcszFileName, "r");
-	LOG_PROCESS_ERROR(0 == nRetCode);
+#   ifdef _WIN32
+	{
+		LPINT32 nRetCode = fopen_s(&fp, pcszFileName, "r");
+		LOG_PROCESS_ERROR(0 == nRetCode);
+	}
+#   else
+	{
+		fp = fopen(pcszFileName, "r");
+		LOG_PROCESS_ERROR(fp != nullptr);
+	}
+#   endif
 
 	fclose(fp);
 	return TRUE;
@@ -58,14 +66,21 @@ LPNormalFile::~LPNormalFile()
 
 BOOL LPAPI LPNormalFile::Init(const char * pcszFileName, const char * pcszMode)
 {
-	LPINT32 nRetCode = 0;
-
 	LOG_PROCESS_ERROR(pcszFileName);
 	LOG_PROCESS_ERROR(pcszMode);
 	LOG_PROCESS_ERROR(NULL == m_pFile);
 
-	nRetCode = fopen_s(&m_pFile, pcszFileName, pcszMode);
-	LOG_PROCESS_ERROR(0 == nRetCode);
+#   ifdef _WIN32
+	{
+		LPINT32 nRetCode = fopen_s(&m_pFile, pcszFileName, pcszMode);
+		LOG_PROCESS_ERROR(0 == nRetCode);
+	}
+#   else
+	{
+		m_pFile = fopen(pcszFileName, pcszMode);
+		LOG_PROCESS_ERROR(m_pFile != nullptr);
+	}
+#   endif
 
 	return TRUE;
 Exit0:

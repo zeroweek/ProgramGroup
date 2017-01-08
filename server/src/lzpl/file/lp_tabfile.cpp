@@ -29,11 +29,11 @@ LPTabFile::~LPTabFile()
 BOOL LPAPI LPTabFile::Init(const char * pcszFileName, LPINT32 nSkipLine, BOOL bZeroReplaceNull)
 {
 	LPINT32 nResult = 0;
-	LPINT32 nIndex = 0;
 	LPINT32 nTempIndex = 0;
-	LPINT32 nStringIndex = 0;
 	LPINT32 nOffsetIndex = 0;
 	LPINT32 nTabCount = 0;
+	LPUINT32 nIndex = 0;
+	LPUINT32 nStringIndex = 0;
 
 	BOOL bInQuote = FALSE;
 	LPUINT32 uBOM = 0;
@@ -83,7 +83,7 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, LPINT32 nSkipLine, BOOL bZ
 	memset(m_pData, 0, m_uSize);
 
 	nResult = pFile->Read(m_pData, (LPUINT32)m_uSize);
-	LOG_PROCESS_ERROR(nResult == m_uSize);
+	LOG_PROCESS_ERROR(nResult == (LPINT32)m_uSize);
 
 	pFile->Close();
 	pFile = NULL;
@@ -110,11 +110,6 @@ BOOL LPAPI LPTabFile::Init(const char * pcszFileName, LPINT32 nSkipLine, BOOL bZ
 	nIndex = 0;
 	m_nColCount = 1;
 	m_nRowCount = 0;
-	LPINT32 n = m_pData[22];
-	n = m_pData[23];
-	n = m_pData[95];
-	n = m_pData[96];
-	n = m_pData[97];
 	while (nIndex < m_uSize)
 	{
 		switch (m_pData[nIndex])

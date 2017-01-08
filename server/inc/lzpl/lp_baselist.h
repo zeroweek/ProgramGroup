@@ -51,20 +51,6 @@ public:
 	}
 
 	// Summary:
-	//		通过拷贝创建时需要重新调用Clear，否则m_stHead和m_stRear的指针不准
-	LPBaseList(const LPBaseList& l)
-	{
-		Clear();
-	}
-
-	// Summary:
-	//		通过赋值创建时需要重新调用Clear，否则m_stHead和m_stRear的指针不准
-	LPBaseList& operator=(const LPBaseList& l)
-	{
-		Clear();
-	}
-
-	// Summary:
 	//		无
 	virtual ~LPBaseList()
 	{
@@ -124,6 +110,25 @@ public:
 
 private:
 
+	// Summary:
+	//		私有化，不实现，屏蔽调用
+	//		通过拷贝创建时需要重新调用Clear，否则m_stHead和m_stRear的指针不准
+	LPBaseList(const LPBaseList& oBaseList);
+	//{
+	//	Clear();
+	//}
+
+	// Summary:
+	//		私有化，不实现，屏蔽调用
+	//		通过赋值创建时需要重新调用Clear，否则m_stHead和m_stRear的指针不准
+	LPBaseList& operator=(const LPBaseList& oBaseList);
+	//{
+	//	Clear();
+	//	return *this;
+	//}
+
+private:
+
 	LPUINT32             m_dwSize;
 	BASE_LIST_NODE      m_stHead;
 	BASE_LIST_NODE      m_stRear;
@@ -139,8 +144,8 @@ private:
 // Summary:
 //   for循环开始宏
 #define BASE_LIST_FOR_BEGIN(__base_list__) \
-	for (BASE_LIST_NODE* ptNode = ##__base_list__.Head().pstNext;\
-		ptNode != &##__base_list__.Rear();)\
+	for (BASE_LIST_NODE* ptNode = __base_list__.Head().pstNext;\
+		ptNode != &__base_list__.Rear();)\
 	{\
 		LOG_CHECK_ERROR(ptNode != nullptr);\
 		if (ptNode == nullptr) { break; }\

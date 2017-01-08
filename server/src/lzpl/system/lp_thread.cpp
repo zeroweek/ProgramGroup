@@ -51,6 +51,7 @@ static LPINT32 _WaitThread(THREAD_HANDLE hHandle, LPUINT32 dwWaitTime)
 	{
 		LOG_CHECK_ERROR(FALSE);
 		LPASSERT(FALSE);
+		return 0;
 	}
 #   endif
 }
@@ -100,20 +101,11 @@ Exit0:
 
 void LPAPI LPThread::Wait(LPUINT32 dwWaitTime)
 {
-#   ifdef _WIN32
+	if (m_bStart)
 	{
-		if (m_bStart)
-		{
-			m_bStart = FALSE;
-			_WaitThread(m_hHandle, dwWaitTime);
-		}
+		m_bStart = FALSE;
+		_WaitThread(m_hHandle, dwWaitTime);
 	}
-#   else
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-	}
-#   endif
 }
 
 void LPAPI LPThread::Terminate(void)

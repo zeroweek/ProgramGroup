@@ -46,7 +46,7 @@ LPINT32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
 	{
 		if (pNode->luaParamMask & (1 << nParamIndex))
 		{
-			sprintf_s(szFuncName, COMMON_NAME_LEN, "ParamFunc%d", pNode->params[nParamIndex]);
+			snprintf(szFuncName, COMMON_NAME_LEN, "ParamFunc%d", pNode->params[nParamIndex]);
 
 			LOG_PROCESS_ERROR(pCustomCtrl->poScript);
 			Instance().m_pCurrentCtrl = pCustomCtrl;
@@ -85,7 +85,7 @@ LPINT32 CBTManager::_BTNodeFunc(BT_CTRL* pCtrl, BT_NODE* pNode)
 		}
 		if (Instance().GetBTActionName(pNode->type))
 		{
-			sprintf_s(szNodeInfo + pCustomCtrl->runStackNodeCount - 1, 200, "%s(%d, %d, %d, %d):%d",
+			snprintf(szNodeInfo + pCustomCtrl->runStackNodeCount - 1, 200, "%s(%d, %d, %d, %d):%d",
 				Instance().GetBTActionName(pNode->type), nParam[0], nParam[1], nParam[2], nParam[3], nResult);
 			INF(szNodeInfo);
 		}

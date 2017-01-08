@@ -1,0 +1,15 @@
+# sprintf_s(buffer, buffer_count, format)
+  - buffer_count：输出缓冲区大小，即最多输入的大小（终止符计算在内）
+  - 注意：如果strlen(format) >= buffer_count执行时，debug会报错
+
+# snprintf(buffer, buffer_count, format)
+  - buffer_count：输出缓冲区大小，即最多输入的大小（终止符计算在内）
+
+# vsnprintf(buffer, buffer_count, format, arg_list)
+  - buffer_count：输出缓冲区大小，即最多输入的大小（终止符计算在内）
+
+# vsnprintf_s(buffer, buffer_count, max_count, format, arg_list)
+  - buffer_count：输出缓冲区大小（终止符计算在内）
+  - max_count：最多输入max_count大小（会在后面加上终止符，但是max_count不包含终止符）
+  - 注意：如果max_count >= buffer_count执行时，debug会报错
+

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../../inc/lzpl/lp_data.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_base.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="356" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="unicode/lp_codeconvert.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8387" topLine="283" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lpi_logger.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3006" topLine="92" />
+		</Cursor>
+	</File>
+	<File name="data/lp_datalist.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4972" topLine="255" />
+		</Cursor>
+	</File>
+	<File name="encrypt/lp_base64.cpp" open="1" top="1" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2276" topLine="95" />
+		</Cursor>
+	</File>
+	<File name="encrypt/lp_urlcode.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1345" topLine="45" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_baselist.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2136" topLine="109" />
+		</Cursor>
+	</File>
+	<File name="table/lp_table.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="28817" topLine="996" />
+		</Cursor>
+	</File>
+	<File name="encrypt/lp_md5.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10083" topLine="314" />
+		</Cursor>
+	</File>
+	<File name="log/lp_loggerctrl.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17029" topLine="588" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_global.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1631" topLine="50" />
+		</Cursor>
+	</File>
+	<File name="container/lp_looplist.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="171" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_type.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1177" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="file/lp_filelist.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1658" topLine="72" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lpi_data.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1013" topLine="37" />
+		</Cursor>
+	</File>
+	<File name="log/lp_filelogger.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9893" topLine="425" />
+		</Cursor>
+	</File>
+	<File name="string/lp_loopbuf.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5799" topLine="317" />
+		</Cursor>
+	</File>
+	<File name="file/lp_normalfile.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1075" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_simplelist.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1680" topLine="64" />
+		</Cursor>
+	</File>
+	<File name="file/lp_tabfile.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="579" topLine="19" />
+		</Cursor>
+	</File>
+	<File name="string/lp_string.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7942" topLine="400" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_stacklist.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1620" topLine="54" />
+		</Cursor>
+	</File>
+	<File name="system/lp_time.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="957" topLine="46" />
+		</Cursor>
+	</File>
+	<File name="bt/lp_bt.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13936" topLine="590" />
+		</Cursor>
+	</File>
+	<File name="system/lp_thread.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1652" topLine="90" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_def.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1180" topLine="111" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_processerror.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="709" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_datalist.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="../../inc/lzpl/lp_singleton.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="354" topLine="94" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

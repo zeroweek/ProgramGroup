@@ -61,7 +61,7 @@
 
 #ifndef _WIN32
 	typedef LPUINT32             SOCKET;
-	typedef LPINT32              HANDLE
+	typedef LPINT32              HANDLE;
 #endif
 
 

@@ -442,8 +442,7 @@ BOOL LPAPI LPTable::Remove(Iterator& iter)
 	nResult = RemoveFromNotDefaultMap(vectProperty);
 	LOG_CHECK_ERROR(nResult);
 
-	ILPData& poData = vectProperty[0]->GetData();
-	nResult = RemoveFromDefaultMap(poData);
+	nResult = RemoveFromDefaultMap(vectProperty[0]->GetData());
 	LOG_CHECK_ERROR(nResult);
 
 	ResetRecordIterator(iter);
@@ -628,8 +627,6 @@ Exit0:
 
 BOOL LPTable::InsertIntoTableMap(PropertyVect& vectProperty, Iterator& recordIteratorRet)
 {
-	LPINT32 nResult = FALSE;
-
 	LOG_PROCESS_ERROR(m_poTableMap != nullptr);
 	LOG_PROCESS_ERROR(m_oVarColType.GetCount() > 0 && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());
 
@@ -1020,8 +1017,6 @@ Exit0:
 
 BOOL LPAPI LPTable::RemoveFromNotDefaultMap(PropertyVect& vectProperty)
 {
-	LPINT32 nResult = FALSE;
-
 	LOG_PROCESS_ERROR(vectProperty != nullptr);
 	LOG_PROCESS_ERROR(m_poTableMap != nullptr);
 	LOG_PROCESS_ERROR(m_oVarColType.GetCount() > 0 && m_oVarColType.GetCount() == m_oVarMakeIndexCol.GetCount());

@@ -1,5 +1,6 @@
 #include "lp_string.h"
 #include "lp_processerror.h"
+#include <stdarg.h>
 
 
 
@@ -120,17 +121,17 @@ DECLARE BOOL LPAPI lpStrCharCheck(const char* pcszSrc, e_CharCheckType eCharChec
 			break;
 		case LZPL::eCharCheckType_Alpha:
 			{
-				PROCESS_ERROR('A' <= *pcszSrc && *pcszSrc <= 'Z' || 'a' <= *pcszSrc && *pcszSrc <= 'z');
+				PROCESS_ERROR(('A' <= *pcszSrc && *pcszSrc <= 'Z') || ('a' <= *pcszSrc && *pcszSrc <= 'z'));
 			}
 			break;
 		case LZPL::eCharCheckType_Alnum:
 			{
-				PROCESS_ERROR('0' <= *pcszSrc && *pcszSrc <= '9' || 'A' <= *pcszSrc && *pcszSrc <= 'Z' || 'a' <= *pcszSrc && *pcszSrc <= 'z');
+				PROCESS_ERROR(('0' <= *pcszSrc && *pcszSrc <= '9') || ('A' <= *pcszSrc && *pcszSrc <= 'Z') || ('a' <= *pcszSrc && *pcszSrc <= 'z'));
 			}
 			break;
 		case LZPL::eCharCheckType_Integer:
 			{
-				PROCESS_ERROR('0' <= *pcszSrc && *pcszSrc <= '9' || *pcszSrc == '-');
+				PROCESS_ERROR(('0' <= *pcszSrc && *pcszSrc <= '9') || *pcszSrc == '-');
 				if (*pcszSrc == '-')
 				{
 					PROCESS_ERROR(i == nMaxLen && (i - 1) != 0 && '0' <= *(pcszSrc + 1) && *(pcszSrc + 1) <= '9');
@@ -209,13 +210,17 @@ void LPAPI LPString::Reset()
 
 BOOL LPAPI LPString::CheckExtend(LPUINT32 dwWillAddSize)
 {
+	LPUINT32 dwMul = 0;
+	LPUINT32 dwAddSize = 0;
+	char* pBuf = nullptr;
+
 	PROCESS_SUCCESS(m_dwDataSize + dwWillAddSize <= m_dwCapacity);
 
 	//多出1个字节，放终止符，方便读取
 	//数据量大时，尽量保证申请的字符串大小是512的倍数
-	LPUINT32 dwMul = (LPUINT32)(dwWillAddSize * 1.0 / m_dwCapacity + 1);
-	LPUINT32 dwAddSize = dwMul * (m_dwCapacity + 1);
-	char* pBuf = new char[dwAddSize + m_dwCapacity + 1];
+	dwMul = (LPUINT32)(dwWillAddSize * 1.0 / m_dwCapacity + 1);
+	dwAddSize = dwMul * (m_dwCapacity + 1);
+	pBuf = new char[dwAddSize + m_dwCapacity + 1];
 	LOG_PROCESS_ERROR(pBuf != NULL);
 
 	memcpy(pBuf, m_pBuf, m_dwCapacity + 1);
@@ -401,14 +406,29 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
 	va_list args;
 	va_start(args, format);
-	nResult = vsnprintf_s(pszBuf, nMaxLen + 1, nMaxLen, format, args);
-	va_end(args);
-
-	if (nResult < 0)
+#   ifdef _WIN32
 	{
-		SAFE_DELETE_SZ(pszBuf);
-		return NULL_STR;
+		//缓冲区大小m（包含终止符），最多输入n长度（会在后面加上终止符，但是n不包含终止符）
+		nResult = vsnprintf_s(pszBuf, nMaxLen + 1, nMaxLen, format, args);
+		if (nResult < 0)
+		{
+			SAFE_DELETE_SZ(pszBuf);
+			return nullptr;
+		}
 	}
+#   else
+	{
+		//不指定缓冲区，最多输入n长度（会在后面加上终止符，n包含终止符）
+		nResult = vsnprintf(pszBuf, nMaxLen + 1, format, args);
+		if (nResult < 0 || nResult >= (LPINT32)nMaxLen + 1)
+		{
+			SAFE_DELETE_SZ(pszBuf);
+			return nullptr;
+		}
+
+	}
+#   endif
+	va_end(args);
 
 	std::string strResult = std::string(pszBuf, nResult);
 	SAFE_DELETE_SZ(pszBuf);

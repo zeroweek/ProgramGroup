@@ -135,7 +135,7 @@ BOOL LPAPI CGameLogic::_InitSettingData(void)
 	LPINT32 nResult = 0;
 	char szFilePath[MAX_PATH];
 
-	sprintf_s(szFilePath, MAX_PATH, "%s/%s", GetConfigPath(), DATA_FLODER_NAME);
+	snprintf(szFilePath, MAX_PATH, "%s/%s", GetConfigPath(), DATA_FLODER_NAME);
 
 	nResult = LPDataManger<TAB_TEST_DATA>::Instance().Init(DATA_TAB_TEST_FILE_NAME, szFilePath, NULL);
 	LOG_PROCESS_ERROR(nResult);

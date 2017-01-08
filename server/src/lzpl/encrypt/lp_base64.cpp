@@ -69,7 +69,7 @@ DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, LPUINT32 dwInSize, char
 		{
 			dwEqualOptCount = 2;
 		}
-		else // dwTemp == 2
+		else // dwRemainCount == 2
 		{
 			dwEqualOptCount = 1;
 		}
@@ -104,7 +104,7 @@ DECLARE BOOL LPAPI lpBase64Encode(const char* pcszInStr, LPUINT32 dwInSize, char
 		dwIndex += 3;
 	}
 
-	switch (dwRemainCount)
+	switch (dwEqualOptCount)
 	{
 	case 1:
 		{
@@ -173,9 +173,9 @@ DECLARE LPINT32 LPAPI lpBase64Decode(const char* pcszInStr, LPUINT32 dwInSize, c
 	LOG_PROCESS_ERROR(pszOutStr);
 	LOG_PROCESS_ERROR(dwInSize % 4 == 0 && dwInSize / 4 > 0);
 
-	LOG_PROCESS_ERROR(pcszInStr[dwInSize - 2] == '=' && pcszInStr[dwInSize - 1] == '=' ||
-		pcszInStr[dwInSize - 2] != '=' && pcszInStr[dwInSize - 1] == '=' ||
-		pcszInStr[dwInSize - 2] != '=' && pcszInStr[dwInSize - 1] != '=');
+	LOG_PROCESS_ERROR((pcszInStr[dwInSize - 2] == '=' && pcszInStr[dwInSize - 1] == '=') ||
+		(pcszInStr[dwInSize - 2] != '=' && pcszInStr[dwInSize - 1] == '=') ||
+		(pcszInStr[dwInSize - 2] != '=' && pcszInStr[dwInSize - 1] != '='));
 
 	dwOutputCount = (dwInSize / 4) * 3;
 	if (pcszInStr[dwInSize - 1] == '=')

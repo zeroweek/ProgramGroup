@@ -26,9 +26,6 @@ LPLoopBuf::~LPLoopBuf()
 
 BOOL LPAPI LPLoopBuf::Init(LPUINT32 dwSize, LPUINT32 dwPoolId)
 {
-	LPINT32 nResult = 0;
-
-
 	m_dwBufSize       = dwSize;
 	m_dwPoolId        = dwPoolId;
 
@@ -47,7 +44,7 @@ Exit0:
 
 	UnInit();
 
-	return NULL;
+	return FALSE;
 }
 
 BOOL LPAPI LPLoopBuf::UnInit()
@@ -334,7 +331,6 @@ Exit0:
 
 BOOL LPAPI LPLoopBufPool::UnInit()
 {
-	LPINT32 nResult = 0;
 	LPSetBuf::iterator it;
 	LPLoopBuf* pLoopBuf = NULL;
 

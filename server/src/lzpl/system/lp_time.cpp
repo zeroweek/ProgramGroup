@@ -57,17 +57,26 @@ Exit0:
 
 LPTime LPAPI LPTime::GetNowTime()
 {
-	LPINT32 nResult = 0;
 	LPTime stTime;
-	time_t tTime = 0;;
+	time_t tTime = 0;
 	struct tm stTm;
+	struct tm* pTm = nullptr;
 
 	lpGetTimeEx(stTime.m_stTimeval);
 	stTime.m_stTimeval.m_qwSec += ms_qwTimezoneSec;
 
 	tTime = stTime.m_stTimeval.m_qwSec;
-	nResult = gmtime_s(&stTm, &tTime);
-	PROCESS_ERROR(nResult == 0);
+#	ifdef _WIN32
+	{
+		LPINT32 nResult = gmtime_s(&stTm, &tTime);
+		PROCESS_ERROR(nResult == 0);
+	}
+#	else
+	{
+		pTm = gmtime_r(&tTime, &stTm);
+		PROCESS_ERROR(pTm != nullptr);
+	}
+#	endif
 
 	stTime.m_Sec  = stTm.tm_sec;
 	stTime.m_Min  = stTm.tm_min;
@@ -90,7 +99,6 @@ LPUINT64 LPAPI LPTime::GetNowTimetamp()
 
 LPTime LPAPI LPTime::GetNowUTCTime()
 {
-	LPINT32 nResult = 0;
 	LPTime stTime;
 	time_t tTime = 0;;
 	struct tm stTm;
@@ -98,8 +106,17 @@ LPTime LPAPI LPTime::GetNowUTCTime()
 	lpGetTimeEx(stTime.m_stTimeval);
 
 	tTime = stTime.m_stTimeval.m_qwSec;
-	nResult = gmtime_s(&stTm, &tTime);
-	PROCESS_ERROR(nResult == 0);
+#	ifdef _WIN32
+	{
+		LPINT32 nResult = gmtime_s(&stTm, &tTime);
+		PROCESS_ERROR(nResult == 0);
+	}
+#	else
+	{
+		pTm = gmtime_r(&tTime, &stTm);
+		PROCESS_ERROR(pTm != nullptr);
+	}
+#	endif
 
 	stTime.m_Sec  = stTm.tm_sec;
 	stTime.m_Min  = stTm.tm_min;

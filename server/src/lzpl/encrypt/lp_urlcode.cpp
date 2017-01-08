@@ -10,8 +10,7 @@ NS_LZPL_BEGIN
 
 DECLARE BOOL lpUrlEncode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOutStr, LPUINT32 & dwOutSize, eUrlCodeType eType)
 {
-	LPINT32 nResult = 0;
-	LPINT32 nIndex = 0;
+	LPUINT32 nIndex = 0;
 	LPUINT32 dwOutputCount = 0;
 
 	LOG_PROCESS_ERROR(pcszInStr);
@@ -25,9 +24,9 @@ DECLARE BOOL lpUrlEncode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOu
 		{
 			pszOutStr[dwOutputCount++] = '+';
 		}
-		else if (pcszInStr[nIndex] >= '0' && pcszInStr[nIndex] <= '9' ||
-			pcszInStr[nIndex] >= 'A' && pcszInStr[nIndex] <= 'Z' ||
-			pcszInStr[nIndex] >= 'a' && pcszInStr[nIndex] <= 'z' ||
+		else if ((pcszInStr[nIndex] >= '0' && pcszInStr[nIndex] <= '9') ||
+			(pcszInStr[nIndex] >= 'A' && pcszInStr[nIndex] <= 'Z') ||
+			(pcszInStr[nIndex] >= 'a' && pcszInStr[nIndex] <= 'z') ||
 			pcszInStr[nIndex] == '-' || pcszInStr[nIndex] == '_' ||
 			pcszInStr[nIndex] == '.' || pcszInStr[nIndex] == '~')
 		{
@@ -52,7 +51,7 @@ Exit0:
 DECLARE BOOL LPAPI lpUrlDecode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOutStr, LPUINT32 & dwOutSize, eUrlCodeType eType)
 {
 	LPINT32 nResult = 0;
-	LPINT32 nIndex = 0;
+	LPUINT32 nIndex = 0;
 	LPUINT32 dwOutputCount = 0;
 
 	LPUINT8 byLow = 0;

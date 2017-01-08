@@ -213,7 +213,6 @@ void LPAPI LPFileLogger::_UpdateFilePointer()
 		m_oCurTime = LPTime::GetNowTime();
 		m_oLastTime = m_oCurTime;
 
-		//使用fopen会编译报错（windows），使用fopen_s文件不能共享
 		m_fpFile = _OpenOrCreateLogFile(m_oCurTime);
 		PRINTF_PROCESS_ERROR(m_fpFile);
 		PROCESS_SUCCESS(TRUE);
@@ -375,10 +374,20 @@ Exit0:
 FILE* LPAPI LPFileLogger::_OpenOrCreateLogFile(LPTime& oTime)
 {
 	LPINT32 nResult = 0;
-	FILE* fpFile = NULL;
+	FILE* fpFile = nullptr;
 
-	fpFile = _fsopen(_GetFilePath(oTime), "a", _SH_DENYNO);
-	PRINTF_PROCESS_ERROR(fpFile);
+#   ifdef _WIN32
+	{
+		//使用fopen会编译报错（windows），使用fopen_s文件不能共享
+		fpFile = _fsopen(_GetFilePath(oTime), "a", _SH_DENYNO);
+		PRINTF_PROCESS_ERROR(fpFile);
+	}
+#   else
+	{
+		fpFile = fopen(_GetFilePath(oTime), "a");
+		PRINTF_PROCESS_ERROR(fpFile != nullptr);
+	}
+#   endif
 
 	//有数据的文件刚打开，ftell返回0，因此需要调整指标位置
 	nResult = fseek(fpFile, 0, SEEK_END);
@@ -429,7 +438,7 @@ THREAD_FUNC_DECLARE(LPFileLogger::_ThreadProc)(void * pParam)
 			//这里的Read会执行memcpy拷贝操作，需要优化
 			if (pFileLogger->m_pLoopBuf->GetOnceReadableLen() < dwLen)
 			{
-				if (dwLen >= nBufSize)
+				if ((LPINT32)dwLen >= nBufSize)
 				{
 					pFileLogger->m_pLoopBuf->FinishRead(dwLen);
 					PRINTF_CHECK_ERROR(FALSE);

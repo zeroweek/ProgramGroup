@@ -74,7 +74,7 @@ private:
 // Summary:
 //   forÑ­»·¿ªÊ¼ºê
 #define SIMPLE_LIST_FOR_BEGIN(__base_list__) \
-	for (SIMPLE_LIST_NODE* ptNode = ##__base_list__.Head(); ptNode != nullptr;)\
+	for (SIMPLE_LIST_NODE* ptNode = __base_list__.Head(); ptNode != nullptr;)\
 	{\
 		SIMPLE_LIST_NODE* ptNextNode = ptNode->pstNext;
 

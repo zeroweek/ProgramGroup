@@ -434,7 +434,7 @@ BOOL LPAPI LPDataManger<T>::_Load(LOADED_DATA_LIST* pLoadedDataList)
 
 	LOG_PROCESS_ERROR(pLoadedDataList);
 
-	sprintf_s(szFileName, MAX_PATH, "%s/%s.txt", m_szPath, m_szConfigName);
+	snprintf(szFileName, MAX_PATH, "%s/%s.txt", m_szPath, m_szConfigName);
 	nResult = oTabFile.Init(szFileName, 1, TRUE);
 	LOG_PROCESS_ERROR(nResult);
 

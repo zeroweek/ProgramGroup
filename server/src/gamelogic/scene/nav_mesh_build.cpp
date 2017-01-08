@@ -144,7 +144,7 @@ BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& 
 	LPINT32 nResult = 0;
 	LPUINT32 dwNeighborPolyCount = 0;
 	POLYGON_DATA* pNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
-	LPBaseList* pLstPolygonData = NULL;
+	std::shared_ptr<LPBaseList> pLstPolygonData;
 
 	MAP_ID_2_ID::iterator fit;
 	std::pair<MAP_ID_2_ID::iterator, bool> InsRet;
@@ -162,7 +162,7 @@ BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& 
 		LOG_PROCESS_ERROR(!m_lstSepListPolygonData.empty());
 
 		// 放到列表中去
-		pLstPolygonData = &m_lstSepListPolygonData.back();
+		pLstPolygonData = m_lstSepListPolygonData.back();
 		LOG_PROCESS_ERROR(pLstPolygonData);
 		pLstPolygonData->PushRear(pPolyData);
 	}
@@ -461,7 +461,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	POLYGON_DATA* pPolyData = NULL;
 	POLYGON_DATA* pNextPolyData = NULL;
 	LST_LST_POLYGON_DATA::iterator llitr;
-	LPBaseList* pBaseList = NULL;
+	std::shared_ptr<LPBaseList> pBaseList;
 
 	ILPFile* pFile = NULL;
 	LPINT32 nLen = 0;
@@ -492,7 +492,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	while (pPolyData)
 	{
 		// 创建新列表
-		m_lstSepListPolygonData.push_back(LPBaseList());
+		m_lstSepListPolygonData.push_back(std::make_shared<LPBaseList>());
 
 		nResult = _SeparatePolysToLists(pPolyData, nPolyIDGenerator);
 		LOG_PROCESS_ERROR(nResult);
@@ -503,7 +503,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	dwTotalPolyCount = 0;
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
 	{
-		dwTotalPolyCount += llitr->Size();
+		dwTotalPolyCount += (*llitr)->Size();
 	}
 	LOG_PROCESS_ERROR(dwTotalPolyCount == (LPUINT32)m_lstRawPolygonData.size());
 
@@ -515,7 +515,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	dwTotalPolyCount = 0;
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
 	{
-		pBaseList = &(*llitr);
+		pBaseList = (*llitr);
 		if (pBaseList->Size() <= 1)
 		{
 			dwTotalPolyCount += pBaseList->Size();
@@ -548,7 +548,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 	nPolyIDGenerator = INVALID_POLYGON_ID;
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
 	{
-		pBaseList = &(*llitr);
+		pBaseList = (*llitr);
 		pPolyData = (POLYGON_DATA*)pBaseList->Head().pstNext;
 		while (pPolyData && pPolyData != &pBaseList->Rear())
 		{
@@ -566,7 +566,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 
 	for (LPUINT32 i = 0; i + 2 < m_oVertexs.Size(); i+=3)
 	{
-		nLen = sprintf_s(szBuf, sizeof(szBuf) - 1, "v %f %f %f\r\n", m_oVertexs[i + 0], m_oVertexs[i + 1], m_oVertexs[i + 2]);
+		nLen = snprintf(szBuf, sizeof(szBuf) - 1, "v %f %f %f\r\n", m_oVertexs[i + 0], m_oVertexs[i + 1], m_oVertexs[i + 2]);
 		LOG_PROCESS_ERROR(nLen > 0);
 		nResult = (LPUINT32)pFile->Write(szBuf, (LPUINT32)nLen);
 		LOG_PROCESS_ERROR(nResult == nLen);
@@ -576,21 +576,21 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
 	{
-		pBaseList = &(*llitr);
+		pBaseList = (*llitr);
 		pPolyData = (POLYGON_DATA*)pBaseList->Head().pstNext;
 		while (pPolyData && pPolyData != &pBaseList->Rear())
 		{
 			nLen = 0;
-			nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "f");
+			nResult = snprintf(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "f");
 			LOG_PROCESS_ERROR(nResult > 0);
 			nLen += nResult;
 			for (LPUINT8 i = 0; i < pPolyData->byVertCount; i++)
 			{
-				nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, " %d/%d/%d", pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1);
+				nResult = snprintf(szBuf + nLen, sizeof(szBuf) - 1 - nLen, " %d/%d/%d", pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1, pPolyData->anVertIndex[i] + 1);
 				LOG_PROCESS_ERROR(nResult > 0);
 				nLen += nResult;
 			}
-			nResult = sprintf_s(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "\r\n");
+			nResult = snprintf(szBuf + nLen, sizeof(szBuf) - 1 - nLen, "\r\n");
 			LOG_PROCESS_ERROR(nResult > 0);
 			nLen += nResult;
 			nResult = (LPUINT32)pFile->Write(szBuf, (LPUINT32)nLen);
@@ -605,7 +605,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
 
 	for (llitr = m_lstSepListPolygonData.begin(); llitr != m_lstSepListPolygonData.end(); ++llitr)
 	{
-		pBaseList = &(*llitr);
+		pBaseList = (*llitr);
 		pPolyData = (POLYGON_DATA*)pBaseList->Head().pstNext;
 		while (pPolyData && pPolyData != &pBaseList->Rear())
 		{
