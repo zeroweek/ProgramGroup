@@ -102,6 +102,7 @@ LPTime LPAPI LPTime::GetNowUTCTime()
 	LPTime stTime;
 	time_t tTime = 0;;
 	struct tm stTm;
+	struct tm* pTm = nullptr;
 
 	lpGetTimeEx(stTime.m_stTimeval);
 
