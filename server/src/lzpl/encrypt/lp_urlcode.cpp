@@ -50,7 +50,6 @@ Exit0:
 
 DECLARE BOOL LPAPI lpUrlDecode(const char * pcszInStr, LPUINT32 dwInSize, char * pszOutStr, LPUINT32 & dwOutSize, eUrlCodeType eType)
 {
-	LPINT32 nResult = 0;
 	LPUINT32 nIndex = 0;
 	LPUINT32 dwOutputCount = 0;
 
