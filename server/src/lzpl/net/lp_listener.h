@@ -7,9 +7,7 @@
 #ifndef _LP_LISTENER_H_
 #define _LP_LISTENER_H_
 
-#include "lpi_listener.h"
-#include "lpi_eventhandler.h"
-#include "lpi_packetparser.h"
+#include "lpi_listenerimpl.h"
 
 
 
@@ -29,7 +27,7 @@ class LPNetImpl;
 
 // Summary:
 //		监听器类
-class DECLARE LPListener : public ILPListener, public ILPEventHandler
+class DECLARE LPListener : public ILPListenerImpl
 {
 public:
 
@@ -47,7 +45,7 @@ public:
 	//		pNetImpl: 
 	//		pPacketParser: 消息包解析对象
 	//		dwId: 监听器id
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
+	virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
 	BOOL LPAPI UnInit();
@@ -125,8 +123,6 @@ private:
 	PER_IO_DATA*                m_pstPerIoDataArray;
 
 };
-
-typedef std::map<LPUINT32, std::shared_ptr<LPListener>> MAP_LISTENER;
 
 
 

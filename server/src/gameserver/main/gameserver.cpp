@@ -89,7 +89,7 @@ BOOL LPAPI CGameServer::Init(void)
 	m_pGSExternalPacketParser = new CGSExternalPacketParser();
 	LOG_PROCESS_ERROR(m_pGSExternalPacketParser);
 
-	nResult = ILPNet::NetGlobalInit();
+	nResult = ILPNet::GlobalInit();
 	LOG_PROCESS_ERROR(nResult);
 
 	stNetConfig = g_GlobalConfig.Server.Gs.Net;

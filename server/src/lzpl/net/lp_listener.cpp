@@ -1,6 +1,7 @@
 #include "lp_listener.h"
 #include "lp_processerror.h"
-#include "lp_reactor.h"
+#include "lp_system.h"
+#include "lp_net.h"
 
 
 
@@ -8,6 +9,16 @@
 NS_LZPL_BEGIN
 
 
+
+std::shared_ptr<ILPListenerImpl> LPAPI ILPListenerImpl::NewListenerImpl()
+{
+	return std::make_shared<LPListener>();
+}
+
+void LPAPI ILPListenerImpl::DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener)
+{
+	pListener = nullptr;
+}
 
 LPListener::LPListener()
 {
@@ -221,7 +232,7 @@ void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 {
 	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
-	LPSocker* pSocker = NULL;
+	ILPSockerImpl* pSocker = NULL;
 	const char cArg = 1;
 	LPUINT32 dwCurValidConnectCount = 0;
 

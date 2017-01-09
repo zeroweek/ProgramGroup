@@ -10,6 +10,8 @@
 #include "lpi_net.h"
 #include "lp_lock.h"
 #include "lp_loopbuf.h"
+#include "lpi_sockerimpl.h"
+#include "lpi_connectorimpl.h"
 
 
 
@@ -36,7 +38,7 @@ enum e_EventType
 //		接收事件结构体
 struct DECLARE RECV_EVENT
 {
-	ILPSocker*               pSocker;
+	ILPSockerImpl*           pSocker;
 	LPUINT32                 dwLen;
 };
 
@@ -46,7 +48,7 @@ struct DECLARE RECV_EVENT
 //		断开事件结构体
 struct DECLARE TERMINATE_EVENT
 {
-	ILPSocker*               pSocker;
+	ILPSockerImpl*           pSocker;
 	LPUINT32                 dwSockerId;
 };
 
@@ -56,7 +58,7 @@ struct DECLARE TERMINATE_EVENT
 //		连接建立事件结构体
 struct DECLARE ESTABLISH_EVENT
 {
-	ILPSocker*               pSocker;
+	ILPSockerImpl*           pSocker;
 	BOOL                     bAccept;
 };
 
@@ -66,7 +68,7 @@ struct DECLARE ESTABLISH_EVENT
 //		连接错误事件结构体
 struct DECLARE CONNECT_ERROR_EVENT
 {
-	ILPConnector*            pConnector;
+	ILPConnectorImpl*        pConnector;
 	LPUINT32                 dwErrorNo;
 };
 
@@ -148,19 +150,19 @@ public:
 
 	// Summary:
 	//		push一个接收事件
-	BOOL LPAPI PushRecvEvent(ILPSocker* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen);
+	BOOL LPAPI PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen);
 
 	// Summary:
 	//		push一个断开事件
-	void LPAPI PushTerminateEvent(ILPSocker* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose);
+	void LPAPI PushTerminateEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose);
 
 	// Summary:
 	//		push一个连接建立事件
-	void LPAPI PushEstablishEvent(ILPSocker* pSocker, BOOL bAccept);
+	void LPAPI PushEstablishEvent(ILPSockerImpl* pSocker, BOOL bAccept);
 
 	// Summary:
 	//		push一个连接错误事件
-	void LPAPI PushConnectErrorEvent(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo);
+	void LPAPI PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo);
 
 	// Summary:
 	//		判断是否有事件待处理

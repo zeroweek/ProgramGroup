@@ -91,7 +91,6 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_connector.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_data.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_datalist.h" />
-    <ClInclude Include="..\..\inc\lzpl\lpi_eventhandler.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_file.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_identid.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_listener.h" />
@@ -102,7 +101,6 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_netmessagehandler.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_packetparser.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_property.h" />
-    <ClInclude Include="..\..\inc\lzpl\lpi_reactor.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_socker.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_table.h" />
@@ -153,6 +151,11 @@
     <ClInclude Include="file\lp_normalfile.h" />
     <ClInclude Include="log\lp_filelogger.h" />
     <ClInclude Include="log\lp_loggerctrl.h" />
+    <ClInclude Include="net\lpi_connectorimpl.h" />
+    <ClInclude Include="net\lpi_eventhandler.h" />
+    <ClInclude Include="net\lpi_listenerimpl.h" />
+    <ClInclude Include="net\lpi_reactor.h" />
+    <ClInclude Include="net\lpi_sockerimpl.h" />
     <ClInclude Include="net\lp_connector.h" />
     <ClInclude Include="net\lp_listener.h" />
     <ClInclude Include="net\lp_net.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="net\lp_netoption.h" />
     <ClInclude Include="net\lp_reactor.h" />
     <ClInclude Include="net\lp_socker.h" />
+    <ClInclude Include="net\lp_sockermgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\lp_lzpl.cpp" />
@@ -193,6 +197,7 @@
     <ClCompile Include="net\lp_netoption.cpp" />
     <ClCompile Include="net\lp_reactor.cpp" />
     <ClCompile Include="net\lp_socker.cpp" />
+    <ClCompile Include="net\lp_sockermgr.cpp" />
     <ClCompile Include="property\lp_property.cpp" />
     <ClCompile Include="sharemem\lp_sharememory.cpp" />
     <ClCompile Include="string\lp_loopbuf.cpp" />

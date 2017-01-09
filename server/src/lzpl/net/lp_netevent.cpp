@@ -78,7 +78,7 @@ Exit1:
 	return TRUE;
 }
 
-BOOL LPAPI LPEventMgr::PushRecvEvent(ILPSocker* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen)
+BOOL LPAPI LPEventMgr::PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen)
 {
 	LPINT32 nResult = 0;
 	LPINT32 nRetryCount = 0;
@@ -148,7 +148,7 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LPEventMgr::PushTerminateEvent(ILPSocker* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
+void LPAPI LPEventMgr::PushTerminateEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
 {
 	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
@@ -181,7 +181,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::PushEstablishEvent(ILPSocker* pSocker, BOOL bAccept)
+void LPAPI LPEventMgr::PushEstablishEvent(ILPSockerImpl* pSocker, BOOL bAccept)
 {
 	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
@@ -213,7 +213,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::PushConnectErrorEvent(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo)
+void LPAPI LPEventMgr::PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo)
 {
 	LPINT32 nResult = 0;
 	NET_EVENT* pstEvent = NULL;
@@ -325,7 +325,7 @@ Exit0:
 void LPAPI LPEventMgr::_ProcRecvEvent(RECV_EVENT* pstRecvEvent)
 {
 	LPINT32 nResult = 0;
-	ILPSocker* pSocker = NULL;
+	ILPSockerImpl* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pstRecvEvent);
 	LOG_PROCESS_ERROR(m_pNetMessageHandler);
@@ -347,8 +347,8 @@ Exit0:
 void LPAPI LPEventMgr::_ProcTerminateEvent(TERMINATE_EVENT* pstTerminateEvent)
 {
 	LPINT32 nResult = 0;
-	std::shared_ptr<LPConnector> pConnector;
-	ILPSocker* pSocker = NULL;
+	std::shared_ptr<ILPConnectorImpl> pConnector;
+	ILPSockerImpl* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pstTerminateEvent);
 	pSocker = pstTerminateEvent->pSocker;
@@ -389,7 +389,7 @@ Exit0:
 void LPAPI LPEventMgr::_ProcEstablishEvent(ESTABLISH_EVENT* pstEstablishEvent)
 {
 	LPINT32 nResult = 0;
-	ILPSocker* pSocker = NULL;
+	ILPSockerImpl* pSocker = NULL;
 
 	LOG_PROCESS_ERROR(pstEstablishEvent);
 	LOG_PROCESS_ERROR(m_pNetMessageHandler);

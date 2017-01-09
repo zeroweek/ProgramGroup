@@ -90,11 +90,11 @@ public:
 
 	// Summary:
 	//  网络初始化接口，使用网络模块之前必须调用
-	static BOOL LPAPI NetGlobalInit();
+	static BOOL LPAPI GlobalInit();
 
 	// Summary:
 	//  网络反初始化接口，不再使用网络模块时必须调用
-	static void LPAPI NetGlobalUnInit();
+	static void LPAPI GlobalUnInit();
 
 	// Summary:
 	//  创建网络组件对象

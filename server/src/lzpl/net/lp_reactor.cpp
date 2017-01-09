@@ -1,5 +1,7 @@
 #include "lp_reactor.h"
 #include "lp_processerror.h"
+#include "lp_system.h"
+#include "lpi_net.h"
 
 
 
@@ -11,6 +13,43 @@ NS_LZPL_BEGIN
 #define IOCP_THREAD_PER_CPU     (2)
 
 
+
+std::shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(LPUINT32 dwIoType)
+{
+	LPINT32 nResult = 0;
+	std::shared_ptr<ILPReactor> pReactor;
+
+	switch (dwIoType)
+	{
+	case eIoType_CompletionPort:
+		{
+			pReactor = std::make_shared<LPReactorIocpImpl>();
+			LOG_PROCESS_ERROR(pReactor != nullptr);
+
+			nResult = ((LPReactorIocpImpl*)pReactor.get())->Init(FALSE);
+			LOG_PROCESS_ERROR(nResult);
+		}
+		break;
+	case eIoType_None:
+	default:
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+	return pReactor;
+
+Exit0:
+
+	pReactor = nullptr;
+	return FALSE;
+}
+
+void LPAPI ILPReactor::DeleteReactor(std::shared_ptr<ILPReactor>& pReactor)
+{
+	pReactor = nullptr;
+}
 
 BOOL LPAPI LPReactorIocpImpl::RegisterEventHandler(ILPEventHandler* pEventHandler)
 {
@@ -61,7 +100,7 @@ Exit0:
 	return 0;
 }
 
-BOOL LPAPI LPReactorIocpImpl::Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPortOneThread)
+BOOL LPAPI LPReactorIocpImpl::Init(BOOL bOneCompletionPortOneThread)
 {
 	LPINT32 nResult = 0;
 	SYSTEM_INFO stSysInfo;
@@ -72,9 +111,6 @@ BOOL LPAPI LPReactorIocpImpl::Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPortO
 
 #   if defined _WIN32
 	{
-		LOG_PROCESS_ERROR(pNetImpl);
-		m_pNetImpl = pNetImpl;
-
 		GetSystemInfo(&stSysInfo);
 
 		if (bOneCompletionPortOneThread)
@@ -291,7 +327,6 @@ LPReactorIocpImpl::LPReactorIocpImpl()
 	m_pCompletionPort = NULL;
 	m_nWorkerCountPerCompIo = 0;
 	m_ppWorkerArray = NULL;
-	m_pNetImpl = NULL;
 }
 
 LPReactorIocpImpl::~LPReactorIocpImpl()

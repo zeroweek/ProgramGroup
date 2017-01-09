@@ -31,11 +31,11 @@ LPNetImpl::~LPNetImpl(void)
 std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(ILPPacketParser* pPacketParser)
 {
 	LPINT32 nResult = 0;
-	std::shared_ptr<LPListener> pListener;
+	std::shared_ptr<ILPListenerImpl> pListener;
 
 	LOG_PROCESS_ERROR(pPacketParser);
 
-	pListener = std::make_shared<LPListener>();
+	pListener = ILPListenerImpl::NewListenerImpl();
 	LOG_PROCESS_ERROR(pListener != nullptr);
 
 	nResult = pListener->Init(this, pPacketParser, _CreateId());
@@ -51,11 +51,11 @@ Exit0:
 std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(ILPPacketParser* pPacketParser)
 {
 	LPINT32 nResult = 0;
-	std::shared_ptr<LPConnector> pConnector;
+	std::shared_ptr<ILPConnectorImpl> pConnector;
 
 	LOG_PROCESS_ERROR(pPacketParser);
 
-	pConnector = std::make_shared<LPConnector>();
+	pConnector = ILPConnectorImpl::NewConnectorImpl();
 	LOG_PROCESS_ERROR(pConnector);
 
 	nResult = pConnector->Init(this, pPacketParser, _CreateId());
@@ -68,9 +68,9 @@ Exit0:
 	return NULL;
 }
 
-std::shared_ptr<ILPListener> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
+std::shared_ptr<ILPListenerImpl> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
 {
-	std::shared_ptr<ILPListener> pListener;
+	std::shared_ptr<ILPListenerImpl> pListener;
 	MAP_LISTENER::iterator fit;
 
 	fit = m_mapListener.find(dwId);
@@ -82,9 +82,9 @@ std::shared_ptr<ILPListener> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
 	return pListener;
 }
 
-std::shared_ptr<LPConnector> LPAPI LPNetImpl::FindConnector(LPUINT32 dwId)
+std::shared_ptr<ILPConnectorImpl> LPAPI LPNetImpl::FindConnector(LPUINT32 dwId)
 {
-	std::shared_ptr<LPConnector> pConnector;
+	std::shared_ptr<ILPConnectorImpl> pConnector;
 	MAP_CONNECTOR::iterator fit;
 
 	fit = m_mapConnector.find(dwId);
@@ -132,30 +132,14 @@ BOOL LPAPI LPNetImpl::Init(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG*
 
 	LOG_PROCESS_ERROR(m_oNetConfig.dwIoType > eIoType_None);
 
-	nResult = m_oSockerMgr.Init(this, m_oNetConfig.dwConnectCount);
+	nResult = m_oSockerMgr.Init(this);
 	LOG_PROCESS_ERROR(nResult);
 
 	nResult = m_oEventMgr.Init(this, m_pNetMessageHandler, m_oNetConfig.dwNetEventListCount);
 	LOG_PROCESS_ERROR(nResult);
 
-	switch (m_oNetConfig.dwIoType)
-	{
-	case eIoType_CompletionPort:
-		{
-			m_pReactor = std::make_shared<LPReactorIocpImpl>();
-			LOG_PROCESS_ERROR(m_pReactor != nullptr);
-
-			nResult = ((LPReactorIocpImpl*)m_pReactor.get())->Init(this, FALSE);
-			LOG_PROCESS_ERROR(nResult);
-		}
-		break;
-	case eIoType_None:
-	default:
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		LOG_PROCESS_ERROR(FALSE);
-		break;
-	}
+	m_pReactor = ILPReactor::NewReactor(m_oNetConfig.dwIoType);
+	LOG_PROCESS_ERROR(m_pReactor != nullptr);
 
 	m_dwState = eCommonState_Inited;
 
@@ -212,7 +196,7 @@ void LPAPI LPNetImpl::UnInit()
 	}
 
 	//ÊÍ·Åreactor
-	m_pReactor = nullptr;
+	ILPReactor::DeleteReactor(m_pReactor);
 
 	nResult = m_oEventMgr.UnInit();
 	LOG_CHECK_ERROR(nResult);
@@ -224,7 +208,7 @@ void LPAPI LPNetImpl::UnInit()
 	{
 		LOG_CHECK_ERROR(iterListener->second);
 		IF_NULL_CONTINUE(iterListener->second);
-		iterListener->second = nullptr;
+		ILPListenerImpl::DeleteListenerImpl(iterListener->second);
 	}
 	m_mapListener.clear();
 
@@ -232,7 +216,7 @@ void LPAPI LPNetImpl::UnInit()
 	{
 		LOG_CHECK_ERROR(iterConnector->second);
 		IF_NULL_CONTINUE(iterConnector->second);
-		iterConnector->second = nullptr;
+		ILPConnectorImpl::DeleteConnectorImpl(iterConnector->second);
 	}
 	m_mapConnector.clear();
 
@@ -253,7 +237,7 @@ LPUINT32 LPAPI LPNetImpl::_CreateId()
 	return dwNewId;
 }
 
-BOOL LPAPI ILPNet::NetGlobalInit()
+BOOL LPAPI ILPNet::GlobalInit()
 {
 #   if defined _WIN32
 	{
@@ -265,7 +249,7 @@ BOOL LPAPI ILPNet::NetGlobalInit()
 	return TRUE;
 }
 
-void LPAPI ILPNet::NetGlobalUnInit()
+void LPAPI ILPNet::GlobalUnInit()
 {
 #   if defined _WIN32
 	{

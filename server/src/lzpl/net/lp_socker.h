@@ -7,13 +7,8 @@
 #ifndef _LP_SOCKER_H_
 #define _LP_SOCKER_H_
 
-#include "lpi_socker.h"
-#include "lp_objpool.h"
-#include "lpi_eventhandler.h"
+#include "lpi_sockerimpl.h"
 #include "lp_lock.h"
-#include "lp_thread.h"
-#include "lpi_packetparser.h"
-#include "lp_loopbuf.h"
 
 
 
@@ -22,14 +17,9 @@ NS_LZPL_BEGIN
 
 
 
-//类声明
-class LPNetImpl;
-
-
-
 // Summary:
 //		底层socke对象t封装类
-class DECLARE LPSocker : public ILPSocker, public ILPEventHandler
+class DECLARE LPSocker : public ILPSockerImpl
 {
 public:
 
@@ -110,27 +100,27 @@ public:
 	//		设置sock句柄
 	// Input:
 	//		sock：底层socket句柄值
-	void LPAPI SetSock(SOCKET sock);
+	virtual void LPAPI SetSock(SOCKET sock);
 
 	// Summary:
 	//		设置连接状态标记值
 	// Input:
 	//		bConnect：true-连接，false-断开
-	void LPAPI SetConnect(bool bConnect);
+	virtual void LPAPI SetConnect(bool bConnect);
 
 	// Summary:
 	//		绑定解析对象
 	// Input:
 	//		pPacketParser：解析对象
-	void LPAPI AttachPacketParser(ILPPacketParser* pPacketParser);
+	virtual void LPAPI AttachPacketParser(ILPPacketParser* pPacketParser);
 
 	// Summary:
 	//		解除绑定解析对象
-	void LPAPI DetachPacketParser();
+	virtual void LPAPI DetachPacketParser();
 
 	// Summary:
 	//		重置socker对象
-	void LPAPI Reset();
+	virtual void LPAPI Reset();
 
 	// Summary:
 	//		post异步接收数据操作
@@ -142,105 +132,105 @@ public:
 	//		post异步发送数据操作
 	// Return:
 	//		TRUE-有发送数据，FALSE-没发送数据
-	BOOL LPAPI PostSend();
+	virtual BOOL LPAPI PostSend();
 
 	// Summary:
 	//		收到消息回调
 	// Input:
 	//		dwBytes：接收到的字节数
-	void LPAPI OnRecv(LPUINT32 dwBytes);
+	virtual void LPAPI OnRecv(LPUINT32 dwBytes);
 
 	// Summary:
 	//		发送消息回调
 	// Input:
 	//		dwBytes：接收到的字节数
-	void LPAPI OnSend(LPUINT32 dwBytes);
+	virtual void LPAPI OnSend(LPUINT32 dwBytes);
 
 	// Summary:
 	//		设置接收缓冲区
 	// Input:
 	//		pBuf：缓冲区
-	void LPAPI AttachRecvBuf(LPLoopBuf* pLoopBuf);
+	virtual void LPAPI AttachRecvBuf(LPLoopBuf* pLoopBuf);
 
 	// Summary:
 	//		分离接收缓冲区
 	// Return:
 	//		接收缓冲区
-	LPLoopBuf* LPAPI DetachRecvBuf();
+	virtual LPLoopBuf* LPAPI DetachRecvBuf();
 
 	// Summary:
 	//		设置发送缓冲区
 	// Input:
 	//		pBuf：缓冲区
-	void LPAPI AttachSendBuf(LPLoopBuf* pLoopBuf);
+	virtual void LPAPI AttachSendBuf(LPLoopBuf* pLoopBuf);
 
 	// Summary:
 	//		分离发送缓冲区
 	// Return:
 	//		发送缓冲区
-	LPLoopBuf* LPAPI DetachSendBuf();
+	virtual LPLoopBuf* LPAPI DetachSendBuf();
 
 	// Summary:
 	//		设置远端连接ip
 	// Input:
 	//		dwIp：ip
-	void LPAPI SetRemoteIp(LPUINT32 dwIp);
+	virtual void LPAPI SetRemoteIp(LPUINT32 dwIp);
 
 	// Summary:
 	//		设置远端连接端口
 	// Input:
 	//		wPort：端口
-	void LPAPI SetRemotePort(LPUINT16 wPort);
+	virtual void LPAPI SetRemotePort(LPUINT16 wPort);
 
 	// Summary:
 	//		设置本地连接ip
 	// Input:
 	//		dwIp：ip
-	void LPAPI SetLocalIp(LPUINT32 dwIp);
+	virtual void LPAPI SetLocalIp(LPUINT32 dwIp);
 
 	// Summary:
 	//		设置本地连接端口
 	// Input:
 	//		wPort：端口
-	void LPAPI SetLocalPort(LPUINT16 wPort);
+	virtual void LPAPI SetLocalPort(LPUINT16 wPort);
 
 	// Summary:
 	//		设置开始延迟关闭tick
-	void LPAPI SetDelayCloseBeginTick(LPUINT64 qwTick);
+	virtual void LPAPI SetDelayCloseBeginTick(LPUINT64 qwTick);
 
 	// Summary:
 	//		获取开始延迟关闭tick
-	LPUINT64 LPAPI GetDelayCloseBeginTick();
+	virtual LPUINT64 LPAPI GetDelayCloseBeginTick();
 
 	// Summary:
 	//		设置延迟关闭持续时间
-	void LPAPI SetDelayCloseDuration(LPUINT64 qwDuration);
+	virtual void LPAPI SetDelayCloseDuration(LPUINT64 qwDuration);
 
 	// Summary:
 	//		获取延迟关闭持续时间
-	LPUINT64 LPAPI GetDelayCloseDuration();
+	virtual LPUINT64 LPAPI GetDelayCloseDuration();
 
 	// Summary:
 	//		设置开始延迟释放tick
-	void LPAPI SetDelayReleaseBeginTick(LPUINT64 qwTick);
+	virtual void LPAPI SetDelayReleaseBeginTick(LPUINT64 qwTick);
 
 	// Summary:
 	//		获取开始延迟释放tick
-	LPUINT64 LPAPI GetDelayReleaseBeginTick();
+	virtual LPUINT64 LPAPI GetDelayReleaseBeginTick();
 
 	// Summary:
 	//		设置延迟释放持续时间
-	void LPAPI SetDelayReleaseDuration(LPUINT64 qwDuration);
+	virtual void LPAPI SetDelayReleaseDuration(LPUINT64 qwDuration);
 
 	// Summary:
 	//		获取延迟释放持续时间
-	LPUINT64 LPAPI GetDelayReleaseDuration();
+	virtual LPUINT64 LPAPI GetDelayReleaseDuration();
 
 	// Summary:
 	//		设置socker id
 	// Input:
 	//		dwSockerId：socker id
-	void LPAPI SetSockerId(LPUINT32 dwSockerId);
+	virtual void LPAPI SetSockerId(LPUINT32 dwSockerId);
 
 	// Summary:
 	//		异步关闭回调
@@ -250,7 +240,7 @@ public:
 	//		设置父级对象的id（连接器或监听器的id）
 	// Input:
 	//		dwParentId：id
-	void LPAPI SetParentId(LPUINT32 dwParentId);
+	virtual void LPAPI SetParentId(LPUINT32 dwParentId);
 
 	// Summary:
 	//		获取父级对象的id（连接器或监听器的id）
@@ -260,7 +250,7 @@ public:
 
 	// Summary:
 	//		设置是否是accept创建的标记，accept还是connect创建
-	void LPAPI SetAcceptCreate(BOOL bAcceptCreate);
+	virtual void LPAPI SetAcceptCreate(BOOL bAcceptCreate);
 
 	// Summary:
 	//		判断是否是accept创建
@@ -280,7 +270,7 @@ public:
 
 	// Summary:
 	//		无
-	void LPAPI SetNetImpl(LPNetImpl* pNetImpl);
+	virtual void LPAPI SetNetImpl(LPNetImpl* pNetImpl);
 
 protected:
 
@@ -314,152 +304,6 @@ protected:
 	PER_IO_DATA               m_stSendPerIoData;          // io发送绑定的数据
 
 	static LPLock             m_oSendBufLock;             // 发送缓冲区锁（静态还是非静态？？？考虑锁消耗与sock效率平衡）
-};
-
-
-
-// Summary:
-//		socker对象管理类
-class DECLARE LPSockerMgr
-{
-public:
-
-	// Summary：
-	//     构造函数
-	// Returns:
-	//     无
-	LPSockerMgr();
-
-	// Summary：
-	//     析构函数
-	// Returns:
-	//     无
-	~LPSockerMgr();
-
-public:
-
-	typedef std::list<LPSocker*> LPListSocker;
-	typedef std::map<LPUINT32, LPSocker*> LPMapSocker;
-
-public:
-
-	// Summary:
-	//		初始化函数
-	// Input:
-	//		pNetImpl: 
-	//		dwSize：socker对象池初始化大小
-	// Return:
-	//		TRUE-成功，FALSE-失败
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, LPUINT32 dwSize);
-
-	// Summary:
-	//		清除函数
-	BOOL LPAPI UnInit();
-
-	// Summary:
-	//		创建socker对象
-	// Input:
-	//		pPacketParser：解析对象
-	//		dwParentId：创建对象（连接器或控制器）的id
-	//		bAcceptCreate：是否accept创建
-	// Return:
-	//		socker对象
-	LPSocker* LPAPI Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
-
-	// Summary:
-	//		释放socker对象
-	// Input:
-	//		pSocker：socker对象
-	void LPAPI Release(LPSocker* pSocker);
-
-	// Summary:
-	//		延迟关闭socker对象
-	// Input:
-	//		pSocker：socker对象
-	void LPAPI DelayClose(LPSocker* pSocker);
-
-	// Summary:
-	//		延迟释放socker对象，注意与Release调用位置的区分
-	// Input:
-	//		pSocker：socker对象
-	void LPAPI DelayRelease(LPSocker* pSocker);
-
-	// Summary:
-	//		检测延迟释放的对象
-	void LPAPI CheckDelay();
-
-	// Summary:
-	//		发送数据
-	// Return:
-	//		有数据发送的LPSocker对象个数
-	LPINT32 LPAPI PostSend();
-
-	// Summary:
-	//		查找socker
-	LPSocker* LPAPI Find(LPUINT32 dwSockerId);
-
-	// Summary:
-	//		获取当前有效的连接个数
-
-	LPUINT32 LPAPI GetCurValidConnectCount();
-
-private:
-
-	// Summary:
-	//		创建socker对象
-	// Input:
-	//		pPacketParser：解析对象
-	//		dwParentId：创建对象（连接器或控制器）的id
-	//		bAcceptCreate：是否accept创建
-	// Return:
-	//		socker对象
-	LPSocker* LPAPI _Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
-
-	// Summary:
-	//		释放socker对象
-	// Input:
-	//		pSocker：socker对象
-	void LPAPI _Release(LPSocker* pSocker);
-
-	// Summary:
-	//		创建sock id
-	// Return:
-	//		sock id
-	LPUINT32 LPAPI _CreateSockId();
-
-	// Summary:
-	//		Malloc
-	LPSocker* LPAPI _MallocSocker();
-
-	// Summary:
-	//		Free
-	void LPAPI _FreeSocker(LPSocker* pSocker);
-
-private:
-
-	static THREAD_FUNC_DECLARE(_CheckDelayThreadProc)(void* pParam);
-	static THREAD_FUNC_DECLARE(_PostSendThreadProc)(void* pParam);
-
-private:
-
-	LPUINT32                   m_dwMaxSockId;        // 最大sock id
-	LPObjPool<LPSocker>        m_oSockerPool;        // socker对象池
-	LPListSocker               m_oValidList;         // 当前连接有效的socker列表
-	LPMapSocker                m_oValidMap;          // 当前连接有效的socker map
-	LPListSocker               m_oDelayCloseList;    // 延迟关闭连接列表
-	LPListSocker               m_oDelayReleaseList;  // 延迟释放的socker列表
-	LPLock                     m_oLock;              // 锁
-	LPLock                     m_oDelayLock;         // 延迟释放列表锁
-	BOOL                       m_bCheckDelayRun;     // check delay线程是否停止
-	BOOL                       m_bPostSendRun;       // post send线程是否停止
-	LPThread                   m_oCheckDelayThread;  // check delay线程
-	LPThread                   m_oPostSendThread;    // post send线程
-
-	LPNetImpl*                 m_pNetImpl;           // 
-	LPLoopBufPool*             m_pRecvLoopBufPool;   // 接受缓冲区池（若要支持多个size，可使用map pool）
-	LPLoopBufPool*             m_pSendLoopBufPool;   // 发送缓冲区池（若要支持多个size，可使用map pool）
-
-	time_t                     m_tLastCheckTime;
 };
 
 

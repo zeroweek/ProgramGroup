@@ -1,6 +1,6 @@
 #include "lp_connector.h"
 #include "lp_processerror.h"
-#include "lp_reactor.h"
+#include "lp_net.h"
 
 
 
@@ -8,6 +8,16 @@
 NS_LZPL_BEGIN
 
 
+
+std::shared_ptr<ILPConnectorImpl> LPAPI ILPConnectorImpl::NewConnectorImpl()
+{
+	return std::make_shared<LPConnector>();
+}
+
+void LPAPI ILPConnectorImpl::DeleteConnectorImpl(std::shared_ptr<ILPConnectorImpl>& pConnector)
+{
+	pConnector = nullptr;
+}
 
 LPConnector::LPConnector()
 {
@@ -238,7 +248,7 @@ void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 {
 	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
-	LPSocker* pSocker = NULL;
+	ILPSockerImpl* pSocker = NULL;
 	sockaddr_in stLocalAddr;
 	LPINT32 idwLocalAddrLen = 0;
 	LPINT32 idwRetLocal = 0;
@@ -274,7 +284,7 @@ void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 	{
 		if (!bSuccess)
 		{
-			m_pNetImpl->GetEventMgr().PushConnectErrorEvent(std::shared_ptr<ILPConnector>(this), WSAGetLastError());
+			m_pNetImpl->GetEventMgr().PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl>(this), WSAGetLastError());
 			lpCloseSocket(m_hConnectSock);
 			m_hConnectSock = INVALID_SOCKET;
 			SetSocker(NULL);
@@ -391,12 +401,12 @@ Exit0:
 	return;
 }
 
-void LPAPI LPConnector::SetSocker(LPSocker* pSocker)
+void LPAPI LPConnector::SetSocker(ILPSockerImpl* pSocker)
 {
 	m_pSocker = pSocker;
 }
 
-LPSocker* LPAPI LPConnector::GetSocker()
+ILPSockerImpl* LPAPI LPConnector::GetSocker()
 {
 	return m_pSocker;
 }

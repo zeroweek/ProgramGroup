@@ -7,9 +7,8 @@
 #ifndef _LP_CONNECTOR_H_
 #define _LP_CONNECTOR_H_
 
-#include "lpi_connector.h"
-#include "lpi_eventhandler.h"
-#include "lpi_packetparser.h"
+#include "lpi_connectorimpl.h"
+#include "lpi_sockerimpl.h"
 
 
 
@@ -18,15 +17,9 @@ NS_LZPL_BEGIN
 
 
 
-//类声明
-class LPNetImpl;
-class LPSocker;
-
-
-
 // Summary:
 //		连接器类
-class DECLARE LPConnector : public ILPConnector, public ILPEventHandler
+class DECLARE LPConnector : public ILPConnectorImpl
 {
 public:
 
@@ -44,7 +37,7 @@ public:
 	//		pNetImpl: 
 	//		pPacketParser: 消息包解析对象
 	//		dwId: 连接器id
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
+	virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
 	BOOL LPAPI UnInit();
@@ -89,7 +82,7 @@ public:
 
 	// Summary:
 	//		链接关闭回调
-	void LPAPI OnClose();
+	virtual void LPAPI OnClose();
 
 	// Summary:
 	//		设置是否自动重连
@@ -101,11 +94,11 @@ public:
 
 	// Summary:
 	//		设置关联的socker对象
-	void LPAPI SetSocker(LPSocker* pSocker);
+	void LPAPI SetSocker(ILPSockerImpl* pSocker);
 
 	// Summary:
 	//		获取关联的socker对象
-	LPSocker* LPAPI GetSocker();
+	ILPSockerImpl* LPAPI GetSocker();
 
 	// Summary:
 	//		设置连接器当前状态
@@ -140,13 +133,11 @@ private:
 	SOCKET                      m_hConnectSock;
 	ILPPacketParser*            m_pPacketParser;
 	LPNetImpl*                  m_pNetImpl;
-	LPSocker*                   m_pSocker;
+	ILPSockerImpl*              m_pSocker;
 
 	LPFN_CONNECTEX              m_lpfnConnectEx;
 	PER_IO_DATA*                m_pstPerIoData;
 };
-
-typedef std::map<LPUINT32, std::shared_ptr<LPConnector>> MAP_CONNECTOR;
 
 
 

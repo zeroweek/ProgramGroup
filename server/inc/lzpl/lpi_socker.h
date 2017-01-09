@@ -131,32 +131,6 @@ public:
 	// Summary:
 	//		关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker
 	virtual void LPAPI Close(SOCK_ERR_CODE stSockErrCode, BOOL bPassiveClose) = 0;
-
-	// Summary:
-	//   post异步接收数据操作
-	// Return:
-	//   TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI PostRecv() = 0;
-
-	// Summary:
-	//		获取父级对象的id（连接器或监听器的id）
-	// Return:
-	//		id
-	virtual LPUINT32 LPAPI GetParentId() = 0;
-
-	// Summary:
-	//		设置是否被动关闭
-	virtual void LPAPI SetPassiveClose(BOOL bPassiveClose) = 0;
-
-	// Summary:
-	//		判断是否是accept创建
-	//	Return:
-	//		TRUE-是，FALSE-不是
-	virtual BOOL LPAPI IsAcceptCreate() = 0;
-
-	// Summary:
-	//		异步关闭回调
-	virtual void LPAPI OnClose() = 0;
 };
 
 

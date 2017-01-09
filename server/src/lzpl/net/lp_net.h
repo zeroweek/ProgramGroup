@@ -9,11 +9,12 @@
 
 #include "lpi_net.h"
 #include "lp_lock.h"
-#include "lp_socker.h"
-#include "lp_listener.h"
-#include "lp_connector.h"
+#include "lpi_sockerimpl.h"
+#include "lpi_listenerimpl.h"
+#include "lpi_connectorimpl.h"
 #include "lp_netevent.h"
-#include "lp_reactor.h"
+#include "lpi_reactor.h"
+#include "lp_sockermgr.h"
 
 
 
@@ -76,11 +77,11 @@ public:
 
 	// Summary:
 	//		查找监听器对象
-	std::shared_ptr<ILPListener> LPAPI FindListener(LPUINT32 dwId);
+	std::shared_ptr<ILPListenerImpl> LPAPI FindListener(LPUINT32 dwId);
 
 	// Summary:
 	//		查找连接器对象
-	std::shared_ptr<LPConnector> LPAPI FindConnector(LPUINT32 dwId);
+	std::shared_ptr<ILPConnectorImpl> LPAPI FindConnector(LPUINT32 dwId);
 
 	// Summary:
 	//		无

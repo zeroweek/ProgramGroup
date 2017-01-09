@@ -8,7 +8,6 @@
 #define _LP_DUMP_H_
 
 #include "lp_base.h"
-#include "lpi_socker.h"
 #include "lp_thread.h"
 #include "lp_lock.h"
 #include "lp_time.h"

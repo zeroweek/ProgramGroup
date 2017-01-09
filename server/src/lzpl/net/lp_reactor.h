@@ -8,12 +8,16 @@
 #define _LP_REACTOR_H_
 
 #include "lpi_reactor.h"
-#include "lp_net.h"
 
 
 
 //begin声明所处的名字空间
 NS_LZPL_BEGIN
+
+
+
+//类声明
+class LPNetImpl;
 
 
 
@@ -68,10 +72,9 @@ public:
 	// Summary：
 	//		无
 	// Input:
-	//		pNetImpl: 
 	//		bOneCompletionPortOneThread: 是否单个完成端口模式
 	//			TRUE-一个完成端口对应多个线程，FALSE-多个完成端口，每个完成端口对应一个线程
-	BOOL LPAPI Init(LPNetImpl* pNetImpl, BOOL bOneCompletionPortOneThread);
+	BOOL LPAPI Init(BOOL bOneCompletionPortOneThread);
 	// Summary：
 	//		无     
 	BOOL LPAPI UnInit();
@@ -99,7 +102,6 @@ protected:
 	HANDLE*                  m_pCompletionPort;
 	LPINT32                  m_nWorkerCountPerCompIo;
 	HANDLE**                 m_ppWorkerArray;
-	LPNetImpl*               m_pNetImpl;
 };
 
 

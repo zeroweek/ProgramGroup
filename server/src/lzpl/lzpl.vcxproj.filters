@@ -123,16 +123,10 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_connector.h">
       <Filter>net\interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\lzpl\lpi_eventhandler.h">
-      <Filter>net\interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\lzpl\lpi_listener.h">
       <Filter>net\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\lzpl\lpi_net.h">
-      <Filter>net\interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\lzpl\lpi_reactor.h">
       <Filter>net\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\lzpl\lpi_socker.h">
@@ -294,6 +288,24 @@
     <ClInclude Include="..\..\inc\lzpl\lp_errorstring.h">
       <Filter>log</Filter>
     </ClInclude>
+    <ClInclude Include="net\lpi_connectorimpl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lpi_eventhandler.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lpi_listenerimpl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lpi_reactor.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lpi_sockerimpl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\lp_sockermgr.h">
+      <Filter>net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt\lp_bt.cpp">
@@ -430,6 +442,9 @@
     </ClCompile>
     <ClCompile Include="log\lp_errorstring.cpp">
       <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="net\lp_sockermgr.cpp">
+      <Filter>net</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

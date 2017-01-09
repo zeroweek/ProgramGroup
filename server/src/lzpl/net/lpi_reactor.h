@@ -9,7 +9,6 @@
 #ifndef _LPI_REACTOR_H_
 #define _LPI_REACTOR_H_
 
-#include "lpi_socker.h"
 #include "lpi_eventhandler.h"
 #include "lp_netdef.h"
 
@@ -43,6 +42,9 @@ public:
 	virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
 
 public:
+
+	static std::shared_ptr<ILPReactor> LPAPI NewReactor(LPUINT32 dwIoType);
+	static void LPAPI DeleteReactor(std::shared_ptr<ILPReactor>& pReactor);
 
 	static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)
 	{

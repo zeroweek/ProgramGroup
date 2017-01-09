@@ -8,7 +8,6 @@
 #define _LP_HTTP_H_
 
 #include "lp_base.h"
-#include "lpi_socker.h"
 #include "curl/curl.h"
 
 

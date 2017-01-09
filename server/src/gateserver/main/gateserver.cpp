@@ -64,7 +64,7 @@ BOOL LPAPI CGateServer::Init(void)
 	nResult = m_oGTHttpMessageHandler.Init();
 	LOG_PROCESS_ERROR(nResult);
 
-	nResult = ILPNet::NetGlobalInit();
+	nResult = ILPNet::GlobalInit();
 	LOG_PROCESS_ERROR(nResult);
 
 	stNetConfig = g_GlobalConfig.Server.Gt.Net;
