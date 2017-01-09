@@ -92,8 +92,9 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId
 	LOG_PROCESS_ERROR(pSocker->GetSockerId() == dwSockerId);
 	LOG_PROCESS_ERROR(pLoopBuf->GetTotalReadableLen() >= dwLen);
 
-	pstEvent = NET_EVENT::NewNetEvent();
-	LOG_PROCESS_ERROR(pstEvent);
+	pstEvent = NET_EVENT::NewNetEvent(eEventType_Recv);
+	LOG_PROCESS_ERROR(pstEvent != nullptr);
+	LOG_PROCESS_ERROR(pstEvent->pRecvEvent != nullptr);
 
 	while (m_pRecvLoopBuf->GetTotalWritableLen() < dwLen)
 	{
@@ -130,8 +131,8 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId
 
 	pstEvent->eEventType = eEventType_Recv;
 	pstEvent->dwFlag = dwSockerId;
-	pstEvent->stUn.stRecvEvent.pSocker = pSocker;
-	pstEvent->stUn.stRecvEvent.dwLen = dwLen;
+	pstEvent->pRecvEvent->pSocker = pSocker;
+	pstEvent->pRecvEvent->dwLen = dwLen;
 
 	m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
 	m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
@@ -157,14 +158,15 @@ void LPAPI LPEventMgr::PushTerminateEvent(ILPSockerImpl* pSocker, LPUINT32 dwSoc
 
 	LOG_PROCESS_ERROR(pSocker);
 
-	pstEvent = NET_EVENT::NewNetEvent();
-	LOG_PROCESS_ERROR(pstEvent);
+	pstEvent = NET_EVENT::NewNetEvent(eEventType_Terminate);
+	LOG_PROCESS_ERROR(pstEvent != nullptr);
+	LOG_PROCESS_ERROR(pstEvent->pTerminateEvent != nullptr);
 
 	pstEvent->eEventType = eEventType_Terminate;
 	pstEvent->dwFlag = dwSockerId;
 	pSocker->SetPassiveClose(bPassiveClose);
-	pstEvent->stUn.stTerminateEvent.pSocker = pSocker;
-	pstEvent->stUn.stTerminateEvent.dwSockerId = dwSockerId;
+	pstEvent->pTerminateEvent->pSocker = pSocker;
+	pstEvent->pTerminateEvent->dwSockerId = dwSockerId;
 
 	m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
 	m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
@@ -190,13 +192,14 @@ void LPAPI LPEventMgr::PushEstablishEvent(ILPSockerImpl* pSocker, BOOL bAccept)
 
 	LOG_PROCESS_ERROR(pSocker);
 
-	pstEvent = NET_EVENT::NewNetEvent();
-	LOG_PROCESS_ERROR(pstEvent);
-
+	pstEvent = NET_EVENT::NewNetEvent(eEventType_Establish);
+	LOG_PROCESS_ERROR(pstEvent != nullptr);
+	LOG_PROCESS_ERROR(pstEvent->pEstablishEvent != nullptr);
+	
 	pstEvent->eEventType = eEventType_Establish;
 	pstEvent->dwFlag = pSocker->GetSockerId();
-	pstEvent->stUn.stEstablishEvent.pSocker = pSocker;
-	pstEvent->stUn.stEstablishEvent.bAccept = bAccept;
+	pstEvent->pEstablishEvent->pSocker = pSocker;
+	pstEvent->pEstablishEvent->bAccept = bAccept;
 
 	m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
 	m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
@@ -222,13 +225,14 @@ void LPAPI LPEventMgr::PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> p
 
 	LOG_PROCESS_ERROR(pConnector);
 
-	pstEvent = NET_EVENT::NewNetEvent();
-	LOG_PROCESS_ERROR(pstEvent);
-
+	pstEvent = NET_EVENT::NewNetEvent(eEventType_ConnectError);
+	LOG_PROCESS_ERROR(pstEvent != nullptr);
+	LOG_PROCESS_ERROR(pstEvent->pConnectErrorEvent != nullptr);
+	
 	pstEvent->eEventType = eEventType_ConnectError;
 	pstEvent->dwFlag = pConnector->GetId();
-	pstEvent->stUn.stConnectErrorEvent.pConnector = pConnector.get();
-	pstEvent->stUn.stConnectErrorEvent.dwErrorNo = dwErrorNo;
+	pstEvent->pConnectErrorEvent->pConnector = pConnector.get();
+	pstEvent->pConnectErrorEvent->dwErrorNo = dwErrorNo;
 
 	m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
 	m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
@@ -289,22 +293,22 @@ void LPEventMgr::HandleOneEvent()
 		{
 		case eEventType_Recv:
 		{
-			_ProcRecvEvent(&(pstEvent->stUn.stRecvEvent));
+			_ProcRecvEvent(pstEvent->pRecvEvent);
 		}
 		break;
 		case eEventType_Terminate:
 		{
-			_ProcTerminateEvent(&(pstEvent->stUn.stTerminateEvent));
+			_ProcTerminateEvent(pstEvent->pTerminateEvent);
 		}
 		break;
 		case eEventType_Establish:
 		{
-			_ProcEstablishEvent(&(pstEvent->stUn.stEstablishEvent));
+			_ProcEstablishEvent(pstEvent->pEstablishEvent);
 		}
 		break;
 		case eEventType_ConnectError:
 		{
-			_ProcConnectErrorEvent(&(pstEvent->stUn.stConnectErrorEvent));
+			_ProcConnectErrorEvent(pstEvent->pConnectErrorEvent);
 		}
 		break;
 		default:
@@ -322,7 +326,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::_ProcRecvEvent(RECV_EVENT* pstRecvEvent)
+void LPAPI LPEventMgr::_ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent)
 {
 	LPINT32 nResult = 0;
 	ILPSockerImpl* pSocker = NULL;
@@ -344,7 +348,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::_ProcTerminateEvent(TERMINATE_EVENT* pstTerminateEvent)
+void LPAPI LPEventMgr::_ProcTerminateEvent(std::shared_ptr<TERMINATE_EVENT> pstTerminateEvent)
 {
 	LPINT32 nResult = 0;
 	std::shared_ptr<ILPConnectorImpl> pConnector;
@@ -386,7 +390,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::_ProcEstablishEvent(ESTABLISH_EVENT* pstEstablishEvent)
+void LPAPI LPEventMgr::_ProcEstablishEvent(std::shared_ptr<ESTABLISH_EVENT> pstEstablishEvent)
 {
 	LPINT32 nResult = 0;
 	ILPSockerImpl* pSocker = NULL;
@@ -414,7 +418,7 @@ Exit0:
 	return;
 }
 
-void LPAPI LPEventMgr::_ProcConnectErrorEvent(CONNECT_ERROR_EVENT* pstConnectErrorEvent)
+void LPAPI LPEventMgr::_ProcConnectErrorEvent(std::shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent)
 {
 	LPINT32 nResult = 0;
 

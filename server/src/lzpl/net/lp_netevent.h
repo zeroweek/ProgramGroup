@@ -78,23 +78,51 @@ struct DECLARE CONNECT_ERROR_EVENT
 //		事件结构体
 struct DECLARE NET_EVENT
 {
-	e_EventType              eEventType;
-	LPUINT32                  dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
-	union
-	{
-		RECV_EVENT             stRecvEvent;
-		TERMINATE_EVENT        stTerminateEvent;
-		ESTABLISH_EVENT        stEstablishEvent;
-		CONNECT_ERROR_EVENT    stConnectErrorEvent;
-	} stUn;
+	e_EventType                           eEventType;
+	LPUINT32                              dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
+
+	std::shared_ptr<RECV_EVENT>           pRecvEvent;
+	std::shared_ptr<TERMINATE_EVENT>      pTerminateEvent;
+	std::shared_ptr<ESTABLISH_EVENT>      pEstablishEvent;
+	std::shared_ptr<CONNECT_ERROR_EVENT>  pConnectErrorEvent;
 
 	static LPINT32 ms_dwNetEventCount;
-	static NET_EVENT* LPAPI NewNetEvent()
+	static NET_EVENT* LPAPI NewNetEvent(LPUINT32 dwEventType)
 	{
 		++ms_dwNetEventCount;
-		return new NET_EVENT();
-	}
+		NET_EVENT* pstEvent = new NET_EVENT();
+		LOG_PROCESS_ERROR(pstEvent != nullptr);
 
+		switch (dwEventType)
+		{
+		case eEventType_Recv:
+			pstEvent->pRecvEvent = std::make_shared<RECV_EVENT>();
+			break;
+		case eEventType_Terminate:
+			pstEvent->pTerminateEvent = std::make_shared<TERMINATE_EVENT>();
+			break;
+		case eEventType_Establish:
+			pstEvent->pEstablishEvent = std::make_shared<ESTABLISH_EVENT>();
+			break;
+		case eEventType_ConnectError:
+			pstEvent->pConnectErrorEvent = std::make_shared<CONNECT_ERROR_EVENT>();
+			break;
+		case eEventType_None:
+		case eEventType_Max:
+		default:
+			LOG_CHECK_ERROR(FALSE);
+			LPASSERT(FALSE);
+			LOG_PROCESS_ERROR(FALSE);
+		}
+
+		return pstEvent;
+	Exit0:
+
+		--ms_dwNetEventCount;
+		SAFE_DELETE(pstEvent);
+		return nullptr;
+	}
+	
 	static void LPAPI DeleteNetEvent(NET_EVENT* & pNetEvent)
 	{
 		if (nullptr != pNetEvent)
@@ -177,19 +205,19 @@ private:
 
 	// Summary:
 	//		处理接收事件
-	void LPAPI _ProcRecvEvent(RECV_EVENT* pstRecvEvent);
+	void LPAPI _ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent);
 
 	// Summary:
 	//		处理断开事件
-	void LPAPI _ProcTerminateEvent(TERMINATE_EVENT* pstTerminateEvent);
+	void LPAPI _ProcTerminateEvent(std::shared_ptr<TERMINATE_EVENT> pstTerminateEvent);
 
 	// Summary:
 	//		处理连接建立事件
-	void LPAPI _ProcEstablishEvent(ESTABLISH_EVENT* pstEstablishEvent);
+	void LPAPI _ProcEstablishEvent(std::shared_ptr<ESTABLISH_EVENT> pstEstablishEvent);
 
 	// Summary:
 	//		处理连接错误事件
-	void LPAPI _ProcConnectErrorEvent(CONNECT_ERROR_EVENT* pstConnectErrorEvent);
+	void LPAPI _ProcConnectErrorEvent(std::shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent);
 
 private:
 
