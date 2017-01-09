@@ -68,8 +68,8 @@ struct DECLARE ESTABLISH_EVENT
 //		连接错误事件结构体
 struct DECLARE CONNECT_ERROR_EVENT
 {
-	ILPConnectorImpl*        pConnector;
-	LPUINT32                 dwErrorNo;
+	std::shared_ptr<ILPConnectorImpl>  pConnector;
+	LPUINT32                           dwErrorNo;
 };
 
 

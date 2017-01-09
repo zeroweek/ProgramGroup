@@ -231,7 +231,7 @@ void LPAPI LPEventMgr::PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> p
 	
 	pstEvent->eEventType = eEventType_ConnectError;
 	pstEvent->dwFlag = pConnector->GetId();
-	pstEvent->pConnectErrorEvent->pConnector = pConnector.get();
+	pstEvent->pConnectErrorEvent->pConnector = pConnector;
 	pstEvent->pConnectErrorEvent->dwErrorNo = dwErrorNo;
 
 	m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
@@ -425,7 +425,7 @@ void LPAPI LPEventMgr::_ProcConnectErrorEvent(std::shared_ptr<CONNECT_ERROR_EVEN
 	LOG_PROCESS_ERROR(pstConnectErrorEvent);
 	LOG_PROCESS_ERROR(m_pNetMessageHandler);
 
-	m_pNetMessageHandler->OnConnectError(std::shared_ptr<ILPConnector>(pstConnectErrorEvent->pConnector), pstConnectErrorEvent->dwErrorNo);
+	m_pNetMessageHandler->OnConnectError(pstConnectErrorEvent->pConnector, pstConnectErrorEvent->dwErrorNo);
 
 Exit0:
 
