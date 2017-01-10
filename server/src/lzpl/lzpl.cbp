@@ -5,7 +5,7 @@
 		<Option title="lzpl" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;" />
+		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../lib/linux64/lzpld" prefix_auto="1" extension_auto="1" />
@@ -16,8 +16,6 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
-					<Add option="-Wsign-compare" />
-					<Add option="-Wunused-but-set-variable" />
 					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
 				</Compiler>
 			</Target>
@@ -30,8 +28,6 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
-					<Add option="-Wsign-compare" />
-					<Add option="-Wunused-but-set-variable" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -93,6 +89,9 @@
 		<Unit filename="../../inc/lzpl/lp_md5.h">
 			<Option virtualFolder="encrypt/" />
 		</Unit>
+		<Unit filename="../../inc/lzpl/lp_messageserializer.h">
+			<Option virtualFolder="message/" />
+		</Unit>
 		<Unit filename="../../inc/lzpl/lp_objpool.h">
 			<Option virtualFolder="utility/" />
 		</Unit>
@@ -141,6 +140,9 @@
 		<Unit filename="../../inc/lzpl/lpi_buf.h">
 			<Option virtualFolder="string/" />
 		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_connector.h">
+			<Option virtualFolder="net/interface/" />
+		</Unit>
 		<Unit filename="../../inc/lzpl/lpi_data.h">
 			<Option virtualFolder="data/" />
 		</Unit>
@@ -153,11 +155,35 @@
 		<Unit filename="../../inc/lzpl/lpi_identid.h">
 			<Option virtualFolder="property/" />
 		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_listener.h">
+			<Option virtualFolder="net/interface/" />
+		</Unit>
 		<Unit filename="../../inc/lzpl/lpi_logger.h">
 			<Option virtualFolder="log/" />
 		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_message.h">
+			<Option virtualFolder="message/interface/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_messageserializer.h">
+			<Option virtualFolder="message/interface/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_net.h">
+			<Option virtualFolder="net/interface/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_netmessagehandler.h">
+			<Option virtualFolder="message/interface/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_packetparser.h">
+			<Option virtualFolder="message/interface/" />
+		</Unit>
 		<Unit filename="../../inc/lzpl/lpi_property.h">
 			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_socker.h">
+			<Option virtualFolder="net/interface/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lpi_sockoption.h">
+			<Option virtualFolder="net/interface/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lpi_table.h">
 			<Option virtualFolder="table/" />
@@ -221,6 +247,51 @@
 		</Unit>
 		<Unit filename="log/lp_profile.cpp">
 			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="message/lp_messageserializer.cpp">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="net/lp_connector.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_connector.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_listener.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_listener.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_netdef.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_netoption.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_netoption.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_reactor.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_reactor.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_socker.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_socker.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_sockermgr.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_sockermgr.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lpi_reactor.h">
+			<Option virtualFolder="net/" />
 		</Unit>
 		<Unit filename="property/lp_property.cpp">
 			<Option virtualFolder="property/" />

@@ -4,6 +4,11 @@
 #include "lp_string.h"
 #include "lp_dump.h"
 #include "lp_net.h"
+#include "lp_global.h"
+
+#ifndef _WIN32
+#include <arpa/inet.h>
+#endif
 
 
 
@@ -291,8 +296,11 @@ void LPAPI LPSocker::Reset()
 BOOL LPAPI LPSocker::PostRecv()
 {
 	LPINT32 nResult = 0;
+
+#	ifdef _WIN32
 	DWORD dwReadLen;
 	DWORD dwFlags = 0;
+#	endif
 
 	LOG_PROCESS_ERROR(m_pRecvLoopBuf);
 
@@ -311,7 +319,11 @@ BOOL LPAPI LPSocker::PostRecv()
 		m_stRecvPerIoData.eHandlerType = eEventHandlerType_Connector;
 	}
 
-	nResult = WSARecv(GetSock(), &m_stRecvPerIoData.stWsaBuf, 1, &dwReadLen, &dwFlags, &m_stRecvPerIoData.stOverlapped, NULL);
+#	ifdef _WIN32
+	{
+		nResult = WSARecv(GetSock(), &m_stRecvPerIoData.stWsaBuf, 1, &dwReadLen, &dwFlags, &m_stRecvPerIoData.stOverlapped, NULL);
+	}
+#	endif
 	if (0 != nResult)
 	{
 		if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())
@@ -365,7 +377,12 @@ BOOL LPAPI LPSocker::PostSend()
 		{
 			m_stSendPerIoData.eHandlerType = eEventHandlerType_Connector;
 		}
-		nResult = WSASend(GetSock(), &m_stSendPerIoData.stWsaBuf, 1, &dwNumberOfBytesSend, 0, &m_stSendPerIoData.stOverlapped, NULL);
+
+#		ifdef _WIN32
+		{
+			nResult = WSASend(GetSock(), &m_stSendPerIoData.stWsaBuf, 1, &dwNumberOfBytesSend, 0, &m_stSendPerIoData.stOverlapped, NULL);
+		}
+#		endif
 		if (0 != nResult)
 		{
 			if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())

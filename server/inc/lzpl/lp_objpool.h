@@ -250,7 +250,7 @@ private:
 
 		for (cit = m_list.begin(); cit != end; ++cit)
 		{
-			pNode = POOL_NODE*(*cit);
+			pNode = (POOL_NODE*)(*cit);
 			if (pt >= pNode->buf_start && pt < pNode->buf_end)
 			{
 				nResult = TRUE;

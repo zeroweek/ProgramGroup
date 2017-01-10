@@ -70,16 +70,19 @@ template<class T> inline DECLARE T LPAPI lpClamp(T v, T _min, T _max) { return v
 
 
 
-inline BOOL lpIsZeroFloat(const FLOAT fValue, FLOAT epsilon = 1e-6)
+inline BOOL LPAPI lpIsZeroFloat(const FLOAT fValue, FLOAT epsilon = 1e-6)
 {
 	return fabs(fValue) <= epsilon ? TRUE : FALSE;
 }
 
-
-
-inline BOOL lpIsZeroDouble(const DOUBLE dValue, DOUBLE epsilon = 1e-15)
+inline BOOL LPAPI lpIsZeroDouble(const DOUBLE dValue, DOUBLE epsilon = 1e-15)
 {
 	return fabs(dValue) <= epsilon ? TRUE : FALSE;
+}
+
+inline LPINT32 LPAPI lpGetErrno()
+{
+	return errno;
 }
 
 

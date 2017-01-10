@@ -157,7 +157,7 @@
 #define INFINITE_VALUE                                     (0xffffffff)	        //无穷值
 
 #ifndef _WIN32
-#   define INVALID_SOCKET                                  (NULL)
+#   define INVALID_SOCKET                                  (SOCKET)(~0)
 #endif
 
 #if defined _WIN32
@@ -171,11 +171,17 @@
 #endif
 
 
+
 //消息相关
 #define MAX_PACKET_LEN                                     (65535)              //最大数据包长度
 
 
 
+//错误码函数定义
+#ifndef _WIN32
+#	define GetLastError                                    lpGetErrno
+#	define WSAGetLastError                                 GetLastError
+#endif
 
 
 

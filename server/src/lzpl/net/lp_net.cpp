@@ -152,22 +152,22 @@ Exit0:
 	return FALSE;
 }
 
-LPSockerMgr &LPAPI LPNetImpl::GetSockerMgr(void)
+LPSockerMgr &LPAPI LPNetImpl::GetSockerMgr()
 {
 	return m_oSockerMgr;;
 }
 
-LPEventMgr &LPAPI LPNetImpl::GetEventMgr(void)
+LPEventMgr &LPAPI LPNetImpl::GetEventMgr()
 {
 	return m_oEventMgr;
 }
 
-ILPReactor& LPAPI LPNetImpl::GetReactorImpl(void)
+ILPReactor& LPAPI LPNetImpl::GetReactorImpl()
 {
 	return *m_pReactor;
 }
 
-NET_CONFIG& LPAPI LPNetImpl::GetNetConfig(void)
+NET_CONFIG& LPAPI LPNetImpl::GetNetConfig()
 {
 	return m_oNetConfig;
 }

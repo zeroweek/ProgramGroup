@@ -2,6 +2,11 @@
 #include "lp_processerror.h"
 #include "lp_system.h"
 #include "lp_net.h"
+#include "lp_global.h"
+
+#ifndef _WIN32
+#include <arpa/inet.h>
+#endif
 
 
 
@@ -68,7 +73,7 @@ BOOL LPAPI LPListener::UnInit()
 
 	if (INVALID_SOCKET != m_hListenSock)
 	{
-		CancelIo((HANDLE)m_hListenSock);
+		lpCancelIoEx(m_hListenSock);
 		lpCloseSocket(m_hListenSock);
 		m_hListenSock = INVALID_SOCKET;
 	}
@@ -107,7 +112,11 @@ BOOL LPAPI LPListener::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bRe
 	m_dwPort = dwPort;
 	m_bReUseAddr = bReUseAddr;
 
-	m_hListenSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+#	ifdef _WIN32
+	{
+		m_hListenSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	}
+#	endif
 	if (-1 == m_hListenSock)
 	{
 		FTL("%s create socket error, %s:%d, errno %d", __FUNCTION__, m_strIP.c_str(), m_dwPort, WSAGetLastError());
@@ -191,7 +200,7 @@ void LPAPI LPListener::Stop()
 
 	if (INVALID_SOCKET != m_hListenSock)
 	{
-		CancelIo((HANDLE)m_hListenSock);
+		lpCancelIoEx(m_hListenSock);
 		lpCloseSocket(m_hListenSock);
 		m_hListenSock = INVALID_SOCKET;
 	}
@@ -299,23 +308,28 @@ void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 			IMP("listener create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), hSock);
 
 			//设置sock选项
-			::setsockopt(hSock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char*)&m_hListenSock, sizeof(SOCKET));
-			::setsockopt(hSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+#			ifdef _WIN32
+			{
+				::setsockopt(hSock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char*)&m_hListenSock, sizeof(SOCKET));
+				::setsockopt(hSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
 
-			idwRemoteAddrLen = sizeof(sockaddr_in);
-			idwLocalAddrLen = sizeof(sockaddr_in);
-			idwAddrLen = sizeof(sockaddr_in) + 16;
 
-			m_lpfnGetAcceptExSockaddrs(
-				pstPerIoData->szBuf,
-				0,
-				idwAddrLen,
-				idwAddrLen,
-				(SOCKADDR**)&pstLocalAddr,
-				&idwLocalAddrLen,
-				(SOCKADDR**)&pstRemoteAddr,
-				&idwRemoteAddrLen
-			);
+				idwRemoteAddrLen = sizeof(sockaddr_in);
+				idwLocalAddrLen = sizeof(sockaddr_in);
+				idwAddrLen = sizeof(sockaddr_in) + 16;
+
+				m_lpfnGetAcceptExSockaddrs(
+					pstPerIoData->szBuf,
+					0,
+					idwAddrLen,
+					idwAddrLen,
+					(SOCKADDR**)&pstLocalAddr,
+					&idwLocalAddrLen,
+					(SOCKADDR**)&pstRemoteAddr,
+					&idwRemoteAddrLen
+				);
+			}
+#			endif
 
 			//设置LPSocker对象
 			pSocker->SetSock(hSock);
@@ -383,39 +397,43 @@ BOOL LPAPI LPListener::_InitAcceptEx()
 	GUID stGuidAcceptEx = WSAID_ACCEPTEX;
 	GUID stGuidGetAcceptExSockaddrs = WSAID_GETACCEPTEXSOCKADDRS;
 
-	hSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	if (INVALID_SOCKET == hSock)
+#	ifdef _WIN32
 	{
-		FTL("%s WSASocket failed, errno %d", __FUNCTION__, WSAGetLastError());
-		PROCESS_ERROR(FALSE);
+		hSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+		if (INVALID_SOCKET == hSock)
+		{
+			FTL("%s WSASocket failed, errno %d", __FUNCTION__, WSAGetLastError());
+			PROCESS_ERROR(FALSE);
+		}
+
+		nResult = ::WSAIoctl(
+			hSock,
+			SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&stGuidAcceptEx,
+			sizeof(stGuidAcceptEx),
+			&m_lpfnAcceptEx,
+			sizeof(LPFN_ACCEPTEX),
+			&dwBytes,
+			NULL,
+			NULL
+		);
+		LOG_PROCESS_ERROR(nResult == 0);
+
+		dwBytes = 0;
+		nResult = ::WSAIoctl(
+			hSock,
+			SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&stGuidGetAcceptExSockaddrs,
+			sizeof(stGuidGetAcceptExSockaddrs),
+			&m_lpfnGetAcceptExSockaddrs,
+			sizeof(LPFN_GETACCEPTEXSOCKADDRS),
+			&dwBytes,
+			NULL,
+			NULL
+		);
+		LOG_PROCESS_ERROR(nResult == 0);
 	}
-
-	nResult = ::WSAIoctl(
-		hSock,
-		SIO_GET_EXTENSION_FUNCTION_POINTER,
-		&stGuidAcceptEx,
-		sizeof(stGuidAcceptEx),
-		&m_lpfnAcceptEx,
-		sizeof(LPFN_ACCEPTEX),
-		&dwBytes,
-		NULL,
-		NULL
-	);
-	LOG_PROCESS_ERROR(nResult == 0);
-
-	dwBytes = 0;
-	nResult = ::WSAIoctl(
-		hSock,
-		SIO_GET_EXTENSION_FUNCTION_POINTER,
-		&stGuidGetAcceptExSockaddrs,
-		sizeof(stGuidGetAcceptExSockaddrs),
-		&m_lpfnGetAcceptExSockaddrs,
-		sizeof(LPFN_GETACCEPTEXSOCKADDRS),
-		&dwBytes,
-		NULL,
-		NULL
-	);
-	LOG_PROCESS_ERROR(nResult == 0);
+#	endif
 
 	//该sock只用于获取函数指针
 	lpCloseSocket(hSock);
@@ -441,28 +459,32 @@ BOOL LPAPI LPListener::_PostAcceptEx(PER_IO_DATA* pstPerIoData)
 
 	LOG_PROCESS_ERROR(pstPerIoData);
 
-	hNewSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	if (INVALID_SOCKET == hNewSock)
+#	ifdef _WIN32
 	{
-		FTL("%s WSASocket failed, errno %d", __FUNCTION__, WSAGetLastError());
-		PROCESS_ERROR(FALSE);
+		hNewSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+		if (INVALID_SOCKET == hNewSock)
+		{
+			FTL("%s WSASocket failed, errno %d", __FUNCTION__, WSAGetLastError());
+			PROCESS_ERROR(FALSE);
+		}
+
+		pstPerIoData->hSock = hNewSock;
+		pstPerIoData->eIoOptType = eIoOptType_Accept;
+		pstPerIoData->eHandlerType = eEventHandlerType_Listener;
+		memset(&pstPerIoData->stOverlapped, 0, sizeof(pstPerIoData->stOverlapped));
+
+		nResult = m_lpfnAcceptEx(
+			m_hListenSock,
+			hNewSock,
+			pstPerIoData->szBuf,
+			0,
+			sizeof(SOCKADDR_IN) + 16,
+			sizeof(SOCKADDR_IN) + 16,
+			&dwBytes,
+			&pstPerIoData->stOverlapped
+		);
 	}
-
-	pstPerIoData->hSock = hNewSock;
-	pstPerIoData->eIoOptType = eIoOptType_Accept;
-	pstPerIoData->eHandlerType = eEventHandlerType_Listener;
-	memset(&pstPerIoData->stOverlapped, 0, sizeof(pstPerIoData->stOverlapped));
-
-	nResult = m_lpfnAcceptEx(
-		m_hListenSock,
-		hNewSock,
-		pstPerIoData->szBuf,
-		0,
-		sizeof(SOCKADDR_IN) + 16,
-		sizeof(SOCKADDR_IN) + 16,
-		&dwBytes,
-		&pstPerIoData->stOverlapped
-	);
+#	endif
 
 	if (!nResult)
 	{

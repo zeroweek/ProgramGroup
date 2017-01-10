@@ -73,7 +73,7 @@ public:
 	//		反初始化函数
 	//Return:
 	//		成功返回TRUE，失败返回FALSE
-	void LPAPI LPNetImpl::UnInit(void);
+	void LPAPI UnInit();
 
 	// Summary:
 	//		查找监听器对象
@@ -85,19 +85,19 @@ public:
 
 	// Summary:
 	//		无
-	LPSockerMgr& LPAPI GetSockerMgr(void);
+	LPSockerMgr& LPAPI GetSockerMgr();
 
 	// Summary:
 	//		无
-	LPEventMgr& LPAPI GetEventMgr(void);
+	LPEventMgr& LPAPI GetEventMgr();
 
 	// Summary:
 	//		无
-	ILPReactor& LPAPI GetReactorImpl(void);
+	ILPReactor& LPAPI GetReactorImpl();
 
 	// Summary:
 	//		无
-	NET_CONFIG&  LPAPI GetNetConfig(void);
+	NET_CONFIG&  LPAPI GetNetConfig();
 
 protected:
 

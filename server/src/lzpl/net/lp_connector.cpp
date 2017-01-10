@@ -1,6 +1,11 @@
 #include "lp_connector.h"
 #include "lp_processerror.h"
 #include "lp_net.h"
+#include "lp_global.h"
+
+#ifndef _WIN32
+#include <arpa/inet.h>
+#endif
 
 
 
@@ -67,7 +72,7 @@ BOOL LPAPI LPConnector::UnInit()
 
 	if (INVALID_SOCKET != m_hConnectSock)
 	{
-		CancelIo((HANDLE)m_hConnectSock);
+		lpCancelIoEx(m_hConnectSock);
 		lpCloseSocket(m_hConnectSock);
 		m_hConnectSock = INVALID_SOCKET;
 	}
@@ -250,12 +255,18 @@ void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 	SOCKET hSock = INVALID_SOCKET;
 	ILPSockerImpl* pSocker = NULL;
 	sockaddr_in stLocalAddr;
-	LPINT32 idwLocalAddrLen = 0;
 	LPINT32 idwRetLocal = 0;
 	sockaddr_in stRemoteAddr;
-	LPINT32 idwRemoteAddrLen = 0;
 	LPINT32 idwRetRemote = 0;
 	const char cArg = 1;
+
+#	ifdef _WIN32
+	LPINT32 idwLocalAddrLen = 0;
+	LPINT32 idwRemoteAddrLen = 0;
+#	else
+	socklen_t idwLocalAddrLen = 0;
+	socklen_t idwRemoteAddrLen = 0;
+#	endif
 
 	LOG_PROCESS_ERROR(pstPerIoData);
 	LOG_PROCESS_ERROR(eIoOptType_Connect == pstPerIoData->eIoOptType);
@@ -337,8 +348,12 @@ void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 			}
 
 			//设置sock选项
-			::setsockopt(m_hConnectSock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0);
-			::setsockopt(m_hConnectSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+#			ifdef _WIN32
+			{
+				::setsockopt(m_hConnectSock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0);
+				::setsockopt(m_hConnectSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+			}
+#			endif
 
 			//设置LPSocker对象
 			pSocker->SetSock(m_hConnectSock);
@@ -428,26 +443,30 @@ BOOL LPAPI LPConnector::_InitConnectEx()
 	DWORD dwBytes = 0;
 	GUID stGuidAcceptEx = WSAID_CONNECTEX;
 
-	hSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	if (INVALID_SOCKET == hSock)
+#	ifdef _WIN32
 	{
-		FTL("%s ::WSASocket failed, %s:%d, errno %d", __FUNCTION__, m_strIP.c_str(), m_dwPort, WSAGetLastError());
-		PROCESS_ERROR(FALSE);
+		hSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+		if (INVALID_SOCKET == hSock)
+		{
+			FTL("%s ::WSASocket failed, %s:%d, errno %d", __FUNCTION__, m_strIP.c_str(), m_dwPort, WSAGetLastError());
+			PROCESS_ERROR(FALSE);
+		}
+
+
+		nResult = ::WSAIoctl(
+			hSock,
+			SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&stGuidAcceptEx,
+			sizeof(stGuidAcceptEx),
+			&m_lpfnConnectEx,
+			sizeof(LPFN_CONNECTEX),
+			&dwBytes,
+			NULL,
+			NULL
+		);
+		LOG_PROCESS_ERROR(nResult == 0);
 	}
-
-
-	nResult = ::WSAIoctl(
-		hSock,
-		SIO_GET_EXTENSION_FUNCTION_POINTER,
-		&stGuidAcceptEx,
-		sizeof(stGuidAcceptEx),
-		&m_lpfnConnectEx,
-		sizeof(LPFN_CONNECTEX),
-		&dwBytes,
-		NULL,
-		NULL
-	);
-	LOG_PROCESS_ERROR(nResult == 0);
+#	endif
 
 	//该sock只用于获取函数指针
 	lpCloseSocket(hSock);
@@ -473,7 +492,12 @@ BOOL LPAPI LPConnector::_PostConnectEx(PER_IO_DATA* pstPerIoData)
 
 	LOG_PROCESS_ERROR(pstPerIoData);
 
-	m_hConnectSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+#	ifdef _WIN32
+	{
+		m_hConnectSock = ::WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	}
+#	endif
+
 	if (INVALID_SOCKET == m_hConnectSock)
 	{
 		FTL("%s WSASocket failed, errno %d", __FUNCTION__, WSAGetLastError());

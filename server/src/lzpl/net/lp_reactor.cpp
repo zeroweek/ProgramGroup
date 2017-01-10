@@ -53,17 +53,13 @@ void LPAPI ILPReactor::DeleteReactor(std::shared_ptr<ILPReactor>& pReactor)
 
 BOOL LPAPI LPReactorIocpImpl::RegisterEventHandler(ILPEventHandler* pEventHandler)
 {
-	LPUINT32 dwIndex = 0;
-
 	LOG_PROCESS_ERROR(pEventHandler);
 	LOG_PROCESS_ERROR(m_pCompletionPort);
 	LOG_PROCESS_ERROR(m_nCompletionPortCount > 0);
 
-	dwIndex = (LPUINT64)(pEventHandler->GetHandle()) % m_nCompletionPortCount;
-
 #   if defined _WIN32
 	{
-		if (NULL == CreateIoCompletionPort(pEventHandler->GetHandle(), m_pCompletionPort[dwIndex], (ULONG_PTR)pEventHandler, 0))
+		if (NULL == CreateIoCompletionPort(pEventHandler->GetHandle(), m_pCompletionPort[(LPUINT64)(pEventHandler->GetHandle()) % m_nCompletionPortCount], (ULONG_PTR)pEventHandler, 0))
 		{
 			FTL("function %s in file %s at line %d : errno %d", __FUNCTION__, __FILE__, __LINE__, WSAGetLastError());
 			PROCESS_ERROR(FALSE);
@@ -82,7 +78,7 @@ BOOL LPAPI LPReactorIocpImpl::UnRegisterEventHandler(ILPEventHandler* pEventHand
 
 }
 
-unsigned LPAPI LPReactorIocpImpl::ThreadFunc(LPVOID pParam)
+unsigned LPAPI LPReactorIocpImpl::ThreadFunc(void* pParam)
 {
 	REACTOR_THREAD_PARAM stThreadParam;
 	REACTOR_THREAD_PARAM* pThreadParam = (REACTOR_THREAD_PARAM*)pParam;
@@ -102,9 +98,10 @@ Exit0:
 
 BOOL LPAPI LPReactorIocpImpl::Init(BOOL bOneCompletionPortOneThread)
 {
-	LPINT32 nResult = 0;
+#	ifdef _WIN32
 	SYSTEM_INFO stSysInfo;
-	UINT dwThreadId = 0;
+	LPUINT32 dwThreadId = 0;
+#	endif
 
 	LOG_PROCESS_ERROR(eCommonState_NoInit == _GetState());
 	_SetState(eCommonState_Initing);
@@ -186,7 +183,9 @@ Exit0:
 
 BOOL LPAPI LPReactorIocpImpl::UnInit()
 {
+#	ifdef _WIN32
 	LPINT32 nResult = 0;
+#	endif
 
 	PROCESS_SUCCESS(_GetState() == eCommonState_NoInit || _GetState() >= eCommonState_UnIniting); 
 
@@ -244,7 +243,7 @@ Exit1:
 
 void LPAPI LPReactorIocpImpl::OnExecute(LPINT32 nCompletionPortIndex)
 {
-	BOOL             bRet;
+	BOOL             bRet = FALSE;
 	DWORD            dwByteTransferred;
 	ILPEventHandler* pEventHandler;
 	PER_IO_DATA*     pstPerIoData;

@@ -60,8 +60,13 @@
 #endif
 
 #ifndef _WIN32
-	typedef LPUINT32             SOCKET;
-	typedef LPINT32              HANDLE;
+	typedef LPUINT64             SOCKET;
+	typedef LPUINT64             HANDLE;
+#endif
+
+#ifndef DWORD
+	typedef unsigned long        DWORD;
+	typedef DWORD*               LPDWORD;
 #endif
 
 

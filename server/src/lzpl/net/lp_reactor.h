@@ -67,7 +67,7 @@ public:
 
 	// Summary：
 	//     完成端口线程处理函数
-	static unsigned LPAPI ThreadFunc(LPVOID pParam);
+	static unsigned LPAPI ThreadFunc(void* pParam);
 
 	// Summary：
 	//		无
