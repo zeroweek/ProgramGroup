@@ -306,6 +306,9 @@
     <ClInclude Include="net\lp_sockermgr.h">
       <Filter>net</Filter>
     </ClInclude>
+    <ClInclude Include="net\lp_netdef.h">
+      <Filter>net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt\lp_bt.cpp">

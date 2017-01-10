@@ -159,6 +159,7 @@
     <ClInclude Include="net\lp_connector.h" />
     <ClInclude Include="net\lp_listener.h" />
     <ClInclude Include="net\lp_net.h" />
+    <ClInclude Include="net\lp_netdef.h" />
     <ClInclude Include="net\lp_netevent.h" />
     <ClInclude Include="net\lp_netoption.h" />
     <ClInclude Include="net\lp_reactor.h" />

@@ -29,11 +29,11 @@ LPExternalMessageSerializer::~LPExternalMessageSerializer()
 
 BOOL LPAPI LPExternalMessageSerializer::Init(char * pszSerializeBuf, LPUINT32 dwSerializeBufSize, const char * pszUnSerializeBuf, LPUINT32 dwUnSerializeBufSize)
 {
-	LOG_PROCESS_ERROR(NULL == pszSerializeBuf && 0 == dwSerializeBufSize 
-		|| NULL != pszSerializeBuf && 0 != dwSerializeBufSize);
+	LOG_PROCESS_ERROR((NULL == pszSerializeBuf && 0 == dwSerializeBufSize)
+		|| (NULL != pszSerializeBuf && 0 != dwSerializeBufSize));
 
-	LOG_PROCESS_ERROR(NULL == pszUnSerializeBuf && 0 == dwUnSerializeBufSize 
-		|| NULL != pszUnSerializeBuf && 0 != dwUnSerializeBufSize);
+	LOG_PROCESS_ERROR((NULL == pszUnSerializeBuf && 0 == dwUnSerializeBufSize)
+		|| (NULL != pszUnSerializeBuf && 0 != dwUnSerializeBufSize));
 
 	m_dwSerializeSize = 0;
 	m_pSerializeBuf = pszSerializeBuf;
@@ -100,7 +100,6 @@ Exit0:
 
 BOOL LPAPI LPExternalMessageSerializer::ReadUint16(LPUINT16 * pwValue)
 {
-	char* pBuf = NULL;
 	LPINT32 nResult = 0;
 	LPUINT8 byData1 = 0;
 	LPUINT8 byData2 = 0;
@@ -144,7 +143,6 @@ Exit0:
 
 BOOL LPAPI LPExternalMessageSerializer::ReadUint32(LPUINT32 * pdwValue)
 {
-	char* pBuf = NULL;
 	LPINT32 nResult = 0;
 	LPUINT16 wData1 = 0;
 	LPUINT16 wData2 = 0;
@@ -188,7 +186,6 @@ Exit0:
 
 BOOL LPAPI LPExternalMessageSerializer::ReadUint64(LPUINT64 * pqwValue)
 {
-	char* pBuf = NULL;
 	LPINT32 nResult = 0;
 	LPUINT32 dwData1 = 0;
 	LPUINT32 dwData2 = 0;
