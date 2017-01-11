@@ -45,6 +45,10 @@ public:
 
 	// Summary:
 	//   нч
+	LPTime(LPUINT64 qwTimeStamp);
+
+	// Summary:
+	//   нч
 	~LPTime();
 
 	// Summary:

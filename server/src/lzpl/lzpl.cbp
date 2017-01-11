@@ -5,7 +5,7 @@
 		<Option title="lzpl" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;" />
+		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;db/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../lib/linux64/lzpld" prefix_auto="1" extension_auto="1" />
@@ -17,6 +17,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql-5.6.27/include/win64" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -61,6 +62,9 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_datamanager.h">
 			<Option virtualFolder="file/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_dbinit.h">
+			<Option virtualFolder="db/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_def.h">
 			<Option virtualFolder="base/" />
@@ -109,6 +113,12 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_singleton.h">
 			<Option virtualFolder="utility/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_sqlmgr.h">
+			<Option virtualFolder="db/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_sqlstmt.h">
+			<Option virtualFolder="db/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_stacklist.h">
 			<Option virtualFolder="container/" />
@@ -206,6 +216,15 @@
 		<Unit filename="data/lp_datalist.cpp">
 			<Option virtualFolder="data/" />
 		</Unit>
+		<Unit filename="db/lp_dbinit.cpp">
+			<Option virtualFolder="db/" />
+		</Unit>
+		<Unit filename="db/lp_sqlmgr.cpp">
+			<Option virtualFolder="db/" />
+		</Unit>
+		<Unit filename="db/lp_sqlstmt.cpp">
+			<Option virtualFolder="db/" />
+		</Unit>
 		<Unit filename="encrypt/lp_base64.cpp">
 			<Option virtualFolder="encrypt/" />
 		</Unit>
@@ -263,7 +282,19 @@
 		<Unit filename="net/lp_listener.h">
 			<Option virtualFolder="net/" />
 		</Unit>
+		<Unit filename="net/lp_net.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_net.h">
+			<Option virtualFolder="net/" />
+		</Unit>
 		<Unit filename="net/lp_netdef.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_netevent.cpp">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lp_netevent.h">
 			<Option virtualFolder="net/" />
 		</Unit>
 		<Unit filename="net/lp_netoption.cpp">
@@ -290,7 +321,19 @@
 		<Unit filename="net/lp_sockermgr.h">
 			<Option virtualFolder="net/" />
 		</Unit>
+		<Unit filename="net/lpi_connectorimpl.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lpi_eventhandler.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lpi_listenerimpl.h">
+			<Option virtualFolder="net/" />
+		</Unit>
 		<Unit filename="net/lpi_reactor.h">
+			<Option virtualFolder="net/" />
+		</Unit>
+		<Unit filename="net/lpi_sockerimpl.h">
 			<Option virtualFolder="net/" />
 		</Unit>
 		<Unit filename="property/lp_property.cpp">

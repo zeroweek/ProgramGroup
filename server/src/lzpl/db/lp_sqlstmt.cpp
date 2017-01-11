@@ -3,6 +3,7 @@
 #include "lp_sqlmgr.h"
 #include "lp_string.h"
 #include "zlib.h"
+#include "lp_time.h"
 
 
 
@@ -98,20 +99,17 @@ BOOL LPAPI LPSqlStmt::PushTime(time_t tValue)
 {
 	LPINT32 nResult = 0;
 	MYSQL_TIME mysqlTime;
-	struct tm tTm;
+	LPTime tTime = LPTime((LPUINT64)tValue);
 
 	LOG_PROCESS_ERROR(m_nParamCount < m_pSqlStmtData->nParamCount);
 	LOG_PROCESS_ERROR(m_pSqlStmtData->nParamType[m_nParamCount] == MYSQL_TYPE_DATETIME);
-	
-	nResult  = localtime_s(&tTm, &tValue);
-	LOG_PROCESS_ERROR(0 == nResult);
 
-	mysqlTime.year            = tTm.tm_year + 1900;
-	mysqlTime.month           = tTm.tm_mon + 1;
-	mysqlTime.day             = tTm.tm_mday;
-	mysqlTime.hour            = tTm.tm_hour;
-	mysqlTime.minute          = tTm.tm_min;
-	mysqlTime.second          = tTm.tm_sec;
+	mysqlTime.year            = tTime.GetYear();
+	mysqlTime.month           = tTime.GetMon();
+	mysqlTime.day             = tTime.GetMday();
+	mysqlTime.hour            = tTime.GetHour();
+	mysqlTime.minute          = tTime.GetMin();
+	mysqlTime.second          = tTime.GetSec();
 
 	mysqlTime.neg             = FALSE;
 	mysqlTime.second_part     = 0;

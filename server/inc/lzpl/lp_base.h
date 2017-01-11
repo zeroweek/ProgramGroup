@@ -23,6 +23,7 @@
 	#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 	#pragma GCC diagnostic ignored "-Wunused-variable"
 	#pragma GCC diagnostic ignored "-Wsign-compare"
+	#pragma GCC diagnostic ignored "-Wdelete-incomplete"
 	//#pragma GCC diagnostic pop
 #endif
 

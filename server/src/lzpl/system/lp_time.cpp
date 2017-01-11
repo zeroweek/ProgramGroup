@@ -27,6 +27,42 @@ LPTime::LPTime()
 	memset(&m_stTimeval, 0, sizeof(m_stTimeval));
 }
 
+LZPL::LPTime::LPTime(LPUINT64 qwTimeStamp)
+{
+	LPTime stTime;
+	time_t tTime = qwTimeStamp;
+	struct tm stTm;
+	struct tm* pTm = nullptr;
+
+#	ifdef _WIN32
+	{
+		LPINT32 nResult = gmtime_s(&stTm, &tTime);
+		PROCESS_ERROR(nResult == 0);
+	}
+#	else
+	{
+		pTm = gmtime_r(&tTime, &stTm);
+		PROCESS_ERROR(pTm != nullptr);
+	}
+#	endif
+
+	m_Sec = stTm.tm_sec;
+	m_Min = stTm.tm_min;
+	m_Hour = stTm.tm_hour;
+	m_Mday = stTm.tm_mday;
+	m_Mon = stTm.tm_mon + 1;
+	m_Year = stTm.tm_year + 1900;
+	m_Wday = stTm.tm_wday;
+	m_Yday = stTm.tm_yday;
+	m_Msec = 0;
+
+	m_stTimeval.m_qwSec = qwTimeStamp;
+	m_stTimeval.m_qwUsec = 0;
+
+Exit0:
+	return ;
+}
+
 LPTime::~LPTime()
 {
 

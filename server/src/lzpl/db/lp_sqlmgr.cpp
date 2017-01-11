@@ -591,13 +591,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback 
 			{
 				if (bUnsigned)
 				{
-					LPUINT8 ucValue = va_arg(valist, LPUINT8);
+					LPUINT8 ucValue = va_arg(valist, LPINT32);
 					nResult = pSqlStmt->PushParam(ucValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					LPINT8 cValue = va_arg(valist, LPINT8);
+					LPINT8 cValue = va_arg(valist, LPINT32);
 					nResult = pSqlStmt->PushParam(cValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
@@ -609,13 +609,13 @@ LPSqlStmt *LPAPI LPSqlMgr::_ExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback 
 			{
 				if (bUnsigned)
 				{
-					LPUINT16 uhValue = va_arg(valist, LPUINT16);
+					LPUINT16 uhValue = va_arg(valist, LPINT32);
 					nResult = pSqlStmt->PushParam(uhValue);
 					LOG_PROCESS_ERROR(nResult);
 				}
 				else
 				{
-					LPINT16 hValue = va_arg(valist, LPINT16);
+					LPINT16 hValue = va_arg(valist, LPINT32);
 					nResult = pSqlStmt->PushParam(hValue);
 					LOG_PROCESS_ERROR(nResult);
 				}

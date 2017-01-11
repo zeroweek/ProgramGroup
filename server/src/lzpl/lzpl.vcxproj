@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,7 +78,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql-5.6.27\include\win64;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua-5.1.5\include;%LZPL_ROOT%\server\3rd\tolua++-1.0.92\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\3rd\curl-7.46.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
