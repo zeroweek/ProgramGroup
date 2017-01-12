@@ -1,0 +1,19 @@
+# linux编译
+0. 命令：
+  - scons -h （查看默认config*.py配置的路径）
+  - scons linux -h （查看指定参数为linux时的相关配置参数）
+  - scons （开始编译，使用SConstruct编译定义文件）
+1. scons 过期语法调整
+  - 修改./SConstruct文件，"Options"修改为"Variables"
+  - 修改./src/tests/SCsub文件，"env.Copy()"修改为"env.Clone()"
+2. toluabind.c文件
+  - cp ./src/bin/toluabind_default.c ./src/bin/toluabind.c
+3. 注意点
+  - SConstruct文件可设置使用的config*.py
+  - config_*.py配置可设置编译参数
+    - 修改install前缀（修改prefix）
+    - 修改lua头文件路径（修改CCFLAGS）
+	- 修改引用lua库名（修改LIBS）
+	- 修改引用lua库路径（修改LIBPATH）
+  - custom.py配置可修改相关编译（custom.py的配置可覆盖config_*.py）
+    - 没有生成tolua++二进制前，需要修改build_dev = 0
