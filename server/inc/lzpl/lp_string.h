@@ -200,6 +200,15 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
 
 
+// Summary:
+//   序列化字符串，会再缓冲区后附加终止符
+// Input:
+//   pszBuf: 输出缓冲区
+//   nBufLen: 输出字符串最大长度，包含null终止符
+DECLARE BOOL LPAPI lpSerializeToCString(char* pszBuf, LPUINT32 nBufLen, const char * format, ...);
+
+
+
 //end声明所处的名字空间
 NS_LZPL_END
 

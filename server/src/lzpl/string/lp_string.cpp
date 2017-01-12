@@ -413,6 +413,7 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 		if (nResult < 0)
 		{
 			SAFE_DELETE_SZ(pszBuf);
+			va_end(args);
 			return nullptr;
 		}
 	}
@@ -423,6 +424,7 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 		if (nResult < 0 || nResult >= (LPINT32)nMaxLen + 1)
 		{
 			SAFE_DELETE_SZ(pszBuf);
+			va_end(args);
 			return nullptr;
 		}
 
@@ -436,6 +438,43 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 	return strResult;
 }
 
+DECLARE BOOL LPAPI lpSerializeToCString(char* pszBuf, LPUINT32 nBufLen, const char * format, ...)
+{
+	LPINT32 nResult = 0;
+
+	if (nullptr == pszBuf || nullptr == format || nBufLen <= 0)
+	{
+		return FALSE;
+	}
+
+	va_list args;
+	va_start(args, format);
+#   ifdef _WIN32
+	{
+		//缓冲区大小m（包含终止符），最多输入n长度（会在后面加上终止符，但是n不包含终止符）
+		nResult = vsnprintf_s(pszBuf, nBufLen, nBufLen - 1, format, args);
+		if (nResult < 0)
+		{
+			va_end(args);
+			return FALSE;
+		}
+	}
+#   else
+	{
+		//不指定缓冲区，最多输入n长度（会在后面加上终止符，n包含终止符）
+		nResult = vsnprintf(pszBuf, nBufLen, format, args);
+		if (nResult < 0 || nResult >= (LPINT32)+1)
+		{
+			va_end(args);
+			return FALSE;
+		}
+
+	}
+#   endif
+	va_end(args);
+
+	return TRUE;
+}
 
 
 //end声明所处的名字空间

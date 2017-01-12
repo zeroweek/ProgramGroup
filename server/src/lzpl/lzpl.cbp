@@ -5,7 +5,7 @@
 		<Option title="lzpl" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;db/;" />
+		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;db/;lua/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../lib/linux64/lzpld" prefix_auto="1" extension_auto="1" />
@@ -18,6 +18,8 @@
 					<Add option="-g" />
 					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
 					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -29,6 +31,10 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -89,6 +95,12 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_looplist.h">
 			<Option virtualFolder="container/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_luascript.h">
+			<Option virtualFolder="lua/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_luascriptmgr.h">
+			<Option virtualFolder="lua/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_md5.h">
 			<Option virtualFolder="encrypt/" />
@@ -266,6 +278,12 @@
 		</Unit>
 		<Unit filename="log/lp_profile.cpp">
 			<Option virtualFolder="log/" />
+		</Unit>
+		<Unit filename="lua/lp_luascript.cpp">
+			<Option virtualFolder="lua/" />
+		</Unit>
+		<Unit filename="lua/lp_luascriptmgr.cpp">
+			<Option virtualFolder="lua/" />
 		</Unit>
 		<Unit filename="message/lp_messageserializer.cpp">
 			<Option virtualFolder="message/" />

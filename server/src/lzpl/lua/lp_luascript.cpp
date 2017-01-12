@@ -572,7 +572,7 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 				}
 			}
 			break;
-		case '["':
+		case '[':
 			{
 				if (!bInString && (dwPointer + 1 < dwSize) && (pszFileData[dwPointer + 1] == '['))
 				{
@@ -582,7 +582,7 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 				}
 			}
 			break;
-		case ']"':
+		case ']':
 			{
 				if (!bInString && cStartChar == '[' && (dwPointer + 1 < dwSize) && (pszFileData[dwPointer + 1] == ']'))
 				{
@@ -917,7 +917,15 @@ void LPAPI LPLuaScript::_EnumTable(lua_State * L, int nTableIndex, int nTableDep
 		{
 		case LUA_TNUMBER:
 			{
-				_itoa_s((int)lua_tonumber(L, -2), szKeyName, 10);
+#				ifdef _WIN32
+				{
+					_itoa_s((int)lua_tonumber(L, -2), szKeyName, 10);
+				}
+#				else
+				{
+					lpSerializeToCString(szKeyName, 10, "%d", (int)lua_tonumber(L, -2));
+				}
+#				endif
 				pcszName = szKeyName;
 			}
 			break;
@@ -945,7 +953,15 @@ void LPAPI LPLuaScript::_EnumTable(lua_State * L, int nTableIndex, int nTableDep
 
 		for (int i = 0; i < nTableDepth; ++i)
 		{
-			strcat_s(szTab, "\t");
+#			ifdef _WIN32
+			{
+				strcat_s(szTab, "\t");
+			}
+#			else
+			{
+				strncat(szTab, "\t", 1);
+			}
+#			endif
 		}
 
 		switch (lua_type(L, -1))

@@ -205,11 +205,9 @@ BOOL LPAPI LPSqlMgr::AsyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pf
 	LPSqlStmt* pSqlStmt = NULL;
 
 	va_start(valist, pcszFormat);
-
 	pSqlStmt = _ExecSqlStmt(nSqlStmtId, pfnCallback, pUserData, pcszFormat, valist);
-	LOG_PROCESS_ERROR(pSqlStmt);
-
 	va_end(valist);
+	LOG_PROCESS_ERROR(nullptr != pSqlStmt);
 
 	return TRUE;
 Exit0:
@@ -224,11 +222,9 @@ BOOL LPAPI LPSqlMgr::SyncExecSqlStmt(LPINT32 nSqlStmtId, pfunSqlStmtCallback pfn
 	BOOL bCompleted = FALSE;
 
 	va_start(valist, pcszFormat);
-
 	pSqlStmt = _ExecSqlStmt(nSqlStmtId, pfnCallback, pUserData, pcszFormat, valist);
-	LOG_PROCESS_ERROR(pSqlStmt);
-
 	va_end(valist);
+	LOG_PROCESS_ERROR(nullptr != pSqlStmt);
 
 	while (!bCompleted)
 	{
