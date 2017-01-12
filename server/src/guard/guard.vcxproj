@@ -64,7 +64,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;zlibstat64d.lib;lzpl64d.lib;message64d.lib;lua64d.lib;toluapp64d.lib;common64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;zlibstat64d.lib;lzpl64d.lib;message64d.lib;luastat64d.lib;toluapp64d.lib;common64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
@@ -83,7 +83,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;zlibstat64.lib;lzpl64.lib;message64.lib;lua64.lib;toluapp64.lib;common64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;zlibstat64.lib;lzpl64.lib;message64.lib;luastat64.lib;toluapp64.lib;common64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
