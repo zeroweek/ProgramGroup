@@ -17,7 +17,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
-					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql-5.6.27/include/win64" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql/include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
