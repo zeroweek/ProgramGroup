@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86
+END
+mul_add.pl
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/mul_add.pl
+END
+sqr.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/sqr.pl
+END
+add.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/add.pl
+END
+sub.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/sub.pl
+END
+f
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/f
+END
+mul.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/mul.pl
+END
+comba.pl
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/comba.pl
+END
+div.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/bn/asm/x86/div.pl
+END

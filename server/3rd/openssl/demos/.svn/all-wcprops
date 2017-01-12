@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos
+END
+spkigen.c
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/spkigen.c
+END
+b64.pl
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/b64.pl
+END
+privkey.pem
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/privkey.pem
+END
+selfsign.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/selfsign.c
+END
+b64.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/b64.c
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/README
+END

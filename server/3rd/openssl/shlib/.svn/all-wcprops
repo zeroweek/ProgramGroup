@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib
+END
+svr5-shared-installed
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/svr5-shared-installed
+END
+sco5-shared-gcc.sh
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/sco5-shared-gcc.sh
+END
+hpux10-cc.sh
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/hpux10-cc.sh
+END
+irix.sh
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/irix.sh
+END
+Makefile.hpux10-cc
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/Makefile.hpux10-cc
+END
+solaris.sh
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/solaris.sh
+END
+sco5-shared.sh
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/sco5-shared.sh
+END
+sco5-shared-installed
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/sco5-shared-installed
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/README
+END
+win32dll.bat
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/win32dll.bat
+END
+svr5-shared-gcc.sh
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/svr5-shared-gcc.sh
+END
+win32.bat
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/win32.bat
+END
+svr5-shared.sh
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/svr5-shared.sh
+END
+solaris-sc4.sh
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/solaris-sc4.sh
+END
+sun.sh
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/shlib/sun.sh
+END

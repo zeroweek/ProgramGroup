@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/os2
+END
+backwardify.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/os2/backwardify.pl
+END
+OS2-EMX.cmd
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/os2/OS2-EMX.cmd
+END

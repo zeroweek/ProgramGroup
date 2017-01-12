@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ripemd/asm
+END
+rmd-586.pl
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ripemd/asm/rmd-586.pl
+END
+rips.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ripemd/asm/rips.cpp
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/md5/asm
+END
+md5-586.pl
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/md5/asm/md5-586.pl
+END
+md5-sparcv9.pl
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/md5/asm/md5-sparcv9.pl
+END
+md5-ia64.S
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/md5/asm/md5-ia64.S
+END
+md5-x86_64.pl
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/md5/asm/md5-x86_64.pl
+END

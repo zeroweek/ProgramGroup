@@ -59,7 +59,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,7 +76,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

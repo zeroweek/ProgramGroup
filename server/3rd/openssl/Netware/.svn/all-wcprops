@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware
+END
+globals.txt
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/globals.txt
+END
+cpy_tests.bat
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/cpy_tests.bat
+END
+build.bat
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/build.bat
+END
+set_env.bat
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/set_env.bat
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/readme.txt
+END
+do_tests.pl
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/Netware/do_tests.pl
+END

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes
+END
+gcm128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/gcm128.c
+END
+ofb128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/ofb128.c
+END
+cbc128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/cbc128.c
+END
+ctr128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/ctr128.c
+END
+cts128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/cts128.c
+END
+wrap128.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/wrap128.c
+END
+cfb128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/cfb128.c
+END
+modes_lcl.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/modes_lcl.h
+END
+xts128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/xts128.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/Makefile
+END
+modes.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/modes.h
+END
+ccm128.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/modes/ccm128.c
+END

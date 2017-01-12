@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs
+END
+subinterCA.pem
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/subinterCA.pem
+END
+subinterCA-ss.pem
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/subinterCA-ss.pem
+END
+interCA.pem
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/interCA.pem
+END
+bad.pem
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/bad.pem
+END
+pss1.pem
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/pss1.pem
+END
+roots.pem
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/roots.pem
+END
+subinterCA.key
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/subinterCA.key
+END
+leaf.pem
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/leaf.pem
+END
+rootCA.pem
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/rootCA.pem
+END
+interCA.key
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/interCA.key
+END
+bad.key
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/bad.key
+END
+untrusted.pem
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/untrusted.pem
+END
+leaf.key
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/leaf.key
+END
+rootCA.key
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/certs/rootCA.key
+END

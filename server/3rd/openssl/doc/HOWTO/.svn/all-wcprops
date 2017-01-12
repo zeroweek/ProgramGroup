@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/doc/HOWTO
+END
+certificates.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/doc/HOWTO/certificates.txt
+END
+proxy_certificates.txt
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/doc/HOWTO/proxy_certificates.txt
+END
+keys.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/doc/HOWTO/keys.txt
+END

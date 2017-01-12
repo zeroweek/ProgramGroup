@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoCA
+END
+serial
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoCA/serial
+END
+cacert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoCA/cacert.pem
+END
+index.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoCA/index.txt
+END

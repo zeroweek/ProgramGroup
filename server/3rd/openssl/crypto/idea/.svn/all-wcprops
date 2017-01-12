@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea
+END
+i_cbc.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/i_cbc.c
+END
+i_ecb.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/i_ecb.c
+END
+idea_lcl.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/idea_lcl.h
+END
+ideatest.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/ideatest.c
+END
+i_skey.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/i_skey.c
+END
+version
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/version
+END
+idea.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/idea.h
+END
+i_ofb64.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/i_ofb64.c
+END
+idea_spd.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/idea_spd.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/Makefile
+END
+i_cfb64.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/idea/i_cfb64.c
+END

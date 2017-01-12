@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoSRP
+END
+srp_verifier.txt.attr
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoSRP/srp_verifier.txt.attr
+END
+srp_verifier.txt
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/apps/demoSRP/srp_verifier.txt
+END

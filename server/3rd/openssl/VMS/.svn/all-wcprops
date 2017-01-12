@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS
+END
+openssl_utils.com
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/openssl_utils.com
+END
+socketshr_shr.opt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/socketshr_shr.opt
+END
+openssl_startup.com
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/openssl_startup.com
+END
+WISHLIST.TXT
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/WISHLIST.TXT
+END
+openssl_undo.com
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/openssl_undo.com
+END
+install-vms.com
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/install-vms.com
+END
+ucx_shr_decc.opt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/ucx_shr_decc.opt
+END
+ucx_shr_decc_log.opt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/ucx_shr_decc_log.opt
+END
+ucx_shr_vaxc.opt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/ucx_shr_vaxc.opt
+END
+test-includes.com
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/test-includes.com
+END
+TODO
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/TODO
+END
+tcpip_shr_decc.opt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/tcpip_shr_decc.opt
+END
+VMSify-conf.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/VMSify-conf.pl
+END
+mkshared.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/mkshared.com
+END
+multinet_shr.opt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/VMS/multinet_shr.opt
+END

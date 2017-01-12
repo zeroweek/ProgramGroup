@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp
+END
+c_zlib.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/c_zlib.c
+END
+comp.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/comp.h
+END
+c_rle.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/c_rle.c
+END
+comp_lib.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/comp_lib.c
+END
+comp_err.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/comp_err.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/comp/Makefile
+END

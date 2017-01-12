@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc
+END
+RSAcertgen.sh
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc/RSAcertgen.sh
+END
+ssltest.sh
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc/ssltest.sh
+END
+ECCcertgen.sh
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc/ECCcertgen.sh
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc/README
+END
+ECC-RSAcertgen.sh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssltest-ecc/ECC-RSAcertgen.sh
+END

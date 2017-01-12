@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/prime
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/prime/Makefile
+END
+prime.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/prime/prime.c
+END

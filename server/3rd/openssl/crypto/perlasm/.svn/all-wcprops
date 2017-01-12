@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm
+END
+x86asm.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/x86asm.pl
+END
+cbc.pl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/cbc.pl
+END
+x86_64-xlate.pl
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/x86_64-xlate.pl
+END
+ppc-xlate.pl
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/ppc-xlate.pl
+END
+sparcv9_modes.pl
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/sparcv9_modes.pl
+END
+x86gas.pl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/x86gas.pl
+END
+readme
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/readme
+END
+x86masm.pl
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/x86masm.pl
+END
+x86nasm.pl
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/perlasm/x86nasm.pl
+END

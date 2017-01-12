@@ -1,0 +1,347 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des
+END
+dess.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/dess.cpp
+END
+ofb64ede.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ofb64ede.c
+END
+speed.c
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/speed.c
+END
+ecb3_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ecb3_enc.c
+END
+FILES0
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/FILES0
+END
+str2key.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/str2key.c
+END
+VERSION
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/VERSION
+END
+cbc_cksm.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cbc_cksm.c
+END
+DES.pm
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/DES.pm
+END
+Imakefile
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/Imakefile
+END
+ofb64enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ofb64enc.c
+END
+qud_cksm.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/qud_cksm.c
+END
+fcrypt_b.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/fcrypt_b.c
+END
+rpc_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/rpc_enc.c
+END
+des-lib.com
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des-lib.com
+END
+destest.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/destest.c
+END
+ecb_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ecb_enc.c
+END
+des3s.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des3s.cpp
+END
+DES.xs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/DES.xs
+END
+INSTALL
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/INSTALL
+END
+COPYRIGHT
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/COPYRIGHT
+END
+des_locl.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_locl.h
+END
+ncbc_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ncbc_enc.c
+END
+des_old2.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_old2.c
+END
+rand_key.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/rand_key.c
+END
+pcbc_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/pcbc_enc.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/Makefile
+END
+des_ver.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_ver.h
+END
+typemap
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/typemap
+END
+cbc3_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cbc3_enc.c
+END
+des_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_enc.c
+END
+enc_read.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/enc_read.c
+END
+set_key.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/set_key.c
+END
+xcbc_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/xcbc_enc.c
+END
+ede_cbcm_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ede_cbcm_enc.c
+END
+fcrypt.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/fcrypt.c
+END
+read2pwd.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/read2pwd.c
+END
+rpw.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/rpw.c
+END
+des_old.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_old.c
+END
+spr.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/spr.h
+END
+enc_writ.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/enc_writ.c
+END
+des.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des.c
+END
+des.pod
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des.pod
+END
+cbc_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cbc_enc.c
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/README
+END
+des_old.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_old.h
+END
+makefile.bc
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/makefile.bc
+END
+cfb_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cfb_enc.c
+END
+des.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des.h
+END
+des_opts.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/des_opts.c
+END
+cfb64ede.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cfb64ede.c
+END
+rpc_des.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/rpc_des.h
+END
+read_pwd.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/read_pwd.c
+END
+options.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/options.txt
+END
+cfb64enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/cfb64enc.c
+END
+KERBEROS
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/KERBEROS
+END
+ofb_enc.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/des/ofb_enc.c
+END

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp
+END
+srp_lcl.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srp_lcl.h
+END
+srp_grps.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srp_grps.h
+END
+srptest.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srptest.c
+END
+srp_vfy.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srp_vfy.c
+END
+srp.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srp.h
+END
+srp_lib.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/srp_lib.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/srp/Makefile
+END

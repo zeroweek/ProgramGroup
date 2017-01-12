@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl
+END
+netware.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/netware.pl
+END
+BC-32.pl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/BC-32.pl
+END
+Mingw32.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/Mingw32.pl
+END
+ultrix.pl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/ultrix.pl
+END
+OS2-EMX.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/OS2-EMX.pl
+END
+VC-32.pl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/VC-32.pl
+END
+linux.pl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/linux.pl
+END
+unix.pl
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/util/pl/unix.pl
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/pkcs12
+END
+pkwrite.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/pkcs12/pkwrite.c
+END
+pkread.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/pkcs12/pkread.c
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/pkcs12/README
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ec/asm
+END
+ecp_nistz256-x86_64.pl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ec/asm/ecp_nistz256-x86_64.pl
+END
+ecp_nistz256-avx2.pl
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/crypto/ec/asm/ecp_nistz256-avx2.pl
+END

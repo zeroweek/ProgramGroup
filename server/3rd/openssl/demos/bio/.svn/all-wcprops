@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio
+END
+client-conf.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/client-conf.c
+END
+saccept.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/saccept.c
+END
+accept.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/accept.cnf
+END
+client-arg.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/client-arg.c
+END
+server.pem
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/server.pem
+END
+server-conf.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/server-conf.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/Makefile
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/README
+END
+sconnect.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/sconnect.c
+END
+connect.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/connect.cnf
+END
+server-arg.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/bio/server-arg.c
+END

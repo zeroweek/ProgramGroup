@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssl
+END
+inetdsrv.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssl/inetdsrv.cpp
+END
+serv.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssl/serv.cpp
+END
+cli.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/demos/ssl/cli.cpp
+END

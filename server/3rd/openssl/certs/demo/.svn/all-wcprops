@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/certs/demo
+END
+dsa-ca.pem
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/certs/demo/dsa-ca.pem
+END
+dsa-pca.pem
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/certs/demo/dsa-pca.pem
+END
+ca-cert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/certs/demo/ca-cert.pem
+END
+pca-cert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/certs/demo/pca-cert.pem
+END

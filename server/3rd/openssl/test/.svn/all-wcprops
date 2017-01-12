@@ -1,0 +1,455 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test
+END
+Uss.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/Uss.cnf
+END
+tpkcs7d
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tpkcs7d
+END
+pkits-test.pl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/pkits-test.pl
+END
+tcrl.com
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tcrl.com
+END
+Sssrsa.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/Sssrsa.cnf
+END
+testca
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testca
+END
+test.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/test.cnf
+END
+v3-cert1.pem
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/v3-cert1.pem
+END
+testx509.pem
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testx509.pem
+END
+v3-cert2.pem
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/v3-cert2.pem
+END
+testtsa
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testtsa
+END
+tsid
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tsid
+END
+VMSca-response.1
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/VMSca-response.1
+END
+testenc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testenc
+END
+VMSca-response.2
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/VMSca-response.2
+END
+tx509.com
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tx509.com
+END
+cms-test.pl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/cms-test.pl
+END
+trsa
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/trsa
+END
+CAssdh.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/CAssdh.cnf
+END
+tpkcs7
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tpkcs7
+END
+dummytest.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/dummytest.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/Makefile
+END
+testssl.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testssl.com
+END
+tests.com
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tests.com
+END
+testss
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testss
+END
+CAssdsa.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/CAssdsa.cnf
+END
+treq.com
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/treq.com
+END
+P1ss.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/P1ss.cnf
+END
+CAtsa.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/CAtsa.cnf
+END
+bctest.com
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/bctest.com
+END
+tcrl
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tcrl
+END
+CAssrsa.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/CAssrsa.cnf
+END
+tocsp.com
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tocsp.com
+END
+r160test.c
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/r160test.c
+END
+bntest.com
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/bntest.com
+END
+testfipsssl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testfipsssl
+END
+asn1test.c
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/asn1test.c
+END
+igetest.c
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/igetest.c
+END
+testgen.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testgen.com
+END
+tx509
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tx509
+END
+testreq2.pem
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testreq2.pem
+END
+evptests.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/evptests.txt
+END
+tpkcs7d.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tpkcs7d.com
+END
+clean_test.com
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/clean_test.com
+END
+CAss.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/CAss.cnf
+END
+testsid.pem
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testsid.pem
+END
+testca.com
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testca.com
+END
+testssl
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testssl
+END
+testsslproxy
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testsslproxy
+END
+testtsa.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testtsa.com
+END
+tverify.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tverify.com
+END
+testrsa.pem
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testrsa.pem
+END
+testp7.pem
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testp7.pem
+END
+cms-examples.pl
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/cms-examples.pl
+END
+treq
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/treq
+END
+tsid.com
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tsid.com
+END
+smcont.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/smcont.txt
+END
+times
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/times
+END
+testenc.com
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testenc.com
+END
+bctest
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/bctest
+END
+trsa.com
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/trsa.com
+END
+tpkcs7.com
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tpkcs7.com
+END
+tocsp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/tocsp
+END
+P2ss.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/P2ss.cnf
+END
+testcrl.pem
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testcrl.pem
+END
+testss.com
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testss.com
+END
+serverinfo.pem
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/serverinfo.pem
+END
+testutil.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testutil.h
+END
+Sssdsa.cnf
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/Sssdsa.cnf
+END
+pkcs7-1.pem
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/pkcs7-1.pem
+END
+pkcs7.pem
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/pkcs7.pem
+END
+testgen
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/testgen
+END
+test_padlock
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/test_padlock
+END
+maketests.com
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/maketests.com
+END
+methtest.c
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/test/methtest.c
+END

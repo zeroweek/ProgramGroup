@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS
+END
+opensslconf.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/opensslconf.h
+END
+OpenSSL.mcp.hqx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/OpenSSL.mcp.hqx
+END
+Randomizer.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/Randomizer.h
+END
+_MWERKS_GUSI_prefix.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/_MWERKS_GUSI_prefix.h
+END
+buildinf.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/buildinf.h
+END
+TODO
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/TODO
+END
+mklinks.as.hqx
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/mklinks.as.hqx
+END
+_MWERKS_prefix.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/_MWERKS_prefix.h
+END
+GUSI_Init.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/GUSI_Init.cpp
+END
+Randomizer.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ztj/!svn/ver/172/branches/dev/Dependency/openssl/MacOS/Randomizer.cpp
+END

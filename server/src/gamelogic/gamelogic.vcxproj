@@ -62,7 +62,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -83,7 +83,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl-7.46.0\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
