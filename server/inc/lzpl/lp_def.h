@@ -157,7 +157,8 @@
 #define INFINITE_VALUE                                     (0xffffffff)	        //Œﬁ«Ó÷µ
 
 #ifndef _WIN32
-#   define INVALID_SOCKET                                  (SOCKET)(~0)
+#   define INVALID_SOCKET                                  (SOCKET)(-1)
+#	define INVALID_HANDLE_VALUE                            (HANDLE)(-1)
 #endif
 
 #if defined _WIN32

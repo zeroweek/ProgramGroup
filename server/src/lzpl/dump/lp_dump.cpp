@@ -241,7 +241,7 @@ Exit0:
 		hDumpFile = INVALID_HANDLE_VALUE;
 	}
 
-	if (hProcess != NULL)
+	if (hProcess != INVALID_HANDLE_VALUE)
 	{
 		lpCloseHandle(hDumpFile);
 		hProcess = INVALID_HANDLE_VALUE;

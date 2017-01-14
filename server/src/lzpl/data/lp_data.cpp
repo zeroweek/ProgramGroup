@@ -9,7 +9,7 @@ NS_LZPL_BEGIN
 
 
 
-LPUINT32 ILPData::ms_dwDataCount = 0;;
+LPUINT32 ILPData::ms_dwDataCount = 0;
 ILPData* ILPData::m_poInvalidData = new LPDataInvalid();
 
 ILPData* ILPData::NewData(E_DataType eType)

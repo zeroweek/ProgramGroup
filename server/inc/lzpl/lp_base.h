@@ -20,12 +20,13 @@
 	#pragma warning( disable : 4200)
 	//#pragma warning(pop)
 #else
-	#pragma GCC diagnostic ignored "-Wmultichar"
 	#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 	#pragma GCC diagnostic ignored "-Wunused-variable"
 	#pragma GCC diagnostic ignored "-Wunused-value"
 	#pragma GCC diagnostic ignored "-Wsign-compare"
 	#pragma GCC diagnostic ignored "-Wdelete-incomplete"
+	#pragma GCC diagnostic ignored "-Wunused-function"
+	#pragma GCC diagnostic ignored "-Wmultichar"
 	//#pragma GCC diagnostic pop
 #endif
 

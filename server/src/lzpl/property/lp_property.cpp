@@ -276,7 +276,7 @@ void LPAPI LPProperty::OnEventHandler(const ILPDataList & oOldVar, const ILPData
 	return;
 }
 
-LPUINT32 LPProperty::ms_dwPropertyCount = 0;;
+LPUINT32 LPProperty::ms_dwPropertyCount = 0;
 
 
 

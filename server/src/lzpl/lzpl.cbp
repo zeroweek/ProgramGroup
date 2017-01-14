@@ -5,7 +5,7 @@
 		<Option title="lzpl" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;db/;lua/;" />
+		<Option virtualFolders="base/;bt/;log/;utility/;container/;data/;global/;property/;string/;system/;table/;unicode/;tinyxml/;file/;encrypt/;message/;message/interface/;net/;net/interface/;db/;lua/;http/;dump/;sharemem/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../lib/linux64/lzpld" prefix_auto="1" extension_auto="1" />
@@ -20,6 +20,7 @@
 					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql/include" />
 					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
 					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/curl/include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -35,6 +36,7 @@
 					<Add directory="$(#LZPL_ROOT)/server/3rd/mysql/include" />
 					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
 					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/curl/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -75,6 +77,9 @@
 		<Unit filename="../../inc/lzpl/lp_def.h">
 			<Option virtualFolder="base/" />
 		</Unit>
+		<Unit filename="../../inc/lzpl/lp_dump.h">
+			<Option virtualFolder="dump/" />
+		</Unit>
 		<Unit filename="../../inc/lzpl/lp_dynamicarray.h">
 			<Option virtualFolder="container/" />
 		</Unit>
@@ -86,6 +91,9 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_global.h">
 			<Option virtualFolder="global/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_http.h">
+			<Option virtualFolder="http/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_lock.h">
 			<Option virtualFolder="system/" />
@@ -101,6 +109,9 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_luascriptmgr.h">
 			<Option virtualFolder="lua/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_lzpl.h">
+			<Option virtualFolder="base/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_md5.h">
 			<Option virtualFolder="encrypt/" />
@@ -119,6 +130,9 @@
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_property.h">
 			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="../../inc/lzpl/lp_sharememory.h">
+			<Option virtualFolder="sharemem/" />
 		</Unit>
 		<Unit filename="../../inc/lzpl/lp_simplelist.h">
 			<Option virtualFolder="container/" />
@@ -216,6 +230,9 @@
 		<Unit filename="../../inc/lzpl/tinyxml.h">
 			<Option virtualFolder="tinyxml/" />
 		</Unit>
+		<Unit filename="base/lp_lzpl.cpp">
+			<Option virtualFolder="base/" />
+		</Unit>
 		<Unit filename="bt/lp_bt.cpp">
 			<Option virtualFolder="bt/" />
 		</Unit>
@@ -236,6 +253,9 @@
 		</Unit>
 		<Unit filename="db/lp_sqlstmt.cpp">
 			<Option virtualFolder="db/" />
+		</Unit>
+		<Unit filename="dump/lp_dump.cpp">
+			<Option virtualFolder="dump/" />
 		</Unit>
 		<Unit filename="encrypt/lp_base64.cpp">
 			<Option virtualFolder="encrypt/" />
@@ -260,6 +280,9 @@
 		</Unit>
 		<Unit filename="global/lp_global.cpp">
 			<Option virtualFolder="global/" />
+		</Unit>
+		<Unit filename="http/lp_http.cpp">
+			<Option virtualFolder="http/" />
 		</Unit>
 		<Unit filename="log/lp_errorstring.cpp">
 			<Option virtualFolder="log/" />
@@ -356,6 +379,9 @@
 		</Unit>
 		<Unit filename="property/lp_property.cpp">
 			<Option virtualFolder="property/" />
+		</Unit>
+		<Unit filename="sharemem/lp_sharememory.cpp">
+			<Option virtualFolder="sharemem/" />
 		</Unit>
 		<Unit filename="string/lp_loopbuf.cpp">
 			<Option virtualFolder="string/" />

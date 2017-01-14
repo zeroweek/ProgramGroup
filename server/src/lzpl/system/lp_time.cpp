@@ -10,7 +10,7 @@ NS_LZPL_BEGIN
 
 
 LPINT32 LPTime::ms_nTimezone = 0;
-LPUINT64 LPTime::ms_qwTimezoneSec = 0;;
+LPUINT64 LPTime::ms_qwTimezoneSec = 0;
 
 LPTime::LPTime()
 {

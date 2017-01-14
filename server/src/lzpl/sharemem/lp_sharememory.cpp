@@ -12,7 +12,7 @@ NS_LZPL_BEGIN
 
 BOOL LPShareMemory::IsExisting(const char* pcszName)
 {
-	HANDLE hMap = NULL;
+	HANDLE hMap = INVALID_HANDLE_VALUE;
 
 	LOG_PROCESS_ERROR(pcszName);
 
@@ -28,7 +28,7 @@ BOOL LPShareMemory::IsExisting(const char* pcszName)
 	return TRUE;
 Exit0:
 
-	if (hMap)
+	if (hMap != INVALID_HANDLE_VALUE)
 	{
 		lpCloseHandle(hMap);
 	}
