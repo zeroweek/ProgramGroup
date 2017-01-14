@@ -52,6 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{4357B38C-F1E
 		..\..\doc\version.txt = ..\..\doc\version.txt
 		..\..\doc\函数使用注意点.txt = ..\..\doc\函数使用注意点.txt
 		..\..\doc\开发注意事项.txt = ..\..\doc\开发注意事项.txt
+		..\..\doc\编译注意点.txt = ..\..\doc\编译注意点.txt
 		..\..\doc\语法注意点.txt = ..\..\doc\语法注意点.txt
 	EndProjectSection
 EndProject

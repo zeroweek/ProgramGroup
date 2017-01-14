@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="zlib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="include/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="./lib/linux64/zlibd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./output/x64/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="./lib/linux64/zlib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./output/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="include/adler32.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/compress.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/crc32.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/crc32.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/deflate.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/deflate.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/gzclose.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/gzguts.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/gzlib.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/gzread.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/gzwrite.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/infback.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inffast.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inffast.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inffixed.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inflate.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inflate.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inftrees.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/inftrees.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/trees.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/trees.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/uncompr.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/zconf.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/zlib.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/zutil.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Unit filename="include/zutil.h">
+			<Option virtualFolder="include/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

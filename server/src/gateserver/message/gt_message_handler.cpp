@@ -105,8 +105,8 @@ void LPAPI CGTMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBu
 	wMsgId = *(LPUINT16*)(pcszBuf);
 	CONVERT_MSG_ID_ENDIAN(wMsgId);
 
-	LOG_PROCESS_ERROR(wMsgId > min_internal_message && wMsgId < max_internal_message
-						|| wMsgId > min_external_message && wMsgId < max_external_message);
+	LOG_PROCESS_ERROR((wMsgId > min_internal_message && wMsgId < max_internal_message)
+						|| (wMsgId > min_external_message && wMsgId < max_external_message));
 
 	LOG_PROCESS_ERROR(m_MessageCallbackList[wMsgId]);
 

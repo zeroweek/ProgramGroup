@@ -28,6 +28,7 @@
 	#pragma GCC diagnostic ignored "-Wunused-function"
 	//#pragma GCC diagnostic ignored "-Wmultichar"
 	#pragma GCC diagnostic ignored "-Wwrite-strings"
+	#pragma GCC diagnostic ignored "-Wenum-compare"
 	//#pragma GCC diagnostic pop
 #endif
 
