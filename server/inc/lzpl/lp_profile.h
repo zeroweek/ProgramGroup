@@ -53,9 +53,9 @@ DECLARE void LPAPI lpProfileEnd(void);
 		}while(0)
 
 #else
-	#define PROFILE_START
+	#define PROFILE_START()
 	#define PROFILE_POINT(_point_id)
-	#define PROFILE_END
+	#define PROFILE_END()
 #endif
 
 

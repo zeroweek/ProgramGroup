@@ -338,7 +338,15 @@ BOOL LPAPI _Test_ParseHttpMessage(const char * pcszBuf, LPUINT32 dwSize)
 	LOG_PROCESS_ERROR(pTempBuf);
 	memset(pTempBuf, 0, nTempBufSize);
 
-	memcpy_s(pTempBuf, nTempBufSize - 1, pcszBuf + nIndex, nTempBufSize - 1);
+#	ifdef _WIN32
+	{
+		memcpy_s(pTempBuf, nTempBufSize - 1, pcszBuf + nIndex, nTempBufSize - 1);
+	}
+#	else
+	{
+		memcpy(pTempBuf, pcszBuf + nIndex, nTempBufSize - 1);
+	}
+#	endif
 
 	IMP("msg: %s", pTempBuf);
 

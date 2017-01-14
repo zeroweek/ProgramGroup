@@ -20,23 +20,23 @@ NS_LZPL_BEGIN
 
 
 #define PRINTF_DATA_LIST(__print_type, __datalist__) \
-	for (LPUINT32 i = 0; i < ##__datalist__.GetCount(); ++i)\
+	for (LPUINT32 i = 0; i < __datalist__.GetCount(); ++i)\
 	{\
-		E_DataType eDataType = ##__datalist__.Type(i);\
+		E_DataType eDataType = __datalist__.Type(i);\
 		switch (eDataType)\
 		{\
 			break;\
 		case LZPL::eDataType_Int64:\
-			##__print_type(FMT_I64, ##__datalist__.Int64(i));\
+			__print_type(FMT_I64, __datalist__.Int64(i));\
 			break;\
 		case LZPL::eDataType_Float:\
-			##__print_type(FMT_FLT, ##__datalist__.Float(i));\
+			__print_type(FMT_FLT, __datalist__.Float(i));\
 			break;\
 		case LZPL::eDataType_Double:\
-			##__print_type(FMT_DBE, ##__datalist__.Double(i));\
+			__print_type(FMT_DBE, __datalist__.Double(i));\
 			break;\
 		case LZPL::eDataType_String:\
-			##__print_type("%s", ##__datalist__.String(i).c_str());\
+			__print_type("%s", __datalist__.String(i).c_str());\
 			break;\
 		case LZPL::eDataType_Object:\
 		case LZPL::eDataType_Invalid:\
