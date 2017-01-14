@@ -31,12 +31,15 @@
 					<Add option="-static" />
 					<Add option="-static-libgcc" />
 					<Add option="-static-libstdc++" />
-					<Add library="$(#LZPL_ROOT)/server/lib/linux64/liblzpld.a" />
 					<Add library="$(#LZPL_ROOT)/server/lib/linux64/libcommond.a" />
 					<Add library="$(#LZPL_ROOT)/server/lib/linux64/libmessaged.a" />
+					<Add library="$(#LZPL_ROOT)/server/lib/linux64/liblzpld.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/tolua++/lib/linux64/libtoluapp.a" />
 					<Add library="$(#LZPL_ROOT)/server/3rd/lua/lib/linux64/liblua.a" />
-					<Add library="$(#LZPL_ROOT)/server/3rd/tolua++/lib/linux/libtoluapp.a" />
-					<Add library="/usr/lib/x86_64-linux-gnu/libpthread.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/glibc/lib/linux64/libdl.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/glibc/lib/linux64/libpthread.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/jsoncpp/lib/linux64/libjsoncppd.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/zlib/lib/linux64/libzlibd.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -47,9 +50,32 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/external" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/internal" />
+					<Add directory="./main" />
+					<Add directory="./message" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/jsoncpp/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/curl/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-static" />
+					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
+					<Add library="$(#LZPL_ROOT)/server/lib/linux64/libcommon.a" />
+					<Add library="$(#LZPL_ROOT)/server/lib/linux64/libmessage.a" />
+					<Add library="$(#LZPL_ROOT)/server/lib/linux64/liblzpl.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/tolua++/lib/linux64/libtoluapp.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/lua/lib/linux64/liblua.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/glibc/lib/linux64/libdl.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/glibc/lib/linux64/libpthread.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/jsoncpp/lib/linux64/libjsoncpp.a" />
+					<Add library="$(#LZPL_ROOT)/server/3rd/zlib/lib/linux64/libzlib.a" />
 				</Linker>
 			</Target>
 		</Build>
