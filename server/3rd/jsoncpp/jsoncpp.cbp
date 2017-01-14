@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="jsoncpp" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="include/;src/;include/json/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="./lib/linux64/jsoncppd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./output/x64/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="./include" />
+					<Add directory="./src" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="./lib/linux64/jsoncpp" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./output/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="./include" />
+					<Add directory="./src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="include/json/autolink.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/config.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/features.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/forwards.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/json.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/reader.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/value.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="include/json/writer.h">
+			<Option virtualFolder="include/json/" />
+		</Unit>
+		<Unit filename="src/json_batchallocator.h">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_internalarray.inl">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_internalmap.inl">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_reader.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_value.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_valueiterator.inl">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/json_writer.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
