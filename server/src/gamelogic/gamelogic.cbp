@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gamelogic" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="ai/;bt/;main/;scene/;script/;script/gen/;script/pkg/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../lib/linux64/gamelogicd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/gamelogic" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../lib/linux64/gamelogic" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/gamelogic" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../inc/gamelogic/ai_manager.h">
+			<Option virtualFolder="ai/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/bt_action.h">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/bt_event.h">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/bt_manager.h">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/gamelogic.h">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/nav_mesh.h">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/nav_mesh_build.h">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="../../inc/gamelogic/nav_mesh_query.h">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="ai/ai_manager.cpp">
+			<Option virtualFolder="ai/" />
+		</Unit>
+		<Unit filename="bt/bt_action.cpp">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="bt/bt_event.cpp">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="bt/bt_manager.cpp">
+			<Option virtualFolder="bt/" />
+		</Unit>
+		<Unit filename="main/gamelogic.cpp">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="scene/nav_mesh.cpp">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="scene/nav_mesh_build.cpp">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="scene/nav_mesh_query.cpp">
+			<Option virtualFolder="scene/" />
+		</Unit>
+		<Unit filename="script/ai.pkg">
+			<Option virtualFolder="script/pkg/" />
+		</Unit>
+		<Unit filename="script/common.pkg">
+			<Option virtualFolder="script/pkg/" />
+		</Unit>
+		<Unit filename="script/tolua_ai.cpp">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_ai.h">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_common.cpp">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_common.h">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

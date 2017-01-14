@@ -336,7 +336,6 @@ private:
 
 private:
 
-	BOOL                            m_bInit;
 	LPUINT32                        m_dwElemCount;
 	LPUINT32                        m_dwNextCount;
 	LPUINT32                        m_dwUseCount;
@@ -344,6 +343,7 @@ private:
 	MEM_NODE*                       m_pstFreeNode;
 	e_ObjPoolErr                    m_eLastErr;
 	LPLock*                         m_poLock;
+	BOOL                            m_bInit;
 };
 
 

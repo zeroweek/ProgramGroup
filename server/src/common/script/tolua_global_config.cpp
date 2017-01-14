@@ -1,6 +1,6 @@
 /*
 ** Lua binding: global_config
-** Generated automatically by tolua++-1.0.92 on Sat Jan 14 18:46:35 2017.
+** Generated automatically by tolua++-1.0.92 on Sat Jan 14 20:36:40 2017.
 */
 
 #ifndef __cplusplus
@@ -265,7 +265,12 @@ static int tolua_set_GUARD_CONFIG_szAddress(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szAddress,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szAddress,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -354,7 +359,12 @@ static int tolua_set_SERVER_CONFIG__GS_CONFIG_szListenIp(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -413,7 +423,12 @@ static int tolua_set_SERVER_CONFIG__GS_CONFIG_szClientListenIp(lua_State* tolua_
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szClientListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szClientListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -502,7 +517,12 @@ static int tolua_set_SERVER_CONFIG__GAME_LOGIC_CONFIG_szConfigPath(lua_State* to
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szConfigPath,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szConfigPath,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -591,7 +611,12 @@ static int tolua_set_SERVER_CONFIG__GT_CONFIG_szListenIp(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -650,7 +675,12 @@ static int tolua_set_SERVER_CONFIG__GT_CONFIG_szClientListenIp(lua_State* tolua_
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szClientListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szClientListenIp,tolua_tostring(tolua_S,2,0),IP_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -739,7 +769,12 @@ static int tolua_set_COMMON_szGuardAddr(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szGuardAddr,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szGuardAddr,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE

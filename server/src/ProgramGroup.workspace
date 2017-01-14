@@ -2,5 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="ProgramGroup">
 		<Project filename="lzpl/lzpl.cbp" />
+		<Project filename="gamelogic/gamelogic.cbp" />
+		<Project filename="common/common.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

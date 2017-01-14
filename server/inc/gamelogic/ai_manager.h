@@ -4,8 +4,8 @@
 //    description: 
 //
 //****************************************************************************/
-#ifndef _AIT_MANAGER_H_
-#define _AIT_MANAGER_H_
+#ifndef _AI_MANAGER_H_
+#define _AI_MANAGER_H_
 
 #include "ai_data.h"
 #include "bt_event.h"

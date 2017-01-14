@@ -1,6 +1,6 @@
 /*
 ** Lua binding: ai
-** Generated automatically by tolua++-1.0.92 on Sat Jan 14 18:46:40 2017.
+** Generated automatically by tolua++-1.0.92 on Sat Jan 14 20:38:16 2017.
 */
 
 #ifndef __cplusplus
@@ -78,7 +78,12 @@ static int tolua_set_AI_DATA_szAIDesc(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szAIDesc,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szAIDesc,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -107,7 +112,12 @@ static int tolua_set_AI_DATA_szScriptName(lua_State* tolua_S)
  if (!tolua_isstring(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
- strncpy_s(self->szScriptName,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
+#ifdef _WIN32
+ strncpy_s
+#else
+ strncpy
+#endif
+ (self->szScriptName,tolua_tostring(tolua_S,2,0),COMMON_NAME_LEN-1);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE

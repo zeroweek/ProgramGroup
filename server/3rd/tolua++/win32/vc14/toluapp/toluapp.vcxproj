@@ -69,13 +69,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\..\lib\win64\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\..\lib\win64\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp64d</TargetName>
@@ -84,10 +84,10 @@
     <OutDir>..\..\..\lib\win32\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp32d</TargetName>
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\..\lib\win32\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp32</TargetName>
@@ -112,7 +112,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\..\lua-5.1.5\lib\win64;..\..\..\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\lua\lib\win64;..\..\..\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua64d.lib;toluapp64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\..\..\lua-5.1.5\lib\win64;..\..\..\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\lua\lib\win64;..\..\..\lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lua64.lib;toluapp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

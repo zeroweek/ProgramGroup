@@ -26,7 +26,8 @@
 	#pragma GCC diagnostic ignored "-Wsign-compare"
 	#pragma GCC diagnostic ignored "-Wdelete-incomplete"
 	#pragma GCC diagnostic ignored "-Wunused-function"
-	#pragma GCC diagnostic ignored "-Wmultichar"
+	//#pragma GCC diagnostic ignored "-Wmultichar"
+	#pragma GCC diagnostic ignored "-Wwrite-strings"
 	//#pragma GCC diagnostic pop
 #endif
 

@@ -205,7 +205,8 @@ function classVariable:supcode ()
 		local def = 0
 		if self.def ~= '' then def = self.def end
 		if self.type == 'char*' and self.dim ~= '' then -- is string
-		 output(' strncpy_s(')
+		 output('#ifdef _WIN32\n strncpy_s\n#else\n strncpy\n#endif\n')
+		 output('     (')
 			if class and static then
 				output(self.parent.type..'::'..self.name)
 			elseif class then

@@ -1,0 +1,6 @@
+# toluabind.c文件用于生成toluaapp二进制程序，里面定义了lua目录下所有*.lua文件的文件字符数组，
+  toluabind_default.c是默认提供的，拷贝一份重命名为toluabind.c即可
+# 如果修改了lua目录下的文件，若要生效，需用toluapp程序重新编译tolua_scons.pkg文件，
+  生成toluabind.c和toluabind.h文件
+# 命令
+  toluapp64.exe -D -n tolua -o .\toluabind.c -H .\toluabind.h .\tolua_scons.pkg

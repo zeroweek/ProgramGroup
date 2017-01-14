@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="common" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="config/;main/;data/;define/;script/;script/gen/;script/pkg/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../lib/linux64/commond" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../lib/linux64/common" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../inc/common/ai_data.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="../../inc/common/common.h">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="../../inc/common/global_config.h">
+			<Option virtualFolder="config/" />
+		</Unit>
+		<Unit filename="../../inc/common/grid_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/guard_config.h">
+			<Option virtualFolder="config/" />
+		</Unit>
+		<Unit filename="../../inc/common/polygon_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/region_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/scene_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/server_config.h">
+			<Option virtualFolder="config/" />
+		</Unit>
+		<Unit filename="../../inc/common/server_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/string_def.h">
+			<Option virtualFolder="define/" />
+		</Unit>
+		<Unit filename="../../inc/common/tab_test_data.h">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="config/global_config.cpp">
+			<Option virtualFolder="config/" />
+		</Unit>
+		<Unit filename="data/ai_data.cpp">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="data/tab_test_data.cpp">
+			<Option virtualFolder="data/" />
+		</Unit>
+		<Unit filename="main/common.cpp">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="script/common.pkg">
+			<Option virtualFolder="script/pkg/" />
+		</Unit>
+		<Unit filename="script/global_config.pkg">
+			<Option virtualFolder="script/pkg/" />
+		</Unit>
+		<Unit filename="script/tolua_common.cpp">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_common.h">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_global_config.cpp">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Unit filename="script/tolua_global_config.h">
+			<Option virtualFolder="script/gen/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -215,7 +215,8 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 	LPUINT8 byCalVertCount = 0;
 	LPINT32 anCalVertIndex[MAX_VERTEX_PER_POLYGON * 2];
 
-	DOUBLE k, b;
+	DOUBLE k = 0.0;
+	DOUBLE b = 0.0;
 	DOUBLE vertCalRet, vertCalRet1, vertCalRet2, vertCalRet3;
 	FLOAT x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3;
 	FLOAT v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z;
@@ -437,7 +438,7 @@ BOOL CNavMeshObjLoader::_DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pTo
 		}
 		else
 		{
-			if (x2 > x1 && x3 < x1 || x2 < x1 && x3 > x1)
+			if ((x2 > x1 && x3 < x1) || (x2 < x1 && x3 > x1))
 			{
 				PROCESS_ERROR(FALSE);
 			}
@@ -796,7 +797,15 @@ BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 		// parse vertex pos
 		if (szRow[0] == 'v' && szRow[1] != 'n' && szRow[1] != 't')
 		{
-			sscanf_s(szRow + 1, "%f %f %f", &x, &y, &z);
+#			ifdef _WIN32
+			{
+				sscanf_s(szRow + 1, "%f %f %f", &x, &y, &z);
+			}
+#			else
+			{
+				sscanf(szRow + 1, "%f %f %f", &x, &y, &z);
+			}
+#			endif
 			nResult = _AddVertex(x, y, z);
 			LOG_PROCESS_ERROR(nResult);
 		}
@@ -811,7 +820,7 @@ BOOL CNavMeshObjLoader::Load(const char* pcszFileName)
 				a = szFacePoint[0];
 				b = szFacePoint[i - 1];
 				c = szFacePoint[i];
-				LOG_PROCESS_ERROR(a >= 0 && a < m_oVertexs.Size() || b >= 0 && b < m_oVertexs.Size() || c >= 0 && c < m_oVertexs.Size());
+				LOG_PROCESS_ERROR((a >= 0 && a < m_oVertexs.Size()) || (b >= 0 && b < m_oVertexs.Size()) || (c >= 0 && c < m_oVertexs.Size()));
 				nResult = _AddTriangle(a, b, c);
 				LOG_PROCESS_ERROR(nResult);
 			}

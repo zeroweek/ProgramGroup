@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
     <TargetName>toluapp32d</TargetName>
     <TargetExt>.lib</TargetExt>
     <OutDir>..\..\..\lib\win32\</OutDir>
@@ -81,17 +81,17 @@
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
     <TargetName>toluapp32</TargetName>
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\..\lib\win64\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp64d</TargetName>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\..\..\include;..\..\..\..\lua-5.1.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\include;..\..\..\..\lua\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\..\lib\win64\</OutDir>
     <IntDir>$(SolutionDir)\output\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>toluapp64</TargetName>

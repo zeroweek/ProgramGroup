@@ -68,9 +68,9 @@ enum eBTRunningType
 struct BT_CUSTOM_CTRL : BT_CTRL
 {
 	unsigned int   eEventType     : 6;
-	unsigned int   eOwnerType     : 2;
+	unsigned int   eOwnerType     : 4;
 	unsigned int   eRunningType   : 8;
-	unsigned int   uReserved      : 16;
+	unsigned int   uReserved      : 14;
 	LPINT32         nWaitFrame;
 	LPUINT32        dwRoleId;
 
