@@ -2,7 +2,14 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="ProgramGroup">
 		<Project filename="lzpl/lzpl.cbp" />
-		<Project filename="gamelogic/gamelogic.cbp" />
-		<Project filename="common/common.cbp" />
+		<Project filename="gamelogic/gamelogic.cbp">
+			<Depends filename="lzpl/lzpl.cbp" />
+			<Depends filename="common/common.cbp" />
+		</Project>
+		<Project filename="common/common.cbp">
+			<Depends filename="lzpl/lzpl.cbp" />
+		</Project>
+		<Project filename="gateserver/gateserver.cbp" />
+		<Project filename="message/message.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

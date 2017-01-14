@@ -4,8 +4,8 @@
 //    description: 消息管理器
 //
 //****************************************************************************/
-#ifndef _INTERNAL_MESSAGE_HANDLER_H_
-#define _INTERNAL_MESSAGE_HANDLER_H_
+#ifndef _GT_MESSAGE_HANDLER_H_
+#define _GT_MESSAGE_HANDLER_H_
 
 #include "lp_lzpl.h"
 #include "lp_messageserializer.h"

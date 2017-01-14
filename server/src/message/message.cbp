@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="message" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="external/;internal/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../lib/linux64/messaged" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/external" />
+					<Add directory="/root/demo/ProgramGroup/server/src/message/internal" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../lib/linux64/message" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../output/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/external" />
+					<Add directory="/root/demo/ProgramGroup/server/src/message/internal" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../inc/message/external/external_message.h">
+			<Option virtualFolder="external/" />
+		</Unit>
+		<Unit filename="../../inc/message/external/external_message.xml">
+			<Option virtualFolder="external/" />
+		</Unit>
+		<Unit filename="../../inc/message/external/external_message_header.h">
+			<Option virtualFolder="external/" />
+		</Unit>
+		<Unit filename="../../inc/message/internal/g2t_message.h">
+			<Option virtualFolder="internal/" />
+		</Unit>
+		<Unit filename="../../inc/message/internal/internal_message_header.h">
+			<Option virtualFolder="internal/" />
+		</Unit>
+		<Unit filename="../../inc/message/internal/t2g_message.h">
+			<Option virtualFolder="internal/" />
+		</Unit>
+		<Unit filename="external/external_message.cpp">
+			<Option virtualFolder="external/" />
+		</Unit>
+		<Unit filename="external/external_message_header.cpp">
+			<Option virtualFolder="external/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

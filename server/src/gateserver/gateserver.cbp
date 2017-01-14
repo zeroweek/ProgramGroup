@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gateserver" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="main/;message/;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/gateserver/gateserver_d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../output/x64/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/lzpl" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/lua/include" />
+					<Add directory="$(#LZPL_ROOT)/server/3rd/tolua++/include" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/common" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/external" />
+					<Add directory="$(#LZPL_ROOT)/server/inc/message/internal" />
+					<Add directory="./main" />
+					<Add directory="./message" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/gateserver/gateserver_r" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../output/x64/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="main/gateserver.cpp">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="main/gateserver.h">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="main/testcase.cpp">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="main/testcase.h">
+			<Option virtualFolder="main/" />
+		</Unit>
+		<Unit filename="message/gt_external_packet_parser.cpp">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/gt_external_packet_parser.h">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/gt_internal_packet_parser.cpp">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/gt_internal_packet_parser.h">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/gt_message_handler.cpp">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/gt_message_handler.h">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/http_message_handler.cpp">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Unit filename="message/http_message_handler.h">
+			<Option virtualFolder="message/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
