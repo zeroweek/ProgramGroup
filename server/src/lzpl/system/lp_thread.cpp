@@ -13,15 +13,15 @@ LPThread::LPThread()
 {
 	m_bStart = FALSE;
 	m_tId = 0;
-	m_hHandle = 0;
+	m_hHandle = INVALID_THREAD_HANDLE;
 }
 
 LPThread::~LPThread()
 {
-	if (m_hHandle != 0)
+	if (m_hHandle != INVALID_THREAD_HANDLE)
 	{
 		Terminate();
-		m_hHandle = 0;
+		m_hHandle = INVALID_THREAD_HANDLE;
 	}
 }
 
@@ -30,13 +30,22 @@ static THREAD_HANDLE _CreateThread(pfunThrdProc pfThrdProc, void* pParam, THREAD
 #   ifdef _WIN32
 	{
 		int nThrdFlag = bSuspend ? CREATE_SUSPENDED : 0;
-
 		return (THREAD_HANDLE)_beginthreadex(NULL, 0, pfThrdProc, pParam, nThrdFlag, ptId);
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		int nRet = 0;
+		pthread_t tTID;
+		nRet = pthread_create(&tTID, nullptr, pfThrdProc, pParam);
+		if (nRet != 0)
+		{
+			return INVALID_THREAD_HANDLE;
+		}
+		else
+		{
+			*ptId = (THREAD_ID)tTID;
+			return tTID;
+		}
 	}
 #   endif
 }
@@ -49,9 +58,7 @@ static LPINT32 _WaitThread(THREAD_HANDLE hHandle, LPUINT32 dwWaitTime)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return 0;
+		return pthread_join(hHandle, nullptr);
 	}
 #   endif
 }
@@ -65,8 +72,7 @@ static void _TerminateThread(THREAD_HANDLE hHandle)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		pthread_cancel(hHandle);
 	}
 #   endif
 }
@@ -76,7 +82,7 @@ BOOL LPAPI LPThread::Start(void)
 	if (!m_bStart)
 	{
 		m_hHandle = _CreateThread(DefaultThrdProc, this, &m_tId, FALSE);
-		LOG_PROCESS_ERROR(0 != m_hHandle);
+		LOG_PROCESS_ERROR(INVALID_THREAD_HANDLE != m_hHandle);
 
 		m_bStart = TRUE;
 	}
@@ -90,7 +96,7 @@ BOOL LPAPI LPThread::Start(pfunThrdProc pfThrdProc, void * pParam)
 	if (!m_bStart)
 	{
 		m_hHandle = _CreateThread(pfThrdProc, pParam, &m_tId, FALSE);
-		LOG_PROCESS_ERROR(0 != m_hHandle);
+		LOG_PROCESS_ERROR(INVALID_THREAD_HANDLE != m_hHandle);
 
 		m_bStart = TRUE;
 	}
@@ -117,18 +123,9 @@ void LPAPI LPThread::Terminate(void)
 	}
 }
 
-THREAD_ID LPAPI LPThread::GetThreadId(void)
+THREAD_ID LPAPI LPThread::GetId(void)
 {
-#   ifdef _WIN32
-	{
-		return ::GetCurrentThreadId();
-	}
-#   else
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-	}
-#   endif
+	return m_tId;
 }
 
 THREAD_FUNC_DECLARE(LPThread::DefaultThrdProc)(void * pParam)

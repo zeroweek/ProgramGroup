@@ -166,9 +166,9 @@
 #   define SOCK_SEND                                       (0x01)
 #   define SOCK_BOTH                                       (0x02)
 #else
-#   define SOCK_RECE                                       (0x00)
-#   define SOCK_SEND                                       (0x01)
-#   define SOCK_BOTH                                       (0x02)
+#   define SOCK_RECE                                       (SHUT_RD)
+#   define SOCK_SEND                                       (SHUT_WR)
+#   define SOCK_BOTH                                       (SHUT_RD | SHUT_WR)
 #endif
 
 

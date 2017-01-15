@@ -265,7 +265,7 @@ THREAD_FUNC_DECLARE(LPDumpMgr::_DumpThreadProc)(void * pParam)
 
 		if (pDumpMgr->m_pDumpCheckFunc && pDumpMgr->m_pDumpCheckFunc())
 		{
-			pDumpMgr->_CreateDumpFile(NULL, lpGetCurrentProcessId(), pDumpMgr->m_oCreateDumpThread.GetThreadId());
+			pDumpMgr->_CreateDumpFile(NULL, lpGetCurrentProcessId(), lpGetCurrentThreadId());
 		}
 
 		pDumpMgr->m_oDumpLock.Lock();
@@ -286,7 +286,7 @@ THREAD_FUNC_DECLARE(LPDumpMgr::_DumpThreadProc)(void * pParam)
 			continue;
 		}
 
-		pDumpMgr->_CreateDumpFile(pExceptionPointers, lpGetCurrentProcessId(), pDumpMgr->m_oCreateDumpThread.GetThreadId());
+		pDumpMgr->_CreateDumpFile(pExceptionPointers, lpGetCurrentProcessId(), lpGetCurrentThreadId());
 	}
 
 Exit0:

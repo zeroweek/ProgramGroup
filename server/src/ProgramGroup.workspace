@@ -9,7 +9,11 @@
 		<Project filename="common/common.cbp">
 			<Depends filename="lzpl/lzpl.cbp" />
 		</Project>
-		<Project filename="gateserver/gateserver.cbp" />
+		<Project filename="gateserver/gateserver.cbp">
+			<Depends filename="lzpl/lzpl.cbp" />
+			<Depends filename="common/common.cbp" />
+			<Depends filename="message/message.cbp" />
+		</Project>
 		<Project filename="message/message.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

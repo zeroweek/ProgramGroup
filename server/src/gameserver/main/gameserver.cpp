@@ -447,11 +447,15 @@ int main(int argc, char* argv[])
 	nResult = lpLoadLogConfig(lpGetExeDir(), "logconfig.xml", stLogConfig);
 	PRINTF_PROCESS_ERROR(nResult);
 
-#   ifdef _DEBUG
+#	ifdef _DEBUG
+	{
 		nResult = lpInitLzpl(stLogConfig);
-#   else
+	}
+#	else
+	{
 		nResult = lpInitLzpl(stLogConfig);
-#   endif
+	}
+#	endif
 
 	PRINTF_PROCESS_ERROR(nResult);
 

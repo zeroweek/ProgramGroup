@@ -16,11 +16,20 @@ NS_LZPL_BEGIN
 
 
 
-typedef LPUINT32 THREAD_ID;
-typedef HANDLE THREAD_HANDLE;
-typedef unsigned int (LPAPI *pfunThrdProc)(void *);
+#ifdef _WIN32
+	typedef LPUINT32 THREAD_ID;
+	typedef HANDLE THREAD_HANDLE;
+	#define INVALID_THREAD_HANDLE            (0)
+	typedef unsigned int (LPAPI *pfunThrdProc)(void *);
+	#define THREAD_FUNC_DECLARE(f) unsigned int LPAPI f
+#else
+	typedef LPUINT32 THREAD_ID;
+	typedef pthread_t THREAD_HANDLE;
+	#define INVALID_THREAD_HANDLE            (-1)
+	typedef void* (LPAPI *pfunThrdProc)(void *);
+	#define THREAD_FUNC_DECLARE(f) void* LPAPI f
+#endif
 
-#define THREAD_FUNC_DECLARE(f) unsigned int LPAPI f
 
 
 
@@ -56,11 +65,9 @@ public:
 	//		нч
 	void LPAPI Terminate(void);
 
-public:
-
 	// Summary:
 	//		нч
-	static THREAD_ID LPAPI GetThreadId(void);
+	THREAD_ID LPAPI GetId(void);
 
 protected:
 

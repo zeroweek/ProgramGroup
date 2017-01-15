@@ -1,6 +1,15 @@
 #include "lp_system.h"
 #include "lp_processerror.h"
 #include "lp_string.h"
+#include "lp_global.h"
+
+#ifndef _WIN32
+#include <unistd.h>  
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#endif
+
 
 
 
@@ -32,8 +41,10 @@ DECLARE void LPAPI lpGetTimeEx(TIME_VALUE& stTime)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		struct timeval tv;
+		gettimeofday(&tv, nullptr);
+		stTime.m_qwSec = tv.tv_sec;
+		stTime.m_qwUsec = tv.tv_usec;
 	}
 #   endif
 }
@@ -46,24 +57,14 @@ DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		usleep(dwMicSeconds * 1000);
 	}
 #   endif
 }
 
 DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo)
 {
-#   ifdef _WIN32
-	{
-		return shutdown(s, nHowTo);
-	}
-#   else
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-	}
-#   endif
+	return shutdown(s, nHowTo);
 }
 
 DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s)
@@ -74,8 +75,7 @@ DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		return close(s);
 	}
 #   endif
 }
@@ -88,8 +88,7 @@ DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		return close(h);
 	}
 #   endif
 }
@@ -110,116 +109,127 @@ DECLARE void LPAPI lpCancelIoEx(SOCKET s)
 
 DECLARE BOOL LPAPI lpCreateDirectory(const char* pszDir)
 {
-#   ifdef _WIN32
+	LPINT32 nResult = 0;
+	char szPath[MAX_PATH];
+	char* p1 = nullptr;
+
+#	ifdef _WIN32
+	char cSep = '\\';
+#	else
+	char cSep = '/';
+#	endif
+
+	LOG_PROCESS_ERROR(pszDir);
+
+	lpStrCpyN(szPath, pszDir, MAX_PATH);
+	lpPathFilter(szPath, MAX_PATH);
+
+	if ((szPath[0] & 0x80) && (':' == szPath[1]))
 	{
-		LPINT32 nResult = 0;
-		char szPath[MAX_PATH];
-		char* p1 = szPath;
+		p1 = szPath + 2;
 
-		LOG_PROCESS_ERROR(pszDir);
-
-		lpStrCpyN(szPath, pszDir, MAX_PATH);
-
-		while (*p1)
+		if ('\0' == *p1)
 		{
-			if ('/' == *p1)
-			{
-				*p1 = '\\';
-			}
-			++p1;
+			PROCESS_SUCCESS(TRUE);
 		}
 
-		if ((szPath[0] & 0x80) && (':' == szPath[1]))
+		if (cSep == *p1)
 		{
-			p1 = szPath + 2;
-
+			++p1;
 			if ('\0' == *p1)
 			{
 				PROCESS_SUCCESS(TRUE);
 			}
-
-			if ('\\' == *p1)
-			{
-				++p1;
-				if ('\0' == *p1)
-				{
-					PROCESS_SUCCESS(TRUE);
-				}
-			}
 		}
-		else
+	}
+	else
+	{
+		p1 = szPath;
+	}
+
+	do
+	{
+		p1 = strchr(p1, cSep);
+		if (NULL != p1)
 		{
-			p1 = szPath;
+			*p1 = '\0';
 		}
 
-		do 
+#		ifdef _WIN32
 		{
-			p1 = strchr(p1, '\\');
-			if (NULL != p1)
-			{
-				*p1 = '\0';
-			}
-
 			nResult = CreateDirectory(szPath, NULL);
 			if (!nResult)
 			{
 				if (ERROR_ALREADY_EXISTS != GetLastError())
 				{
-					LOG_PROCESS_ERROR(FALSE);
+					LOG_PROCESS_ERROR_WITH_MSG(FALSE, "error=%d", GetLastError());
 				}
 			}
-
-			if (NULL != p1)
+		}
+#		else
+		{
+			if (p1 != &szPath[0])
 			{
-				*p1++ = '\\';
+				nResult = mkdir(szPath, 0775);
+				if (nResult != 0)
+				{
+					if (EEXIST != errno)
+					{
+						LOG_PROCESS_ERROR(FALSE);
+						LOG_PROCESS_ERROR_WITH_MSG(FALSE, "errno=%d", errno);
+					}
+				}
 			}
-		} while (NULL != p1);
+		}
+#		endif
 
-	Exit1:
-		return TRUE;
-	Exit0:
-		return FALSE;
-	}
-#   else
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-	}
-#   endif
+		if (NULL != p1)
+		{
+			*p1++ = cSep;
+		}
+	} while (NULL != p1);
+
+Exit1:
+	return TRUE;
+Exit0:
+	return FALSE;
 }
 
 DECLARE const char* LPAPI lpGetExePath()
 {
+	static char szPath[MAX_PATH];
+	static BOOL bFirstTime = TRUE;
+
 #   ifdef _WIN32
 	{
-		static char szPath[MAX_PATH];
-		static BOOL bFirstTime = TRUE;
-
 		if (bFirstTime)
 		{
 			bFirstTime = FALSE;
 
 			GetModuleFileName(NULL, szPath, sizeof(szPath));
 		}
-
-		return szPath;
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		if (bFirstTime)
+		{
+			LPINT32 nSize = readlink("/proc/self/exe", szPath, MAX_PATH - 1);
+			szPath[nSize] = '\0';
+		}
 	}
 #   endif
+
+	return szPath;
 }
 
 DECLARE const char *LPAPI lpGetExeDir()
 {
+	static char* p = nullptr;
+	static char szPath[MAX_PATH];
+	static BOOL bFirstTime = TRUE;
+
 #   ifdef _WIN32
 	{
-		static char* p = NULL;
-		static char szPath[MAX_PATH];
-		static BOOL bFirstTime = TRUE;
-
 		if (bFirstTime)
 		{
 			bFirstTime = FALSE;
@@ -228,25 +238,30 @@ DECLARE const char *LPAPI lpGetExeDir()
 			p = strrchr(szPath, '\\');
 			*p = '\0';
 		}
-
-		return szPath;
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+        if (bFirstTime)
+        {
+            LPINT32 nSize = readlink("/proc/self/exe", szPath, MAX_PATH - 1);
+            szPath[nSize] = '\0';
+			p = strrchr(szPath, '/');
+			*p = '\0';
+        }
 	}
 #   endif
+
+	return szPath;
 }
 
 DECLARE const char *LPAPI lpGetExeFileName()
 {
+	static char* p = nullptr;
+	static char szPath[MAX_PATH];
+	static BOOL bFirstTime = TRUE;
+
 #   ifdef _WIN32
 	{
-		static char* p = NULL;
-		static char szPath[MAX_PATH];
-		static BOOL bFirstTime = TRUE;
-
 		if (bFirstTime)
 		{
 			bFirstTime = FALSE;
@@ -255,25 +270,30 @@ DECLARE const char *LPAPI lpGetExeFileName()
 			p = strrchr(szPath, '\\');
 			++p;
 		}
-
-		return p;
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		if (bFirstTime)
+		{
+			LPINT32 nSize = readlink("/proc/self/exe", szPath, MAX_PATH - 1);
+			szPath[nSize] = '\0';
+			p = strrchr(szPath, '/');
+			++p;
+		}
 	}
 #   endif
+
+	return p;
 }
 
 DECLARE const char *LPAPI lpGetExeProcessName()
 {
+	static char* p = nullptr;
+	static char szPath[MAX_PATH];
+	static BOOL bFirstTime = TRUE;
+
 #   ifdef _WIN32
 	{
-		static char* p = NULL;
-		static char szPath[MAX_PATH];
-		static BOOL bFirstTime = TRUE;
-
 		if (bFirstTime)
 		{
 			bFirstTime = FALSE;
@@ -284,39 +304,50 @@ DECLARE const char *LPAPI lpGetExeProcessName()
 			p = strrchr(szPath, '\\');
 			++p;
 		}
-
-		return p;
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		if (bFirstTime)
+		{
+			LPINT32 nSize = readlink("/proc/self/exe", szPath, MAX_PATH - 1);
+			szPath[nSize] = '\0';
+			p = strrchr(szPath, '/');
+			++p;
+		}
 	}
 #   endif
+
+	return p;
 }
 
 DECLARE const char *LPAPI lpGetWorkingDir()
 {
+	static char szPath[MAX_PATH];
+	static BOOL bFirstTime = TRUE;
+
 #   ifdef _WIN32
 	{
-		static char szPath[MAX_PATH];
-		static BOOL bFirstTime = TRUE;
-
 		if (bFirstTime)
 		{
 			bFirstTime = FALSE;
 
 			GetCurrentDirectory(MAX_PATH, szPath);
 		}
-
-		return szPath;
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		if (bFirstTime)
+		{
+			char* p = getcwd(szPath, MAX_PATH);
+			if (nullptr == p)
+			{
+				return nullptr;
+			}
+		}
 	}
 #   endif
+
+	return szPath;
 }
 
 DECLARE LPUINT64 LPAPI lpGetTickCountEx()
@@ -327,8 +358,9 @@ DECLARE LPUINT64 LPAPI lpGetTickCountEx()
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		struct timespec ts;
+		clock_gettime(CLOCK_MONOTONIC, &ts);
+		return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 	}
 #   endif
 }
@@ -343,8 +375,9 @@ DECLARE LPUINT64 LPAPI lpRdtsc(void)
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		unsigned hi, lo;
+		__asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
+		qwTsc = ((unsigned long long)lo) | (((unsigned long long)hi) << 32);
 	}
 #   endif
 
@@ -360,7 +393,6 @@ DECLARE void LPAPI lpINT3(void)
 #   else
 	{
 		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
 	}
 #   endif
 }
@@ -373,8 +405,7 @@ DECLARE LPUINT32 LPAPI lpGetCurrentProcessId()
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		return (LPUINT32)getpid();
 	}
 #   endif
 }
@@ -387,8 +418,7 @@ DECLARE LPUINT32 LPAPI lpGetCurrentThreadId()
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
+		return (LPUINT32)pthread_self();
 	}
 #   endif
 }
@@ -401,9 +431,7 @@ DECLARE LPINT32 LPAPI lpGetLastError()
 	}
 #   else
 	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return -1;
+		return GetLastError();
 	}
 #   endif
 }
