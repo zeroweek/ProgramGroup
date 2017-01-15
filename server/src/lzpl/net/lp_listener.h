@@ -48,7 +48,7 @@ public:
 	virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
-	BOOL LPAPI UnInit();
+	virtual BOOL LPAPI UnInit();
 
 	// Summary:
 	//		开始监听
@@ -82,21 +82,21 @@ public:
 
 	// Summary:
 	//		接受链接回调
-	void LPAPI OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData);
+	virtual void LPAPI OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData);
 
 protected:
 
 	//Summary:
 	//		获取监听器状态
-	LPUINT32 LPAPI _GetState();
+	virtual LPUINT32 LPAPI _GetState();
 
 	// Summary:
 	//		设置监听器状态
-	void LPAPI _SetState(LPUINT32 dwState);
+	virtual void LPAPI _SetState(LPUINT32 dwState);
 
 	// Summary:
 	//		获取AcceptEx和GetAcceptExSockaddrs函数指针，并且post异步accept操作
-	BOOL LPAPI _InitAcceptEx();
+	virtual BOOL LPAPI _InitAcceptEx();
 
 	// Summary:
 	//		post异步accept操作
@@ -104,11 +104,11 @@ protected:
 	//		pstPerIoData：与接受上来的sock绑定的io数据
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	BOOL LPAPI _PostAcceptEx(PER_IO_DATA* pstPerIoData);
+	virtual BOOL LPAPI _PostAcceptEx(PER_IO_DATA* pstPerIoData);
 
-private:
+protected:
 
-	LPUINT32                     m_dwId;
+	LPUINT32                    m_dwId;
 	volatile atomic_uint        m_dwState;
 
 	std::string                 m_strIP;
@@ -118,9 +118,62 @@ private:
 	ILPPacketParser*            m_pPacketParser;
 	LPNetImpl*                  m_pNetImpl;
 
+	PER_IO_DATA*                m_pstPerIoDataArray;
+
+};
+
+
+
+// Summary:
+//		windows网络通讯方式的listener实现类
+class DECLARE LPWinNetListener : public LPListener
+{
+public:
+
+	// Summary:
+	//		无
+	LPWinNetListener();
+
+	// Summary:
+	//		无
+	virtual ~LPWinNetListener();
+
+	// Summary:
+	//		开始监听
+	// Input:
+	//		strIP: ip地址字符串（格式：192.168.1.1，"0"表示任意地址）
+	//		dwPort: 监听端口
+	//		bReUseAddr: 是否重复利用地址
+	// Return:
+	//		TRUE-成功，FALSE-失败
+	virtual BOOL LPAPI Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReUseAddr);
+
+	// Summary:
+	//		网络事件处理
+	virtual void LPAPI OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData);
+
+	// Summary:
+	//		接受链接回调
+	virtual void LPAPI OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData);
+
+protected:
+
+	// Summary:
+	//		获取AcceptEx和GetAcceptExSockaddrs函数指针，并且post异步accept操作
+	virtual BOOL LPAPI _InitAcceptEx();
+
+	// Summary:
+	//		post异步accept操作
+	// Input:
+	//		pstPerIoData：与接受上来的sock绑定的io数据
+	// Return:
+	//		TRUE-成功，FALSE-失败
+	virtual BOOL LPAPI _PostAcceptEx(PER_IO_DATA* pstPerIoData);
+
+private:
+
 	LPFN_ACCEPTEX               m_lpfnAcceptEx;
 	LPFN_GETACCEPTEXSOCKADDRS   m_lpfnGetAcceptExSockaddrs;
-	PER_IO_DATA*                m_pstPerIoDataArray;
 
 };
 

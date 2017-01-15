@@ -272,6 +272,10 @@ public:
 	//		无
 	virtual void LPAPI SetNetImpl(LPNetImpl* pNetImpl);
 
+	// Summary:
+	//		无
+	virtual LPNetImpl* LPAPI GetNetImpl();
+
 protected:
 
 	volatile atomic_bool      m_bConnect;                 // 连接状态标记
@@ -280,28 +284,67 @@ protected:
 	BOOL                      m_bAcceptCreate;            // 是否是accept创建
 	BOOL                      m_bPassiveClose;            // 是否被动关闭
 	SOCKET                    m_hSock;                    // sock句柄
-	LPUINT32                   m_dwSockerId;               // socker id
-	LPUINT32                   m_dwParentId;               // 父级对象的id（连接器或监听器的id）
+	LPUINT32                  m_dwSockerId;               // socker id
+	LPUINT32                  m_dwParentId;               // 父级对象的id（连接器或监听器的id）
 	ILPPacketParser*          m_pPacketParser;            // 解析对象
 	LPNetImpl*                m_pNetImpl;                 //
 
-	LPUINT32                   m_dwRemoteIp;               // 远端ip
-	LPUINT16                   m_wRemotePort;              // 远端端口
+	LPUINT32                  m_dwRemoteIp;               // 远端ip
+	LPUINT16                  m_wRemotePort;              // 远端端口
 	char                      m_szRemoteIpStr[IP_LEN];    // 远端ip字符串
-	LPUINT32                   m_dwLocalIp;                // 本地ip
-	LPUINT16                   m_wLocalPort;               // 本地端口
+	LPUINT32                  m_dwLocalIp;                // 本地ip
+	LPUINT16                  m_wLocalPort;               // 本地端口
 	char                      m_szLocalIpStr[IP_LEN];     // 本地ip字符串
 
 	LPLoopBuf*                m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
 	LPLoopBuf*                m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
 
-	LPUINT64                   m_qwDelayCloseBeginTick;    // 延迟关闭开始tick
-	LPUINT64                   m_qwDelayCloseDuration;     // 延迟关闭持续时间
-	LPUINT64                   m_qwDelayReleaseBeginTick;  // 延迟释放开始tick
-	LPUINT64                   m_qwDelayReleaseDuration;   // 延迟释放持续时间
+	LPUINT64                  m_qwDelayCloseBeginTick;    // 延迟关闭开始tick
+	LPUINT64                  m_qwDelayCloseDuration;     // 延迟关闭持续时间
+	LPUINT64                  m_qwDelayReleaseBeginTick;  // 延迟释放开始tick
+	LPUINT64                  m_qwDelayReleaseDuration;   // 延迟释放持续时间
 
 	PER_IO_DATA               m_stRecvPerIoData;          // io接收绑定的数据 
 	PER_IO_DATA               m_stSendPerIoData;          // io发送绑定的数据
+};
+
+
+
+// Summary:
+//		windows网络通讯方式的socker实现类
+class DECLARE LPWinNetSocker : public LPSocker
+{
+public:
+
+	// Summary:
+	//		无
+	LPWinNetSocker();
+
+	// Summary:
+	//		无
+	virtual ~LPWinNetSocker();
+
+	// Summary:
+	//		网络事件处理
+	virtual void LPAPI OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData);
+
+	// Summary:
+	//		重置socker对象
+	virtual void LPAPI Reset();
+
+	// Summary:
+	//		post异步接收数据操作
+	// Return:
+	//		TRUE-成功，FALSE-失败
+	virtual BOOL LPAPI PostRecv();
+
+	// Summary:
+	//		post异步发送数据操作
+	// Return:
+	//		TRUE-有发送数据，FALSE-没发送数据
+	virtual BOOL LPAPI PostSend();
+
+protected:
 
 	static LPLock             m_oSendBufLock;             // 发送缓冲区锁（静态还是非静态？？？考虑锁消耗与sock效率平衡）
 };

@@ -175,6 +175,10 @@ public:
 	virtual void LPAPI SetNetImpl(LPNetImpl* pNetImpl) = 0;
 
 	// Summary:
+	//		无
+	virtual LPNetImpl* LPAPI GetNetImpl() = 0;
+
+	// Summary:
 	//		设置父级对象的id（连接器或监听器的id）
 	// Input:
 	//		dwParentId：id
@@ -206,7 +210,7 @@ public:
 
 public:
 
-	static ILPSockerImpl* LPAPI NewSockerImpl();
+	static ILPSockerImpl* LPAPI NewSockerImpl(LPUINT32 dwIoType);
 	static void LPAPI DeleteSockerImpl(ILPSockerImpl* & pSocker);
 };
 

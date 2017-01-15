@@ -40,7 +40,7 @@ public:
 	virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
 	// Summary：
 	//		无     
-	BOOL LPAPI UnInit();
+	virtual BOOL LPAPI UnInit();
 
 	// Summary:
 	//		开始连接
@@ -86,33 +86,33 @@ public:
 
 	// Summary:
 	//		设置是否自动重连
-	void LPAPI SetReconnect(BOOL bReconnect);
+	virtual void LPAPI SetReconnect(BOOL bReconnect);
 
 	// Summary:
 	//		是否自动重连
-	BOOL LPAPI IsReconnect();
+	virtual BOOL LPAPI IsReconnect();
 
 	// Summary:
 	//		设置关联的socker对象
-	void LPAPI SetSocker(ILPSockerImpl* pSocker);
+	virtual void LPAPI SetSocker(ILPSockerImpl* pSocker);
 
 	// Summary:
 	//		获取关联的socker对象
-	ILPSockerImpl* LPAPI GetSocker();
+	virtual ILPSockerImpl* LPAPI GetSocker();
 
 	// Summary:
 	//		设置连接器当前状态
-	void LPAPI SetState(LPUINT32 dwState);
+	virtual void LPAPI SetState(LPUINT32 dwState);
 
 	//Summary:
 	//		获取连接器当前状态
-	LPUINT32 LPAPI GetState();
+	virtual LPUINT32 LPAPI GetState();
 
 protected:
 
 	// Summary:
 	//		获取ConnectEx函数指针，并且调用异步connect操作
-	BOOL LPAPI _InitConnectEx();
+	virtual BOOL LPAPI _InitConnectEx();
 
 	// Summary:
 	//		post异步connect操作
@@ -120,11 +120,11 @@ protected:
 	//		pstPerIoData：与链接建立的sock绑定的io数据
 	// Return:
 	//		TRUE-成功，FALSE-失败
-	BOOL LPAPI _PostConnectEx(PER_IO_DATA* pstPerIoData);
+	virtual BOOL LPAPI _PostConnectEx(PER_IO_DATA* pstPerIoData);
 
-private:
+protected:
 
-	LPUINT32                     m_dwId;
+	LPUINT32                    m_dwId;
 	volatile atomic_uint        m_dwState;
 
 	std::string                 m_strIP;
@@ -135,8 +135,45 @@ private:
 	LPNetImpl*                  m_pNetImpl;
 	ILPSockerImpl*              m_pSocker;
 
-	LPFN_CONNECTEX              m_lpfnConnectEx;
 	PER_IO_DATA*                m_pstPerIoData;
+};
+
+
+
+// Summary:
+//		windows网络通讯方式的connector实现类
+class DECLARE LPWinNetConnector : public LPConnector
+{
+public:
+
+	// Summary:
+	//		无
+	LPWinNetConnector();
+
+	// Summary:
+	//		无
+	virtual ~LPWinNetConnector();
+
+	// Summary:
+	//		网络事件处理
+	virtual void LPAPI OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData);
+
+protected:
+
+	// Summary:
+	//		获取ConnectEx函数指针，并且调用异步connect操作
+	virtual BOOL LPAPI _InitConnectEx();
+
+	// Summary:
+	//		post异步connect操作
+	// Input:
+	//		pstPerIoData：与链接建立的sock绑定的io数据
+	// Return:
+	//		TRUE-成功，FALSE-失败
+	virtual BOOL LPAPI _PostConnectEx(PER_IO_DATA* pstPerIoData);
+
+protected:
+	LPFN_CONNECTEX              m_lpfnConnectEx;
 };
 
 

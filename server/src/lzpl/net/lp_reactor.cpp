@@ -23,10 +23,10 @@ std::shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(LPUINT32 dwIoType)
 	{
 	case eIoType_CompletionPort:
 		{
-			pReactor = std::make_shared<LPReactorIocpImpl>();
+			pReactor = std::make_shared<LPIocpReactor>();
 			LOG_PROCESS_ERROR(pReactor != nullptr);
 
-			nResult = ((LPReactorIocpImpl*)pReactor.get())->Init(FALSE);
+			nResult = ((LPIocpReactor*)pReactor.get())->Init(FALSE);
 			LOG_PROCESS_ERROR(nResult);
 		}
 		break;
@@ -51,7 +51,94 @@ void LPAPI ILPReactor::DeleteReactor(std::shared_ptr<ILPReactor>& pReactor)
 	pReactor = nullptr;
 }
 
-BOOL LPAPI LPReactorIocpImpl::RegisterEventHandler(ILPEventHandler* pEventHandler)
+
+
+LPReactor::LPReactor()
+{
+	_SetState(eCommonState_NoInit);
+}
+
+LPReactor::~LPReactor()
+{
+	
+}
+
+BOOL LPAPI LPReactor::Init(BOOL bOneCompletionPortOneThread)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+BOOL LPAPI LPReactor::UnInit()
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+BOOL LPAPI LPReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+BOOL LPAPI LPReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+unsigned LPAPI LPReactor::ThreadFunc(void* pParam)
+{
+	REACTOR_THREAD_PARAM stThreadParam;
+	REACTOR_THREAD_PARAM* pThreadParam = (REACTOR_THREAD_PARAM*)pParam;
+
+	LOG_PROCESS_ERROR(pThreadParam);
+	stThreadParam.pReactorImpl = pThreadParam->pReactorImpl;
+	stThreadParam.nCompletionPortIndex = pThreadParam->nCompletionPortIndex;
+
+	SAFE_DELETE(pThreadParam);
+
+	LOG_PROCESS_ERROR(stThreadParam.pReactorImpl);
+	((LPReactor*)stThreadParam.pReactorImpl)->OnExecute(stThreadParam.nCompletionPortIndex);
+
+Exit0:
+	return 0;
+}
+
+void LPAPI LPReactor::OnExecute(LPINT32 nCompletionPortIndex)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return ;
+}
+
+LPUINT32 LPAPI LPReactor::_GetState()
+{
+	return m_dwState;
+}
+
+void LPAPI LPReactor::_SetState(LPUINT32 dwState)
+{
+	m_dwState = dwState;
+}
+
+
+
+LPIocpReactor::LPIocpReactor()
+{
+
+}
+
+LPIocpReactor::~LPIocpReactor()
+{
+	UnInit();
+}
+
+BOOL LPAPI LPIocpReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
 {
 	LOG_PROCESS_ERROR(pEventHandler);
 	LOG_PROCESS_ERROR(m_pCompletionPort);
@@ -72,31 +159,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPReactorIocpImpl::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
+BOOL LPAPI LPIocpReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
 {
 	return FALSE;
 
 }
 
-unsigned LPAPI LPReactorIocpImpl::ThreadFunc(void* pParam)
-{
-	REACTOR_THREAD_PARAM stThreadParam;
-	REACTOR_THREAD_PARAM* pThreadParam = (REACTOR_THREAD_PARAM*)pParam;
-
-	LOG_PROCESS_ERROR(pThreadParam);
-	stThreadParam.pReactorImpl = pThreadParam->pReactorImpl;
-	stThreadParam.nCompletionPortIndex = pThreadParam->nCompletionPortIndex;
-
-	SAFE_DELETE(pThreadParam);
-
-	LOG_PROCESS_ERROR(stThreadParam.pReactorImpl);
-	((LPReactorIocpImpl*)stThreadParam.pReactorImpl)->OnExecute(stThreadParam.nCompletionPortIndex);
-
-Exit0:
-	return 0;
-}
-
-BOOL LPAPI LPReactorIocpImpl::Init(BOOL bOneCompletionPortOneThread)
+BOOL LPAPI LPIocpReactor::Init(BOOL bOneCompletionPortOneThread)
 {
 #	ifdef _WIN32
 	SYSTEM_INFO stSysInfo;
@@ -181,13 +250,11 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPReactorIocpImpl::UnInit()
+BOOL LPAPI LPIocpReactor::UnInit()
 {
-#	ifdef _WIN32
 	LPINT32 nResult = 0;
-#	endif
 
-	PROCESS_SUCCESS(_GetState() == eCommonState_NoInit || _GetState() >= eCommonState_UnIniting); 
+	PROCESS_SUCCESS(_GetState() == eCommonState_NoInit || _GetState() >= eCommonState_UnIniting);
 
 	_SetState(eCommonState_UnIniting);
 	IMP("reactor uniniting ...");
@@ -241,7 +308,7 @@ Exit1:
 	return TRUE;
 }
 
-void LPAPI LPReactorIocpImpl::OnExecute(LPINT32 nCompletionPortIndex)
+void LPAPI LPIocpReactor::OnExecute(LPINT32 nCompletionPortIndex)
 {
 	BOOL             bRet = FALSE;
 	DWORD            dwByteTransferred;
@@ -258,7 +325,7 @@ void LPAPI LPReactorIocpImpl::OnExecute(LPINT32 nCompletionPortIndex)
 
 #       if defined _WIN32
 		{
-			//IMP("LPReactorIocpImpl::OnExecute start GetQueuedCompletionStatus ...");
+			//IMP("LPReactor::OnExecute start GetQueuedCompletionStatus ...");
 			bRet = GetQueuedCompletionStatus(
 				m_pCompletionPort[nCompletionPortIndex],
 				&dwByteTransferred,
@@ -307,30 +374,6 @@ void LPAPI LPReactorIocpImpl::OnExecute(LPINT32 nCompletionPortIndex)
 Exit1:
 Exit0:
 	return;
-}
-
-LPUINT32 LPAPI LPReactorIocpImpl::_GetState()
-{
-	return m_dwState;
-}
-
-void LPAPI LPReactorIocpImpl::_SetState(LPUINT32 dwState)
-{
-	m_dwState = dwState;
-}
-
-LPReactorIocpImpl::LPReactorIocpImpl()
-{
-	_SetState(eCommonState_NoInit);
-	m_nCompletionPortCount = 0;
-	m_pCompletionPort = NULL;
-	m_nWorkerCountPerCompIo = 0;
-	m_ppWorkerArray = NULL;
-}
-
-LPReactorIocpImpl::~LPReactorIocpImpl()
-{
-	UnInit();
 }
 
 

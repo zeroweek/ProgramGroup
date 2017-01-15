@@ -17,8 +17,6 @@ NS_LZPL_BEGIN
 
 
 
-LPLock LPSocker::m_oSendBufLock;
-
 const char *LPAPI SOCK_ERR_CODE::GetDescription()
 {
 	switch (eSockErrCode)
@@ -45,15 +43,33 @@ Exit0:
 	return lpGetErrorString(eErrorString_Unknow);
 }
 
-ILPSockerImpl* LPAPI ILPSockerImpl::NewSockerImpl()
+ILPSockerImpl* LPAPI ILPSockerImpl::NewSockerImpl(LPUINT32 dwIoType)
 {
-	return new LPSocker();
+	switch (dwIoType)
+	{
+	case eIoType_CompletionPort:
+		{
+			return new LPWinNetSocker();
+		}
+		break;
+	case eIoType_None:
+	default:
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+Exit0:
+	return nullptr;
 }
 
 void LPAPI ILPSockerImpl::DeleteSockerImpl(ILPSockerImpl* & pSocker)
 {
 	SAFE_DELETE(pSocker);
 }
+
+
 
 LPSocker::LPSocker()
 {
@@ -168,7 +184,7 @@ void LPAPI LPSocker::Close(SOCK_ERR_CODE stSockErrCode, BOOL bPassiveClose)
 		}
 	}
 
-	m_pNetImpl->GetEventMgr().PushTerminateEvent(this, GetSockerId(), bPassiveClose);
+	GetNetImpl()->GetEventMgr().PushTerminateEvent(this, GetSockerId(), bPassiveClose);
 
 Exit1:
 	return;
@@ -186,48 +202,8 @@ e_EventHandlerType LPAPI LPSocker::GetEventHandlerType()
 
 void LPAPI LPSocker::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
 {
-	LPINT32 nLastError;
-
-	LOG_PROCESS_ERROR(pstPerIoData);
-	LOG_PROCESS_ERROR(pstPerIoData->eIoOptType == eIoOptType_Send
-		|| pstPerIoData->eIoOptType == eIoOptType_Recv);
-	LOG_PROCESS_ERROR(pstPerIoData->eHandlerType == eEventHandlerType_Socker);
-
-	//这里WSAGetLastError获得的结果是否是对应本次io操作？？？或许需要用GetLastError比较准确？？？
-	nLastError = WSAGetLastError();
-
-	//调用lpCloseSocket时，会触发收回连接句柄关联的正在执行的io操作，
-	//此处进行判断拦截，防止访问已经被释放的socker对象
-	if (!bOperateRet && ERROR_OPERATION_ABORTED == nLastError)
-	{
-		PROCESS_SUCCESS(TRUE);
-	}
-
-	if (bOperateRet)
-	{
-		if (0 == pstPerIoData->qwByteTransferred)
-		{
-			Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 2, nLastError), TRUE);
-		}
-		else
-		{
-			if (eIoOptType_Recv == pstPerIoData->eIoOptType)
-			{
-				OnRecv((LPUINT32)pstPerIoData->qwByteTransferred);
-			}
-			else
-			{
-				OnSend((LPUINT32)pstPerIoData->qwByteTransferred);
-			}
-		}
-	}
-	else
-	{
-		Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 1, nLastError), TRUE);
-	}
-
-Exit1:
-Exit0:
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
 	return;
 }
 
@@ -266,7 +242,6 @@ Exit0:
 void LPAPI LPSocker::Reset()
 {
 	SetConnect(false);
-
 	m_bSending = false;
 
 	SetAcceptCreate(FALSE);
@@ -275,7 +250,7 @@ void LPAPI LPSocker::Reset()
 	SetParentId(0);
 
 	m_pPacketParser = NULL;
-	m_pNetImpl = NULL;
+	SetNetImpl(nullptr);
 
 	m_dwRemoteIp = 0;
 	m_wRemotePort = 0;
@@ -295,109 +270,16 @@ void LPAPI LPSocker::Reset()
 
 BOOL LPAPI LPSocker::PostRecv()
 {
-	LPINT32 nResult = 0;
-
-#	ifdef _WIN32
-	DWORD dwReadLen;
-	DWORD dwFlags = 0;
-#	endif
-
-	LOG_PROCESS_ERROR(m_pRecvLoopBuf);
-
-	//接收不用判断是否链接，无需担心socker已被释放的
-	//PROCESS_SUCCESS(!IsConnect());
-
-	memset(&m_stRecvPerIoData.stOverlapped, 0, sizeof(m_stRecvPerIoData.stOverlapped));
-	m_stRecvPerIoData.stWsaBuf.buf = m_pRecvLoopBuf->WritePtr();
-	m_stRecvPerIoData.stWsaBuf.len = m_pRecvLoopBuf->GetOnceWritableLen();
-	if (IsAcceptCreate())
-	{
-		m_stRecvPerIoData.eHandlerType = eEventHandlerType_Socker;
-	}
-	else
-	{
-		m_stRecvPerIoData.eHandlerType = eEventHandlerType_Connector;
-	}
-
-#	ifdef _WIN32
-	{
-		nResult = WSARecv(GetSock(), &m_stRecvPerIoData.stWsaBuf, 1, &dwReadLen, &dwFlags, &m_stRecvPerIoData.stOverlapped, NULL);
-	}
-#	endif
-	if (0 != nResult)
-	{
-		if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())
-		{
-			ERR("WSARecv failed : %d", WSAGetLastError);
-			Close(SOCK_ERR_CODE(eSockErrCode_PostRecvFail, 1, WSAGetLastError()), TRUE);
-		}
-	}
-
-	return TRUE;
-Exit0:
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
 	return FALSE;
 }
 
 BOOL LPAPI LPSocker::PostSend()
 {
-	LPINT32 nResult = 0;
-	BOOL bSend = FALSE;
-	DWORD dwNumberOfBytesSend = 0;
-	LPUINT32 dwOnceReadableLen = 0;
-
-	LOG_PROCESS_ERROR(m_pSendLoopBuf);
-
-	PROCESS_SUCCESS(!IsConnect());
-
-	//判断是否有数据正在发送
-	if (m_bSending)
-	{
-		PROCESS_ERROR(FALSE);
-	}
-
-	dwOnceReadableLen = m_pSendLoopBuf->GetOnceReadableLen();
-	if (dwOnceReadableLen > 0)
-	{
-		bSend = TRUE;
-		m_bSending = true;
-
-		m_stSendPerIoData.stWsaBuf.buf = m_pSendLoopBuf->ReadPtr();
-		m_stSendPerIoData.stWsaBuf.len = dwOnceReadableLen;
-	}
-
-	if (bSend)
-	{
-		dwNumberOfBytesSend = 0;
-		memset(&m_stSendPerIoData.stOverlapped, 0, sizeof(m_stSendPerIoData.stOverlapped));
-		if (IsAcceptCreate())
-		{
-			m_stSendPerIoData.eHandlerType = eEventHandlerType_Socker;
-		}
-		else
-		{
-			m_stSendPerIoData.eHandlerType = eEventHandlerType_Connector;
-		}
-
-#		ifdef _WIN32
-		{
-			nResult = WSASend(GetSock(), &m_stSendPerIoData.stWsaBuf, 1, &dwNumberOfBytesSend, 0, &m_stSendPerIoData.stOverlapped, NULL);
-		}
-#		endif
-		if (0 != nResult)
-		{
-			if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())
-			{
-				ERR("WSASend failed : %d", WSAGetLastError);
-				Close(SOCK_ERR_CODE(eSockErrCode_PostSendFail, 1, WSAGetLastError()), TRUE);
-			}
-		}
-	}
-
-Exit1:
-Exit0:
-
-	nResult = bSend;
-	return nResult;
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
 }
 
 void LPAPI LPSocker::OnRecv(LPUINT32 dwBytes)
@@ -432,7 +314,7 @@ void LPAPI LPSocker::OnRecv(LPUINT32 dwBytes)
 				LOG_PROCESS_ERROR(FALSE);
 			}
 
-			nResult = m_pNetImpl->GetEventMgr().PushRecvEvent(this, GetSockerId(), m_pRecvLoopBuf, idwUsed);
+			nResult = GetNetImpl()->GetEventMgr().PushRecvEvent(this, GetSockerId(), m_pRecvLoopBuf, idwUsed);
 			if (!nResult)
 			{
 				Close(SOCK_ERR_CODE(eSockErrCode_RecvError, 3, 0), FALSE);
@@ -566,8 +448,8 @@ void LPAPI LPSocker::SetSockerId(LPUINT32 dwSockerId)
 void LPAPI LPSocker::OnClose()
 {
 	//延迟关闭
-	LOG_PROCESS_ERROR(m_pNetImpl);
-	m_pNetImpl->GetSockerMgr().DelayClose(this);
+	LOG_PROCESS_ERROR(GetNetImpl());
+	GetNetImpl()->GetSockerMgr().DelayClose(this);
 
 Exit0:
 	return;
@@ -606,6 +488,184 @@ BOOL LPAPI LPSocker::IsPassiveClose()
 void LPAPI LPSocker::SetNetImpl(LPNetImpl * pNetImpl)
 {
 	m_pNetImpl = pNetImpl;
+}
+
+LPNetImpl* LPAPI LZPL::LPSocker::GetNetImpl()
+{
+	return m_pNetImpl;
+}
+
+
+
+LPLock LZPL::LPWinNetSocker::m_oSendBufLock;
+
+LPWinNetSocker::LPWinNetSocker()
+{
+	Reset();
+}
+
+LPWinNetSocker::~LPWinNetSocker()
+{
+
+}
+
+void LPAPI LPWinNetSocker::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
+{
+	LPINT32 nLastError;
+
+	LOG_PROCESS_ERROR(pstPerIoData);
+	LOG_PROCESS_ERROR(pstPerIoData->eIoOptType == eIoOptType_Send
+		|| pstPerIoData->eIoOptType == eIoOptType_Recv);
+	LOG_PROCESS_ERROR(pstPerIoData->eHandlerType == eEventHandlerType_Socker);
+
+	//这里WSAGetLastError获得的结果是否是对应本次io操作？？？或许需要用GetLastError比较准确？？？
+	nLastError = WSAGetLastError();
+
+	//调用lpCloseSocket时，会触发收回连接句柄关联的正在执行的io操作，
+	//此处进行判断拦截，防止访问已经被释放的socker对象
+	if (!bOperateRet && ERROR_OPERATION_ABORTED == nLastError)
+	{
+		PROCESS_SUCCESS(TRUE);
+	}
+
+	if (bOperateRet)
+	{
+		if (0 == pstPerIoData->qwByteTransferred)
+		{
+			Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 2, nLastError), TRUE);
+		}
+		else
+		{
+			if (eIoOptType_Recv == pstPerIoData->eIoOptType)
+			{
+				OnRecv((LPUINT32)pstPerIoData->qwByteTransferred);
+			}
+			else
+			{
+				OnSend((LPUINT32)pstPerIoData->qwByteTransferred);
+			}
+		}
+	}
+	else
+	{
+		Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 1, nLastError), TRUE);
+	}
+
+Exit1:
+Exit0:
+	return;
+}
+
+void LPAPI LPWinNetSocker::Reset()
+{
+	LPSocker::Reset();
+}
+
+BOOL LPAPI LPWinNetSocker::PostRecv()
+{
+	LPINT32 nResult = 0;
+
+#	ifdef _WIN32
+	DWORD dwReadLen;
+	DWORD dwFlags = 0;
+#	endif
+
+	LOG_PROCESS_ERROR(m_pRecvLoopBuf);
+
+	//接收不用判断是否链接，无需担心socker已被释放的
+	//PROCESS_SUCCESS(!IsConnect());
+
+	memset(&m_stRecvPerIoData.stOverlapped, 0, sizeof(m_stRecvPerIoData.stOverlapped));
+	m_stRecvPerIoData.stWsaBuf.buf = m_pRecvLoopBuf->WritePtr();
+	m_stRecvPerIoData.stWsaBuf.len = m_pRecvLoopBuf->GetOnceWritableLen();
+	if (IsAcceptCreate())
+	{
+		m_stRecvPerIoData.eHandlerType = eEventHandlerType_Socker;
+	}
+	else
+	{
+		m_stRecvPerIoData.eHandlerType = eEventHandlerType_Connector;
+	}
+
+#	ifdef _WIN32
+	{
+		nResult = WSARecv(GetSock(), &m_stRecvPerIoData.stWsaBuf, 1, &dwReadLen, &dwFlags, &m_stRecvPerIoData.stOverlapped, NULL);
+	}
+#	endif
+	if (0 != nResult)
+	{
+		if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())
+		{
+			ERR("WSARecv failed : %d", WSAGetLastError);
+			Close(SOCK_ERR_CODE(eSockErrCode_PostRecvFail, 1, WSAGetLastError()), TRUE);
+		}
+	}
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL LPAPI LPWinNetSocker::PostSend()
+{
+	LPINT32 nResult = 0;
+	BOOL bSend = FALSE;
+	DWORD dwNumberOfBytesSend = 0;
+	LPUINT32 dwOnceReadableLen = 0;
+
+	LOG_PROCESS_ERROR(m_pSendLoopBuf);
+
+	PROCESS_SUCCESS(!IsConnect());
+
+	//判断是否有数据正在发送
+	if (m_bSending)
+	{
+		PROCESS_ERROR(FALSE);
+	}
+
+	dwOnceReadableLen = m_pSendLoopBuf->GetOnceReadableLen();
+	if (dwOnceReadableLen > 0)
+	{
+		bSend = TRUE;
+		m_bSending = true;
+
+		m_stSendPerIoData.stWsaBuf.buf = m_pSendLoopBuf->ReadPtr();
+		m_stSendPerIoData.stWsaBuf.len = dwOnceReadableLen;
+	}
+
+	if (bSend)
+	{
+		dwNumberOfBytesSend = 0;
+		memset(&m_stSendPerIoData.stOverlapped, 0, sizeof(m_stSendPerIoData.stOverlapped));
+		if (IsAcceptCreate())
+		{
+			m_stSendPerIoData.eHandlerType = eEventHandlerType_Socker;
+		}
+		else
+		{
+			m_stSendPerIoData.eHandlerType = eEventHandlerType_Connector;
+		}
+
+#		ifdef _WIN32
+		{
+			nResult = WSASend(GetSock(), &m_stSendPerIoData.stWsaBuf, 1, &dwNumberOfBytesSend, 0, &m_stSendPerIoData.stOverlapped, NULL);
+		}
+#		endif
+		if (0 != nResult)
+		{
+			if (WSA_IO_PENDING != WSAGetLastError() && IsConnect())
+			{
+				ERR("WSASend failed : %d", WSAGetLastError);
+				Close(SOCK_ERR_CODE(eSockErrCode_PostSendFail, 1, WSAGetLastError()), TRUE);
+			}
+		}
+	}
+
+Exit1:
+Exit0:
+
+	nResult = bSend;
+	return nResult;
 }
 
 

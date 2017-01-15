@@ -35,7 +35,7 @@ std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(ILPPacketParser
 
 	LOG_PROCESS_ERROR(pPacketParser);
 
-	pListener = ILPListenerImpl::NewListenerImpl();
+	pListener = ILPListenerImpl::NewListenerImpl(m_oNetConfig.dwIoType);
 	LOG_PROCESS_ERROR(pListener != nullptr);
 
 	nResult = pListener->Init(this, pPacketParser, _CreateId());
@@ -55,7 +55,7 @@ std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(ILPPacketPars
 
 	LOG_PROCESS_ERROR(pPacketParser);
 
-	pConnector = ILPConnectorImpl::NewConnectorImpl();
+	pConnector = ILPConnectorImpl::NewConnectorImpl(m_oNetConfig.dwIoType);
 	LOG_PROCESS_ERROR(pConnector);
 
 	nResult = pConnector->Init(this, pPacketParser, _CreateId());

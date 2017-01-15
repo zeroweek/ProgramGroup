@@ -15,15 +15,33 @@ NS_LZPL_BEGIN
 
 
 
-std::shared_ptr<ILPListenerImpl> LPAPI ILPListenerImpl::NewListenerImpl()
+std::shared_ptr<ILPListenerImpl> LPAPI ILPListenerImpl::NewListenerImpl(LPUINT32 dwIoType)
 {
-	return std::make_shared<LPListener>();
+	switch (dwIoType)
+	{
+	case eIoType_CompletionPort:
+		{
+			return std::make_shared<LPWinNetListener>();
+		}
+		break;
+	case eIoType_None:
+	default:
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+Exit0:
+	return nullptr;
 }
 
 void LPAPI ILPListenerImpl::DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener)
 {
 	pListener = nullptr;
 }
+
+
 
 LPListener::LPListener()
 {
@@ -35,8 +53,6 @@ LPListener::LPListener()
 	m_pPacketParser = NULL;
 	m_pNetImpl = NULL;
 
-	m_lpfnAcceptEx = NULL;
-	m_lpfnGetAcceptExSockaddrs = NULL;
 	m_pstPerIoDataArray = NULL;
 }
 
@@ -84,9 +100,6 @@ BOOL LPAPI LPListener::UnInit()
 		m_pPacketParser = NULL;
 	}
 
-	m_lpfnAcceptEx = NULL;
-	m_lpfnGetAcceptExSockaddrs = NULL;
-
 	if (NULL != m_pstPerIoDataArray)
 	{
 		SAFE_DELETE_SZ(m_pstPerIoDataArray);
@@ -99,6 +112,98 @@ Exit1:
 }
 
 BOOL LPAPI LPListener::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReUseAddr)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+void LPAPI LPListener::Stop()
+{
+	PROCESS_SUCCESS(_GetState() >= eCommonState_Close);
+
+	LOG_PROCESS_ERROR(_GetState() == eCommonState_Inited);
+	_SetState(eCommonState_Close);
+
+	if (INVALID_SOCKET != m_hListenSock)
+	{
+		lpCancelIoEx(m_hListenSock);
+		lpCloseSocket(m_hListenSock);
+		m_hListenSock = INVALID_SOCKET;
+	}
+
+Exit1:
+Exit0:
+	return;
+}
+
+LPUINT32 LPAPI LPListener::GetId()
+{
+	return m_dwId;
+}
+
+HANDLE LPAPI LPListener::GetHandle()
+{
+	return (HANDLE)m_hListenSock;
+}
+
+e_EventHandlerType LPAPI LPListener::GetEventHandlerType()
+{
+	return eEventHandlerType_Listener;
+}
+
+void LPAPI LPListener::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return;
+}
+
+void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return;
+}
+
+LPUINT32 LPAPI LPListener::_GetState()
+{
+	return m_dwState;
+}
+
+void LPAPI LPListener::_SetState(LPUINT32 dwState)
+{
+	m_dwState = dwState;
+}
+
+BOOL LPAPI LPListener::_InitAcceptEx()
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+BOOL LPAPI LPListener::_PostAcceptEx(PER_IO_DATA* pstPerIoData)
+{
+	LOG_CHECK_ERROR(FALSE);
+	LPASSERT(FALSE);
+	return FALSE;
+}
+
+
+
+LPWinNetListener::LPWinNetListener()
+{
+	m_lpfnAcceptEx = NULL;
+	m_lpfnGetAcceptExSockaddrs = NULL;
+}
+
+LPWinNetListener::~LPWinNetListener()
+{
+
+}
+
+BOOL LPAPI LPWinNetListener::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReUseAddr)
 {
 	LPINT32 nResult = 0;
 	LPINT32 nReUse = 0;
@@ -191,41 +296,7 @@ Exit0:
 	return FALSE;
 }
 
-void LPAPI LPListener::Stop()
-{
-	PROCESS_SUCCESS(_GetState() >= eCommonState_Close);
-
-	LOG_PROCESS_ERROR(_GetState() == eCommonState_Inited);
-	_SetState(eCommonState_Close);
-
-	if (INVALID_SOCKET != m_hListenSock)
-	{
-		lpCancelIoEx(m_hListenSock);
-		lpCloseSocket(m_hListenSock);
-		m_hListenSock = INVALID_SOCKET;
-	}
-
-Exit1:
-Exit0:
-	return;
-}
-
-LPUINT32 LPAPI LPListener::GetId()
-{
-	return m_dwId;
-}
-
-HANDLE LPAPI LPListener::GetHandle()
-{
-	return (HANDLE)m_hListenSock;
-}
-
-e_EventHandlerType LPAPI LPListener::GetEventHandlerType()
-{
-	return eEventHandlerType_Listener;
-}
-
-void LPAPI LPListener::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
+void LPAPI LPWinNetListener::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
 {
 	LOG_PROCESS_ERROR(pstPerIoData);
 	LOG_PROCESS_ERROR(pstPerIoData->eIoOptType == eIoOptType_Accept);
@@ -237,9 +308,9 @@ Exit0:
 	return;
 }
 
-void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
+void LPAPI LZPL::LPWinNetListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 {
-	LPINT32 nResult = 0;
+		LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
 	ILPSockerImpl* pSocker = NULL;
 	const char cArg = 1;
@@ -257,117 +328,117 @@ void LPAPI LPListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
 
 	switch (_GetState())
 	{
-	case eCommonState_NoInit:
-	{
-		lpCloseSocket(hSock);
-		LOG_PROCESS_ERROR(FALSE);
-	}
-	break;
-	case eCommonState_Initing:
-	{
-		INF("listener is initing, discard accept", __FUNCTION__);
-		lpCloseSocket(hSock);
-		nResult = _PostAcceptEx(pstPerIoData);
-		LOG_PROCESS_ERROR(nResult);
-		PROCESS_ERROR(FALSE);
-	}
-	break;
-	case eCommonState_Inited:
-	{
-		if (!bSuccess)
+		case eCommonState_NoInit:
 		{
-			FTL("%s accept failed, errno %d", __FUNCTION__, WSAGetLastError());
+			lpCloseSocket(hSock);
+			LOG_PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Initing:
+		{
+			INF("listener is initing, discard accept", __FUNCTION__);
 			lpCloseSocket(hSock);
 			nResult = _PostAcceptEx(pstPerIoData);
 			LOG_PROCESS_ERROR(nResult);
 			PROCESS_ERROR(FALSE);
 		}
-		else
+		break;
+	case eCommonState_Inited:
 		{
-			nResult = _PostAcceptEx(pstPerIoData);
-			LOG_CHECK_ERROR(nResult);
-
-			dwCurValidConnectCount = m_pNetImpl->GetSockerMgr().GetCurValidConnectCount();
-			if (dwCurValidConnectCount >= m_pNetImpl->GetNetConfig().dwConnectCount)
+			if (!bSuccess)
 			{
-				INF("encounter max connect count, connect count(current/max): %d/%d !",
-					dwCurValidConnectCount, m_pNetImpl->GetNetConfig().dwConnectCount);
+				FTL("%s accept failed, errno %d", __FUNCTION__, WSAGetLastError());
 				lpCloseSocket(hSock);
+				nResult = _PostAcceptEx(pstPerIoData);
+				LOG_PROCESS_ERROR(nResult);
 				PROCESS_ERROR(FALSE);
 			}
-
-			pSocker = m_pNetImpl->GetSockerMgr().Create(m_pPacketParser, m_dwId, TRUE);
-			if (NULL == pSocker)
+			else
 			{
-				LOG_CHECK_ERROR(FALSE);
-				FTL("%s create LPSocker failed", __FUNCTION__);
-				lpCloseSocket(hSock);
-				PROCESS_ERROR(FALSE);
+				nResult = _PostAcceptEx(pstPerIoData);
+				LOG_CHECK_ERROR(nResult);
+
+				dwCurValidConnectCount = m_pNetImpl->GetSockerMgr().GetCurValidConnectCount();
+				if (dwCurValidConnectCount >= m_pNetImpl->GetNetConfig().dwConnectCount)
+				{
+					INF("encounter max connect count, connect count(current/max): %d/%d !",
+						dwCurValidConnectCount, m_pNetImpl->GetNetConfig().dwConnectCount);
+					lpCloseSocket(hSock);
+					PROCESS_ERROR(FALSE);
+				}
+
+				pSocker = m_pNetImpl->GetSockerMgr().Create(m_pPacketParser, m_dwId, TRUE);
+				if (NULL == pSocker)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					FTL("%s create LPSocker failed", __FUNCTION__);
+					lpCloseSocket(hSock);
+					PROCESS_ERROR(FALSE);
+				}
+
+				IMP("listener create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), hSock);
+
+				//设置sock选项
+#				ifdef _WIN32
+				{
+					::setsockopt(hSock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char*)&m_hListenSock, sizeof(SOCKET));
+					::setsockopt(hSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+
+
+					idwRemoteAddrLen = sizeof(sockaddr_in);
+					idwLocalAddrLen = sizeof(sockaddr_in);
+					idwAddrLen = sizeof(sockaddr_in) + 16;
+
+					m_lpfnGetAcceptExSockaddrs(
+						pstPerIoData->szBuf,
+						0,
+						idwAddrLen,
+						idwAddrLen,
+						(SOCKADDR**)&pstLocalAddr,
+						&idwLocalAddrLen,
+						(SOCKADDR**)&pstRemoteAddr,
+						&idwRemoteAddrLen
+					);
+				}
+#				endif
+
+				//设置LPSocker对象
+				pSocker->SetSock(hSock);
+				pSocker->SetConnect(true);
+				pSocker->SetRemoteIp(pstRemoteAddr->sin_addr.s_addr);
+				pSocker->SetRemotePort(pstRemoteAddr->sin_port);
+				pSocker->SetLocalIp(pstLocalAddr->sin_addr.s_addr);
+				pSocker->SetLocalPort(pstLocalAddr->sin_port);
+
+				//注册事件处理器
+				nResult = m_pNetImpl->GetReactorImpl().RegisterEventHandler(pSocker);
+				if (!nResult)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					lpCloseSocket(hSock);
+					PROCESS_ERROR(FALSE);
+				}
+
+				//push连接建立事件
+				m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, TRUE);
 			}
-
-			IMP("listener create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), hSock);
-
-			//设置sock选项
-#			ifdef _WIN32
-			{
-				::setsockopt(hSock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char*)&m_hListenSock, sizeof(SOCKET));
-				::setsockopt(hSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
-
-
-				idwRemoteAddrLen = sizeof(sockaddr_in);
-				idwLocalAddrLen = sizeof(sockaddr_in);
-				idwAddrLen = sizeof(sockaddr_in) + 16;
-
-				m_lpfnGetAcceptExSockaddrs(
-					pstPerIoData->szBuf,
-					0,
-					idwAddrLen,
-					idwAddrLen,
-					(SOCKADDR**)&pstLocalAddr,
-					&idwLocalAddrLen,
-					(SOCKADDR**)&pstRemoteAddr,
-					&idwRemoteAddrLen
-				);
-			}
-#			endif
-
-			//设置LPSocker对象
-			pSocker->SetSock(hSock);
-			pSocker->SetConnect(true);
-			pSocker->SetRemoteIp(pstRemoteAddr->sin_addr.s_addr);
-			pSocker->SetRemotePort(pstRemoteAddr->sin_port);
-			pSocker->SetLocalIp(pstLocalAddr->sin_addr.s_addr);
-			pSocker->SetLocalPort(pstLocalAddr->sin_port);
-
-			//注册事件处理器
-			nResult = m_pNetImpl->GetReactorImpl().RegisterEventHandler(pSocker);
-			if (!nResult)
-			{
-				LOG_CHECK_ERROR(FALSE);
-				m_pNetImpl->GetSockerMgr().Release(pSocker);
-				lpCloseSocket(hSock);
-				PROCESS_ERROR(FALSE);
-			}
-
-			//push连接建立事件
-			m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, TRUE);
 		}
-	}
-	break;
+		break;
 	case eCommonState_UnIniting:
 	case eCommonState_UnInited:
-	{
-		LOG_CHECK_ERROR(bSuccess == FALSE);
-		lpCloseSocket(hSock);
-		PROCESS_SUCCESS(TRUE);
-	}
-	break;
+		{
+			LOG_CHECK_ERROR(bSuccess == FALSE);
+			lpCloseSocket(hSock);
+			PROCESS_SUCCESS(TRUE);
+		}
+		break;
 	case eCommonState_Close:
-	{
-		lpCloseSocket(hSock);
-		PROCESS_SUCCESS(TRUE);
-	}
-	break;
+		{
+			lpCloseSocket(hSock);
+			PROCESS_SUCCESS(TRUE);
+		}
+		break;
 	default:
 		lpCloseSocket(hSock);
 		LOG_PROCESS_ERROR(FALSE);
@@ -379,17 +450,7 @@ Exit0:
 	return;
 }
 
-LPUINT32 LPAPI LPListener::_GetState()
-{
-	return m_dwState;
-}
-
-void LPAPI LPListener::_SetState(LPUINT32 dwState)
-{
-	m_dwState = dwState;
-}
-
-BOOL LPAPI LPListener::_InitAcceptEx()
+BOOL LPAPI LPWinNetListener::_InitAcceptEx()
 {
 	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
@@ -451,7 +512,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPListener::_PostAcceptEx(PER_IO_DATA* pstPerIoData)
+BOOL LPAPI LPWinNetListener::_PostAcceptEx(PER_IO_DATA* pstPerIoData)
 {
 	LPINT32 nResult = 0;
 	SOCKET hNewSock = INVALID_SOCKET;

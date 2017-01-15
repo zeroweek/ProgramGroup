@@ -317,7 +317,7 @@ ILPSockerImpl* LPAPI LPSockerMgr::_Create(ILPPacketParser* pPacketParser, LPUINT
 	LOG_PROCESS_ERROR(m_pRecvLoopBufPool);
 	LOG_PROCESS_ERROR(m_pSendLoopBufPool);
 
-	pSocker = ILPSockerImpl::NewSockerImpl();
+	pSocker = ILPSockerImpl::NewSockerImpl(m_pNetImpl->GetNetConfig().dwIoType);
 	LOG_PROCESS_ERROR(pSocker);
 
 	pRecvLoopBuf = m_pRecvLoopBufPool->Create();

@@ -99,8 +99,8 @@
 #   define __TRY__                                         __try 
 #   define __EXCEPT__                                      __except (lpDUMPExceptionFilter(GetExceptionInformation()))
 #else
-#   define __TRY__                             
-#   define __EXCEPT__                          
+#   define __TRY__                                         try
+#   define __EXCEPT__                                      catch(...)
 #endif
 
 #define SAFE_DELETE(p)                                     if(NULL!=p){delete p; p=NULL;}  

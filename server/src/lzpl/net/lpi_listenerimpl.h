@@ -41,7 +41,7 @@ public:
 
 public:
 
-	static std::shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl();
+	static std::shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl(LPUINT32 dwIoType);
 	static void LPAPI DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener);
 };
 
