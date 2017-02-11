@@ -27,7 +27,7 @@ LPTime::LPTime()
 	memset(&m_stTimeval, 0, sizeof(m_stTimeval));
 }
 
-LZPL::LPTime::LPTime(LPUINT64 qwTimeStamp)
+LPTime::LPTime(LPUINT64 qwTimeStamp)
 {
 	LPTime stTime;
 	time_t tTime = qwTimeStamp;

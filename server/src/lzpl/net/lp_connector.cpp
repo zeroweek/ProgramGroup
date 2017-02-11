@@ -23,6 +23,11 @@ std::shared_ptr<ILPConnectorImpl> LPAPI ILPConnectorImpl::NewConnectorImpl(LPUIN
 			return std::make_shared<LPWinNetConnector>();
 		}
 		break;
+	case eIoType_Epoll:
+		{
+			return std::make_shared<LPLinuxNetConnector>();
+		}
+		break;
 	case eIoType_None:
 	default:
 		LOG_CHECK_ERROR(FALSE);
@@ -51,9 +56,10 @@ LPConnector::LPConnector()
 	m_hConnectSock = INVALID_SOCKET;
 	m_pPacketParser = NULL;
 	m_pNetImpl = NULL;
-	m_pSocker = NULL;
+	SetSocker(nullptr);
 
-	m_pstPerIoData = NULL;
+	m_stPerIoData.eIoOptType = eIoOptType_Connect;
+	m_stPerIoData.eHandlerType = eEventHandlerType_Connector;
 }
 
 LPConnector::~LPConnector()
@@ -100,9 +106,7 @@ BOOL LPAPI LPConnector::UnInit()
 		m_pPacketParser = NULL;
 	}
 
-	m_pSocker = NULL;
-
-	SAFE_DELETE(m_pstPerIoData);
+	SetSocker(nullptr);
 
 	SetState(eCommonState_UnInited);
 
@@ -114,36 +118,22 @@ BOOL LPAPI LPConnector::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bR
 {
 	LPINT32 nResult = 0;
 
-	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
-	SetState(eCommonState_Initing);
-
 	m_strIP = strIP;
 	m_dwPort = dwPort;
 
 	SetReconnect(bReconnect);
 
-	nResult = _InitConnectEx();
+	nResult = InitConnectEx();
 	LOG_PROCESS_ERROR(nResult);
-
-	if (NULL == m_pstPerIoData)
-	{
-		m_pstPerIoData = new PER_IO_DATA();
-	}
-	LOG_PROCESS_ERROR(m_pstPerIoData);
-
-	//lpSleep(10);
-	SetState(eCommonState_Inited);
 
 	LPPRINTF("start connecting %s:%d !\n", m_strIP.c_str(), m_dwPort);
 	IMP("start connecting %s:%d !", m_strIP.c_str(), m_dwPort);
 
-	nResult = _PostConnectEx(m_pstPerIoData);
+	nResult = PostConnectEx(m_stPerIoData);
 	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;
 Exit0:
-
-	UnInit();
 
 	return FALSE;
 }
@@ -190,7 +180,7 @@ BOOL LPAPI LPConnector::Reconnect()
 	LOG_PROCESS_ERROR(eCommonState_Inited == GetState());
 	LOG_PROCESS_ERROR(NULL == GetSocker() && INVALID_SOCKET == m_hConnectSock);
 
-	nResult = _PostConnectEx(m_pstPerIoData);
+	nResult = PostConnectEx(m_stPerIoData);
 	LOG_PROCESS_ERROR(nResult);
 
 	return TRUE;
@@ -208,161 +198,9 @@ e_EventHandlerType LPAPI LPConnector::GetEventHandlerType()
 	return eEventHandlerType_Connector;
 }
 
-void LPAPI LPConnector::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
+PER_IO_DATA* LPAPI LPConnector::GetEventHandlerData()
 {
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return;
-}
-
-void LPConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
-{
-	LPINT32 nResult = 0;
-	SOCKET hSock = INVALID_SOCKET;
-	ILPSockerImpl* pSocker = NULL;
-	sockaddr_in stLocalAddr;
-	LPINT32 idwRetLocal = 0;
-	sockaddr_in stRemoteAddr;
-	LPINT32 idwRetRemote = 0;
-	const char cArg = 1;
-
-#	ifdef _WIN32
-	LPINT32 idwLocalAddrLen = 0;
-	LPINT32 idwRemoteAddrLen = 0;
-#	else
-	socklen_t idwLocalAddrLen = 0;
-	socklen_t idwRemoteAddrLen = 0;
-#	endif
-
-	LOG_PROCESS_ERROR(pstPerIoData);
-	LOG_PROCESS_ERROR(eIoOptType_Connect == pstPerIoData->eIoOptType);
-
-	LOG_PROCESS_ERROR(pstPerIoData->hSock == m_hConnectSock);
-
-	switch (GetState())
-	{
-	case eCommonState_NoInit:
-		{
-			lpCloseSocket(m_hConnectSock);
-			LOG_PROCESS_ERROR(FALSE);
-		}
-		break;
-	case eCommonState_Initing:
-		{
-			INF("connector is initing, discard connect", __FUNCTION__);
-			lpCloseSocket(m_hConnectSock);
-			m_hConnectSock = INVALID_SOCKET;
-			nResult = _PostConnectEx(m_pstPerIoData);
-			LOG_PROCESS_ERROR(nResult);
-			PROCESS_ERROR(FALSE);
-		}
-		break;
-	case eCommonState_Inited:
-		{
-			if (!bSuccess)
-			{
-				m_pNetImpl->GetEventMgr().PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl>(this), WSAGetLastError());
-				lpCloseSocket(m_hConnectSock);
-				m_hConnectSock = INVALID_SOCKET;
-				SetSocker(NULL);
-				nResult = _PostConnectEx(m_pstPerIoData);
-				LOG_PROCESS_ERROR(nResult);
-			}
-			else
-			{
-				pSocker = m_pNetImpl->GetSockerMgr().Create(m_pPacketParser, m_dwId, FALSE);
-				if (NULL == pSocker)
-				{
-					LOG_CHECK_ERROR(FALSE);
-					lpCloseSocket(m_hConnectSock);
-					m_hConnectSock = INVALID_SOCKET;
-					nResult = _PostConnectEx(m_pstPerIoData);
-					LOG_PROCESS_ERROR(nResult);
-					PROCESS_ERROR(FALSE);
-				}
-
-				IMP("connector create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), m_hConnectSock);
-
-				//获取本地地址
-				memset(&stLocalAddr, 0, sizeof(stLocalAddr));
-				idwLocalAddrLen = sizeof(stLocalAddr);
-				idwRetLocal = getsockname(m_hConnectSock, (sockaddr*)&stLocalAddr, &idwLocalAddrLen);
-				if (0 != idwRetLocal)
-				{
-					LOG_CHECK_ERROR(FALSE);
-					m_pNetImpl->GetSockerMgr().Release(pSocker);
-					lpCloseSocket(m_hConnectSock);
-					m_hConnectSock = INVALID_SOCKET;
-					nResult = _PostConnectEx(m_pstPerIoData);
-					LOG_PROCESS_ERROR(nResult);
-					PROCESS_ERROR(FALSE);
-				}
-
-				//获取远端地址
-				memset(&stRemoteAddr, 0, sizeof(stRemoteAddr));
-				idwRemoteAddrLen = sizeof(stRemoteAddr);
-				idwRetRemote = getpeername(m_hConnectSock, (sockaddr*)&stRemoteAddr, &idwRemoteAddrLen);
-				if (0 != idwRetLocal)
-				{
-					LOG_CHECK_ERROR(FALSE);
-					m_pNetImpl->GetSockerMgr().Release(pSocker);
-					lpCloseSocket(m_hConnectSock);
-					m_hConnectSock = INVALID_SOCKET;
-					nResult = _PostConnectEx(m_pstPerIoData);
-					LOG_PROCESS_ERROR(nResult);
-					PROCESS_ERROR(FALSE);
-				}
-
-				//设置sock选项
-#				ifdef _WIN32
-				{
-					::setsockopt(m_hConnectSock, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0);
-					::setsockopt(m_hConnectSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
-				}
-#				endif
-
-				//设置LPSocker对象
-				pSocker->SetSock(m_hConnectSock);
-				pSocker->SetConnect(true);
-				pSocker->SetRemoteIp(stRemoteAddr.sin_addr.s_addr);
-				pSocker->SetRemotePort(ntohs(stRemoteAddr.sin_port));
-				pSocker->SetLocalIp(stLocalAddr.sin_addr.s_addr);
-				pSocker->SetLocalPort(ntohs(stLocalAddr.sin_port));
-
-				//设置本连接器关联的socker对象
-				//注意顺序：需要在socker收发数据之前设置，否则reactor处理获取socker为NULL
-				SetSocker(pSocker);
-
-				//push连接建立事件
-				m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, FALSE);
-			}
-		}
-		break;
-	case eCommonState_UnIniting:
-		case eCommonState_UnInited:
-		{
-			lpCloseSocket(m_hConnectSock);
-			m_hConnectSock = INVALID_SOCKET;
-			LOG_PROCESS_ERROR(FALSE);
-		}
-		break;
-	case eCommonState_Close:
-		{
-			lpCloseSocket(m_hConnectSock);
-			m_hConnectSock = INVALID_SOCKET;
-			PROCESS_SUCCESS(TRUE);
-		}
-		break;
-	default:
-		lpCloseSocket(m_hConnectSock);
-		m_hConnectSock = INVALID_SOCKET;
-		LOG_PROCESS_ERROR(FALSE);
-		break;
-	}
-
-Exit1:
-Exit0:
-	return;
+	return &m_stPerIoData;
 }
 
 void LPAPI LPConnector::OnClose()
@@ -402,18 +240,10 @@ LPUINT32 LPAPI LPConnector::GetState()
 	return m_dwState;
 }
 
-BOOL LPAPI LPConnector::_InitConnectEx()
+void LPAPI LPConnector::CloseConnectSock()
 {
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return FALSE;
-}
-
-BOOL LPAPI LPConnector::_PostConnectEx(PER_IO_DATA* pstPerIoData)
-{
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return FALSE;
+	lpCloseSocket(m_hConnectSock);
+	m_hConnectSock = INVALID_SOCKET;
 }
 
 
@@ -425,10 +255,43 @@ LPWinNetConnector::LPWinNetConnector()
 
 LPWinNetConnector::~LPWinNetConnector()
 {
-	
+	UnInit();
 }
 
-void LPAPI LPWinNetConnector::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData)
+BOOL LPAPI LPWinNetConnector::UnInit()
+{
+	PROCESS_SUCCESS(GetState() == eCommonState_NoInit || GetState() >= eCommonState_UnIniting);
+
+	SetState(eCommonState_UnIniting);
+
+	LOG_CHECK_ERROR(LPConnector::UnInit());
+
+	SetState(eCommonState_UnInited);
+
+Exit1:
+	return TRUE;
+}
+
+BOOL LPAPI LPWinNetConnector::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect)
+{
+	LPINT32 nResult = 0;
+
+	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
+	SetState(eCommonState_Initing);
+
+	nResult = LPConnector::Start(strIP, dwPort, bReconnect);
+	LOG_PROCESS_ERROR(nResult);
+
+	//lpSleep(10);
+	SetState(eCommonState_Inited);
+
+	return TRUE;
+Exit0:
+
+	return FALSE;
+}
+
+void LPAPI LPWinNetConnector::OnNetEvent(PER_IO_DATA* pstPerIoData)
 {
 	LPINT32 nLastError;
 
@@ -440,7 +303,7 @@ void LPAPI LPWinNetConnector::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIo
 
 	if (pstPerIoData->eIoOptType == eIoOptType_Connect)
 	{
-		OnConnect(bOperateRet, pstPerIoData);
+		OnConnect(pstPerIoData->bOperateRet, pstPerIoData);
 	}
 	else
 	{
@@ -449,33 +312,33 @@ void LPAPI LPWinNetConnector::OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIo
 
 		//调用lpCloseSocket时，会触发收回连接句柄关联的正在执行的io操作，
 		//此处进行判断拦截，防止访问已经被释放的socker对象
-		if (!bOperateRet && ERROR_OPERATION_ABORTED == nLastError)
+		if (!pstPerIoData->bOperateRet && ERROR_OPERATION_ABORTED == nLastError)
 		{
 			PROCESS_SUCCESS(TRUE);
 		}
 
-		LOG_PROCESS_ERROR(m_pSocker);
-		if (bOperateRet)
+		LOG_PROCESS_ERROR(GetSocker());
+		if (pstPerIoData->bOperateRet)
 		{
 			if (0 == pstPerIoData->qwByteTransferred)
 			{
-				m_pSocker->Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 2, nLastError), TRUE);
+				GetSocker()->Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 2, nLastError), TRUE);
 			}
 			else
 			{
 				if (eIoOptType_Recv == pstPerIoData->eIoOptType)
 				{
-					m_pSocker->OnRecv((LPUINT32)pstPerIoData->qwByteTransferred);
+					GetSocker()->OnRecv((LPUINT32)pstPerIoData->qwByteTransferred);
 				}
 				else
 				{
-					m_pSocker->OnSend((LPUINT32)pstPerIoData->qwByteTransferred);
+					GetSocker()->OnSend((LPUINT32)pstPerIoData->qwByteTransferred);
 				}
 			}
 		}
 		else
 		{
-			m_pSocker->Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 1, nLastError), TRUE);
+			GetSocker()->Close(SOCK_ERR_CODE(eSockErrCode_ReactorErrorEvent, 1, nLastError), TRUE);
 		}
 	}
 
@@ -484,7 +347,147 @@ Exit0:
 	return;
 }
 
-BOOL LPAPI LPWinNetConnector::_InitConnectEx()
+void LPAPI LPWinNetConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
+{
+	LPINT32 nResult = 0;
+	ILPSockerImpl* pSocker = NULL;
+	sockaddr_in stLocalAddr;
+	LPINT32 idwRetLocal = 0;
+	sockaddr_in stRemoteAddr;
+	LPINT32 idwRetRemote = 0;
+	const char cArg = 1;
+
+#	ifdef _WIN32
+	LPINT32 idwLocalAddrLen = 0;
+	LPINT32 idwRemoteAddrLen = 0;
+#	else
+	socklen_t idwLocalAddrLen = 0;
+	socklen_t idwRemoteAddrLen = 0;
+#	endif
+
+	LOG_PROCESS_ERROR(pstPerIoData);
+	LOG_PROCESS_ERROR(eIoOptType_Connect == pstPerIoData->eIoOptType);
+
+	LOG_PROCESS_ERROR(pstPerIoData->hSock == m_hConnectSock);
+
+	switch (GetState())
+	{
+	case eCommonState_NoInit:
+		{
+			CloseConnectSock();
+			LOG_PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Initing:
+		{
+			INF("connector is initing, discard connect", __FUNCTION__);
+			CloseConnectSock();
+			nResult = PostConnectEx(m_stPerIoData);
+			LOG_PROCESS_ERROR(nResult);
+			PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Inited:
+		{
+			if (!bSuccess)
+			{
+				m_pNetImpl->GetEventMgr().PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl>(this), WSAGetLastError());
+				CloseConnectSock();
+				SetSocker(NULL);
+				nResult = PostConnectEx(m_stPerIoData);
+				LOG_PROCESS_ERROR(nResult);
+			}
+			else
+			{
+				pSocker = m_pNetImpl->GetSockerMgr().Create(m_pPacketParser, m_dwId, FALSE);
+				if (NULL == pSocker)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				IMP("connector create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), m_hConnectSock);
+
+				//获取本地地址
+				memset(&stLocalAddr, 0, sizeof(stLocalAddr));
+				idwLocalAddrLen = sizeof(stLocalAddr);
+				idwRetLocal = getsockname(m_hConnectSock, (sockaddr*)&stLocalAddr, &idwLocalAddrLen);
+				if (0 != idwRetLocal)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				//获取远端地址
+				memset(&stRemoteAddr, 0, sizeof(stRemoteAddr));
+				idwRemoteAddrLen = sizeof(stRemoteAddr);
+				idwRetRemote = getpeername(m_hConnectSock, (sockaddr*)&stRemoteAddr, &idwRemoteAddrLen);
+				if (0 != idwRetLocal)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				//设置sock选项
+#				ifdef _WIN32
+				{
+					::setsockopt(m_hConnectSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+				}
+#				endif
+
+				//设置LPSocker对象
+				pSocker->SetSock(m_hConnectSock);
+				pSocker->SetConnect(true);
+				pSocker->SetRemoteIp(stRemoteAddr.sin_addr.s_addr);
+				pSocker->SetRemotePort(ntohs(stRemoteAddr.sin_port));
+				pSocker->SetLocalIp(stLocalAddr.sin_addr.s_addr);
+				pSocker->SetLocalPort(ntohs(stLocalAddr.sin_port));
+
+				//设置本连接器关联的socker对象
+				//注意顺序：需要在socker收发数据之前设置，否则reactor处理获取socker为NULL
+				SetSocker(pSocker);
+
+				//push连接建立事件
+				m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, FALSE);
+			}
+		}
+		break;
+	case eCommonState_UnIniting:
+		case eCommonState_UnInited:
+		{
+			CloseConnectSock();
+			LOG_PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Close:
+		{
+			CloseConnectSock();
+			PROCESS_SUCCESS(TRUE);
+		}
+		break;
+	default:
+		CloseConnectSock();
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+Exit1:
+Exit0:
+	return;
+}
+
+BOOL LPAPI LPWinNetConnector::InitConnectEx()
 {
 	LPINT32 nResult = 0;
 	SOCKET hSock = INVALID_SOCKET;
@@ -531,14 +534,12 @@ Exit0:
 	return FALSE;
 }
 
-BOOL LPAPI LPWinNetConnector::_PostConnectEx(PER_IO_DATA* pstPerIoData)
+BOOL LPAPI LPWinNetConnector::PostConnectEx(PER_IO_DATA& stPerIoData)
 {
 	LPINT32 nResult = 0;
 	DWORD dwBytes = 0;
-	sockaddr_in stAddr;
+	sockaddr_in stRemotetAddr;
 	sockaddr_in stLocalAddr;
-
-	LOG_PROCESS_ERROR(pstPerIoData);
 
 #	ifdef _WIN32
 	{
@@ -555,47 +556,355 @@ BOOL LPAPI LPWinNetConnector::_PostConnectEx(PER_IO_DATA* pstPerIoData)
 	//需要如果不bind，后面调用ConnectEx会出现10022错误码
 	memset(&stLocalAddr, 0, sizeof(stLocalAddr));
 	stLocalAddr.sin_family = AF_INET;
-	nResult = ::bind(m_hConnectSock, (sockaddr*)&stLocalAddr, sizeof(stLocalAddr));
+	nResult = ::bind(m_hConnectSock, (sockaddr*)&stLocalAddr, sizeof(struct sockaddr));
 	if (nResult < 0)
 	{
 		FTL("%s bind failed, errno %d", __FUNCTION__, WSAGetLastError());
 		PROCESS_ERROR(FALSE);
 	}
 
-	//注意：connectorctr在此注册，之后连接创建的socker不需要重新注册（注册也会返回失败），
-	//即socker与connectorctrl公用一个回调接口
+	//注意：connector在此注册，之后连接创建的socker不需要重新注册（注册也会返回失败），
+	//即socker与connector公用一个回调接口
 	nResult = m_pNetImpl->GetReactorImpl().RegisterEventHandler(this);
 	LOG_PROCESS_ERROR(nResult);
 
-	memset(&stAddr, 0, sizeof(stAddr));
-	stAddr.sin_family = AF_INET;
-	stAddr.sin_addr.s_addr = inet_addr(m_strIP.c_str());
-	stAddr.sin_port = htons(m_dwPort);
+	memset(&stRemotetAddr, 0, sizeof(stRemotetAddr));
+	stRemotetAddr.sin_family = AF_INET;
+	stRemotetAddr.sin_addr.s_addr = inet_addr(m_strIP.c_str());
+	stRemotetAddr.sin_port = htons(m_dwPort);
 
-	pstPerIoData->hSock = m_hConnectSock;
-	pstPerIoData->eIoOptType = eIoOptType_Connect;
-	pstPerIoData->eHandlerType = eEventHandlerType_Connector;
-	memset(&pstPerIoData->stOverlapped, 0, sizeof(pstPerIoData->stOverlapped));
+	stPerIoData.hSock = m_hConnectSock;
+	memset(&stPerIoData.stOverlapped, 0, sizeof(stPerIoData.stOverlapped));
 
 	dwBytes = 0;
 	nResult = m_lpfnConnectEx(
 		m_hConnectSock,
-		(const sockaddr*)&stAddr,
-		sizeof(stAddr),
+		(const sockaddr*)&stRemotetAddr,
+		sizeof(stRemotetAddr),
 		NULL,
 		0,
 		NULL,
-		&pstPerIoData->stOverlapped
+		&stPerIoData.stOverlapped
 	);
 
 	if (!nResult)
 	{
 		if (WSA_IO_PENDING != WSAGetLastError())
 		{
-			FTL("%s m_lpfnConnectEx failed, errno %d", __FUNCTION__, WSAGetLastError());
-			lpCloseSocket(m_hConnectSock);
-			m_hConnectSock = INVALID_SOCKET;
+			LOG_PROCESS_FATAL_WITH_MSG(FALSE, "m_lpfnConnectEx failed, errno %d", WSAGetLastError());
+		}
+	}
+
+	return TRUE;
+Exit0:
+
+	if (INVALID_SOCKET != m_hConnectSock)
+	{
+		lpCloseSocket(m_hConnectSock);
+		m_hConnectSock = INVALID_SOCKET;
+	}
+
+	return FALSE;
+}
+
+
+
+LPLinuxNetConnector::LPLinuxNetConnector()
+{
+
+}
+
+LPLinuxNetConnector::~LPLinuxNetConnector()
+{
+	UnInit();
+}
+
+BOOL LPAPI LPLinuxNetConnector::UnInit()
+{
+	PROCESS_SUCCESS(GetState() == eCommonState_NoInit || GetState() >= eCommonState_UnIniting);
+
+	SetState(eCommonState_UnIniting);
+
+	LOG_CHECK_ERROR(LPConnector::UnInit());
+
+	SetState(eCommonState_UnInited);
+
+Exit1:
+	return TRUE;
+}
+
+BOOL LPAPI LPLinuxNetConnector::Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect)
+{
+	LPINT32 nResult = 0;
+
+	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
+	SetState(eCommonState_Initing);
+
+	nResult = LPConnector::Start(strIP, dwPort, bReconnect);
+	LOG_PROCESS_ERROR(nResult);
+
+	//lpSleep(10);
+	SetState(eCommonState_Inited);
+
+	return TRUE;
+Exit0:
+
+	return FALSE;
+}
+
+void LPAPI LPLinuxNetConnector::OnNetEvent(PER_IO_DATA* pstPerIoData)
+{
+	LOG_PROCESS_ERROR(pstPerIoData);
+	LOG_PROCESS_ERROR(pstPerIoData->eIoOptType == eIoOptType_Connect);
+	LOG_PROCESS_ERROR(pstPerIoData->eHandlerType == eEventHandlerType_Connector);
+
+	if (pstPerIoData->ptEpollEvent->events & EPOLLRDHUP
+		|| pstPerIoData->ptEpollEvent->events & EPOLLHUP
+		|| pstPerIoData->ptEpollEvent->events & EPOLLERR)
+	{
+		pstPerIoData->bOperateRet = FALSE;
+		OnConnect(pstPerIoData->bOperateRet, pstPerIoData);
+	}
+	else if (pstPerIoData->ptEpollEvent->events & EPOLLIN || pstPerIoData->ptEpollEvent->events & EPOLLOUT)
+	{
+		pstPerIoData->bOperateRet = TRUE;
+		OnConnect(pstPerIoData->bOperateRet, pstPerIoData);
+	}
+	else
+	{
+		DBG("LPLinuxNetConnector::OnNetEvent recv unkonw events");
+	}
+
+Exit0:
+	return;
+}
+
+void LPAPI LPLinuxNetConnector::OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData)
+{
+	LPINT32 nResult = 0;
+	ILPSockerImpl* pSocker = NULL;
+
+	LPINT32 idwRetLocal = 0;
+	LPINT32 idwRetRemote = 0;
+	sockaddr_in stLocalAddr;
+	sockaddr_in stRemoteAddr;
+
+	const char cArg = 1;
+
+#	ifdef _WIN32
+	LPINT32 idwLocalAddrLen = 0;
+	LPINT32 idwRemoteAddrLen = 0;
+#	else
+	socklen_t idwLocalAddrLen = 0;
+	socklen_t idwRemoteAddrLen = 0;
+#	endif
+
+	LOG_PROCESS_ERROR(pstPerIoData);
+	LOG_PROCESS_ERROR(eIoOptType_Connect == pstPerIoData->eIoOptType);
+
+	LOG_PROCESS_ERROR(pstPerIoData->hSock == m_hConnectSock);
+
+	switch (GetState())
+	{
+	case eCommonState_NoInit:
+		{
+			CloseConnectSock();
+			LOG_PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Initing:
+		{
+			INF("connector is initing, discard connect", __FUNCTION__);
+			CloseConnectSock();
+			nResult = PostConnectEx(m_stPerIoData);
+			LOG_PROCESS_ERROR(nResult);
 			PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Inited:
+		{
+			if (!bSuccess)
+			{
+				m_pNetImpl->GetEventMgr().PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl>(this), WSAGetLastError());
+				CloseConnectSock();
+				SetSocker(NULL);
+				nResult = PostConnectEx(m_stPerIoData);
+				LOG_PROCESS_ERROR(nResult);
+			}
+			else
+			{
+				pSocker = m_pNetImpl->GetSockerMgr().Create(m_pPacketParser, m_dwId, FALSE);
+				if (NULL == pSocker)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				IMP("connector create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), m_hConnectSock);
+
+				//获取本地地址
+				idwLocalAddrLen = sizeof(struct sockaddr_in);
+				memset(&stLocalAddr, 0, sizeof(stLocalAddr));
+				idwRetLocal = getsockname(m_hConnectSock, (sockaddr*)&stLocalAddr, &idwLocalAddrLen);
+				if (0 != idwRetLocal)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				//获取远端地址
+				idwRemoteAddrLen = sizeof(struct sockaddr_in);
+				memset(&stRemoteAddr, 0, sizeof(stRemoteAddr));
+				idwRetRemote = getpeername(m_hConnectSock, (sockaddr*)&stRemoteAddr, &idwRemoteAddrLen);
+				if (0 != idwRetLocal)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					CloseConnectSock();
+					nResult = PostConnectEx(m_stPerIoData);
+					LOG_PROCESS_ERROR(nResult);
+					PROCESS_ERROR(FALSE);
+				}
+
+				//设置sock选项
+				//禁用 Nagle’s Algorithm
+				::setsockopt(m_hConnectSock, IPPROTO_TCP, TCP_NODELAY, &cArg, sizeof(cArg));
+
+				//设置非阻塞模式
+#				ifndef _WIN32
+				{
+					LPINT32 nFlag = fcntl(m_hConnectSock, F_GETFL, 0);
+					LOG_PROCESS_ERROR(nFlag >= 0);
+
+					nResult = fcntl(m_hConnectSock, F_SETFL, nFlag | O_NONBLOCK);
+					LOG_PROCESS_ERROR(nResult >= 0);
+				}
+#				endif
+
+				//设置LPSocker对象
+				pSocker->SetSock(m_hConnectSock);
+				pSocker->SetConnect(true);
+				pSocker->SetRemoteIp(stRemoteAddr.sin_addr.s_addr);
+				pSocker->SetRemotePort(ntohs(stRemoteAddr.sin_port));
+				pSocker->SetLocalIp(stLocalAddr.sin_addr.s_addr);
+				pSocker->SetLocalPort(ntohs(stLocalAddr.sin_port));
+
+				//设置本连接器关联的socker对象
+				//注意顺序：需要在socker收发数据之前设置，否则reactor处理获取socker为NULL
+				SetSocker(pSocker);
+
+				//注册事件连接改成socket
+				nResult = m_pNetImpl->GetReactorImpl().UnRegisterEventHandler(this);
+				LOG_CHECK_ERROR(nResult);
+
+				nResult = m_pNetImpl->GetReactorImpl().RegisterEventHandler(pSocker);
+				if (!nResult)
+				{
+					LOG_CHECK_ERROR(FALSE);
+					m_pNetImpl->GetSockerMgr().Release(pSocker);
+					CloseConnectSock();
+					PROCESS_ERROR(FALSE);
+				}
+
+				//push连接建立事件
+				m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, FALSE);
+			}
+		}
+		break;
+	case eCommonState_UnIniting:
+		case eCommonState_UnInited:
+		{
+			CloseConnectSock();
+			LOG_PROCESS_ERROR(FALSE);
+		}
+		break;
+	case eCommonState_Close:
+		{
+		CloseConnectSock();
+			PROCESS_SUCCESS(TRUE);
+		}
+		break;
+	default:
+		CloseConnectSock();
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+Exit1:
+Exit0:
+	return;
+}
+
+BOOL LPAPI LPLinuxNetConnector::InitConnectEx()
+{
+	return TRUE;
+}
+
+BOOL LPAPI LPLinuxNetConnector::PostConnectEx(PER_IO_DATA& stPerIoData)
+{
+	LPINT32 nResult = 0;
+	DWORD dwBytes = 0;
+	sockaddr_in stRemotetAddr;
+	sockaddr_in stLocalAddr;
+
+#	ifndef _WIN32
+	{
+		m_hConnectSock = socket(AF_INET, SOCK_STREAM, 0);
+	}
+#	endif
+
+	if (INVALID_SOCKET == m_hConnectSock)
+	{
+		LOG_PROCESS_ERROR_WITH_MSG(FALSE, "socket failed, errno %d", WSAGetLastError());
+	}
+
+	//sock选项设置
+	//设置非阻塞模式
+#	ifndef _WIN32
+	{
+		LPINT32 nFlag = fcntl(m_hConnectSock, F_GETFL, 0);
+		LOG_PROCESS_ERROR(nFlag >= 0);
+
+		nResult = fcntl(m_hConnectSock, F_SETFL, nFlag | O_NONBLOCK);
+		LOG_PROCESS_ERROR(nResult >= 0);
+	}
+#	endif
+
+	//如果不bind，后面调用connect会不会像ConnectEx出现10022错误码
+	memset(&stLocalAddr, 0, sizeof(stLocalAddr));
+	stLocalAddr.sin_family = AF_INET;
+	nResult = ::bind(m_hConnectSock, (sockaddr*)&stLocalAddr, sizeof(struct sockaddr));
+	if (nResult < 0)
+	{
+		LOG_PROCESS_ERROR_WITH_MSG(FALSE, "bind failed, errno %d", WSAGetLastError());
+	}
+
+	//注意：connector在此注册，之后连接创建的socker不需要重新注册（注册也会返回失败），
+	//即socker与connectorl公用一个回调接口
+	nResult = m_pNetImpl->GetReactorImpl().RegisterEventHandler(this);
+	LOG_PROCESS_ERROR(nResult);
+
+	memset(&stRemotetAddr, 0, sizeof(stRemotetAddr));
+	stRemotetAddr.sin_family = AF_INET;
+	stRemotetAddr.sin_addr.s_addr = inet_addr(m_strIP.c_str());
+	stRemotetAddr.sin_port = htons(m_dwPort);
+
+	stPerIoData.hSock = m_hConnectSock;
+
+	nResult = connect(m_hConnectSock, (struct sockaddr*)&stRemotetAddr, sizeof(struct sockaddr));
+	if (nResult < 0)
+	{
+		if (!(WSAGetLastError() == EINPROGRESS || WSAGetLastError() == EINTR 
+			|| WSAGetLastError() == EALREADY || WSAGetLastError() == EISCONN))
+		{
+			LOG_PROCESS_ERROR_WITH_MSG(FALSE, "connect %s:%d failed, errno %d", m_strIP.c_str(), m_dwPort, WSAGetLastError());
 		}
 	}
 

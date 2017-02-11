@@ -14,19 +14,28 @@ NS_LZPL_BEGIN
 
 
 
-std::shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(LPUINT32 dwIoType)
+std::shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(NET_CONFIG& stNetConfig)
 {
 	LPINT32 nResult = 0;
 	std::shared_ptr<ILPReactor> pReactor;
 
-	switch (dwIoType)
+	switch (stNetConfig.dwIoType)
 	{
 	case eIoType_CompletionPort:
 		{
 			pReactor = std::make_shared<LPIocpReactor>();
 			LOG_PROCESS_ERROR(pReactor != nullptr);
 
-			nResult = ((LPIocpReactor*)pReactor.get())->Init(FALSE);
+			nResult = ((LPIocpReactor*)pReactor.get())->Init(stNetConfig);
+			LOG_PROCESS_ERROR(nResult);
+		}
+		break;
+	case eIoType_Epoll:
+		{
+			pReactor = std::make_shared<LPEpollReactor>();
+			LOG_PROCESS_ERROR(pReactor != nullptr);
+
+			nResult = ((LPEpollReactor*)pReactor.get())->Init(stNetConfig);
 			LOG_PROCESS_ERROR(nResult);
 		}
 		break;
@@ -55,7 +64,7 @@ void LPAPI ILPReactor::DeleteReactor(std::shared_ptr<ILPReactor>& pReactor)
 
 LPReactor::LPReactor()
 {
-	_SetState(eCommonState_NoInit);
+	SetState(eCommonState_NoInit);
 }
 
 LPReactor::~LPReactor()
@@ -63,31 +72,14 @@ LPReactor::~LPReactor()
 	
 }
 
-BOOL LPAPI LPReactor::Init(BOOL bOneCompletionPortOneThread)
+BOOL LPAPI LPReactor::Init(NET_CONFIG& stNetConfig)
 {
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return FALSE;
+	m_stNetConfig = stNetConfig;
+	return TRUE;
 }
 
 BOOL LPAPI LPReactor::UnInit()
 {
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return FALSE;
-}
-
-BOOL LPAPI LPReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
-{
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return FALSE;
-}
-
-BOOL LPAPI LPReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
-{
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
 	return FALSE;
 }
 
@@ -97,31 +89,22 @@ unsigned LPAPI LPReactor::ThreadFunc(void* pParam)
 	REACTOR_THREAD_PARAM* pThreadParam = (REACTOR_THREAD_PARAM*)pParam;
 
 	LOG_PROCESS_ERROR(pThreadParam);
-	stThreadParam.pReactorImpl = pThreadParam->pReactorImpl;
-	stThreadParam.nCompletionPortIndex = pThreadParam->nCompletionPortIndex;
-
+	stThreadParam = *pThreadParam;
 	SAFE_DELETE(pThreadParam);
 
 	LOG_PROCESS_ERROR(stThreadParam.pReactorImpl);
-	((LPReactor*)stThreadParam.pReactorImpl)->OnExecute(stThreadParam.nCompletionPortIndex);
+	((LPReactor*)stThreadParam.pReactorImpl)->OnExecute(stThreadParam);
 
 Exit0:
 	return 0;
 }
 
-void LPAPI LPReactor::OnExecute(LPINT32 nCompletionPortIndex)
-{
-	LOG_CHECK_ERROR(FALSE);
-	LPASSERT(FALSE);
-	return ;
-}
-
-LPUINT32 LPAPI LPReactor::_GetState()
+LPUINT32 LPAPI LPReactor::GetState()
 {
 	return m_dwState;
 }
 
-void LPAPI LPReactor::_SetState(LPUINT32 dwState)
+void LPAPI LPReactor::SetState(LPUINT32 dwState)
 {
 	m_dwState = dwState;
 }
@@ -138,42 +121,21 @@ LPIocpReactor::~LPIocpReactor()
 	UnInit();
 }
 
-BOOL LPAPI LPIocpReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
-{
-	LOG_PROCESS_ERROR(pEventHandler);
-	LOG_PROCESS_ERROR(m_pCompletionPort);
-	LOG_PROCESS_ERROR(m_nCompletionPortCount > 0);
-
-#   if defined _WIN32
-	{
-		if (NULL == CreateIoCompletionPort(pEventHandler->GetHandle(), m_pCompletionPort[(LPUINT64)(pEventHandler->GetHandle()) % m_nCompletionPortCount], (ULONG_PTR)pEventHandler, 0))
-		{
-			FTL("function %s in file %s at line %d : errno %d", __FUNCTION__, __FILE__, __LINE__, WSAGetLastError());
-			PROCESS_ERROR(FALSE);
-		}
-	}
-#   endif
-
-	return TRUE;
-Exit0:
-	return FALSE;
-}
-
-BOOL LPAPI LPIocpReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
-{
-	return FALSE;
-
-}
-
-BOOL LPAPI LPIocpReactor::Init(BOOL bOneCompletionPortOneThread)
+BOOL LPAPI LPIocpReactor::Init(NET_CONFIG& stNetConfig)
 {
 #	ifdef _WIN32
 	SYSTEM_INFO stSysInfo;
 	LPUINT32 dwThreadId = 0;
 #	endif
 
-	LOG_PROCESS_ERROR(eCommonState_NoInit == _GetState());
-	_SetState(eCommonState_Initing);
+	LPINT32 nResult = FALSE;
+	BOOL bOneCompletionPortOneThread = FALSE;
+
+	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
+	SetState(eCommonState_Initing);
+
+	nResult = LPReactor::Init(stNetConfig);
+	LOG_PROCESS_ERROR(nResult);
 
 #   if defined _WIN32
 	{
@@ -240,7 +202,7 @@ BOOL LPAPI LPIocpReactor::Init(BOOL bOneCompletionPortOneThread)
 	}
 #   endif
 
-	_SetState(eCommonState_Inited);
+	SetState(eCommonState_Inited);
 
 	return TRUE;
 Exit0:
@@ -254,9 +216,9 @@ BOOL LPAPI LPIocpReactor::UnInit()
 {
 	LPINT32 nResult = 0;
 
-	PROCESS_SUCCESS(_GetState() == eCommonState_NoInit || _GetState() >= eCommonState_UnIniting);
+	PROCESS_SUCCESS(GetState() == eCommonState_NoInit || GetState() >= eCommonState_UnIniting);
 
-	_SetState(eCommonState_UnIniting);
+	SetState(eCommonState_UnIniting);
 	IMP("reactor uniniting ...");
 	LPPRINTF("reactor uniniting ...\n");
 
@@ -302,20 +264,46 @@ BOOL LPAPI LPIocpReactor::UnInit()
 
 	IMP("reactor uninit success !");
 	LPPRINTF("reactor uninit success !\n");
-	_SetState(eCommonState_UnInited);
+	SetState(eCommonState_UnInited);
 
 Exit1:
 	return TRUE;
 }
 
-void LPAPI LPIocpReactor::OnExecute(LPINT32 nCompletionPortIndex)
+BOOL LPAPI LPIocpReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	LOG_PROCESS_ERROR(pEventHandler);
+	LOG_PROCESS_ERROR(m_pCompletionPort);
+	LOG_PROCESS_ERROR(m_nCompletionPortCount > 0);
+
+#   if defined _WIN32
+	{
+		if (NULL == CreateIoCompletionPort(pEventHandler->GetHandle(), m_pCompletionPort[(LPUINT64)(pEventHandler->GetHandle()) % m_nCompletionPortCount], (ULONG_PTR)pEventHandler, 0))
+		{
+			FTL("function %s in file %s at line %d : errno %d", __FUNCTION__, __FILE__, __LINE__, WSAGetLastError());
+			PROCESS_ERROR(FALSE);
+		}
+	}
+#   endif
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL LPAPI LPIocpReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	return FALSE;
+}
+
+void LPAPI LPIocpReactor::OnExecute(REACTOR_THREAD_PARAM& tThreadParam)
 {
 	BOOL             bRet = FALSE;
 	DWORD            dwByteTransferred;
 	ILPEventHandler* pEventHandler;
 	PER_IO_DATA*     pstPerIoData;
 
-	LOG_PROCESS_ERROR(nCompletionPortIndex >= 0 && nCompletionPortIndex < m_nCompletionPortCount);
+	LOG_PROCESS_ERROR(tThreadParam.nCompletionPortIndex >= 0 && tThreadParam.nCompletionPortIndex < m_nCompletionPortCount);
 
 	while (TRUE)
 	{
@@ -327,7 +315,7 @@ void LPAPI LPIocpReactor::OnExecute(LPINT32 nCompletionPortIndex)
 		{
 			//IMP("LPReactor::OnExecute start GetQueuedCompletionStatus ...");
 			bRet = GetQueuedCompletionStatus(
-				m_pCompletionPort[nCompletionPortIndex],
+				m_pCompletionPort[tThreadParam.nCompletionPortIndex],
 				&dwByteTransferred,
 				(PDWORD_PTR)&pEventHandler,
 				(LPOVERLAPPED*)&pstPerIoData,
@@ -336,11 +324,11 @@ void LPAPI LPIocpReactor::OnExecute(LPINT32 nCompletionPortIndex)
 #       endif
 
 		//检查线程退出
-		if (_GetState() == eCommonState_Inited)
+		if (GetState() == eCommonState_Inited)
 		{
 			LOG_PROCESS_ERROR(pEventHandler);
 		}
-		else if (_GetState() >= eCommonState_Close)
+		else if (GetState() >= eCommonState_Close)
 		{
 			PROCESS_SUCCESS(TRUE);
 		}
@@ -368,11 +356,241 @@ void LPAPI LPIocpReactor::OnExecute(LPINT32 nCompletionPortIndex)
 		}
 
 		pstPerIoData->qwByteTransferred = dwByteTransferred;
-		pEventHandler->OnNetEvent(bRet, pstPerIoData);
+		pstPerIoData->bOperateRet = bRet;
+		pEventHandler->OnNetEvent(pstPerIoData);
 	}
 
 Exit1:
 Exit0:
+	return;
+}
+
+
+
+LPEpollReactor::LPEpollReactor()
+{
+	m_hEpoll = INVALID_HANDLE_VALUE;
+}
+
+
+
+LPEpollReactor::~LPEpollReactor()
+{
+
+}
+
+BOOL LPAPI LPEpollReactor::Init(NET_CONFIG& stNetConfig)
+{
+	LPINT32 nResult = FALSE;
+
+	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
+	SetState(eCommonState_Initing);
+
+	nResult = LPReactor::Init(stNetConfig);
+	LOG_PROCESS_ERROR(nResult);
+
+#	ifndef _WIN32
+	{
+		m_hEpoll = epoll_create(m_stNetConfig.dwConnectCount);
+		LOG_PROCESS_ERROR(m_hEpoll != INVALID_HANDLE_VALUE);
+
+		REACTOR_THREAD_PARAM* pThreadParam = new REACTOR_THREAD_PARAM();
+		LOG_PROCESS_ERROR(pThreadParam);
+		pThreadParam->pReactorImpl = this;
+		pThreadParam->nCompletionPortIndex = 0;
+
+		nResult = m_oCheckDelayThread.Start(ThreadFunc, pThreadParam);
+		LOG_PROCESS_ERROR(nResult);
+		m_bRun = TRUE;
+	}
+#	endif
+
+	SetState(eCommonState_Inited);
+
+	return TRUE;
+Exit0:
+
+	UnInit();
+	return FALSE;
+}
+
+BOOL LPAPI LPEpollReactor::UnInit()
+{
+	PROCESS_SUCCESS(GetState() == eCommonState_NoInit || GetState() >= eCommonState_UnIniting);
+
+	SetState(eCommonState_UnIniting);
+
+	if (m_bRun == TRUE)
+	{
+		m_bRun = FALSE;
+		m_oThread.Wait();
+	}
+
+	lpCloseHandle(m_hEpoll);
+
+	SetState(eCommonState_UnInited);
+
+Exit1:
+	return TRUE;
+}
+
+BOOL LPAPI LPEpollReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	LPINT32 nResult = 0;
+
+	struct epoll_event ev;
+
+	LOG_PROCESS_ERROR(pEventHandler != nullptr);
+
+	ev.data.ptr = pEventHandler;
+
+	switch (pEventHandler->GetEventHandlerType())
+	{
+	case eEventHandlerType_Connector:
+		{
+			ev.events = EPOLLIN | EPOLLOUT | EPOLLET | EPOLLRDHUP;
+		}
+		break;
+	case eEventHandlerType_Listener:
+		{
+			ev.events = EPOLLIN | EPOLLET;
+		}
+		break;
+	case eEventHandlerType_Socker:
+		{
+			ev.events = EPOLLIN | EPOLLOUT | EPOLLET | EPOLLRDHUP;
+		}
+		break;
+	case eEventHandlerType_None:
+	case eEventHandlerType_Max:
+	default:
+		LOG_CHECK_ERROR(FALSE);
+		LPASSERT(FALSE);
+		LOG_PROCESS_ERROR(FALSE);
+		break;
+	}
+
+#	ifndef _WIN32
+	{
+		nResult = epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, pEventHandler->GetHandle(), &ev);
+		LOG_PROCESS_ERROR(nResult == 0);
+	}
+#	endif
+
+Exit0:
+	return FALSE;
+}
+
+BOOL LPAPI LPEpollReactor::UnRegisterEventHandler(ILPEventHandler* pEventHandler)
+{
+	LPINT32 nResult = 0;
+
+	struct epoll_event ev = { 0, {0} };
+
+	LOG_PROCESS_ERROR(pEventHandler != nullptr);
+
+#	ifndef _WIN32
+	{
+		//注意：服务端主动关闭的socket应该先注销，再关闭，防止引起EPOLLIN事件
+		nResult = epoll_ctl(m_hEpoll, EPOLL_CTL_DEL, pEventHandler->GetHandle(), &ev);
+		LOG_PROCESS_ERROR(nResult == 0);
+	}
+#	endif
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+void LPAPI LPEpollReactor::OnExecute(REACTOR_THREAD_PARAM& tThreadParam)
+{
+	LPINT32 nFdCount = 0;
+	HANDLE hFd = INVALID_HANDLE_VALUE;
+	LPINT32 nMaxEvents = m_stNetConfig.dwConnectCount;
+	LPINT32 nTimeout = -1;
+	PER_IO_DATA* pstPerIoData = nullptr;
+	ILPEventHandler* pEventHandler = nullptr;
+
+	epoll_event* ptEvents = new epoll_event[nMaxEvents];
+
+	LOG_PROCESS_ERROR(ptEvents != nullptr);
+	memset(ptEvents, 0x00, sizeof(epoll_event) * nMaxEvents);
+
+	while (m_bRun)
+	{
+#		ifndef _WIN32
+		{
+			nFdCount = epoll_wait(m_hEpoll, *ptEvents, nMaxEvents, nTimeout);
+		}
+#		endif
+
+		if (nFdCount == -1)
+		{
+			//被信号打断
+			if (errno == EINTR)
+			{
+				continue;
+			}
+
+			LOG_PROCESS_ERROR_WITH_MSG(FALSE, "errno=%d", errno);
+		}
+
+		//检查线程退出
+		if (GetState() == eCommonState_Inited)
+		{
+			
+		}
+		else if (GetState() >= eCommonState_Close)
+		{
+			PROCESS_SUCCESS(TRUE);
+		}
+		else
+		{
+			LOG_PROCESS_ERROR(FALSE);
+		}
+
+		//EPOLLIN： 表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+		//EPOLLOUT： 表示对应的文件描述符可以写；
+		//EPOLLPRI： 表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+		//EPOLLERR： 表示对应的文件描述符发生错误；写已关闭socket pipe broken。在注册事件的时候这个事件是默认添加。
+		//EPOLLHUP： 表示对应的文件描述符被挂断；譬如收到RST包。在注册事件的时候这个事件是默认添加。
+		//EPOLLRDHUP： 表示对应的文件描述符对端socket关闭事件，主要应用于ET模式下。
+		//	在水平触发模式下，如果对端socket关闭，则会一直触发epollin事件，驱动去处理client socket。
+		//	在边沿触发模式下，如果client首先发送协议然后shutdown写端。则会触发epollin事件。但是如果处理程序只进行一次recv操作时，根据recv收取到得数据长度来判读后边是
+		//	否还有需要处理的协议时，将丢失客户端关闭事件。
+		//EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+		//EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+
+		//注意：处理io事件时，各个事件类型的判断顺序，应该先判断错误类型，再判断可读或可写
+
+		for (LPINT32 i = 0; i < nFdCount; ++i)
+		{
+			pEventHandler = (ILPEventHandler*)ptEvents[i].data.ptr;
+			if (pEventHandler != nullptr)
+			{
+				pstPerIoData = pEventHandler->GetEventHandlerData();
+				if (pstPerIoData != nullptr)
+				{
+					pstPerIoData->ptEpollEvent = &ptEvents[i];
+					pEventHandler->OnNetEvent(pstPerIoData);
+				}
+				else
+				{
+					LOG_CHECK_ERROR(FALSE);
+				}
+			}
+			else
+			{
+				LOG_CHECK_ERROR(FALSE);
+			}
+		}
+	}
+
+Exit1:
+Exit0:
+
+	SAFE_DELETE_SZ(ptEvents);
+
 	return;
 }
 

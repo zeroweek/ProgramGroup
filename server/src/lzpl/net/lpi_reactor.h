@@ -19,6 +19,11 @@ NS_LZPL_BEGIN
 
 
 
+//结构体声明
+struct NET_CONFIG;
+
+
+
 // Summary：
 //     反应器，与ILPEventHandler交互，负责网络事件处理
 class DECLARE ILPReactor
@@ -43,7 +48,7 @@ public:
 
 public:
 
-	static std::shared_ptr<ILPReactor> LPAPI NewReactor(LPUINT32 dwIoType);
+	static std::shared_ptr<ILPReactor> LPAPI NewReactor(NET_CONFIG& stNetConfig);
 	static void LPAPI DeleteReactor(std::shared_ptr<ILPReactor>& pReactor);
 
 	static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)

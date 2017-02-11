@@ -28,19 +28,19 @@ DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds);
 
 // Summary:
 //		¹Ø±ÕÌ×½Ó×Ö
-DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo);
+DECLARE void LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo);
 
 
 
 // Summary:
 //		¹Ø±ÕÌ×½Ó×Ö
-DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s);
+DECLARE void LPAPI lpCloseSocket(SOCKET s);
 
 
 
 // Summary:
 //		¹Ø±Õ¾ä±ú
-DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h);
+DECLARE void LPAPI lpCloseHandle(HANDLE h);
 
 
 

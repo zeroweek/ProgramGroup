@@ -35,6 +35,10 @@ public:
 	virtual ~ILPSockerImpl() {}
 
 	// Summary:
+	//		重置socker对象
+	virtual void LPAPI Reset() = 0;
+
+	// Summary:
 	//		设置sock句柄
 	// Input:
 	//		sock：底层socket句柄值
@@ -55,10 +59,6 @@ public:
 	// Summary:
 	//		解除绑定解析对象
 	virtual void LPAPI DetachPacketParser() = 0;
-
-	// Summary:
-	//		重置socker对象
-	virtual void LPAPI Reset() = 0;
 
 	// Summary:
 	//		post异步接收数据操作

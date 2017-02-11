@@ -26,6 +26,8 @@ enum e_IoType
 {
 	eIoType_None = 0,
 	eIoType_CompletionPort = 1,
+	eIoType_Epoll = 2,
+	eIoType_Total
 };
 
 

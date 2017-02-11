@@ -62,33 +62,33 @@ DECLARE void LPAPI lpSleep(LPUINT32 dwMicSeconds)
 #   endif
 }
 
-DECLARE LPINT32 LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo)
+DECLARE void LPAPI lpShutDown(SOCKET s, LPINT32 nHowTo)
 {
-	return shutdown(s, nHowTo);
+	shutdown(s, nHowTo);
 }
 
-DECLARE LPINT32 LPAPI lpCloseSocket(SOCKET s)
+DECLARE void LPAPI lpCloseSocket(SOCKET s)
 {
 #   ifdef _WIN32
 	{
-		return closesocket(s);
+		closesocket(s);
 	}
 #   else
 	{
-		return close(s);
+		close(s);
 	}
 #   endif
 }
 
-DECLARE LPINT32 LPAPI lpCloseHandle(HANDLE h)
+DECLARE void LPAPI lpCloseHandle(HANDLE h)
 {
 #   ifdef _WIN32
 	{
-		return CloseHandle(h);
+		CloseHandle(h);
 	}
 #   else
 	{
-		return close(h);
+		close(h);
 	}
 #   endif
 }

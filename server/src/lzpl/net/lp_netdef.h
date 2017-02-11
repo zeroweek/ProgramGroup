@@ -13,7 +13,10 @@
 #if defined _WIN32
 #include <MSWSock.h>
 #else
+#include <unistd.h>  
 #include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/epoll.h>
 #endif
 
 
@@ -30,6 +33,15 @@ NS_LZPL_BEGIN
 #	define WSAID_CONNECTEX                  {0x25a207b9,0xddf3,0x4660,{0x8e,0xe9,0x76,0xe5,0x8c,0x74,0x06,0x3e}}
 #	define WSAID_ACCEPTEX                   {0xb5367df1,0xcbac,0x11cf,{0x95,0xca,0x00,0x80,0x5f,0x48,0xa1,0x92}}
 #	define WSAID_GETACCEPTEXSOCKADDRS       {0xb5367df2,0xcbac,0x11cf,{0x95,0xca,0x00,0x80,0x5f,0x48,0xa1,0x92}}
+#else
+#	define EPOLLIN                          0x0
+#	define EPOLLOUT                         0x0
+#	define EPOLLPRI                         0x0
+#	define EPOLLERR                         0x0
+#	define EPOLLHUP                         0x0
+#	define EPOLLRDHUP                       0x0
+#	define EPOLLET                          0x0
+#	define EPOLLONESHOT                     0x0
 #endif
 
 
@@ -52,6 +64,7 @@ enum e_EventHandlerType
 enum e_IoOptType
 {
 	eIoOptType_None = 0,
+	eIoOptType_RecvOrSend,
 	eIoOptType_Recv,
 	eIoOptType_Send,
 	eIoOptType_Accept,
@@ -144,6 +157,18 @@ void
 	struct sockaddr **RemoteSockaddr,
 	LPINT32* RemoteSockaddrLength
 	);
+#else
+typedef  union epoll_data {
+	void      *ptr;
+	LPINT32    fd;
+	LPUINT32   u32;
+	LPUINT64   u64;
+} epoll_data_t;
+
+struct epoll_event {
+	LPUINT32       events;     /* Epoll events */
+	epoll_data_t   data;       /* User data variable */
+};
 #endif
 
 
@@ -159,6 +184,8 @@ struct PER_IO_DATA
 	LPUINT64               qwByteTransferred;
 	WSABUF                 stWsaBuf;
 	char                   szBuf[128];
+	BOOL                   bOperateRet;
+	epoll_event*           ptEpollEvent;
 
 	PER_IO_DATA()
 	{
@@ -169,6 +196,8 @@ struct PER_IO_DATA
 		qwByteTransferred = 0;
 		memset(&stWsaBuf, 0, sizeof(stWsaBuf));
 		memset(szBuf, 0, sizeof(szBuf));
+		bOperateRet = FALSE;
+		ptEpollEvent = nullptr;
 	}
 };
 

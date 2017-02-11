@@ -30,7 +30,11 @@ public:
 
 	virtual e_EventHandlerType LPAPI GetEventHandlerType() = 0;
 
-	virtual void LPAPI OnNetEvent(BOOL bOperateRet, PER_IO_DATA* pstPerIoData) = 0;
+	// Summary:
+	//   获取处理器自定义的数据，如果没有则返回null
+	virtual PER_IO_DATA* LPAPI GetEventHandlerData() = 0;
+
+	virtual void LPAPI OnNetEvent(PER_IO_DATA* pstPerIoData) = 0;
 
 public:
 

@@ -69,6 +69,36 @@ NS_LZPL_BEGIN
 		}\
 	}while(0)
 
+#define LOG_PROCESS_FATAL(_condition_)\
+	do\
+	{\
+		if(_condition_)\
+		{\
+			\
+		}\
+		else\
+		{\
+			ERR("LOG_PROCESS_FATAL("#_condition_") at line %d in function %s() file \"%s\"",\
+				__LINE__, __FUNCTION__, __FILE__);\
+			goto Exit0;\
+		}\
+	}while(0)
+
+#define LOG_PROCESS_FATAL_WITH_MSG(_condition_, _format_, ...)\
+	do\
+	{\
+		if(_condition_)\
+		{\
+			\
+		}\
+		else\
+		{\
+			FTL("LOG_PROCESS_FATAL_WITH_MSG("#_condition_") "#_format_" at line %d in function %s() file \"%s\"",\
+				##__VA_ARGS__, __LINE__, __FUNCTION__, __FILE__);\
+			goto Exit0;\
+		}\
+	}while(0)
+
 #define LOG_CHECK_ERROR(_condition_)\
 	do\
 	{\

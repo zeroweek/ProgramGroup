@@ -236,6 +236,10 @@ void LPAPI LPSockerMgr::CheckDelay()
 			{
 				ltConnectSockerParentId.push_back(pSocker->GetParentId());
 			}
+
+			//这里不管是不是服务端主动关闭的，都需先调用注销
+			m_pNetImpl->GetReactorImpl().UnRegisterEventHandler(pSocker);
+
 			_Release(pSocker);
 			continue;
 		}

@@ -91,7 +91,7 @@ public:
 
 	// Summary:
 	//		获取对端连接的ip字符串
-	virtual const char* LPAPI GetRemoteIpStr() = 0;
+	virtual std::string& LPAPI GetRemoteIpStr() = 0;
 
 	// Summary:
 	//		获取对端连接的port
@@ -103,7 +103,7 @@ public:
 
 	// Summary:
 	//		获取本地连接的ip字符串
-	virtual const char* LPAPI GetLocalIpStr() = 0;
+	virtual std::string& LPAPI GetLocalIpStr() = 0;
 
 	// Summary:
 	//		获取本地连接的port

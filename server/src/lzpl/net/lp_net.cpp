@@ -138,7 +138,7 @@ BOOL LPAPI LPNetImpl::Init(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG*
 	nResult = m_oEventMgr.Init(this, m_pNetMessageHandler, m_oNetConfig.dwNetEventListCount);
 	LOG_PROCESS_ERROR(nResult);
 
-	m_pReactor = ILPReactor::NewReactor(m_oNetConfig.dwIoType);
+	m_pReactor = ILPReactor::NewReactor(m_oNetConfig);
 	LOG_PROCESS_ERROR(m_pReactor != nullptr);
 
 	m_dwState = eCommonState_Inited;
