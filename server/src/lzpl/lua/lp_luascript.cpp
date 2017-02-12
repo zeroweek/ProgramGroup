@@ -623,8 +623,8 @@ BOOL LPAPI LPLuaScript::_GetCRC(const char * pcszFileName, LPINT32 nLevel)
 			break;
 		default:
 			if (!bInString && (dwPointer + 8 < dwSize) &&
-				*(LPUINT32*)(pszFileData + dwPointer) == 'lcnI' &&
-				*(LPUINT32*)(pszFileData + dwPointer + 4) == '(edu')
+				*(LPUINT32*)(pszFileData + dwPointer) == 1818455625/*'lcnI'*/ &&
+				*(LPUINT32*)(pszFileData + dwPointer + 4) == 677733493/*'(edu'*/)
 			{
 				dwPointer += 8;
 				while (dwPointer < dwSize && pszFileData[dwPointer] != '\"')

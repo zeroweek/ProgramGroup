@@ -70,7 +70,7 @@ public:
 
 	// Summary：
 	//     完成端口线程处理函数
-	static unsigned LPAPI ThreadFunc(void* pParam);
+	static THREAD_FUNC_DECLARE(ThreadFunc)(void* pParam);
 
 protected:
 

@@ -812,7 +812,7 @@ BOOL LPAPI LPLinuxNetSocker::PostSend()
 	{
 #		ifndef _WIN32
 		{
-			nResult = write(GetSock(), m_pSendLoopBuf->ReadPtr(), dwOnceReadableLen);
+			nResult = write(GetSock(), m_pSendLoopBuf->ReadPtr(), m_pSendLoopBuf->GetOnceReadableLen());
 		}
 #		endif
 

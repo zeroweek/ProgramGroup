@@ -703,8 +703,15 @@ void LPAPI LPLinuxNetListener::OnAccept(BOOL bSuccess, PER_IO_DATA* pstPerIoData
 	LPUINT32 dwCurValidConnectCount = 0;
 
 	LPINT32 idwRetLocal = 0;
+
+#	ifdef _WIN32
 	LPINT32 idwRemoteAddrLen = 0;
 	LPINT32 idwLocalAddrLen = 0;
+#	else
+	socklen_t idwRemoteAddrLen = 0;
+	socklen_t idwLocalAddrLen = 0;
+#	endif
+
 	sockaddr_in stRemoteAddr;
 	sockaddr_in stLocalAddr;
 

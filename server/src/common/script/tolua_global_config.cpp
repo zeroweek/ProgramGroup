@@ -1,6 +1,6 @@
 /*
 ** Lua binding: global_config
-** Generated automatically by tolua++-1.0.92 on Sat Feb 11 20:38:21 2017.
+** Generated automatically by tolua++-1.0.92 on Sun Feb 12 16:45:49 2017.
 */
 
 #ifndef __cplusplus

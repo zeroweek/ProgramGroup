@@ -2,6 +2,7 @@
 #include "lp_processerror.h"
 #include "lp_system.h"
 #include "lpi_net.h"
+#include "lp_global.h"
 
 
 
@@ -83,7 +84,7 @@ BOOL LPAPI LPReactor::UnInit()
 	return FALSE;
 }
 
-unsigned LPAPI LPReactor::ThreadFunc(void* pParam)
+THREAD_FUNC_DECLARE(LPReactor::ThreadFunc)(void * pParam)
 {
 	REACTOR_THREAD_PARAM stThreadParam;
 	REACTOR_THREAD_PARAM* pThreadParam = (REACTOR_THREAD_PARAM*)pParam;
@@ -402,7 +403,7 @@ BOOL LPAPI LPEpollReactor::Init(NET_CONFIG& stNetConfig)
 		pThreadParam->pReactorImpl = this;
 		pThreadParam->nCompletionPortIndex = 0;
 
-		nResult = m_oCheckDelayThread.Start(ThreadFunc, pThreadParam);
+		nResult = m_oThread.Start(ThreadFunc, pThreadParam);
 		LOG_PROCESS_ERROR(nResult);
 		m_bRun = TRUE;
 	}
