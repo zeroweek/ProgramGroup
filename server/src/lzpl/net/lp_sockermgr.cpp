@@ -277,7 +277,7 @@ void LPAPI LPSockerMgr::CheckDelay()
 
 LPINT32 LPAPI LPSockerMgr::PostSend()
 {
-	LPINT32 nResult = 0;
+	LPINT32 nHaveDataCount = 0;
 	ILPSockerImpl* pSocker = NULL;
 
 	m_oLock.Lock();
@@ -294,7 +294,7 @@ LPINT32 LPAPI LPSockerMgr::PostSend()
 		{
 			if (pSocker->PostSend())
 			{
-				++nResult;
+				++nHaveDataCount;
 			}
 		}
 		else
@@ -307,7 +307,7 @@ LPINT32 LPAPI LPSockerMgr::PostSend()
 	}
 	m_oLock.UnLock();
 
-	return nResult;
+	return nHaveDataCount;
 }
 
 ILPSockerImpl* LPAPI LPSockerMgr::_Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate)

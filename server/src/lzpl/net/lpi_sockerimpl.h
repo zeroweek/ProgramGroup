@@ -62,9 +62,7 @@ public:
 
 	// Summary:
 	//		post异步接收数据操作
-	// Return:
-	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI PostRecv() = 0;
+	virtual void LPAPI PostRecv() = 0;
 
 	// Summary:
 	//		post异步发送数据操作

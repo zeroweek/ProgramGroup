@@ -178,7 +178,7 @@ public:
 
 	// Summary:
 	//		push一个接收事件
-	BOOL LPAPI PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf* pLoopBuf, LPUINT32 dwLen);
+	BOOL LPAPI PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen);
 
 	// Summary:
 	//		push一个断开事件
@@ -205,7 +205,7 @@ private:
 
 	// Summary:
 	//		处理接收事件
-	void LPAPI _ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent);
+	void LPAPI _ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag);
 
 	// Summary:
 	//		处理断开事件
@@ -222,13 +222,14 @@ private:
 private:
 
 	BOOL                        m_bInit;
-	LPLoopBuf*                  m_pRecvLoopBuf;        // 接收事件数据缓冲区
-	char*                       m_pPacketTempBuf;      // 数据包临时缓冲区
-	LPINT32                     m_nEventListCount;     // 事件列表个数
-	LPListEvent*                m_pEventList;          // 事件列表
-	LPLock*                     m_pEventListLock;      // 事件列表锁
-	ILPNetMessageHandler*       m_pNetMessageHandler;  // 
-	LPNetImpl*                  m_pNetImpl;            //
+	char*                       m_pPacketTempBuf;             // 数据包临时缓冲区
+	LPINT32                     m_nEventListCount;            // 事件列表个数
+	LPListEvent*                m_pEventList;                 // 事件列表
+	LPLock*                     m_pEventListLock;             // 事件列表锁
+	LPLoopBuf*                  m_pEventListRecvLoopBuf;      // 接收事件数据缓冲区数组（每个事件列表对应一个）
+	LPLock*                     m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
+	ILPNetMessageHandler*       m_pNetMessageHandler;         // 
+	LPNetImpl*                  m_pNetImpl;                   //
 };
 
 

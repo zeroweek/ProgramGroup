@@ -850,7 +850,7 @@ BOOL LPAPI LPLinuxNetConnector::InitConnectEx()
 BOOL LPAPI LPLinuxNetConnector::PostConnectEx(PER_IO_DATA& stPerIoData)
 {
 	LPINT32 nResult = 0;
-	DWORD dwBytes = 0;
+	LPINT32 nError = 0;
 	sockaddr_in stRemotetAddr;
 	sockaddr_in stLocalAddr;
 
@@ -901,10 +901,11 @@ BOOL LPAPI LPLinuxNetConnector::PostConnectEx(PER_IO_DATA& stPerIoData)
 	nResult = connect(m_hConnectSock, (struct sockaddr*)&stRemotetAddr, sizeof(struct sockaddr));
 	if (nResult < 0)
 	{
-		if (!(WSAGetLastError() == EINPROGRESS || WSAGetLastError() == EINTR 
-			|| WSAGetLastError() == EALREADY || WSAGetLastError() == EISCONN))
+		nError = WSAGetLastError();
+		if (nError != EINPROGRESS && nError != EINTR
+			&& nError != EALREADY && nError != EISCONN)
 		{
-			LOG_PROCESS_ERROR_WITH_MSG(FALSE, "connect %s:%d failed, errno %d", m_strIP.c_str(), m_dwPort, WSAGetLastError());
+			LOG_PROCESS_ERROR_WITH_MSG(FALSE, "connect %s:%d failed, errno %d", m_strIP.c_str(), m_dwPort, nError);
 		}
 	}
 

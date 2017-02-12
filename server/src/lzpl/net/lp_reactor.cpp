@@ -129,7 +129,10 @@ BOOL LPAPI LPIocpReactor::Init(NET_CONFIG& stNetConfig)
 #	endif
 
 	LPINT32 nResult = FALSE;
-	BOOL bOneCompletionPortOneThread = FALSE;
+
+	//TRUE-有1到多个完成端口，并且每个完成端口只对应1个线程（此种情况，能确保每个socket单线程处理）
+	//FALSE-只有1个完成端口，并且对应1到多个线程（此种情况，不清楚是否能确保每个socket单线程处理）
+	BOOL bOneCompletionPortOneThread = TRUE;
 
 	LOG_PROCESS_ERROR(eCommonState_NoInit == GetState());
 	SetState(eCommonState_Initing);
@@ -453,7 +456,7 @@ BOOL LPAPI LPEpollReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
 		break;
 	case eEventHandlerType_Listener:
 		{
-			ev.events = EPOLLIN | EPOLLET;
+			ev.events = EPOLLIN | EPOLLET | EPOLLRDHUP;
 		}
 		break;
 	case eEventHandlerType_Socker:
@@ -527,7 +530,7 @@ void LPAPI LPEpollReactor::OnExecute(REACTOR_THREAD_PARAM& tThreadParam)
 		if (nFdCount == -1)
 		{
 			//被信号打断
-			if (errno == EINTR)
+			if (WSAGetLastError() == EINTR || WSAGetLastError() == EAGAIN)
 			{
 				continue;
 			}
@@ -550,7 +553,7 @@ void LPAPI LPEpollReactor::OnExecute(REACTOR_THREAD_PARAM& tThreadParam)
 		}
 
 		//EPOLLIN： 表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
-		//EPOLLOUT： 表示对应的文件描述符可以写；
+		//EPOLLOUT： 表示对应的文件描述符可以写；（缓冲区有变化时（如write操作或sock刚连接时），变化后如果缓冲区不满，则会触发事件）
 		//EPOLLPRI： 表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
 		//EPOLLERR： 表示对应的文件描述符发生错误；写已关闭socket pipe broken。在注册事件的时候这个事件是默认添加。
 		//EPOLLHUP： 表示对应的文件描述符被挂断；譬如收到RST包。在注册事件的时候这个事件是默认添加。

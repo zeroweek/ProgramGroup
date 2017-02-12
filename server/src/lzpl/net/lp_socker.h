@@ -305,9 +305,7 @@ public:
 
 	// Summary:
 	//		post异步接收数据操作
-	// Return:
-	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI PostRecv();
+	virtual void LPAPI PostRecv();
 
 	// Summary:
 	//		post异步发送数据操作
@@ -330,10 +328,6 @@ public:
 	// Summary:
 	//		异步关闭回调
 	virtual void LPAPI OnClose();
-
-protected:
-
-	static LPLock             ms_oSendBufLock;             // 发送缓冲区锁（静态还是非静态？？？考虑锁消耗与sock效率平衡）
 
 protected:
 
@@ -380,9 +374,7 @@ public:
 
 	// Summary:
 	//		post异步接收数据操作
-	// Return:
-	//		TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI PostRecv();
+	virtual void LPAPI PostRecv() { }
 
 	// Summary:
 	//		post异步发送数据操作
@@ -408,14 +400,7 @@ public:
 
 protected:
 
-	static LPLock             ms_oSendBufLock;             // 发送缓冲区锁（静态还是非静态？？？考虑锁消耗与sock效率平衡）
 
-protected:
-
-	volatile atomic_bool      m_bSending;                 // 数据是否正在发送标记
-
-	PER_IO_DATA               m_stRecvPerIoData;          // io接收绑定的数据 
-	PER_IO_DATA               m_stSendPerIoData;          // io发送绑定的数据
 };
 
 
