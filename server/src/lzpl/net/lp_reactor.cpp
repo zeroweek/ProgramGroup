@@ -481,6 +481,7 @@ BOOL LPAPI LPEpollReactor::RegisterEventHandler(ILPEventHandler* pEventHandler)
 	}
 #	endif
 
+	return TRUE;
 Exit0:
 	return FALSE;
 }
@@ -524,7 +525,7 @@ void LPAPI LPEpollReactor::OnExecute(REACTOR_THREAD_PARAM& tThreadParam)
 	{
 #		ifndef _WIN32
 		{
-			nFdCount = epoll_wait(m_hEpoll, *ptEvents, nMaxEvents, nTimeout);
+			nFdCount = epoll_wait(m_hEpoll, ptEvents, nMaxEvents, nTimeout);
 		}
 #		endif
 

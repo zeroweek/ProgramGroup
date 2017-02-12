@@ -111,12 +111,6 @@ typedef struct _GUID {
 	unsigned char  Data4[8];
 } GUID;
 
-// Summary:
-// LINGER结构定义
-struct  linger {
-	u_short l_onoff;                /* option on/off */
-	u_short l_linger;               /* linger time */
-};
 typedef struct linger LINGER;
 #endif
 
