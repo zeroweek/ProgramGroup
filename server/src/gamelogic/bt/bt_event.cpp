@@ -5,13 +5,13 @@
 
 char const* const g_BTEventName[btetTotal] =
 {
-	"btetInvalid",
+    "btetInvalid",
 
-	"btetAIInit",
-	"btetAIIdle",
-	"btetAIFight",
-	"btetAIDie",
-	"btetAIRevive",
-	"btetAIInteract",
+    "btetAIInit",
+    "btetAIIdle",
+    "btetAIFight",
+    "btetAIDie",
+    "btetAIRevive",
+    "btetAIInteract",
 };
 

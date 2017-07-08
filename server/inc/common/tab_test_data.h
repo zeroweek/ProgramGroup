@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 3, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _TAB_TEST_DATA_H_
@@ -15,13 +15,13 @@ using namespace LZPL;
 
 struct TAB_TEST_DATA
 {
-	LPINT32 nId;
-	char szName[COMMON_NAME_LEN];
-	char szBeginTime[COMMON_NAME_LEN];
-	char szEndTime[COMMON_NAME_LEN];
+    LPINT32 nId;
+    char szName[COMMON_NAME_LEN];
+    char szBeginTime[COMMON_NAME_LEN];
+    char szEndTime[COMMON_NAME_LEN];
 
-	static void Print(TAB_TEST_DATA* pData);
-	static BOOL ReadLine(LPINT32& rnId, TAB_TEST_DATA* pData, LPTabFile* pTabFile, LPINT32 nRow);
+    static void Print(TAB_TEST_DATA* pData);
+    static BOOL ReadLine(LPINT32& rnId, TAB_TEST_DATA* pData, LPTabFile* pTabFile, LPINT32 nRow);
 
 };
 

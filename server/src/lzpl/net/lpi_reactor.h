@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: May 22, 2015
-//    description: 
+//    description:
 //
 //        反应器ILPReactor接口声明。
 //
@@ -30,59 +30,59 @@ class DECLARE ILPReactor
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPReactor(){}
+    // Summary:
+    //      无
+    virtual ~ILPReactor() {}
 
-	// Summary:
-	//     注册ILPEventHandler
-	// Returns:
-	//     TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI RegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
+    // Summary:
+    //     注册ILPEventHandler
+    // Returns:
+    //     TRUE-成功，FALSE-失败
+    virtual BOOL LPAPI RegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
 
-	// Summary：
-	//     注销ILPEventHandler
-	// Returns:
-	//     TRUE-成功，FALSE-失败
-	virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
+    // Summary：
+    //     注销ILPEventHandler
+    // Returns:
+    //     TRUE-成功，FALSE-失败
+    virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
 
 public:
 
-	static std::shared_ptr<ILPReactor> LPAPI NewReactor(NET_CONFIG& stNetConfig);
-	static void LPAPI DeleteReactor(std::shared_ptr<ILPReactor>& pReactor);
+    static std::shared_ptr<ILPReactor> LPAPI NewReactor(NET_CONFIG& stNetConfig);
+    static void LPAPI DeleteReactor(std::shared_ptr<ILPReactor>& pReactor);
 
-	static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)
-	{
-		switch (eType)
-		{
-		case LZPL::eIoOptType_None:
-			LOG_CHECK_ERROR(FALSE);
-			return "eIoOptType_None";
-			break;
-		case LZPL::eIoOptType_Recv:
-			return "eIoOptType_Recv";
-			break;
-		case LZPL::eIoOptType_Send:
-			return "eIoOptType_Send";
-			break;
-		case LZPL::eIoOptType_Accept:
-			return "eIoOptType_Accept";
-			break;
-		case LZPL::eIoOptType_Connect:
-			return "eIoOptType_Connect";
-			break;
-		case LZPL::eIoOptType_Max:
-			LOG_CHECK_ERROR(FALSE);
-			return "eIoOptType_Max";
-			break;
-		default:
-			LOG_PROCESS_ERROR(FALSE);
-			break;
-		}
+    static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)
+    {
+        switch(eType)
+        {
+        case LZPL::eIoOptType_None:
+            LOG_CHECK_ERROR(FALSE);
+            return "eIoOptType_None";
+            break;
+        case LZPL::eIoOptType_Recv:
+            return "eIoOptType_Recv";
+            break;
+        case LZPL::eIoOptType_Send:
+            return "eIoOptType_Send";
+            break;
+        case LZPL::eIoOptType_Accept:
+            return "eIoOptType_Accept";
+            break;
+        case LZPL::eIoOptType_Connect:
+            return "eIoOptType_Connect";
+            break;
+        case LZPL::eIoOptType_Max:
+            LOG_CHECK_ERROR(FALSE);
+            return "eIoOptType_Max";
+            break;
+        default:
+            LOG_PROCESS_ERROR(FALSE);
+            break;
+        }
 
-	Exit0:
-		return "*** unknow e_IoOptType ***";
-	}
+Exit0:
+        return "*** unknow e_IoOptType ***";
+    }
 };
 
 

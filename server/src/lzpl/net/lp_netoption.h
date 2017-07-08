@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: Jan 6, 2017
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_NET_OPTION_H_
@@ -17,18 +17,18 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		网络选项类
+//      网络选项类
 class DECLARE LPNetOption : public ILPNetOption
 {
 public:
 
-	// Summary:
-	//		none
-	LPNetOption();
+    // Summary:
+    //      none
+    LPNetOption();
 
-	// Summary:
-	//		none
-	virtual ~LPNetOption();
+    // Summary:
+    //      none
+    virtual ~LPNetOption();
 
 };
 

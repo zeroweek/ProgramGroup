@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 21, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_HTTP_H_
@@ -18,26 +18,26 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		http连接对象类
+//      http连接对象类
 class DECLARE LPHttp
 {
 public:
 
-	// Summary:
-	//		无
-	LPHttp();
+    // Summary:
+    //      无
+    LPHttp();
 
-	// Summary:
-	//		无
-	~LPHttp();
+    // Summary:
+    //      无
+    ~LPHttp();
 
-	// Summary:
-	//		初始化
-	BOOL LPAPI Init(void);
+    // Summary:
+    //      初始化
+    BOOL LPAPI Init(void);
 
-	// Summary:
-	//		反始化
-	BOOL LPAPI UnInit(void);
+    // Summary:
+    //      反始化
+    BOOL LPAPI UnInit(void);
 
 };
 

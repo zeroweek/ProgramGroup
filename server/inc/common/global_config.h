@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: November 26, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _GLOBAL_CONFIG_H_
@@ -19,15 +19,15 @@
 
 struct COMMON
 {
-	char       szGuardAddr[COMMON_NAME_LEN];
-	LPUINT32    dwGuardPort;
+    char       szGuardAddr[COMMON_NAME_LEN];
+    LPUINT32    dwGuardPort;
 };
 
 struct GLOBAL_CONFIG
 {
-	COMMON Common;
-	SERVER_CONFIG  Server;
-	GUARD_CONFIG   Guard;
+    COMMON Common;
+    SERVER_CONFIG  Server;
+    GUARD_CONFIG   Guard;
 };
 
 

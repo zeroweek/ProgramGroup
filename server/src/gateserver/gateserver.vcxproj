@@ -74,13 +74,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\jsoncpp\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\jsoncpp\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;.\main;.\message;%LZPL_ROOT%\server\3rd\boost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%LZPL_ROOT%\server\3rd\jsoncpp\lib\win64;%LZPL_ROOT%\server\3rd\curl\curllib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;libmysql.lib;zlibstat64d.lib;lzpl64d.lib;message64d.lib;luastat64d.lib;toluapp64d.lib;common64d.lib;jsoncpp64d.lib;libcurld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%LZPL_ROOT%\server\3rd\jsoncpp\lib\win64;%LZPL_ROOT%\server\3rd\curl\curllib\win64;%LZPL_ROOT%\server\3rd\boost\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -93,15 +93,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\jsoncpp\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;.\main;.\message</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\jsoncpp\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;.\main;.\message;%LZPL_ROOT%\server\3rd\boost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%LZPL_ROOT%\server\3rd\jsoncpp\lib\win64;%LZPL_ROOT%\server\3rd\curl\curllib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sapi.lib;ws2_32.lib;winmm.lib;dbghelp.lib;libmysql.lib;zlibstat64.lib;lzpl64.lib;message64.lib;luastat64.lib;toluapp64.lib;common64.lib;jsoncpp64.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%LZPL_ROOT%\server\lib\win64;%LZPL_ROOT%\server\3rd\mysql\lib\win64;%LZPL_ROOT%\server\3rd\zlib\lib\win64;%LZPL_ROOT%\server\3rd\lua\lib\win64;%LZPL_ROOT%\server\3rd\tolua++\lib\win64;%LZPL_ROOT%\server\3rd\jsoncpp\lib\win64;%LZPL_ROOT%\server\3rd\curl\curllib\win64;%LZPL_ROOT%\server\3rd\boost\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>

@@ -17,19 +17,19 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		消息接口类
+//      消息接口类
 class DECLARE ILPMessage
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPMessage() {}
+    // Summary:
+    //      无
+    virtual ~ILPMessage() {}
 
 public:
 
-	virtual BOOL LPAPI Serialize(ILPMessageSerializer* pMessageSerializer) = 0;
-	virtual BOOL LPAPI UnSerialize(ILPMessageSerializer* pMessageSerializer) = 0;
+    virtual BOOL LPAPI Serialize(ILPMessageSerializer* pMessageSerializer) = 0;
+    virtual BOOL LPAPI UnSerialize(ILPMessageSerializer* pMessageSerializer) = 0;
 
 };
 

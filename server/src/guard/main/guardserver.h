@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 4, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_GUARD_SERVER_H_
@@ -17,38 +17,38 @@ using namespace LZPL;
 
 
 // Summary:
-//		нч
+//      нч
 class CGuardServer
 {
-	SINGLETON_DECLARE(CGuardServer)
+    SINGLETON_DECLARE(CGuardServer)
 
 public:
 
-	BOOL LPAPI Init(void);
-	BOOL LPAPI UnInit(void);
+    BOOL LPAPI Init(void);
+    BOOL LPAPI UnInit(void);
 
-	BOOL LPAPI MainLoop(void);
+    BOOL LPAPI MainLoop(void);
 
-	LPUINT32 LPAPI GetServerState(void);
-	void SetServerState(LPUINT32 dwServerState);
+    LPUINT32 LPAPI GetServerState(void);
+    void SetServerState(LPUINT32 dwServerState);
 
-	void Close(void);
-
-private:
-
-	// Summary:
-	//		none
-	CGuardServer();
-
-	// Summary:
-	//		none
-	virtual ~CGuardServer();
+    void Close(void);
 
 private:
 
-	std::shared_ptr<ILPNet>            m_pNet;
+    // Summary:
+    //      none
+    CGuardServer();
 
-	LPUINT32                           m_dwServerState;
+    // Summary:
+    //      none
+    virtual ~CGuardServer();
+
+private:
+
+    std::shared_ptr<ILPNet>            m_pNet;
+
+    LPUINT32                           m_dwServerState;
 
 };
 

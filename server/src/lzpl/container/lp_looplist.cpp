@@ -9,51 +9,51 @@ NS_LZPL_BEGIN
 
 LPLoopList::LPLoopList()
 {
-	m_dwSize = 0;
-	m_dwPop  = 0;
-	m_dwPush = 0;
-	m_ppData = NULL;
-	m_dwValidCount = 0;
+    m_dwSize = 0;
+    m_dwPop  = 0;
+    m_dwPush = 0;
+    m_ppData = NULL;
+    m_dwValidCount = 0;
 }
 
 LPLoopList::~LPLoopList()
 {
-	UnInit();
+    UnInit();
 }
 
 BOOL LPAPI LPLoopList::Init(LPUINT32 dwSize)
 {
-	LOG_PROCESS_ERROR(dwSize > 0);
+    LOG_PROCESS_ERROR(dwSize > 0);
 
-	m_ppData = new void*[dwSize];
-	LOG_PROCESS_ERROR(m_ppData);
+    m_ppData = new void*[dwSize];
+    LOG_PROCESS_ERROR(m_ppData);
 
-	m_dwSize = dwSize;
-	m_dwPop  = 0;
-	m_dwPush = 0;
-	m_dwValidCount = 0;
+    m_dwSize = dwSize;
+    m_dwPop  = 0;
+    m_dwPush = 0;
+    m_dwValidCount = 0;
 
-	return TRUE;
+    return TRUE;
 
 Exit0:
 
-	return FALSE;
+    return FALSE;
 }
 
 BOOL LPAPI LPLoopList::UnInit(void)
 {
-	if (m_ppData)
-	{
-		SAFE_DELETE_SZ(m_ppData);
-		m_ppData = NULL;
-	}
+    if(m_ppData)
+    {
+        SAFE_DELETE_SZ(m_ppData);
+        m_ppData = NULL;
+    }
 
-	m_dwSize = 0;
-	m_dwPop  = 0;
-	m_dwPush = 0;
-	m_dwValidCount = 0;
+    m_dwSize = 0;
+    m_dwPop  = 0;
+    m_dwPush = 0;
+    m_dwValidCount = 0;
 
-	return TRUE;
+    return TRUE;
 }
 
 

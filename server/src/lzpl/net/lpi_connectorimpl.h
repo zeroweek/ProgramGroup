@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: Jan 9, 2017
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LPI_CONNECTOR_IMPL_H_
@@ -24,31 +24,31 @@ class LPNetImpl;
 
 
 // Summary:
-//		连接器接口类
+//      连接器接口类
 class DECLARE ILPConnectorImpl : public ILPConnector, public ILPEventHandler
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPConnectorImpl() {}
+    // Summary:
+    //      无
+    virtual ~ILPConnectorImpl() {}
 
-	// Summary：
-	//		无
-	// Input:
-	//		pNetImpl: 
-	//		pPacketParser: 消息包解析对象
-	//		dwId: 连接器id
-	virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId) = 0;
+    // Summary：
+    //      无
+    // Input:
+    //      pNetImpl:
+    //      pPacketParser: 消息包解析对象
+    //      dwId: 连接器id
+    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId) = 0;
 
-	// Summary:
-	//		链接关闭回调
-	virtual void LPAPI OnClose() = 0;
+    // Summary:
+    //      链接关闭回调
+    virtual void LPAPI OnClose() = 0;
 
 public:
 
-	static std::shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl(LPUINT32 dwIoType);
-	static void LPAPI DeleteConnectorImpl(std::shared_ptr<ILPConnectorImpl>& pConnector);
+    static std::shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl(LPUINT32 dwIoType);
+    static void LPAPI DeleteConnectorImpl(std::shared_ptr<ILPConnectorImpl>& pConnector);
 };
 
 typedef std::map<LPUINT32, std::shared_ptr<ILPConnectorImpl>> MAP_CONNECTOR;

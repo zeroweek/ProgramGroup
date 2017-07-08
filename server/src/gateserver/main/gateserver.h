@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: October 29, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_GATE_SERVER_H_
@@ -21,44 +21,44 @@ using namespace LZPL;
 
 
 // Summary:
-//		нч
+//      нч
 class CGateServer
 {
-	SINGLETON_DECLARE(CGateServer)
+    SINGLETON_DECLARE(CGateServer)
 
 public:
 
-	BOOL LPAPI Init(void);
-	BOOL LPAPI UnInit(void);
+    BOOL LPAPI Init(void);
+    BOOL LPAPI UnInit(void);
 
-	BOOL LPAPI MainLoop(void);
+    BOOL LPAPI MainLoop(void);
 
-	LPUINT32 LPAPI GetServerState(void);
-	void SetServerState(LPUINT32 dwServerState);
+    LPUINT32 LPAPI GetServerState(void);
+    void SetServerState(LPUINT32 dwServerState);
 
-	void Close(void);
-
-private:
-
-	// Summary:
-	//		none
-	CGateServer();
-
-	// Summary:
-	//		none
-	virtual ~CGateServer();
+    void Close(void);
 
 private:
 
-	std::shared_ptr<ILPNet>          m_pNet;
-	std::shared_ptr<ILPListener>     m_pListener;
-	std::shared_ptr<ILPListener>     m_pClientListener;
-	CGTMessageHandler                m_oGTMessageHandler;
-	CGTInternalPacketParser *        m_pGTInternalPacketParser;
-	CGTExternalPacketParser *        m_pGTExternalPacketParser;
-	CGTHttpMessageHandler            m_oGTHttpMessageHandler;
+    // Summary:
+    //      none
+    CGateServer();
 
-	LPUINT32                          m_dwServerState;
+    // Summary:
+    //      none
+    virtual ~CGateServer();
+
+private:
+
+    std::shared_ptr<ILPNet>          m_pNet;
+    std::shared_ptr<ILPListener>     m_pListener;
+    std::shared_ptr<ILPListener>     m_pClientListener;
+    CGTMessageHandler                m_oGTMessageHandler;
+    CGTInternalPacketParser *        m_pGTInternalPacketParser;
+    CGTExternalPacketParser *        m_pGTExternalPacketParser;
+    CGTHttpMessageHandler            m_oGTHttpMessageHandler;
+
+    LPUINT32                          m_dwServerState;
 
 };
 

@@ -44,7 +44,7 @@ NS_LZPL_BEGIN
 // Input:
 //  stLogConfig: 日志配置
 // Return:
-//		TRUE-成功，FALSE-失败
+//      TRUE-成功，FALSE-失败
 DECLARE BOOL LPAPI lpInitLzpl(LOG_CONFIG& stLogConfig);
 
 

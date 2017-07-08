@@ -23,77 +23,77 @@ NS_LZPL_BEGIN
 #    define ENTER_CRITICAL_SECTION                          EnterCriticalSection
 #    define LEAVE_CRITICAL_SECTION                          LeaveCriticalSection
 #    define COM_CRITICAL_SECTION                            CRITICAL_SECTION
-#else	    
+#else
 #    define INIT_CRITICAL_SECTION                           pthread_mutex_init
 #    define DELETE_CRITICAL_SECTION                         pthread_mutex_destroy
 #    define ENTER_CRITICAL_SECTION                          pthread_mutex_lock
 #    define LEAVE_CRITICAL_SECTION                          pthread_mutex_unlock
-#    define COM_CRITICAL_SECTION                            pthread_mutex_t     
+#    define COM_CRITICAL_SECTION                            pthread_mutex_t
 #endif
 
 
 
 // Summary:
-//		临界区锁
+//      临界区锁
 class DECLARE LPLock
 {
 public:
 
-	// Summary:
-	//		无
-	LPLock();
+    // Summary:
+    //      无
+    LPLock();
 
-	// Summary:
-	//		无
-	~LPLock();
+    // Summary:
+    //      无
+    ~LPLock();
 
-	// Summary:
-	//		锁
-	void LPAPI Lock();
+    // Summary:
+    //      锁
+    void LPAPI Lock();
 
-	// Summary:
-	//		解锁
-	void LPAPI UnLock();
+    // Summary:
+    //      解锁
+    void LPAPI UnLock();
 
 protected:
 
-	COM_CRITICAL_SECTION       m_stCs;
+    COM_CRITICAL_SECTION       m_stCs;
 };
 
 
 
 // Summary:
-//		自释放线程互斥锁类
+//      自释放线程互斥锁类
 class DECLARE LPAutoLock
 {
 public:
 
-	// Summary:
-	//		none
-	explicit LPAutoLock();
+    // Summary:
+    //      none
+    explicit LPAutoLock();
 
-	// Summary:
-	//		none
-	explicit LPAutoLock(LPLock* pLock);
+    // Summary:
+    //      none
+    explicit LPAutoLock(LPLock* pLock);
 
-	// Summary:
-	//		none
-	~LPAutoLock();
-
-private:
-
-	// Summary:
-	//		私有化，不实现，屏蔽调用
-	LPAutoLock(const LPAutoLock& l);
-
-	// Summary:
-	//		私有化，不实现，屏蔽调用
-	LPAutoLock& operator=(const LPAutoLock& l);
+    // Summary:
+    //      none
+    ~LPAutoLock();
 
 private:
 
-	BOOL                     m_bNew;
-	LPLock*                  m_poLock;
+    // Summary:
+    //      私有化，不实现，屏蔽调用
+    LPAutoLock(const LPAutoLock& l);
+
+    // Summary:
+    //      私有化，不实现，屏蔽调用
+    LPAutoLock& operator=(const LPAutoLock& l);
+
+private:
+
+    BOOL                     m_bNew;
+    LPLock*                  m_poLock;
 };
 
 

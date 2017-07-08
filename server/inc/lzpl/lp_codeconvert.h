@@ -24,13 +24,13 @@
 
 
 
- //begin声明所处的名字空间
+//begin声明所处的名字空间
 NS_LZPL_BEGIN
 
 
 
-#define UTF8_IGNORE_ERROR		0x01
-#define UTF8_SKIP_BOM			0x02
+#define UTF8_IGNORE_ERROR       0x01
+#define UTF8_SKIP_BOM           0x02
 
 #define UTF8_BOM                            (0XBFBBEF)
 #define UTF16_BOM                           (0XFEFF)
@@ -43,12 +43,12 @@ DECLARE size_t LPAPI lpWcharToUTF8(const wchar_t *in, size_t insize, char *out, 
 
 inline DECLARE size_t LPAPI lpUTF8ToUTF16(const char* pcszSrc, size_t tSrcLen, wchar_t* pszDst, size_t tDstLen)
 {
-	return lpUTF8ToWchar(pcszSrc, tSrcLen, pszDst, tDstLen, UTF8_IGNORE_ERROR | UTF8_SKIP_BOM);
+    return lpUTF8ToWchar(pcszSrc, tSrcLen, pszDst, tDstLen, UTF8_IGNORE_ERROR | UTF8_SKIP_BOM);
 }
 
 inline DECLARE size_t LPAPI lpUTF16ToUTF8(const wchar_t* pcszSrc, size_t tSrcLen, char* pszDst, size_t tDstLen)
 {
-	return lpWcharToUTF8(pcszSrc, tSrcLen, pszDst, tDstLen, UTF8_IGNORE_ERROR | UTF8_SKIP_BOM);
+    return lpWcharToUTF8(pcszSrc, tSrcLen, pszDst, tDstLen, UTF8_IGNORE_ERROR | UTF8_SKIP_BOM);
 }
 
 DECLARE BOOL LPAPI lpUTF8ToGB2312(const char *pText, LPUINT32 dwSize, string &pOut);
@@ -61,4 +61,4 @@ NS_LZPL_END
 
 #endif /* !_UTF8_H_ */
 
- 
+

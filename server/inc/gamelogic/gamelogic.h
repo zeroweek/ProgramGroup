@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: November 14, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _GAME_LOGIC_H_
@@ -16,67 +16,67 @@ using namespace LZPL;
 
 
 // Summary:
-//		нч
+//      нч
 class DECLARE CGameLogic
 {
-	SINGLETON_DECLARE(CGameLogic)
+    SINGLETON_DECLARE(CGameLogic)
 
 public:
 
-	BOOL LPAPI Init(void);
-	BOOL LPAPI UnInit(void);
+    BOOL LPAPI Init(void);
+    BOOL LPAPI UnInit(void);
 
-	BOOL LPAPI MainLoop(void);
+    BOOL LPAPI MainLoop(void);
 
-	inline const char* GetConfigPath(void);
+    inline const char* GetConfigPath(void);
 
-	inline BT_NODE* NewBTNode(void);
-	inline BOOL DelBTNode(BT_NODE* pNode);
-
-private:
-
-	BOOL LPAPI _InitObjPool(void);
-	BOOL LPAPI _InitScript(void);
-	BOOL LPAPI _UnInitScript(void);
-	BOOL LPAPI _InitSettingData(void);
-	BOOL LPAPI _UnInitSettingData(void);
+    inline BT_NODE* NewBTNode(void);
+    inline BOOL DelBTNode(BT_NODE* pNode);
 
 private:
 
-	// Summary:
-	//		none
-	CGameLogic();
-
-	// Summary:
-	//		none
-	virtual ~CGameLogic();
+    BOOL LPAPI _InitObjPool(void);
+    BOOL LPAPI _InitScript(void);
+    BOOL LPAPI _UnInitScript(void);
+    BOOL LPAPI _InitSettingData(void);
+    BOOL LPAPI _UnInitSettingData(void);
 
 private:
 
-	LPObjPool<BT_NODE>           m_oBTNodePool;
+    // Summary:
+    //      none
+    CGameLogic();
 
-	char                            m_szConfigPath[MAX_PATH];
+    // Summary:
+    //      none
+    virtual ~CGameLogic();
+
+private:
+
+    LPObjPool<BT_NODE>           m_oBTNodePool;
+
+    char                            m_szConfigPath[MAX_PATH];
 };
 
 
 
 inline const char * CGameLogic::GetConfigPath(void)
 {
-	return m_szConfigPath;
+    return m_szConfigPath;
 }
 
 inline BT_NODE* CGameLogic::NewBTNode(void)
 {
-	return m_oBTNodePool.Malloc();
+    return m_oBTNodePool.Malloc();
 }
 
 inline BOOL CGameLogic::DelBTNode(BT_NODE* pNode)
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	m_oBTNodePool.Free(pNode);
+    m_oBTNodePool.Free(pNode);
 
-	return TRUE;
+    return TRUE;
 }
 
 

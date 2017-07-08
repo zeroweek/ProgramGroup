@@ -17,36 +17,36 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		连接器接口类
+//      连接器接口类
 class DECLARE ILPConnector
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPConnector(){}
+    // Summary:
+    //      无
+    virtual ~ILPConnector() {}
 
-	// Summary:
-	//		开始连接
-	// Input:
-	//		strIP: ip地址字符串（格式：192.168.1.1）
-	//		dwPort: 连接的端口
-	//		bReconnect: 是否自动重连，如果没有设置自动重连，需要在断开回调手动调用重连接口
-	virtual BOOL LPAPI Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect) = 0;
+    // Summary:
+    //      开始连接
+    // Input:
+    //      strIP: ip地址字符串（格式：192.168.1.1）
+    //      dwPort: 连接的端口
+    //      bReconnect: 是否自动重连，如果没有设置自动重连，需要在断开回调手动调用重连接口
+    virtual BOOL LPAPI Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect) = 0;
 
-	// Summary:
-	//		停止连接
-	// Return:
-	//		TRUE-成功，FALSE-失败
-	virtual void LPAPI Stop() = 0;
+    // Summary:
+    //      停止连接
+    // Return:
+    //      TRUE-成功，FALSE-失败
+    virtual void LPAPI Stop() = 0;
 
-	// Summary:
-	//		获取id
-	virtual LPUINT32 LPAPI GetId() = 0;
+    // Summary:
+    //      获取id
+    virtual LPUINT32 LPAPI GetId() = 0;
 
-	// Summary:
-	//		重连
-	virtual BOOL LPAPI Reconnect() = 0;
+    // Summary:
+    //      重连
+    virtual BOOL LPAPI Reconnect() = 0;
 };
 
 

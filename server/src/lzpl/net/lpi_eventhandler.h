@@ -24,49 +24,49 @@ class DECLARE ILPEventHandler
 {
 public:
 
-	virtual ~ILPEventHandler(){}
+    virtual ~ILPEventHandler() {}
 
-	virtual HANDLE LPAPI GetHandle() = 0;
+    virtual HANDLE LPAPI GetHandle() = 0;
 
-	virtual e_EventHandlerType LPAPI GetEventHandlerType() = 0;
+    virtual e_EventHandlerType LPAPI GetEventHandlerType() = 0;
 
-	// Summary:
-	//   获取处理器自定义的数据，如果没有则返回null
-	virtual PER_IO_DATA* LPAPI GetEventHandlerData() = 0;
+    // Summary:
+    //   获取处理器自定义的数据，如果没有则返回null
+    virtual PER_IO_DATA* LPAPI GetEventHandlerData() = 0;
 
-	virtual void LPAPI OnNetEvent(PER_IO_DATA* pstPerIoData) = 0;
+    virtual void LPAPI OnNetEvent(PER_IO_DATA* pstPerIoData) = 0;
 
 public:
 
-	static const char * LPAPI GetEventHandlerTypeName(e_EventHandlerType eType)
-	{
-		switch (eType)
-		{
-		case LZPL::eEventHandlerType_None:
-			LOG_CHECK_ERROR(FALSE);
-			return "eEventHandlerType_None";
-			break;
-		case LZPL::eEventHandlerType_Connector:
-			return "eEventHandlerType_Connector";
-			break;
-		case LZPL::eEventHandlerType_Listener:
-			return "eEventHandlerType_Listener";
-			break;
-		case LZPL::eEventHandlerType_Socker:
-			return "eEventHandlerType_Socker";
-			break;
-		case LZPL::eEventHandlerType_Max:
-			LOG_CHECK_ERROR(FALSE);
-			return "eEventHandlerType_Max";
-			break;
-		default:
-			LOG_PROCESS_ERROR(FALSE);
-			break;
-		}
+    static const char * LPAPI GetEventHandlerTypeName(e_EventHandlerType eType)
+    {
+        switch(eType)
+        {
+        case LZPL::eEventHandlerType_None:
+            LOG_CHECK_ERROR(FALSE);
+            return "eEventHandlerType_None";
+            break;
+        case LZPL::eEventHandlerType_Connector:
+            return "eEventHandlerType_Connector";
+            break;
+        case LZPL::eEventHandlerType_Listener:
+            return "eEventHandlerType_Listener";
+            break;
+        case LZPL::eEventHandlerType_Socker:
+            return "eEventHandlerType_Socker";
+            break;
+        case LZPL::eEventHandlerType_Max:
+            LOG_CHECK_ERROR(FALSE);
+            return "eEventHandlerType_Max";
+            break;
+        default:
+            LOG_PROCESS_ERROR(FALSE);
+            break;
+        }
 
-	Exit0:
-		return "*** Unknow e_EventHandlerType ***";
-	}
+Exit0:
+        return "*** Unknow e_EventHandlerType ***";
+    }
 };
 
 

@@ -17,45 +17,45 @@ NS_LZPL_BEGIN
 
 
 // Summary;
-//		none
+//      none
 DECLARE void LPAPI lpProfileStart(void);
 
 // Summary;
-//		none
+//      none
 DECLARE void LPAPI lpProfilePoint(LPINT32 nPid, LPINT32 nLine, const char* pcszMsg);
 
 // Summary;
-//		none
+//      none
 DECLARE void LPAPI lpProfileEnd(void);
 
 #ifdef _WIN32
-	#define PROFILE_START()\
-		do\
-		{\
-			lpProfileStart();\
-		}while(0)\
+#define PROFILE_START()\
+     do\
+     {\
+         lpProfileStart();\
+     }while(0)\
 
-	#define PROFILE_POINT(_pid)\
-		do\
-		{\
-			lpProfilePoint(_pid, __LINE__, \
-				"[PROFILE %2d] %10I64u @ function "\
-				__FUNCTION__\
-				"() line %d file \""\
-				__FILE__\
-				"\"");\
-		}while(0)
+#define PROFILE_POINT(_pid)\
+     do\
+     {\
+         lpProfilePoint(_pid, __LINE__, \
+             "[PROFILE %2d] %10I64u @ function "\
+             __FUNCTION__\
+             "() line %d file \""\
+             __FILE__\
+             "\"");\
+     }while(0)
 
-	#define PROFILE_END()\
-		do\
-		{\
-			lpProfileEnd();\
-		}while(0)
+#define PROFILE_END()\
+     do\
+     {\
+         lpProfileEnd();\
+     }while(0)
 
 #else
-	#define PROFILE_START()
-	#define PROFILE_POINT(_point_id)
-	#define PROFILE_END()
+#define PROFILE_START()
+#define PROFILE_POINT(_point_id)
+#define PROFILE_END()
 #endif
 
 

@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: January 15, 2016
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _NAV_MESH_BUILD_H_
@@ -13,51 +13,60 @@
 
 
 // Summary:
-//			原始NavMesh.obj数据加载器，
-//		NavMesh.obj是从Unity3d导出的最终导航可行走数据
+//          原始NavMesh.obj数据加载器，
+//      NavMesh.obj是从Unity3d导出的最终导航可行走数据
 class DECLARE CNavMeshObjLoader
 {
 public:
 
-	CNavMeshObjLoader();
-	~CNavMeshObjLoader();
+    CNavMeshObjLoader();
+    ~CNavMeshObjLoader();
 
-	BOOL Init(void);
-	BOOL UnInit(void);
+    BOOL Init(void);
+    BOOL UnInit(void);
 
-	BOOL Load(const char* pcszFileName);
+    BOOL Load(const char* pcszFileName);
 
-	inline const LPDynamicArray<FLOAT>& GetVertexs() const { return m_oVertexs; }
-	inline const LPDynamicArray<LPINT32>& GetTrianglePoints() const { return m_oTrianglePoints; }
+    inline const LPDynamicArray<FLOAT>& GetVertexs() const
+    {
+        return m_oVertexs;
+    }
+    inline const LPDynamicArray<LPINT32>& GetTrianglePoints() const
+    {
+        return m_oTrianglePoints;
+    }
 
-	inline const char* GetFileName() const { return m_szFileName; }
-
-private:
-
-	BOOL _AddVertex(FLOAT x, FLOAT y, FLOAT z);
-	BOOL _AddTriangle(LPINT32 a, LPINT32 b, LPINT32 c);
-
-	POLYGON_DATA* _FindFirstNotAssignIDInRowList(void);
-	BOOL _FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut LPUINT32& dwNeighborPolyCount);
-	BOOL _SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& nPolyIDGenerator);
-
-	BOOL _DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pToPoly);
-
-	BOOL _TransTriToPoly(void);
-
+    inline const char* GetFileName() const
+    {
+        return m_szFileName;
+    }
 
 private:
 
-	char                    m_szFileName[MAX_PATH];
+    BOOL _AddVertex(FLOAT x, FLOAT y, FLOAT z);
+    BOOL _AddTriangle(LPINT32 a, LPINT32 b, LPINT32 c);
 
-	FLOAT                   m_fScale;
-	LPDynamicArray<FLOAT>   m_oVertexs;                 // NavMesh的顶点（vertex）信息
-	LPDynamicArray<LPINT32>  m_oTrianglePoints;          // NavMesh的所有三角形（triangle）信息
+    POLYGON_DATA* _FindFirstNotAssignIDInRowList(void);
+    BOOL _FindNeighborPolygonInRowList(lpIn POLYGON_DATA* pSrcPoly, lpOut POLYGON_DATA** ppNeighborPoly, lpOut LPUINT32& dwNeighborPolyCount);
+    BOOL _SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& nPolyIDGenerator);
 
-	LST_POLYGON_DATA        m_lstRawPolygonData;
-	typedef std::map<LPINT32, LPINT32> MAP_ID_2_ID;
-	MAP_ID_2_ID             m_mapPolyAlreadyFindNeighbor;
-	LST_LST_POLYGON_DATA    m_lstSepListPolygonData;
+    BOOL _DoPolysMerge(POLYGON_DATA* pFromPoly, POLYGON_DATA* pToPoly);
+
+    BOOL _TransTriToPoly(void);
+
+
+private:
+
+    char                    m_szFileName[MAX_PATH];
+
+    FLOAT                   m_fScale;
+    LPDynamicArray<FLOAT>   m_oVertexs;                 // NavMesh的顶点（vertex）信息
+    LPDynamicArray<LPINT32>  m_oTrianglePoints;          // NavMesh的所有三角形（triangle）信息
+
+    LST_POLYGON_DATA        m_lstRawPolygonData;
+    typedef std::map<LPINT32, LPINT32> MAP_ID_2_ID;
+    MAP_ID_2_ID             m_mapPolyAlreadyFindNeighbor;
+    LST_LST_POLYGON_DATA    m_lstSepListPolygonData;
 };
 
 

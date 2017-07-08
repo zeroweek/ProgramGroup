@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 1, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _BT_ACTION_H_
@@ -17,31 +17,31 @@
 
 enum eBTTargetType
 {
-	btttInvalid = 0,
+    btttInvalid = 0,
 
-	btttType_Self,
+    btttType_Self,
 
-	btttType_Total
+    btttType_Total
 };
 
 enum eBTActionType
 {
-	btatInvalid         = LZPL::btntInvalid,
-	btatSelector        = LZPL::btntSelector,
-	btatSequencer       = LZPL::btntSequencer,
-	btatParallel        = LZPL::btntParallel,
-	btatNot             = LZPL::btntNot,
-	btatDebug           = LZPL::btntDebug,
-	btatRandom          = LZPL::btntRandom,
-	btatRepeat          = LZPL::btntRepeat,
+    btatInvalid         = LZPL::btntInvalid,
+    btatSelector        = LZPL::btntSelector,
+    btatSequencer       = LZPL::btntSequencer,
+    btatParallel        = LZPL::btntParallel,
+    btatNot             = LZPL::btntNot,
+    btatDebug           = LZPL::btntDebug,
+    btatRandom          = LZPL::btntRandom,
+    btatRepeat          = LZPL::btntRepeat,
 
-	btatBegin           = LZPL::btntUserDefine,
-	btatReturnSuccess,
-	btatReturnFail,
+    btatBegin           = LZPL::btntUserDefine,
+    btatReturnSuccess,
+    btatReturnFail,
 
-	btatTestAction,
+    btatTestAction,
 
-	btatEnd
+    btatEnd
 };
 
 

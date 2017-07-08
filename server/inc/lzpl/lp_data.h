@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: Dec 1, 2016
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_DATA_H_
@@ -24,73 +24,79 @@ class DECLARE LPDataInvalid : public ILPData
 {
 public:
 
-	LPDataInvalid(){}
-	~LPDataInvalid(){}
+    LPDataInvalid() {}
+    ~LPDataInvalid() {}
 
-	virtual std::string LPAPI ToString() { return NULL_STR; }
+    virtual std::string LPAPI ToString()
+    {
+        return NULL_STR;
+    }
 
-	virtual E_DataType LPAPI GetType() const { return eDataType_Invalid; }
+    virtual E_DataType LPAPI GetType() const
+    {
+        return eDataType_Invalid;
+    }
 
-	virtual BOOL LPAPI SetInt64(LPINT64 value)
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return FALSE;
-	}
+    virtual BOOL LPAPI SetInt64(LPINT64 value)
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return FALSE;
+    }
 
-	virtual BOOL LPAPI SetFloat(FLOAT value)
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return FALSE;
-	}
+    virtual BOOL LPAPI SetFloat(FLOAT value)
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return FALSE;
+    }
 
-	virtual BOOL LPAPI SetDouble(DOUBLE value)
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return FALSE;
-	}
+    virtual BOOL LPAPI SetDouble(DOUBLE value)
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return FALSE;
+    }
 
-	virtual BOOL LPAPI SetString(const std::string& value)
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return FALSE;
-	}
+    virtual BOOL LPAPI SetString(const std::string& value)
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return FALSE;
+    }
 
 
-	virtual LPINT64 LPAPI GetInt64() const 
-	{ 
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return 0; 
-	}
+    virtual LPINT64 LPAPI GetInt64() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return 0;
+    }
 
-	virtual FLOAT LPAPI GetFloat() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_FLOAT; 
-	}
+    virtual FLOAT LPAPI GetFloat() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_FLOAT;
+    }
 
-	virtual DOUBLE LPAPI GetDouble() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_DOUBLE; 
-	}
+    virtual DOUBLE LPAPI GetDouble() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_DOUBLE;
+    }
 
-	virtual const std::string& LPAPI GetString() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return NULL_STR; 
-	}
+    virtual const std::string& LPAPI GetString() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return NULL_STR;
+    }
 
 private:
 
-	LPINT64                        m_lData;
+    LPINT64                        m_lData;
 };
 
 
@@ -101,47 +107,50 @@ class DECLARE LPDataInt64 : public ILPData
 {
 public:
 
-	LPDataInt64();
-	~LPDataInt64();
+    LPDataInt64();
+    ~LPDataInt64();
 
-	virtual std::string LPAPI ToString();
+    virtual std::string LPAPI ToString();
 
-	virtual E_DataType LPAPI GetType() const { return eDataType_Int64; }
+    virtual E_DataType LPAPI GetType() const
+    {
+        return eDataType_Int64;
+    }
 
-	virtual BOOL LPAPI SetInt64(LPINT64 value);
-	virtual BOOL LPAPI SetFloat(FLOAT value);
-	virtual BOOL LPAPI SetDouble(DOUBLE value);
-	virtual BOOL LPAPI SetString(const std::string& value);
+    virtual BOOL LPAPI SetInt64(LPINT64 value);
+    virtual BOOL LPAPI SetFloat(FLOAT value);
+    virtual BOOL LPAPI SetDouble(DOUBLE value);
+    virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual LPINT64 LPAPI GetInt64() const 
-	{ 
-		return m_lData; 
-	}
+    virtual LPINT64 LPAPI GetInt64() const
+    {
+        return m_lData;
+    }
 
-	virtual FLOAT LPAPI GetFloat() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_FLOAT; 
-	}
+    virtual FLOAT LPAPI GetFloat() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_FLOAT;
+    }
 
-	virtual DOUBLE LPAPI GetDouble() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_DOUBLE; 
-	}
+    virtual DOUBLE LPAPI GetDouble() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_DOUBLE;
+    }
 
-	virtual const std::string& LPAPI GetString() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return NULL_STR; 
-	}
+    virtual const std::string& LPAPI GetString() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return NULL_STR;
+    }
 
 private:
 
-	LPINT64                        m_lData;
+    LPINT64                        m_lData;
 };
 
 
@@ -152,47 +161,50 @@ class DECLARE LPDataFloat : public ILPData
 {
 public:
 
-	LPDataFloat();
-	~LPDataFloat();
+    LPDataFloat();
+    ~LPDataFloat();
 
-	virtual std::string LPAPI ToString();
+    virtual std::string LPAPI ToString();
 
-	virtual E_DataType LPAPI GetType() const { return eDataType_Float; }
+    virtual E_DataType LPAPI GetType() const
+    {
+        return eDataType_Float;
+    }
 
-	virtual BOOL LPAPI SetInt64(LPINT64 value);
-	virtual BOOL LPAPI SetFloat(FLOAT value);
-	virtual BOOL LPAPI SetDouble(DOUBLE value);
-	virtual BOOL LPAPI SetString(const std::string& value);
+    virtual BOOL LPAPI SetInt64(LPINT64 value);
+    virtual BOOL LPAPI SetFloat(FLOAT value);
+    virtual BOOL LPAPI SetDouble(DOUBLE value);
+    virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual LPINT64 LPAPI GetInt64() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return 0; 
-	}
+    virtual LPINT64 LPAPI GetInt64() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return 0;
+    }
 
-	virtual FLOAT LPAPI GetFloat() const 
-	{ 
-		return m_fData; 
-	}
+    virtual FLOAT LPAPI GetFloat() const
+    {
+        return m_fData;
+    }
 
-	virtual DOUBLE LPAPI GetDouble() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_DOUBLE; 
-	}
+    virtual DOUBLE LPAPI GetDouble() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_DOUBLE;
+    }
 
-	virtual const std::string& LPAPI GetString() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return NULL_STR; 
-	}
+    virtual const std::string& LPAPI GetString() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return NULL_STR;
+    }
 
 private:
 
-	FLOAT                         m_fData;
+    FLOAT                         m_fData;
 };
 
 
@@ -203,47 +215,50 @@ class DECLARE LPDataDouble : public ILPData
 {
 public:
 
-	LPDataDouble();
-	~LPDataDouble();
+    LPDataDouble();
+    ~LPDataDouble();
 
-	virtual std::string LPAPI ToString();
+    virtual std::string LPAPI ToString();
 
-	virtual E_DataType LPAPI GetType() const { return eDataType_Double; }
+    virtual E_DataType LPAPI GetType() const
+    {
+        return eDataType_Double;
+    }
 
-	virtual BOOL LPAPI SetInt64(LPINT64 value);
-	virtual BOOL LPAPI SetFloat(FLOAT value);
-	virtual BOOL LPAPI SetDouble(DOUBLE value);
-	virtual BOOL LPAPI SetString(const std::string& value);
+    virtual BOOL LPAPI SetInt64(LPINT64 value);
+    virtual BOOL LPAPI SetFloat(FLOAT value);
+    virtual BOOL LPAPI SetDouble(DOUBLE value);
+    virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual LPINT64 LPAPI GetInt64() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return 0; 
-	}
+    virtual LPINT64 LPAPI GetInt64() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return 0;
+    }
 
-	virtual FLOAT LPAPI GetFloat() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_FLOAT; 
-	}
+    virtual FLOAT LPAPI GetFloat() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_FLOAT;
+    }
 
-	virtual DOUBLE LPAPI GetDouble() const 
-	{ 
-		return m_dData; 
-	}
+    virtual DOUBLE LPAPI GetDouble() const
+    {
+        return m_dData;
+    }
 
-	virtual const std::string& LPAPI GetString() const 
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return NULL_STR; 
-	}
+    virtual const std::string& LPAPI GetString() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return NULL_STR;
+    }
 
 private:
 
-	DOUBLE                        m_dData;
+    DOUBLE                        m_dData;
 };
 
 
@@ -254,44 +269,50 @@ class DECLARE LPDataString : public ILPData
 {
 public:
 
-	LPDataString();
-	~LPDataString();
+    LPDataString();
+    ~LPDataString();
 
-	virtual std::string LPAPI ToString();
+    virtual std::string LPAPI ToString();
 
-	virtual E_DataType LPAPI GetType() const { return eDataType_String; }
+    virtual E_DataType LPAPI GetType() const
+    {
+        return eDataType_String;
+    }
 
-	virtual BOOL LPAPI SetInt64(LPINT64 value);
-	virtual BOOL LPAPI SetFloat(FLOAT value);
-	virtual BOOL LPAPI SetDouble(DOUBLE value);
-	virtual BOOL LPAPI SetString(const std::string& value);
+    virtual BOOL LPAPI SetInt64(LPINT64 value);
+    virtual BOOL LPAPI SetFloat(FLOAT value);
+    virtual BOOL LPAPI SetDouble(DOUBLE value);
+    virtual BOOL LPAPI SetString(const std::string& value);
 
-	virtual LPINT64 LPAPI GetInt64() const
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return 0;
-	}
+    virtual LPINT64 LPAPI GetInt64() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return 0;
+    }
 
-	virtual FLOAT LPAPI GetFloat() const
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_FLOAT;
-	}
+    virtual FLOAT LPAPI GetFloat() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_FLOAT;
+    }
 
-	virtual DOUBLE LPAPI GetDouble() const
-	{
-		LOG_CHECK_ERROR(FALSE);
-		LPASSERT(FALSE);
-		return ZERO_DOUBLE;
-	}
+    virtual DOUBLE LPAPI GetDouble() const
+    {
+        LOG_CHECK_ERROR(FALSE);
+        LPASSERT(FALSE);
+        return ZERO_DOUBLE;
+    }
 
-	virtual const std::string& LPAPI GetString() const { return m_strData; }
+    virtual const std::string& LPAPI GetString() const
+    {
+        return m_strData;
+    }
 
 private:
 
-	std::string                   m_strData;
+    std::string                   m_strData;
 };
 
 

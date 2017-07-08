@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: February 22, 2016
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_SHARE_MEMORY_H_
@@ -22,65 +22,65 @@ NS_LZPL_BEGIN
 
 struct SHARE_MEM_HEADER
 {
-	LPINT32     nFlag;
-	LPUINT64    qwSize;
+    LPINT32     nFlag;
+    LPUINT64    qwSize;
 };
 
 
 
 // Summary:
-//		消息解析类
+//      消息解析类
 class DECLARE LPShareMemory
 {
 public:
 
-	static BOOL IsExisting(const char* pcszName);
+    static BOOL IsExisting(const char* pcszName);
 
 public:
 
-	// Summary:
-	//		无
-	LPShareMemory();
+    // Summary:
+    //      无
+    LPShareMemory();
 
-	// Summary:
-	//		无
-	~LPShareMemory();
+    // Summary:
+    //      无
+    ~LPShareMemory();
 
-	// Summary:
-	//		初始化
-	BOOL LPAPI Init(const char* pcszName, LPUINT64 qwSize);
+    // Summary:
+    //      初始化
+    BOOL LPAPI Init(const char* pcszName, LPUINT64 qwSize);
 
-	// Summary:
-	//		反始化
-	BOOL LPAPI UnInit(void);
+    // Summary:
+    //      反始化
+    BOOL LPAPI UnInit(void);
 
-	// Summary:
-	//		共享内存名字
-	const char* LPAPI Name(void);
+    // Summary:
+    //      共享内存名字
+    const char* LPAPI Name(void);
 
-	// Summary:
-	//		是否是新建的
-	BOOL LPAPI IsNew(void);
+    // Summary:
+    //      是否是新建的
+    BOOL LPAPI IsNew(void);
 
-	// Summary:
-	//		共享内存大小
-	LPUINT64 LPAPI Size(void);
+    // Summary:
+    //      共享内存大小
+    LPUINT64 LPAPI Size(void);
 
-	// Summary:
-	//		共享内存
-	char* LPAPI Mem(void);
+    // Summary:
+    //      共享内存
+    char* LPAPI Mem(void);
 
-	// Summary:
-	//		关联handle
-	HANDLE LPAPI Handle(void);
+    // Summary:
+    //      关联handle
+    HANDLE LPAPI Handle(void);
 
 private:
 
-	char                     m_szName[COMMON_NAME_LEN];
-	BOOL                     m_bNew;
-	LPUINT64                  m_qwSize;
-	char*                    m_pszShareMem;
-	HANDLE                   m_hHandle;
+    char                     m_szName[COMMON_NAME_LEN];
+    BOOL                     m_bNew;
+    LPUINT64                  m_qwSize;
+    char*                    m_pszShareMem;
+    HANDLE                   m_hHandle;
 };
 
 

@@ -3,14 +3,14 @@
 //    date: September 23, 2014
 //    description: 定义一些全局用的宏
 //
-//    preprocessor: 
+//    preprocessor:
 //      _DEBUG：调试C运行库自动定义该宏，非调试C运行库则没有定义。
-//      WIN32/WIN64: 
-//		  WIN32，Windows.h中有定义或是在预处理器自己定义；
-//		  WIN64，在预处理器自己定义；
-//      _WIN32/_WIN64: 
-//		  _WIN32，由编译器定义，x86和x64的程序都会有定义；（由此可以判断系统）
-//		  _WIN64，由编译器定义，x64的程序才有定义；（由此可以判断WINDOWS位数）
+//      WIN32/WIN64:
+//        WIN32，Windows.h中有定义或是在预处理器自己定义；
+//        WIN64，在预处理器自己定义；
+//      _WIN32/_WIN64:
+//        _WIN32，由编译器定义，x86和x64的程序都会有定义；（由此可以判断系统）
+//        _WIN64，由编译器定义，x64的程序才有定义；（由此可以判断WINDOWS位数）
 //
 //****************************************************************************/
 #ifndef _LP_DEF_H_
@@ -43,12 +43,12 @@
 
 
 
-//命名空间宏定义: LZPL 
+//命名空间宏定义: LZPL
 #ifndef NS_LZPL_BEGIN
-#   define NS_LZPL_BEGIN                                   namespace LZPL { 
+#   define NS_LZPL_BEGIN                                   namespace LZPL {
 #endif
 
-#ifndef NS_LZPL_END      
+#ifndef NS_LZPL_END
 #   define NS_LZPL_END                                     }
 #endif
 
@@ -57,31 +57,39 @@
 
 //LPAPI宏定义
 #if defined _WIN32
-#   define LPAPI				                	
-//#   define LPAPI				                           __stdcall	
+#   define LPAPI
+//#   define LPAPI                                         __stdcall
 #else
-#   define LPAPI	
+#   define LPAPI
 #endif
 
 //DECLARE宏定义
 #if defined _WIN32
-#   if defined DLL_IMPORT 
+#   if defined DLL_IMPORT
 #       define DECLARE
 #   elif defined DLL_EXPORT
-#       define DECLARE			                           __declspec(dllexport)
+#       define DECLARE                                     __declspec(dllexport)
 #   else
-#       define DECLARE			      
+#       define DECLARE
 #   endif
 #else
-#   define DECLARE   
+#   define DECLARE
 #endif
 
 #ifndef TRUE
 #   define TRUE                                            1
 #endif // !TRUE
-#ifndef FALSE 
+#ifndef FALSE
 #   define FALSE                                           0
 #endif // !FALSE
+
+#if __cplusplus >= 201103L || defined(_WIN32)
+#   define lp_shared_ptr std::shared_ptr
+#   define lp_make_shared std::make_shared
+#else
+#   define lp_shared_ptr boost::shared_ptr
+#   define lp_make_shared boost::make_shared
+#endif
 
 //函数传递方向标识符
 #define lpIn
@@ -96,14 +104,14 @@
 #endif
 
 #ifdef _WIN32
-#   define __TRY__                                         __try 
+#   define __TRY__                                         __try
 #   define __EXCEPT__                                      __except (lpDUMPExceptionFilter(GetExceptionInformation()))
 #else
 #   define __TRY__                                         try
 #   define __EXCEPT__                                      catch(...)
 #endif
 
-#define SAFE_DELETE(p)                                     if(NULL!=p){delete p; p=NULL;}  
+#define SAFE_DELETE(p)                                     if(NULL!=p){delete p; p=NULL;}
 #define SAFE_DELETE_SZ(p)                                  if(NULL!=p){delete [] p; p=NULL;}
 #define SAFE_FREE(p)                                       if(NULL!=p){free(p);p=NULL;}
 
@@ -125,7 +133,7 @@
 #ifndef MAX_FILE_NAME
 #   define MAX_FILE_NAME                                   (256)
 #endif
-#ifndef _WIN32	
+#ifndef _WIN32
 #   ifndef MAX_PATH
 #       define MAX_PATH                                    PATH_MAX
 #   endif
@@ -154,11 +162,11 @@
 #define DELAY_CLOSE_SOCKET_TIME                            (3000)               //socker关闭连接延迟时间，单位毫秒/ms
 #define DELAY_RELEASE_SOCKER_TIME                          (1500)               //socker释放延迟时间，单位毫秒/ms
 #define INVALID_SOCKER_ID                                  (0)                  //无效的socker id，每一个连接socker都会分配一个id
-#define INFINITE_VALUE                                     (0xffffffff)	        //无穷值
+#define INFINITE_VALUE                                     (0xffffffff)         //无穷值
 
 #ifndef _WIN32
 #   define INVALID_SOCKET                                  (SOCKET)(-1)
-#	define INVALID_HANDLE_VALUE                            (HANDLE)(-1)
+#   define INVALID_HANDLE_VALUE                            (HANDLE)(-1)
 #endif
 
 #if defined _WIN32
@@ -180,8 +188,8 @@
 
 //错误码函数定义
 #ifndef _WIN32
-#	define GetLastError                                    lpGetErrno
-#	define WSAGetLastError                                 GetLastError
+#   define GetLastError                                    lpGetErrno
+#   define WSAGetLastError                                 GetLastError
 #endif
 
 

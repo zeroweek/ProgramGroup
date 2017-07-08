@@ -17,26 +17,26 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		socket选项信息结构
+//      socket选项信息结构
 struct SOCK_OPTION
 {
-	LPINT32        nLevel;
-	LPINT32        nOptName;
-	LPINT32        nOptLen;
-	const char*  pszOptValue;
+    LPINT32        nLevel;
+    LPINT32        nOptName;
+    LPINT32        nOptLen;
+    const char*  pszOptValue;
 };
 
 
 
 // Summary:
-//		网络选项接口类
+//      网络选项接口类
 class DECLARE ILPNetOption
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPNetOption(){}
+    // Summary:
+    //      无
+    virtual ~ILPNetOption() {}
 };
 
 

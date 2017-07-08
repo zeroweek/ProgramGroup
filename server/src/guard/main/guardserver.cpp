@@ -2,100 +2,132 @@
 #include "lp_processerror.h"
 
 
+#ifdef _WIN32
+
+#pragma comment(lib, "sapi.lib")
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "Wldap32.lib")
+#pragma comment(lib, "crypt32.lib")
+#pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "dbghelp.lib")
+
+#   ifdef _DEBUG
+
+#   pragma comment(lib, "zlibstat64d.lib")
+#   pragma comment(lib, "lzpl64d.lib")
+#   pragma comment(lib, "message64d.lib")
+#   pragma comment(lib, "luastat64d.lib")
+#   pragma comment(lib, "toluapp64d.lib")
+#   pragma comment(lib, "common64d.lib")
+
+#   else
+
+#   pragma comment(lib, "zlibstat64.lib")
+#   pragma comment(lib, "lzpl64.lib")
+#   pragma comment(lib, "message64.lib")
+#   pragma comment(lib, "luastat64.lib")
+#   pragma comment(lib, "toluapp64.lib")
+#   pragma comment(lib, "common64.lib")
+
+#   endif
+
+#endif
+
+
 
 SINGLETON_IMPLEMENT(CGuardServer)
 
 CGuardServer::CGuardServer()
 {
-	m_pNet          = nullptr;
-	m_dwServerState = eServerState_Invalid;
+    m_pNet          = nullptr;
+    m_dwServerState = eServerState_Invalid;
 }
 
 CGuardServer::~CGuardServer()
 {
-	UnInit();
+    UnInit();
 }
 
 BOOL LPAPI CGuardServer::Init(void)
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	LOG_PROCESS_ERROR(FALSE);
+    LOG_PROCESS_ERROR(FALSE);
 
-	return TRUE;
+    return TRUE;
 
 Exit0:
 
-	nResult = UnInit();
-	LOG_CHECK_ERROR(nResult);
+    nResult = UnInit();
+    LOG_CHECK_ERROR(nResult);
 
-	return FALSE;
+    return FALSE;
 }
 
 BOOL LPAPI CGuardServer::UnInit(void)
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	SetServerState(eServerState_UnIniting);
+    SetServerState(eServerState_UnIniting);
 
-	//删除释放net对象
-	ILPNet::DeleteNetModule(m_pNet);
+    //删除释放net对象
+    ILPNet::DeleteNetModule(m_pNet);
 
-	SetServerState(eServerState_UnInited);
+    SetServerState(eServerState_UnInited);
 
-	return TRUE;
+    return TRUE;
 }
 
 BOOL LPAPI CGuardServer::MainLoop(void)
 {
-	lpSleep(1);
+    lpSleep(1);
 
-	return TRUE;
+    return TRUE;
 }
 
 LPUINT32 LPAPI CGuardServer::GetServerState(void)
 {
-	return m_dwServerState;
+    return m_dwServerState;
 }
 
 void CGuardServer::SetServerState(LPUINT32 dwServerState)
 {
-	m_dwServerState = dwServerState;
+    m_dwServerState = dwServerState;
 }
 
 void CGuardServer::Close(void)
 {
-	SetServerState(eServerState_Closed);
+    SetServerState(eServerState_Closed);
 }
 
 
 
 int main(int argc, char* argv[])
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	RedefinedConsole();
+    RedefinedConsole();
 
-	nResult = CGuardServer::Instance().Init();
-	LOG_PROCESS_ERROR(nResult);
+    nResult = CGuardServer::Instance().Init();
+    LOG_PROCESS_ERROR(nResult);
 
-	LPPRINTF("guardserver start success !\n");
-	IMP("guardserver start success !");
+    LPPRINTF("guardserver start success !\n");
+    IMP("guardserver start success !");
 
-	while (CGuardServer::Instance().GetServerState() != eServerState_Closing)
-	{
-		nResult = CGuardServer::Instance().MainLoop();
-		LOG_CHECK_ERROR(nResult);
-	}
+    while(CGuardServer::Instance().GetServerState() != eServerState_Closing)
+    {
+        nResult = CGuardServer::Instance().MainLoop();
+        LOG_CHECK_ERROR(nResult);
+    }
 
-	CGuardServer::Instance().Close();
+    CGuardServer::Instance().Close();
 
 Exit0:
 
-	CGuardServer::Instance().UnInit();
+    CGuardServer::Instance().UnInit();
 
-	LPPRINTF("\nEnter any key to exit !\n");
-	getchar();
+    LPPRINTF("\nEnter any key to exit !\n");
+    getchar();
 
-	return 0;
+    return 0;
 }

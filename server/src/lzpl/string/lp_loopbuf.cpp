@@ -10,436 +10,436 @@ NS_LZPL_BEGIN
 
 LPLoopBuf::LPLoopBuf()
 {
-	m_pBuf            = NULL;
-	m_pRead           = NULL;
-	m_pWrite          = NULL;
-	m_dwDataLen       = 0;
-	m_dwBufSize       = 0;
-	m_dwRefCount      = 0;
-	m_dwPoolId        = BUF_INVALID_POOL_ID;
+    m_pBuf            = NULL;
+    m_pRead           = NULL;
+    m_pWrite          = NULL;
+    m_dwDataLen       = 0;
+    m_dwBufSize       = 0;
+    m_dwRefCount      = 0;
+    m_dwPoolId        = BUF_INVALID_POOL_ID;
 }
 
 LPLoopBuf::~LPLoopBuf()
 {
-	UnInit();
+    UnInit();
 }
 
 BOOL LPAPI LPLoopBuf::Init(LPUINT32 dwSize, LPUINT32 dwPoolId)
 {
-	m_dwBufSize       = dwSize;
-	m_dwPoolId        = dwPoolId;
+    m_dwBufSize       = dwSize;
+    m_dwPoolId        = dwPoolId;
 
-	LOG_PROCESS_ERROR(NULL == m_pBuf);
-	m_pBuf = new char[m_dwBufSize];
-	LOG_PROCESS_ERROR(m_pBuf);
+    LOG_PROCESS_ERROR(NULL == m_pBuf);
+    m_pBuf = new char[m_dwBufSize];
+    LOG_PROCESS_ERROR(m_pBuf);
 
-	m_pRead           = m_pBuf;
-	m_pWrite          = m_pBuf;
+    m_pRead           = m_pBuf;
+    m_pWrite          = m_pBuf;
 
-	m_dwDataLen       = 0;
-	m_dwRefCount      = 0;
+    m_dwDataLen       = 0;
+    m_dwRefCount      = 0;
 
-	return TRUE;
+    return TRUE;
 Exit0:
 
-	UnInit();
+    UnInit();
 
-	return FALSE;
+    return FALSE;
 }
 
 BOOL LPAPI LPLoopBuf::UnInit()
 {
-	SAFE_DELETE(m_pBuf);
+    SAFE_DELETE(m_pBuf);
 
-	m_pRead = NULL;
-	m_pWrite = NULL;
-	m_dwDataLen = 0;
-	m_dwBufSize = 0;
-	m_dwRefCount = 0;
-	m_dwPoolId = BUF_INVALID_POOL_ID;
+    m_pRead = NULL;
+    m_pWrite = NULL;
+    m_dwDataLen = 0;
+    m_dwBufSize = 0;
+    m_dwRefCount = 0;
+    m_dwPoolId = BUF_INVALID_POOL_ID;
 
-	return TRUE;
+    return TRUE;
 }
 
 void LPAPI LPLoopBuf::Reset()
 {
-	m_pRead = m_pBuf;
-	m_pWrite = m_pBuf;
+    m_pRead = m_pBuf;
+    m_pWrite = m_pBuf;
 
-	m_dwDataLen = 0;
-	m_dwRefCount = 0;
+    m_dwDataLen = 0;
+    m_dwRefCount = 0;
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetPoolId()
 {
-	return m_dwPoolId;
+    return m_dwPoolId;
 }
 
 LPUINT32 LPAPI LPLoopBuf::QueryRef()
 {
-	return m_dwRefCount;
+    return m_dwRefCount;
 }
 
 void LPAPI LPLoopBuf::AddRef()
 {
-	++m_dwRefCount;
+    ++m_dwRefCount;
 }
 
 void LPAPI LPLoopBuf::DeductRef()
 {
-	LOG_CHECK_ERROR(m_dwRefCount > 0);
-	if (m_dwRefCount > 0)
-	{
-		--m_dwRefCount;
-	}
+    LOG_CHECK_ERROR(m_dwRefCount > 0);
+    if(m_dwRefCount > 0)
+    {
+        --m_dwRefCount;
+    }
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetTotalReadableLen()
 {
-	return m_dwDataLen;
+    return m_dwDataLen;
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetOnceReadableLen()
 {
-	//线性可读大小
-	LPUINT32 dwLineReadableSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
-	LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
+    //线性可读大小
+    LPUINT32 dwLineReadableSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
+    LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
 
-	if (dwLineReadableSize > dwTotalReadableLen)
-	{
-		dwLineReadableSize = dwTotalReadableLen;
-	}
+    if(dwLineReadableSize > dwTotalReadableLen)
+    {
+        dwLineReadableSize = dwTotalReadableLen;
+    }
 
-	return dwLineReadableSize;
+    return dwLineReadableSize;
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetTotalWritableLen()
 {
-	return m_dwBufSize - m_dwDataLen;
+    return m_dwBufSize - m_dwDataLen;
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetOnceWritableLen()
 {
-	//线性可写大小
-	LPUINT32 dwLineWritableSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
-	LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
+    //线性可写大小
+    LPUINT32 dwLineWritableSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
+    LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
 
-	if (dwLineWritableSize > dwTotalWritableLen)
-	{
-		dwLineWritableSize = dwTotalWritableLen;
-	}
+    if(dwLineWritableSize > dwTotalWritableLen)
+    {
+        dwLineWritableSize = dwTotalWritableLen;
+    }
 
-	return dwLineWritableSize;
+    return dwLineWritableSize;
 }
 
 BOOL LPAPI LPLoopBuf::Read(char* pDst, LPUINT32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate)
 {
-	LPUINT32 dwLineSize = 0;
+    LPUINT32 dwLineSize = 0;
 
-	LOG_PROCESS_ERROR(pDst);
-	LOG_PROCESS_ERROR(GetTotalReadableLen() >= dwReadLen);
+    LOG_PROCESS_ERROR(pDst);
+    LOG_PROCESS_ERROR(GetTotalReadableLen() >= dwReadLen);
 
-	dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
-	if (dwLineSize >= dwReadLen)
-	{
-		memcpy(pDst, m_pRead, dwReadLen);
-		if (bDoRead)
-		{
-			m_pRead = m_pRead + dwReadLen;
-		}
-	}
-	else
-	{
-		memcpy(pDst, m_pRead, dwLineSize);
-		memcpy(pDst + dwLineSize, m_pBuf, dwReadLen - dwLineSize);
-		if (bDoRead)
-		{
-			m_pRead = m_pBuf + dwReadLen - dwLineSize;
-		}
-	}
+    dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
+    if(dwLineSize >= dwReadLen)
+    {
+        memcpy(pDst, m_pRead, dwReadLen);
+        if(bDoRead)
+        {
+            m_pRead = m_pRead + dwReadLen;
+        }
+    }
+    else
+    {
+        memcpy(pDst, m_pRead, dwLineSize);
+        memcpy(pDst + dwLineSize, m_pBuf, dwReadLen - dwLineSize);
+        if(bDoRead)
+        {
+            m_pRead = m_pBuf + dwReadLen - dwLineSize;
+        }
+    }
 
-	if (bNullTerminate)
-	{
-		*(pDst + dwReadLen) = '\0';
-	}
+    if(bNullTerminate)
+    {
+        *(pDst + dwReadLen) = '\0';
+    }
 
-	//原子类型
-	if (bDoRead)
-	{
-		m_dwDataLen -= dwReadLen;
-	}
+    //原子类型
+    if(bDoRead)
+    {
+        m_dwDataLen -= dwReadLen;
+    }
 
-	return TRUE;
+    return TRUE;
 Exit0:
-	return FALSE;
+    return FALSE;
 }
 
 BOOL LPAPI LPLoopBuf::Write(const char* pSrc, LPUINT32 dwWriteLen)
 {
-	LPUINT32 dwLineSize = 0;
+    LPUINT32 dwLineSize = 0;
 
-	LOG_PROCESS_ERROR(pSrc);
-	LOG_PROCESS_ERROR(GetTotalWritableLen() >= dwWriteLen);
+    LOG_PROCESS_ERROR(pSrc);
+    LOG_PROCESS_ERROR(GetTotalWritableLen() >= dwWriteLen);
 
-	dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
-	if (dwLineSize >= dwWriteLen)
-	{
-		memcpy(m_pWrite, pSrc, dwWriteLen);
-		m_pWrite = m_pWrite + dwWriteLen;
-	}
-	else
-	{
-		memcpy(m_pWrite, pSrc, dwLineSize);
-		memcpy(m_pBuf, pSrc + dwLineSize, dwWriteLen - dwLineSize);
-		m_pWrite = m_pBuf + dwWriteLen - dwLineSize;
-	}
+    dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
+    if(dwLineSize >= dwWriteLen)
+    {
+        memcpy(m_pWrite, pSrc, dwWriteLen);
+        m_pWrite = m_pWrite + dwWriteLen;
+    }
+    else
+    {
+        memcpy(m_pWrite, pSrc, dwLineSize);
+        memcpy(m_pBuf, pSrc + dwLineSize, dwWriteLen - dwLineSize);
+        m_pWrite = m_pBuf + dwWriteLen - dwLineSize;
+    }
 
-	//原子类型
-	m_dwDataLen += dwWriteLen;
+    //原子类型
+    m_dwDataLen += dwWriteLen;
 
-	return TRUE;
+    return TRUE;
 Exit0:
-	return FALSE;
+    return FALSE;
 }
 
 char* LPAPI LPLoopBuf::ReadPtr()
 {
-	return m_pRead;
+    return m_pRead;
 }
 
 char* LPAPI LPLoopBuf::WritePtr()
 {
-	return m_pWrite;
+    return m_pWrite;
 }
 
 void LPAPI LPLoopBuf::FinishRead(LPUINT32 dwReadLen)
 {
-	LPUINT32 dwLineSize = 0;
-	LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
+    LPUINT32 dwLineSize = 0;
+    LPUINT32 dwTotalReadableLen = GetTotalReadableLen();
 
-	LOG_CHECK_ERROR(dwReadLen <= dwTotalReadableLen);
+    LOG_CHECK_ERROR(dwReadLen <= dwTotalReadableLen);
 
-	if (dwReadLen > dwTotalReadableLen)
-	{
-		dwReadLen = dwTotalReadableLen;
-	}
+    if(dwReadLen > dwTotalReadableLen)
+    {
+        dwReadLen = dwTotalReadableLen;
+    }
 
-	dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
-	if (dwLineSize >= dwReadLen)
-	{
-		m_pRead = m_pRead + dwReadLen;
-	}
-	else
-	{
-		m_pRead = m_pBuf + dwReadLen - dwLineSize;
-	}
-	
-	if (m_dwBufSize == m_pRead - m_pBuf)
-	{
-		m_pRead = m_pBuf;
-	}
+    dwLineSize = m_dwBufSize - (LPUINT32)(m_pRead - m_pBuf);
+    if(dwLineSize >= dwReadLen)
+    {
+        m_pRead = m_pRead + dwReadLen;
+    }
+    else
+    {
+        m_pRead = m_pBuf + dwReadLen - dwLineSize;
+    }
 
-	//原子类型
-	m_dwDataLen -= dwReadLen;
+    if(m_dwBufSize == m_pRead - m_pBuf)
+    {
+        m_pRead = m_pBuf;
+    }
+
+    //原子类型
+    m_dwDataLen -= dwReadLen;
 }
 
 void LPAPI LPLoopBuf::FinishWrite(LPUINT32 dwWriteLen)
 {
-	LPUINT32 dwLineSize = 0;
-	LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
+    LPUINT32 dwLineSize = 0;
+    LPUINT32 dwTotalWritableLen = GetTotalWritableLen();
 
-	LOG_CHECK_ERROR(dwWriteLen <= dwTotalWritableLen);
+    LOG_CHECK_ERROR(dwWriteLen <= dwTotalWritableLen);
 
-	if (dwWriteLen > dwTotalWritableLen)
-	{
-		dwWriteLen = dwTotalWritableLen;
-	}
+    if(dwWriteLen > dwTotalWritableLen)
+    {
+        dwWriteLen = dwTotalWritableLen;
+    }
 
-	dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
-	if (dwLineSize >= dwWriteLen)
-	{
-		m_pWrite = m_pWrite + dwWriteLen;
-	}
-	else
-	{
-		m_pWrite = m_pBuf + dwWriteLen - dwLineSize;
-	}
+    dwLineSize = m_dwBufSize - (LPUINT32)(m_pWrite - m_pBuf);
+    if(dwLineSize >= dwWriteLen)
+    {
+        m_pWrite = m_pWrite + dwWriteLen;
+    }
+    else
+    {
+        m_pWrite = m_pBuf + dwWriteLen - dwLineSize;
+    }
 
-	//原子类型
-	m_dwDataLen += dwWriteLen;
+    //原子类型
+    m_dwDataLen += dwWriteLen;
 }
 
 LPLoopBufPool::LPLoopBufPool()
 {
-	m_bUsePool      = FALSE;
-	m_dwSizeBuf     = 0;
-	dwPoolInitCount = 0;
-	m_dwPoolId      = BUF_INVALID_POOL_ID;
+    m_bUsePool      = FALSE;
+    m_dwSizeBuf     = 0;
+    dwPoolInitCount = 0;
+    m_dwPoolId      = BUF_INVALID_POOL_ID;
 
-	m_oFreeBufList.clear();
-	m_oBufSet.clear();
+    m_oFreeBufList.clear();
+    m_oBufSet.clear();
 }
 
 LPLoopBufPool::~LPLoopBufPool()
 {
-	UnInit();
+    UnInit();
 }
 
 BOOL LPAPI LPLoopBufPool::_PreBatchCreate(LPUINT32 dwBatchCount)
 {
-	LPINT32 nResult = 0;
-	LPLoopBuf* pLoopBuf = NULL;
+    LPINT32 nResult = 0;
+    LPLoopBuf* pLoopBuf = NULL;
 
-	PROCESS_SUCCESS(!m_bUsePool);
+    PROCESS_SUCCESS(!m_bUsePool);
 
-	for (LPUINT32 i = 0; i < dwBatchCount; ++i)
-	{
-		pLoopBuf = new LPLoopBuf();
-		LOG_PROCESS_ERROR(pLoopBuf);
+    for(LPUINT32 i = 0; i < dwBatchCount; ++i)
+    {
+        pLoopBuf = new LPLoopBuf();
+        LOG_PROCESS_ERROR(pLoopBuf);
 
-		nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
-		LOG_PROCESS_ERROR(nResult);
+        nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
+        LOG_PROCESS_ERROR(nResult);
 
-		m_oBufSet.insert(pLoopBuf);
-		m_oFreeBufList.push_back(pLoopBuf);
-	}
+        m_oBufSet.insert(pLoopBuf);
+        m_oFreeBufList.push_back(pLoopBuf);
+    }
 
 Exit1:
-	return TRUE;
+    return TRUE;
 Exit0:
-	return FALSE;
+    return FALSE;
 }
 
 BOOL LPAPI LPLoopBufPool::Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount)
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	m_dwPoolId = CreatePoolId();
-	m_dwSizeBuf = dwBufSize;
-	m_bUsePool = bUsePool;
-	dwPoolInitCount = dwPoolInitCount;
+    m_dwPoolId = CreatePoolId();
+    m_dwSizeBuf = dwBufSize;
+    m_bUsePool = bUsePool;
+    dwPoolInitCount = dwPoolInitCount;
 
-	nResult = _PreBatchCreate(dwPoolInitCount);
-	LOG_PROCESS_ERROR(nResult);
+    nResult = _PreBatchCreate(dwPoolInitCount);
+    LOG_PROCESS_ERROR(nResult);
 
-	return TRUE;
+    return TRUE;
 Exit0:
 
-	UnInit();
-	return FALSE;
+    UnInit();
+    return FALSE;
 }
 
 BOOL LPAPI LPLoopBufPool::UnInit()
 {
-	LPSetBuf::iterator it;
-	LPLoopBuf* pLoopBuf = NULL;
+    LPSetBuf::iterator it;
+    LPLoopBuf* pLoopBuf = NULL;
 
-	PROCESS_SUCCESS(!m_bUsePool);
+    PROCESS_SUCCESS(!m_bUsePool);
 
-	it = m_oBufSet.begin();
-	for (; it != m_oBufSet.end(); ++it)
-	{
-		pLoopBuf = (*it);
-		LOG_CHECK_ERROR(pLoopBuf);
+    it = m_oBufSet.begin();
+    for(; it != m_oBufSet.end(); ++it)
+    {
+        pLoopBuf = (*it);
+        LOG_CHECK_ERROR(pLoopBuf);
 
-		SAFE_DELETE(pLoopBuf);
-	}
-	m_oBufSet.clear();
-	m_oFreeBufList.clear();
+        SAFE_DELETE(pLoopBuf);
+    }
+    m_oBufSet.clear();
+    m_oFreeBufList.clear();
 
 Exit1:
-	return TRUE;
+    return TRUE;
 }
 
 LPUINT32 LPAPI LPLoopBufPool::GetBufSize()
 {
-	return m_dwSizeBuf;
+    return m_dwSizeBuf;
 }
 
 LPLoopBuf* LPAPI LPLoopBufPool::Create()
 {
-	LPINT32 nResult = 0;
-	LPLoopBuf* pLoopBuf = NULL;
+    LPINT32 nResult = 0;
+    LPLoopBuf* pLoopBuf = NULL;
 
-	if (m_bUsePool)
-	{
-		if (!m_oFreeBufList.empty())
-		{
-			pLoopBuf = m_oFreeBufList.front();
-			m_oFreeBufList.pop_front();
-			LOG_PROCESS_ERROR(pLoopBuf);
-		}
-		else
-		{
-			//每次创建10分之一初始化大小的个数
-			nResult = _PreBatchCreate(dwPoolInitCount/10);
-			LOG_PROCESS_ERROR(nResult);
-			LOG_PROCESS_ERROR(!m_oFreeBufList.empty());
+    if(m_bUsePool)
+    {
+        if(!m_oFreeBufList.empty())
+        {
+            pLoopBuf = m_oFreeBufList.front();
+            m_oFreeBufList.pop_front();
+            LOG_PROCESS_ERROR(pLoopBuf);
+        }
+        else
+        {
+            //每次创建10分之一初始化大小的个数
+            nResult = _PreBatchCreate(dwPoolInitCount / 10);
+            LOG_PROCESS_ERROR(nResult);
+            LOG_PROCESS_ERROR(!m_oFreeBufList.empty());
 
-			pLoopBuf = m_oFreeBufList.front();
-			m_oFreeBufList.pop_front();
-			LOG_PROCESS_ERROR(pLoopBuf);
-		}
-	}
-	else
-	{
-		pLoopBuf = new LPLoopBuf();
-		LOG_PROCESS_ERROR(pLoopBuf);
-		nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
-		LOG_PROCESS_ERROR(nResult);
-	}
+            pLoopBuf = m_oFreeBufList.front();
+            m_oFreeBufList.pop_front();
+            LOG_PROCESS_ERROR(pLoopBuf);
+        }
+    }
+    else
+    {
+        pLoopBuf = new LPLoopBuf();
+        LOG_PROCESS_ERROR(pLoopBuf);
+        nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
+        LOG_PROCESS_ERROR(nResult);
+    }
 
-	pLoopBuf->Reset();
-	if (m_bUsePool) pLoopBuf->AddRef();
+    pLoopBuf->Reset();
+    if(m_bUsePool) pLoopBuf->AddRef();
 
-	return pLoopBuf;
+    return pLoopBuf;
 Exit0:
 
-	if (!m_bUsePool)
-	{
-		SAFE_DELETE(pLoopBuf);
-	}
+    if(!m_bUsePool)
+    {
+        SAFE_DELETE(pLoopBuf);
+    }
 
-	return NULL;
+    return NULL;
 }
 
 void LPAPI LPLoopBufPool::Release(LPLoopBuf* &pLoopBuf)
 {
-	LOG_PROCESS_ERROR(pLoopBuf);
+    LOG_PROCESS_ERROR(pLoopBuf);
 
-	if (m_bUsePool)
-	{
-		//判断是否重复释放
-		LOG_PROCESS_ERROR(0 != pLoopBuf->QueryRef());
+    if(m_bUsePool)
+    {
+        //判断是否重复释放
+        LOG_PROCESS_ERROR(0 != pLoopBuf->QueryRef());
 
-		//判断是否由本池创建的
-		LOG_PROCESS_ERROR(m_dwPoolId == pLoopBuf->GetPoolId());
+        //判断是否由本池创建的
+        LOG_PROCESS_ERROR(m_dwPoolId == pLoopBuf->GetPoolId());
 
-		pLoopBuf->DeductRef();
-		m_oFreeBufList.push_back(pLoopBuf);
-		pLoopBuf = NULL;
-	}
-	else
-	{
-		SAFE_DELETE(pLoopBuf);
-	}
+        pLoopBuf->DeductRef();
+        m_oFreeBufList.push_back(pLoopBuf);
+        pLoopBuf = NULL;
+    }
+    else
+    {
+        SAFE_DELETE(pLoopBuf);
+    }
 
 Exit0:
-	return;
+    return;
 }
 
 LPUINT32 LPAPI LPLoopBufPool::CreatePoolId()
 {
-	LPUINT32 dwId = 0;
+    LPUINT32 dwId = 0;
 
-	LOG_PROCESS_ERROR(m_poLock);
+    LOG_PROCESS_ERROR(m_poLock);
 
-	m_poLock->Lock();
-	dwId = ++m_dwBaseId;
-	m_poLock->UnLock();
+    m_poLock->Lock();
+    dwId = ++m_dwBaseId;
+    m_poLock->UnLock();
 
 Exit0:
-	return dwId;
+    return dwId;
 }
 
 LPLock* LPLoopBufPool::m_poLock = new LPLock();

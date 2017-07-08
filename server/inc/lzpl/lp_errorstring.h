@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: Jan 7, 2017
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_ERROR_STRING_H_
@@ -19,17 +19,17 @@ NS_LZPL_BEGIN
 //   ´íÎóstringÃ¶¾Ù
 enum e_ErrorString
 {
-	eErrorString_Unknow = -1,
-	eErrorString_Fail = 0,
-	eErrorString_Success = 1,
-	eErrorString_Socket_AcceptFail = 2,
-	eErrorString_Socket_ConnectFail = 3,
-	eErrorString_Socket_SendBufOverFlow = 4,
-	eErrorString_Socket_PostRecvFail = 5,
-	eErrorString_Socket_PostSendFail = 6,
-	eErrorString_Socket_ReactorErrorEvent = 7,
-	eErrorString_Socket_RecvError = 8,
-	eErrorString_Total
+    eErrorString_Unknow = -1,
+    eErrorString_Fail = 0,
+    eErrorString_Success = 1,
+    eErrorString_Socket_AcceptFail = 2,
+    eErrorString_Socket_ConnectFail = 3,
+    eErrorString_Socket_SendBufOverFlow = 4,
+    eErrorString_Socket_PostRecvFail = 5,
+    eErrorString_Socket_PostSendFail = 6,
+    eErrorString_Socket_ReactorErrorEvent = 7,
+    eErrorString_Socket_RecvError = 8,
+    eErrorString_Total
 };
 
 

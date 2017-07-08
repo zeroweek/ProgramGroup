@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: October 29, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_T2G_MESSAGE_H_
@@ -19,22 +19,22 @@ NS_INTERNAL_MESSAGE_BEGIN
 
 enum T2G_MESSAGE_ID
 {
-	t2g_begin = t2g_message_begin,
+    t2g_begin = t2g_message_begin,
 
-	t2g_register_ack = t2g_begin,
+    t2g_register_ack = t2g_begin,
 
 
-	t2g_end = t2g_message_end
+    t2g_end = t2g_message_end
 };
 
 
 struct DECLARE T2G_REGISTER_ACK : public INTERNAL_MESSAGE_HEADER
 {
-	LPUINT8     byValue;
-	LPUINT16    wValue;
-	LPUINT32    dwValue;
-	LPUINT64    qwValue;
-	char       szValue[MAX_PATH];
+    LPUINT8     byValue;
+    LPUINT16    wValue;
+    LPUINT32    dwValue;
+    LPUINT64    qwValue;
+    char       szValue[MAX_PATH];
 };
 
 

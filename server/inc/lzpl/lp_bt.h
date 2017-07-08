@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: November 12, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_BT_H_
@@ -27,32 +27,32 @@ NS_LZPL_BEGIN
 
 enum eBTReturnValue
 {
-	btrvError = -1,
+    btrvError = -1,
 
-	btrvFail,
-	btrvSuccess,
-	btrvRunning,
+    btrvFail,
+    btrvSuccess,
+    btrvRunning,
 
-	btrvTotal
+    btrvTotal
 };
 
 
 
 enum eBTNodeType
 {
-	btntInvalid = 0,
+    btntInvalid = 0,
 
-	btntSelector,
-	btntSequencer,
-	btntParallel,
-	btntNot,
-	btntDebug,
-	btntRandom,
-	btntRepeat,
+    btntSelector,
+    btntSequencer,
+    btntParallel,
+    btntNot,
+    btntDebug,
+    btntRandom,
+    btntRepeat,
 
-	btntUserDefine,
+    btntUserDefine,
 
-	btntTotal = 1024
+    btntTotal = 1024
 };
 
 // tolua_end
@@ -61,43 +61,43 @@ enum eBTNodeType
 
 struct BT_NODE
 {
-	LPINT16            type;
-	LPINT16            childCount;
-	BT_NODE*          pChild;
-	BT_NODE*          pSibling;
+    LPINT16            type;
+    LPINT16            childCount;
+    BT_NODE*          pChild;
+    BT_NODE*          pSibling;
 
-	LPINT32            params[BT_MAX_PARAM];
+    LPINT32            params[BT_MAX_PARAM];
 
-	union
-	{
-		LPINT32        flag;
-		struct
-		{
-			unsigned     luaParamMask    : 8;
-			unsigned     repeatCounter   : 8;
-			unsigned     nodeTag         : 16;
-		};
-	};
+    union
+    {
+        LPINT32        flag;
+        struct
+        {
+            unsigned     luaParamMask    : 8;
+            unsigned     repeatCounter   : 8;
+            unsigned     nodeTag         : 16;
+        };
+    };
 };
 
 
 
 struct BT_RUN_NODE
 {
-	BT_NODE*     pNode;
-	BT_NODE*     pChild;
+    BT_NODE*     pNode;
+    BT_NODE*     pChild;
 };
 
 
 
 struct BT_CTRL
 {
-	LPUINT8                 debugging;
-	LPINT16                 returnValue;
-	LPUINT8                 runStackNodeCount;
+    LPUINT8                 debugging;
+    LPINT16                 returnValue;
+    LPUINT8                 runStackNodeCount;
 
-	BT_RUN_NODE            nodeRunStack[BT_MAX_CALL_STACK_NODE];
-	
+    BT_RUN_NODE            nodeRunStack[BT_MAX_CALL_STACK_NODE];
+
 };
 
 
@@ -110,7 +110,7 @@ DECLARE BT_NODE* LPAPI lpBTGetChild(BT_NODE* pRootNode, LPINT32 nIndex);
 
 DECLARE void LPAPI lpBTRunBtCtrl(BT_CTRL& ctrl);
 
-typedef LPINT32 (*pfunBTUserDefinedNodeFunc)(BT_CTRL* pCtrl, BT_NODE* pNode);
+typedef LPINT32(*pfunBTUserDefinedNodeFunc)(BT_CTRL* pCtrl, BT_NODE* pNode);
 DECLARE void lpBTRegisterUserDefinedNodeFunc(pfunBTUserDefinedNodeFunc pfNodeFunc);
 
 

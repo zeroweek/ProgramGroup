@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: October 29, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _LP_GAME_SERVER_H_
@@ -20,47 +20,47 @@ using namespace LZPL;
 
 
 // Summary:
-//		нч
+//      нч
 class CGameServer
 {
-	SINGLETON_DECLARE(CGameServer)
+    SINGLETON_DECLARE(CGameServer)
 
 public:
 
-	BOOL LPAPI Init(void);
-	BOOL LPAPI UnInit(void);
+    BOOL LPAPI Init(void);
+    BOOL LPAPI UnInit(void);
 
-	BOOL LPAPI MainLoop(void);
+    BOOL LPAPI MainLoop(void);
 
-	LPUINT32 LPAPI GetServerState(void);
-	void SetServerState(LPUINT32 dwServerState);
+    LPUINT32 LPAPI GetServerState(void);
+    void SetServerState(LPUINT32 dwServerState);
 
-	void Close(void);
-
-private:
-
-	// Summary:
-	//		none
-	CGameServer();
-
-	// Summary:
-	//		none
-	virtual ~CGameServer();
+    void Close(void);
 
 private:
 
-	BOOL _InitDB(void);
+    // Summary:
+    //      none
+    CGameServer();
+
+    // Summary:
+    //      none
+    virtual ~CGameServer();
 
 private:
 
-	std::shared_ptr<ILPNet>          m_pNet;
-	std::shared_ptr<ILPConnector>    m_pConnector;
-	std::shared_ptr<ILPListener>     m_pListener;
-	CGSMessageHandler                m_oGSInternalMessageHandler;
-	CGSInternalPacketParser*         m_pGSInternalPacketParser;
-	CGSExternalPacketParser*         m_pGSExternalPacketParser;
+    BOOL _InitDB(void);
 
-	LPUINT32                          m_dwServerState;
+private:
+
+    std::shared_ptr<ILPNet>          m_pNet;
+    std::shared_ptr<ILPConnector>    m_pConnector;
+    std::shared_ptr<ILPListener>     m_pListener;
+    CGSMessageHandler                m_oGSInternalMessageHandler;
+    CGSInternalPacketParser*         m_pGSInternalPacketParser;
+    CGSExternalPacketParser*         m_pGSExternalPacketParser;
+
+    LPUINT32                          m_dwServerState;
 
 };
 

@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 1, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _BT_EVENT_H_
@@ -16,21 +16,21 @@
 
 enum eBTEventType
 {
-	btetInvalid,
+    btetInvalid,
 
-	// ai event
-	btetAIBegin,
+    // ai event
+    btetAIBegin,
 
-	btetAIInit = btetAIBegin,
-	btetAIIdle,
-	btetAIFight,
-	btetAIDie,
-	btetAIRevive,
-	btetAIInteract,
+    btetAIInit = btetAIBegin,
+    btetAIIdle,
+    btetAIFight,
+    btetAIDie,
+    btetAIRevive,
+    btetAIInteract,
 
-	btetAIEnd,
+    btetAIEnd,
 
-	btetTotal = btetAIEnd,
+    btetTotal = btetAIEnd,
 
 };
 

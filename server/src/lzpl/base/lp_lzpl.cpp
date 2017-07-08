@@ -9,22 +9,22 @@ NS_LZPL_BEGIN
 
 static void lpsGlobalAssert()
 {
-	LPASSERT(sizeof(LPINT8) == 1);
-	PRINTF_CHECK_ERROR(sizeof(LPINT8) == 1);
-	LPASSERT(sizeof(LPINT16) == 2);
-	PRINTF_CHECK_ERROR(sizeof(LPINT16) == 2);
-	LPASSERT(sizeof(LPINT32) == 4);
-	PRINTF_CHECK_ERROR(sizeof(LPINT32) == 4);
-	LPASSERT(sizeof(LPINT64) == 8);
-	PRINTF_CHECK_ERROR(sizeof(LPINT64) == 8);
-	LPASSERT(sizeof(LPUINT8) == 1);
-	PRINTF_CHECK_ERROR(sizeof(LPUINT8) == 1);
-	LPASSERT(sizeof(LPUINT16) == 2);
-	PRINTF_CHECK_ERROR(sizeof(LPUINT16) == 2);
-	LPASSERT(sizeof(LPUINT32) == 4);
-	PRINTF_CHECK_ERROR(sizeof(LPUINT32) == 4);
-	LPASSERT(sizeof(LPUINT64) == 8);
-	PRINTF_CHECK_ERROR(sizeof(LPUINT64) == 8);
+    LPASSERT(sizeof(LPINT8) == 1);
+    PRINTF_CHECK_ERROR(sizeof(LPINT8) == 1);
+    LPASSERT(sizeof(LPINT16) == 2);
+    PRINTF_CHECK_ERROR(sizeof(LPINT16) == 2);
+    LPASSERT(sizeof(LPINT32) == 4);
+    PRINTF_CHECK_ERROR(sizeof(LPINT32) == 4);
+    LPASSERT(sizeof(LPINT64) == 8);
+    PRINTF_CHECK_ERROR(sizeof(LPINT64) == 8);
+    LPASSERT(sizeof(LPUINT8) == 1);
+    PRINTF_CHECK_ERROR(sizeof(LPUINT8) == 1);
+    LPASSERT(sizeof(LPUINT16) == 2);
+    PRINTF_CHECK_ERROR(sizeof(LPUINT16) == 2);
+    LPASSERT(sizeof(LPUINT32) == 4);
+    PRINTF_CHECK_ERROR(sizeof(LPUINT32) == 4);
+    LPASSERT(sizeof(LPUINT64) == 8);
+    PRINTF_CHECK_ERROR(sizeof(LPUINT64) == 8);
 }
 
 // Summary:
@@ -33,23 +33,23 @@ static void lpsGlobalAssert()
 // Input:
 //  stLogConfig: 日志配置
 // Return:
-//		TRUE-成功，FALSE-失败
+//      TRUE-成功，FALSE-失败
 DECLARE BOOL LPAPI lpInitLzpl(LOG_CONFIG& stLogConfig)
 {
-	LPINT32 nResult = 0;
+    LPINT32 nResult = 0;
 
-	lpsGlobalAssert();
+    lpsGlobalAssert();
 
-	nResult = LPTime::GlobalInit(stLogConfig.nTimezone);
-	PRINTF_PROCESS_ERROR(nResult);
+    nResult = LPTime::GlobalInit(stLogConfig.nTimezone);
+    PRINTF_PROCESS_ERROR(nResult);
 
-	nResult = lpInitLzplLoggerCtrl(stLogConfig);
-	PRINTF_PROCESS_ERROR(nResult);
+    nResult = lpInitLzplLoggerCtrl(stLogConfig);
+    PRINTF_PROCESS_ERROR(nResult);
 
-	return TRUE;
+    return TRUE;
 
 Exit0:
-	return FALSE;
+    return FALSE;
 }
 
 

@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: November 26, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _GUARD_CONFIG_H_
@@ -18,8 +18,8 @@
 
 struct GUARD_CONFIG
 {
-	char      szAddress[COMMON_NAME_LEN];
-	LPUINT32   dwPort;
+    char      szAddress[COMMON_NAME_LEN];
+    LPUINT32   dwPort;
 };
 
 

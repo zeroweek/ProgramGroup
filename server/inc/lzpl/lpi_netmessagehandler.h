@@ -16,38 +16,38 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//		网络消息处理器接口类
+//      网络消息处理器接口类
 class DECLARE ILPNetMessageHandler
 {
 public:
 
-	// Summary:
-	//		无
-	virtual ~ILPNetMessageHandler() {}
+    // Summary:
+    //      无
+    virtual ~ILPNetMessageHandler() {}
 
-	// Summary:
-	//		监听到新的链接
-	virtual void LPAPI OnAccepted(ILPSocker* pSocker) = 0;
+    // Summary:
+    //      监听到新的链接
+    virtual void LPAPI OnAccepted(ILPSocker* pSocker) = 0;
 
-	// Summary:
-	//		成功创建新的链接
-	virtual void LPAPI OnConnected(ILPSocker* pSocker) = 0;
+    // Summary:
+    //      成功创建新的链接
+    virtual void LPAPI OnConnected(ILPSocker* pSocker) = 0;
 
-	// Summary:
-	//		创建链接错误
-	virtual void LPAPI OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo) = 0;
+    // Summary:
+    //      创建链接错误
+    virtual void LPAPI OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo) = 0;
 
-	// Summary:
-	//		链接收到消息
-	virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize) = 0;
+    // Summary:
+    //      链接收到消息
+    virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize) = 0;
 
-	// Summary:
-	//		链接断开（OnAccepted的连接）
-	virtual void LPAPI OnDisconnected(ILPSocker* pSocker) = 0;
+    // Summary:
+    //      链接断开（OnAccepted的连接）
+    virtual void LPAPI OnDisconnected(ILPSocker* pSocker) = 0;
 
-	// Summary:
-	//		链接断开（OnConnected的连接）
-	virtual void LPAPI OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector) = 0;
+    // Summary:
+    //      链接断开（OnConnected的连接）
+    virtual void LPAPI OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector) = 0;
 
 };
 

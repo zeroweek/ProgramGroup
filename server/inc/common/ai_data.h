@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: December 3, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _AI_DATA_H_
@@ -20,12 +20,12 @@ using namespace LZPL;
 
 struct AI_DATA
 {
-	LPINT32 nAIID;
-	char szAIDesc[COMMON_NAME_LEN];
-	char szScriptName[COMMON_NAME_LEN];
+    LPINT32 nAIID;
+    char szAIDesc[COMMON_NAME_LEN];
+    char szScriptName[COMMON_NAME_LEN];
 
-	static void Print(AI_DATA* pData);
-	static BOOL ReadLine(LPINT32& rnId, AI_DATA* pData, LPTabFile* pTabFile, LPINT32 nRow);
+    static void Print(AI_DATA* pData);
+    static BOOL ReadLine(LPINT32& rnId, AI_DATA* pData, LPTabFile* pTabFile, LPINT32 nRow);
 
 };
 

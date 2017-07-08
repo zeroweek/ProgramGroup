@@ -1,7 +1,7 @@
 //****************************************************************************/
 //    author: caihy
 //    date: November 26, 2015
-//    description: 
+//    description:
 //
 //****************************************************************************/
 #ifndef _SERVER_CONFIG_H_
@@ -18,35 +18,35 @@
 
 struct SERVER_CONFIG
 {
-	struct GS_CONFIG
-	{
-		NET_CONFIG     Net;
+    struct GS_CONFIG
+    {
+        NET_CONFIG     Net;
 
-		char           szListenIp[IP_LEN];
-		LPUINT32        dwListenPort;
+        char           szListenIp[IP_LEN];
+        LPUINT32        dwListenPort;
 
-		char           szClientListenIp[IP_LEN];
-		LPUINT32        dwClientListenPort;
-	};
-	GS_CONFIG Gs;
+        char           szClientListenIp[IP_LEN];
+        LPUINT32        dwClientListenPort;
+    };
+    GS_CONFIG Gs;
 
-	struct GAME_LOGIC_CONFIG
-	{
-		char   szConfigPath[COMMON_NAME_LEN];
-	};
-	GAME_LOGIC_CONFIG Gl;
+    struct GAME_LOGIC_CONFIG
+    {
+        char   szConfigPath[COMMON_NAME_LEN];
+    };
+    GAME_LOGIC_CONFIG Gl;
 
-	struct GT_CONFIG
-	{
-		NET_CONFIG     Net;
+    struct GT_CONFIG
+    {
+        NET_CONFIG     Net;
 
-		char           szListenIp[IP_LEN];
-		LPUINT32        dwListenPort;
+        char           szListenIp[IP_LEN];
+        LPUINT32        dwListenPort;
 
-		char           szClientListenIp[IP_LEN];
-		LPUINT32        dwClientListenPort;
-	};
-	GT_CONFIG Gt;
+        char           szClientListenIp[IP_LEN];
+        LPUINT32        dwClientListenPort;
+    };
+    GT_CONFIG Gt;
 };
 
 
