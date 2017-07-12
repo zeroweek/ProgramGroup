@@ -49,18 +49,18 @@ private:
 
 private:
 
-    BOOL _InitDB(void);
+    BOOL InitDB(void);
 
 private:
 
-    std::shared_ptr<ILPNet>          m_pNet;
-    std::shared_ptr<ILPConnector>    m_pConnector;
-    std::shared_ptr<ILPListener>     m_pListener;
-    CGSMessageHandler                m_oGSInternalMessageHandler;
-    CGSInternalPacketParser*         m_pGSInternalPacketParser;
-    CGSExternalPacketParser*         m_pGSExternalPacketParser;
+    std::shared_ptr<ILPNet>                 m_pNet;
+    std::shared_ptr<ILPConnector>           m_pConnector;
+    std::shared_ptr<ILPListener>            m_pListener;
+    lp_shared_ptr<CGSMessageHandler>        m_pGSInternalMessageHandler;
+    lp_shared_ptr<CGSInternalPacketParser>  m_pGSInternalPacketParser;
+    lp_shared_ptr<CGSExternalPacketParser>  m_pGSExternalPacketParser;
 
-    LPUINT32                          m_dwServerState;
+    LPUINT32                                m_dwServerState;
 
 };
 

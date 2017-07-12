@@ -8,6 +8,13 @@
 #define _LP_NET_DEF_H_
 
 #include "lp_base.h"
+#include "boost/asio.hpp"
+#include "boost/bind.hpp"
+#include "boost/asio/buffer.hpp"
+#include "boost/thread.hpp"
+
+
+using namespace boost::asio;
 
 
 #if defined _WIN32

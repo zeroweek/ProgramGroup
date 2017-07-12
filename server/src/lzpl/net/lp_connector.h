@@ -37,7 +37,7 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 连接器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId);
+    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId);
 
     // Summary：
     //      无
@@ -55,7 +55,7 @@ public:
 
     // Summary:
     //      停止连接
-    virtual void LPAPI Stop();
+    virtual void LPAPI Close();
 
     // Summary:
     //      获取id
@@ -66,24 +66,8 @@ public:
     virtual BOOL LPAPI Reconnect();
 
     // Summary:
-    //      获取句柄
-    virtual HANDLE LPAPI GetHandle();
-
-    // Summary:
-    //      获取网络事件处理器类型
-    virtual e_EventHandlerType LPAPI GetEventHandlerType();
-
-    // Summary:
-    //      获取处理器自定义的数据，如果没有则返回null
-    virtual PER_IO_DATA* LPAPI GetEventHandlerData();
-
-    // Summary:
-    //      链接返回结果回调
-    virtual void LPAPI OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData) = 0;
-
-    // Summary:
     //      链接关闭回调
-    virtual void LPAPI OnClose();
+    virtual void LPAPI OnConnectionClose();
 
     // Summary:
     //      设置是否自动重连
@@ -95,11 +79,11 @@ public:
 
     // Summary:
     //      设置关联的socker对象
-    virtual void LPAPI SetSocker(ILPSockerImpl* pSocker);
+    virtual void LPAPI SetSocker(lp_shared_ptr<ILPSockerImpl> pSocker);
 
     // Summary:
     //      获取关联的socker对象
-    virtual ILPSockerImpl* LPAPI GetSocker();
+    virtual lp_shared_ptr<ILPSockerImpl> LPAPI GetSocker();
 
     // Summary:
     //      设置连接器当前状态
@@ -112,146 +96,34 @@ public:
 protected:
 
     // Summary:
-    //      关闭socket
-    void LPAPI CloseConnectSock();
-
-    // Summary:
-    //      获取ConnectEx函数指针，并且调用异步connect操作
-    virtual BOOL LPAPI InitConnectEx() = 0;
+    //   关闭socket，正常情况下，不应该调用这个接口，而是统一由LPSocker来执行关闭
+    //   ，本函数仅限在connect状态不对时调用
+    void LPAPI CloseConnectSockWhileStateError();
 
     // Summary:
     //      post异步connect操作
-    // Input:
-    //      stPerIoData：与链接建立的sock绑定的io数据
     // Return:
     //      TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI PostConnectEx(PER_IO_DATA& stPerIoData) = 0;
+    virtual BOOL LPAPI PostConnect();
+
+    // Summary:
+    //      设置监听器状态
+    virtual void LPAPI HandleConnect(const system::error_code& err);
 
 protected:
 
-    LPUINT32                    m_dwId;
-    volatile atomic_uint        m_dwState;
+    LPUINT32                            m_dwId;
+    volatile atomic_uint                m_dwState;
 
-    std::string                 m_strIP;
-    LPUINT32                    m_dwPort;
-    BOOL                        m_bReconnect;
-    SOCKET                      m_hConnectSock;
-    ILPPacketParser*            m_pPacketParser;
-    LPNetImpl*                  m_pNetImpl;
-    ILPSockerImpl*              m_pSocker;
+    std::string                         m_strIP;
+    LPUINT32                            m_dwPort;
+    BOOL                                m_bReconnect;
+    lp_shared_ptr<ILPPacketParser>      m_pPacketParser;
+    LPNetImpl*                          m_pNetImpl;
+    lp_shared_ptr<ILPSockerImpl>        m_pSocker;
 
-    PER_IO_DATA                 m_stPerIoData;
-};
-
-
-
-// Summary:
-//      windows网络通讯方式的connector实现类
-class DECLARE LPWinNetConnector : public LPConnector
-{
-public:
-
-    // Summary:
-    //      无
-    LPWinNetConnector();
-
-    // Summary:
-    //      无
-    virtual ~LPWinNetConnector();
-
-    // Summary：
-    //      无
-    virtual BOOL LPAPI UnInit();
-
-    // Summary:
-    //      开始连接
-    // Input:
-    //      strIP: ip地址字符串（格式：192.168.1.1）
-    //      dwPort: 连接的端口
-    //      bAutoReconnect: 是否自动重连接
-    // Return:
-    //      TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect);
-
-    // Summary:
-    //      网络事件处理
-    virtual void LPAPI OnNetEvent(PER_IO_DATA* pstPerIoData);
-
-    // Summary:
-    //      链接返回结果回调
-    virtual void LPAPI OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData);
-
-protected:
-
-    // Summary:
-    //      获取ConnectEx函数指针，并且调用异步connect操作
-    virtual BOOL LPAPI InitConnectEx();
-
-    // Summary:
-    //      post异步connect操作
-    // Input:
-    //      stPerIoData：与链接建立的sock绑定的io数据
-    // Return:
-    //      TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI PostConnectEx(PER_IO_DATA& stPerIoData);
-
-private:
-    LPFN_CONNECTEX              m_lpfnConnectEx;
-};
-
-
-
-// Summary:
-//      linux网络通讯方式的connector实现类
-class DECLARE LPLinuxNetConnector : public LPConnector
-{
-public:
-
-    // Summary:
-    //      无
-    LPLinuxNetConnector();
-
-    // Summary:
-    //      无
-    virtual ~LPLinuxNetConnector();
-
-    // Summary：
-    //      无
-    virtual BOOL LPAPI UnInit();
-
-    // Summary:
-    //      开始连接
-    // Input:
-    //      strIP: ip地址字符串（格式：192.168.1.1）
-    //      dwPort: 连接的端口
-    //      bAutoReconnect: 是否自动重连接
-    // Return:
-    //      TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI Start(const std::string& strIP, LPUINT32 dwPort, BOOL bReconnect);
-
-    // Summary:
-    //      网络事件处理
-    virtual void LPAPI OnNetEvent(PER_IO_DATA* pstPerIoData);
-
-    // Summary:
-    //      链接返回结果回调
-    virtual void LPAPI OnConnect(BOOL bSuccess, PER_IO_DATA* pstPerIoData);
-
-protected:
-
-    // Summary:
-    //      获取ConnectEx函数指针，并且调用异步connect操作
-    virtual BOOL LPAPI InitConnectEx();
-
-    // Summary:
-    //      post异步connect操作
-    // Input:
-    //      stPerIoData：与链接建立的sock绑定的io数据
-    // Return:
-    //      TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI PostConnectEx(PER_IO_DATA& stPerIoData);
-
-private:
+    lp_shared_ptr<ILPReactor>           m_pReactor;
+    lp_shared_ptr<ip::tcp::socket>      m_pSocket;
 };
 
 

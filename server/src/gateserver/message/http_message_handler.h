@@ -32,7 +32,7 @@ public:
 
     // Summary:
     //      初始化
-    BOOL LPAPI Init(ILPSocker* pSocker);
+    BOOL LPAPI Init(lp_shared_ptr<ILPSocker> pSocker);
 
     // Summary:
     //      反始化
@@ -44,7 +44,7 @@ public:
 
     // Summary:
     //      无
-    ILPSocker* LPAPI GetSocker(void);
+    lp_shared_ptr<ILPSocker> LPAPI GetSocker(void);
 
     BOOL LPAPI HaveUnResponseRequest(void);
     void LPAPI SetHaveUnResponseRequest(BOOL bHave);
@@ -67,9 +67,9 @@ public:
 
 private:
 
-    ILPSocker*          m_pSocker;
+    lp_shared_ptr<ILPSocker>    m_pSocker;
 
-    BOOL                m_bHaveUnResponseRequest;
+    BOOL                        m_bHaveUnResponseRequest;
 };
 
 
@@ -99,26 +99,12 @@ public:
 public:
 
     // Summary:
-    //      引用计数加1
-    virtual void LPAPI AddRef(void);
-
-    // Summary:
-    //      引用计数减1
-    virtual LPUINT32 LPAPI QueryRef(void);
-
-    // Summary:
-    //      释放，此类的该函数实现仅为释放引用计数，不释放对象
-    virtual void LPAPI Release(void);
-
-public:
+    //      无
+    virtual void LPAPI OnAccepted(lp_shared_ptr<ILPSocker> pSocker);
 
     // Summary:
     //      无
-    virtual void LPAPI OnAccepted(ILPSocker* pSocker);
-
-    // Summary:
-    //      无
-    virtual void LPAPI OnConnected(ILPSocker* pSocker);
+    virtual void LPAPI OnConnected(lp_shared_ptr<ILPSocker> pSocker);
 
     // Summary:
     //      无
@@ -126,15 +112,15 @@ public:
 
     // Summary:
     //      无
-    virtual void LPAPI OnMessage(ILPSocker* pSocker, const char* pcszBuf, LPUINT32 dwSize);
+    virtual void LPAPI OnMessage(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
     // Summary:
     //      无
-    virtual void LPAPI OnDisconnected(ILPSocker* pSocker);
+    virtual void LPAPI OnDisconnected(lp_shared_ptr<ILPSocker> pSocker);
 
     // Summary:
     //      无
-    virtual void LPAPI OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector);
+    virtual void LPAPI OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector);
 
 public:
 
@@ -155,17 +141,16 @@ private:
     LPHttpObject* LPAPI _NewHttpObject(void);
     BOOL LPAPI _DelHttpObject(LPHttpObject* pHttpObject);
 
-    BOOL LPAPI _ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize);
+    BOOL LPAPI _ParseHttpMessage(LPUINT32 dwSockerID, const char * pcszBuf, LPUINT32 dwSize);
+    BOOL LPAPI _ParseHttpMessageImpl(LPUINT32 dwSockerID, const char * pcszBuf, LPUINT32 dwSize);
 
 private:
 
-    LPUINT32                  m_dwRef;
+    typedef std::map<LPUINT32, LPHttpObject*>  MAP_HTTP_OBJECT;
+    MAP_HTTP_OBJECT                     m_mapHttpObject;
+    MAP_HTTP_OBJECT::iterator           m_iterHttpObject;
 
-    typedef std::map<ILPSocker*, LPHttpObject*>  MAP_HTTP_OBJECT;
-    MAP_HTTP_OBJECT               m_mapHttpObject;
-    MAP_HTTP_OBJECT::iterator     m_iterHttpObject;
-
-    LPObjPool<LPHttpObject>       m_oHttpObjectPool;
+    LPObjPool<LPHttpObject>             m_oHttpObjectPool;
 
 };
 

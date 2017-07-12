@@ -7,33 +7,12 @@ LPINT32  g_MessageSize[INTERNAL_MESSAGE::max_internal_message_count];
 
 CGTInternalPacketParser::CGTInternalPacketParser()
 {
-    m_dwRef = 0;
+
 }
 
 CGTInternalPacketParser::~CGTInternalPacketParser()
 {
-}
 
-void LPAPI CGTInternalPacketParser::AddRef(void)
-{
-    ++m_dwRef;
-}
-
-LPUINT32 LPAPI CGTInternalPacketParser::QueryRef(void)
-{
-    return m_dwRef;
-}
-
-void LPAPI CGTInternalPacketParser::Release(void)
-{
-    if(m_dwRef > 0)
-    {
-        --m_dwRef;
-    }
-    if(m_dwRef == 0)
-    {
-        delete this;
-    }
 }
 
 LPINT32 LPAPI CGTInternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)

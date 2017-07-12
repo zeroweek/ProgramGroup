@@ -28,17 +28,6 @@ public:
     // Summary:
     //      无
     ~CGTExternalPacketParser();
-    // Summary:
-    //      引用计数加1
-    virtual void LPAPI AddRef(void);
-
-    // Summary:
-    //      引用计数减1
-    virtual LPUINT32 LPAPI QueryRef(void);
-
-    // Summary:
-    //      释放对象
-    virtual void LPAPI Release(void);
 
     // Summary:
     //      解包
@@ -50,7 +39,6 @@ public:
 
 private:
 
-    LPUINT32                       m_dwRef;
     EXTERNAL_MESSAGE_HEADER       m_stMessageHead;
 };
 

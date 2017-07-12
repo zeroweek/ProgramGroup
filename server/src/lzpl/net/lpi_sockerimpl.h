@@ -9,8 +9,8 @@
 
 #include "lpi_socker.h"
 #include "lpi_packetparser.h"
-#include "lpi_eventhandler.h"
 #include "lp_loopbuf.h"
+#include "lp_netdef.h"
 
 
 
@@ -26,7 +26,7 @@ class LPNetImpl;
 
 // Summary:
 //      底层socket对象封装接口类
-class DECLARE ILPSockerImpl : public ILPSocker, public ILPEventHandler
+class DECLARE ILPSockerImpl : public ILPSocker, public lp_enable_shared_from_this<ILPSockerImpl>
 {
 public:
 
@@ -45,6 +45,10 @@ public:
     virtual void LPAPI SetSock(SOCKET sock) = 0;
 
     // Summary:
+    //      设置socket
+    virtual void LPAPI SetSocket(lp_shared_ptr<ip::tcp::socket> pSocket) = 0;
+
+    // Summary:
     //      设置连接状态标记值
     // Input:
     //      bConnect：true-连接，false-断开
@@ -54,7 +58,7 @@ public:
     //      绑定解析对象
     // Input:
     //      pPacketParser：解析对象
-    virtual void LPAPI AttachPacketParser(ILPPacketParser* pPacketParser) = 0;
+    virtual void LPAPI AttachPacketParser(lp_shared_ptr<ILPPacketParser> pPacketParser) = 0;
 
     // Summary:
     //      解除绑定解析对象
@@ -69,18 +73,6 @@ public:
     // Return:
     //      TRUE-有发送数据，FALSE-没发送数据
     virtual BOOL LPAPI PostSend() = 0;
-
-    // Summary:
-    //      收到消息回调
-    // Input:
-    //      dwBytes：接收到的字节数
-    virtual void LPAPI OnRecv(LPUINT32 dwBytes) = 0;
-
-    // Summary:
-    //      发送消息回调
-    // Input:
-    //      dwBytes：接收到的字节数
-    virtual void LPAPI OnSend(LPUINT32 dwBytes) = 0;
 
     // Summary:
     //      设置接收缓冲区
@@ -208,8 +200,8 @@ public:
 
 public:
 
-    static ILPSockerImpl* LPAPI NewSockerImpl(LPUINT32 dwIoType);
-    static void LPAPI DeleteSockerImpl(ILPSockerImpl* & pSocker);
+    static lp_shared_ptr<ILPSockerImpl> LPAPI NewSockerImpl(LPUINT32 dwIoType);
+    static void LPAPI DeleteSockerImpl(lp_shared_ptr<ILPSockerImpl>& pSocker);
 };
 
 

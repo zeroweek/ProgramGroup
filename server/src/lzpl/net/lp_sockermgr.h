@@ -44,8 +44,8 @@ public:
 
 public:
 
-    typedef std::list<ILPSockerImpl*> LPListSocker;
-    typedef std::map<LPUINT32, ILPSockerImpl*> LPMapSocker;
+    typedef std::list<lp_shared_ptr<ILPSockerImpl>> LPListSocker;
+    typedef std::map<LPUINT32, lp_shared_ptr<ILPSockerImpl>> LPMapSocker;
 
 public:
 
@@ -69,39 +69,17 @@ public:
     //      bAcceptCreate：是否accept创建
     // Return:
     //      socker对象
-    ILPSockerImpl* LPAPI Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
+    lp_shared_ptr<ILPSockerImpl> LPAPI Create(lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
 
     // Summary:
     //      释放socker对象
     // Input:
     //      pSocker：socker对象
-    void LPAPI Release(ILPSockerImpl* pSocker);
-
-    // Summary:
-    //      延迟关闭socker对象
-    // Input:
-    //      pSocker：socker对象
-    void LPAPI DelayClose(ILPSockerImpl* pSocker);
-
-    // Summary:
-    //      延迟释放socker对象，注意与Release调用位置的区分
-    // Input:
-    //      pSocker：socker对象
-    void LPAPI DelayRelease(ILPSockerImpl* pSocker);
-
-    // Summary:
-    //      检测延迟释放的对象
-    void LPAPI CheckDelay();
-
-    // Summary:
-    //      发送数据
-    // Return:
-    //      有数据发送的LPSocker对象个数
-    LPINT32 LPAPI PostSend();
+    void LPAPI Release(lp_shared_ptr<ILPSockerImpl> pSocker);
 
     // Summary:
     //      查找socker
-    ILPSockerImpl* LPAPI Find(LPUINT32 dwSockerId);
+    lp_shared_ptr<ILPSockerImpl> LPAPI Find(LPUINT32 dwSockerId);
 
     // Summary:
     //      获取当前有效的连接个数
@@ -118,13 +96,13 @@ private:
     //      bAcceptCreate：是否accept创建
     // Return:
     //      socker对象
-    ILPSockerImpl* LPAPI _Create(ILPPacketParser* pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
+    lp_shared_ptr<ILPSockerImpl> LPAPI _Create(lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwParentId, BOOL bAcceptCreate);
 
     // Summary:
     //      释放socker对象
     // Input:
     //      pSocker：socker对象
-    void LPAPI _Release(ILPSockerImpl* pSocker);
+    void LPAPI _Release(lp_shared_ptr<ILPSockerImpl> pSocker);
 
     // Summary:
     //      创建sock id
@@ -134,28 +112,13 @@ private:
 
 private:
 
-    static THREAD_FUNC_DECLARE(_CheckDelayThreadProc)(void* pParam);
-    static THREAD_FUNC_DECLARE(_PostSendThreadProc)(void* pParam);
+    LPUINT32                   m_dwMaxSockId;       // 最大sock id
+    LPMapSocker                m_oValidMap;         // 当前连接有效的socker map
+    LPLock                     m_oValidLock;        // 当前连接有效的socker map锁
 
-private:
-
-    LPUINT32                   m_dwMaxSockId;        // 最大sock id
-    LPListSocker               m_oValidList;         // 当前连接有效的socker列表
-    LPMapSocker                m_oValidMap;          // 当前连接有效的socker map
-    LPListSocker               m_oDelayCloseList;    // 延迟关闭连接列表
-    LPListSocker               m_oDelayReleaseList;  // 延迟释放的socker列表
-    LPLock                     m_oLock;              // 锁
-    LPLock                     m_oDelayLock;         // 延迟释放列表锁
-    BOOL                       m_bCheckDelayRun;     // check delay线程是否停止
-    BOOL                       m_bPostSendRun;       // post send线程是否停止
-    LPThread                   m_oCheckDelayThread;  // check delay线程
-    LPThread                   m_oPostSendThread;    // post send线程
-
-    LPNetImpl*                 m_pNetImpl;           //
-    LPLoopBufPool*             m_pRecvLoopBufPool;   // 接受缓冲区池（若要支持多个size，可使用map pool）
-    LPLoopBufPool*             m_pSendLoopBufPool;   // 发送缓冲区池（若要支持多个size，可使用map pool）
-
-    time_t                     m_tLastCheckTime;
+    LPNetImpl*                 m_pNetImpl;          //
+    LPLoopBufPool*             m_pRecvLoopBufPool;  // 接受缓冲区池（若要支持多个size，可使用map pool）
+    LPLoopBufPool*             m_pSendLoopBufPool;  // 发送缓冲区池（若要支持多个size，可使用map pool）
 };
 
 

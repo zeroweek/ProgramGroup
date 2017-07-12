@@ -28,17 +28,17 @@ LPNetImpl::~LPNetImpl(void)
     UnInit();
 }
 
-std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(ILPPacketParser* pPacketParser)
+std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
 {
     LPINT32 nResult = 0;
     std::shared_ptr<ILPListenerImpl> pListener;
 
     LOG_PROCESS_ERROR(pPacketParser);
 
-    pListener = ILPListenerImpl::NewListenerImpl(m_oNetConfig.dwIoType);
+    pListener = ILPListenerImpl::NewListenerImpl();
     LOG_PROCESS_ERROR(pListener != nullptr);
 
-    nResult = pListener->Init(this, pPacketParser, _CreateId());
+    nResult = pListener->Init(this, m_pReactor, pPacketParser, _CreateId());
     LOG_PROCESS_ERROR(nResult);
 
     m_mapListener.insert(make_pair(pListener->GetId(), pListener));
@@ -48,7 +48,7 @@ Exit0:
     return NULL;
 }
 
-std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(ILPPacketParser* pPacketParser)
+std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
 {
     LPINT32 nResult = 0;
     std::shared_ptr<ILPConnectorImpl> pConnector;
@@ -58,7 +58,7 @@ std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(ILPPacketPars
     pConnector = ILPConnectorImpl::NewConnectorImpl(m_oNetConfig.dwIoType);
     LOG_PROCESS_ERROR(pConnector);
 
-    nResult = pConnector->Init(this, pPacketParser, _CreateId());
+    nResult = pConnector->Init(this, m_pReactor, pPacketParser, _CreateId());
     LOG_PROCESS_ERROR(nResult);
 
     m_mapConnector.insert(make_pair(pConnector->GetId(), pConnector));
@@ -119,7 +119,7 @@ Exit1:
     return TRUE;
 }
 
-BOOL LPAPI LPNetImpl::Init(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig)
+BOOL LPAPI LPNetImpl::Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
 {
     LPINT32 nResult = 0;
 
@@ -171,6 +171,12 @@ ILPReactor& LPAPI LPNetImpl::GetReactorImpl()
 NET_CONFIG& LPAPI LPNetImpl::GetNetConfig()
 {
     return m_oNetConfig;
+}
+
+boost::asio::io_service& LPNetImpl::GetIoService(LPUINT32 dwId)
+{
+    static boost::asio::io_service service;
+    return service;
 }
 
 void LPAPI LPNetImpl::UnInit()
@@ -240,26 +246,15 @@ LPUINT32 LPAPI LPNetImpl::_CreateId()
 
 BOOL LPAPI ILPNet::GlobalInit()
 {
-#   if defined _WIN32
-    {
-        WSADATA stData;
-        ::WSAStartup(MAKEWORD(2, 2), &stData);
-    }
-#   endif
-
     return TRUE;
 }
 
 void LPAPI ILPNet::GlobalUnInit()
 {
-#   if defined _WIN32
-    {
-        ::WSACleanup();
-    }
-#   endif
+
 }
 
-std::shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig)
+std::shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
 {
     LPINT32 nResult = 0;
     std::shared_ptr<ILPNet> poNetImpl;

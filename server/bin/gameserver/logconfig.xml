@@ -1,10 +1,10 @@
 <Root>
 
 	<!-- 日志文件存放的目录子目录（根目录是进程的WorkingDir） -->
-	<LogDir value="log/gateserver" />
+	<LogDir value="log/gameserver" />
 	
 	<!-- 日志文件名 -->
-	<FileName value="gateserver" />
+	<FileName value="gameserver" />
 	
 	<!-- 日志模块写日志是否使用线程锁：0-不使用，1-使用 
 		enum e_LogMode

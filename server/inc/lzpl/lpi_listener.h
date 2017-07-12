@@ -36,7 +36,7 @@ public:
 
     // Summary:
     //      Í£Ö¹¼àÌý
-    virtual void LPAPI Stop() = 0;
+    virtual void LPAPI Close() = 0;
 
     // Summary:
     //      »ñÈ¡id

@@ -14,11 +14,14 @@ LPINT32 NET_EVENT::ms_dwNetEventCount = 0;
 LPEventMgr::LPEventMgr()
 {
     m_bInit = FALSE;
-    m_pNetMessageHandler = NULL;
-    m_pNetImpl = NULL;
+    m_pPacketTempBuf = nullptr;
     m_nEventListCount = 0;
-    m_pEventList = NULL;
-    m_pEventListLock = NULL;
+    m_pEventList = nullptr;
+    m_pEventListLock = nullptr;
+    m_pEventListRecvLoopBuf = nullptr;
+    m_pEventListRecvLoopBufLock = nullptr;
+    m_pNetMessageHandler = nullptr;
+    m_pNetImpl = nullptr;
 }
 
 LPEventMgr::~LPEventMgr()
@@ -26,7 +29,7 @@ LPEventMgr::~LPEventMgr()
     UnInit();
 }
 
-BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, LPINT32 nEventListCount)
+BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount)
 {
     LPINT32 nResult = 0;
 
@@ -36,6 +39,7 @@ BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessa
 
     m_pNetMessageHandler = pNetMessageHandler;
     m_pNetImpl = pNetImpl;
+    m_nEventListCount = nEventListCount;
 
     m_pEventListRecvLoopBuf = new LPLoopBuf[m_nEventListCount];
     LOG_PROCESS_ERROR(m_pEventListRecvLoopBuf);
@@ -50,7 +54,6 @@ BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessa
     m_pPacketTempBuf = new char[MAX_PACKET_LEN];
     LOG_PROCESS_ERROR(m_pPacketTempBuf);
 
-    m_nEventListCount = nEventListCount;
     m_pEventList = new LPListEvent[m_nEventListCount];
     LOG_PROCESS_ERROR(m_pEventList);
     m_pEventListLock = new LPLock[m_nEventListCount];
@@ -83,7 +86,7 @@ Exit1:
     return TRUE;
 }
 
-BOOL LPAPI LPEventMgr::PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen)
+BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen)
 {
     LPINT32 nResult = 0;
     LPINT32 nRetryCount = 0;
@@ -162,7 +165,7 @@ Exit0:
     return FALSE;
 }
 
-void LPAPI LPEventMgr::PushTerminateEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
+void LPAPI LPEventMgr::PushTerminateEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
 {
     LPINT32 nResult = 0;
     NET_EVENT* pstEvent = NULL;
@@ -196,7 +199,7 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::PushEstablishEvent(ILPSockerImpl* pSocker, BOOL bAccept)
+void LPAPI LPEventMgr::PushEstablishEvent(lp_shared_ptr<ILPSockerImpl> pSocker, BOOL bAccept)
 {
     LPINT32 nResult = 0;
     NET_EVENT* pstEvent = NULL;
@@ -342,7 +345,7 @@ Exit0:
 void LPAPI LPEventMgr::_ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag)
 {
     LPINT32 nResult = 0;
-    ILPSockerImpl* pSocker = NULL;
+    lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
 
     LOG_PROCESS_ERROR(pstRecvEvent);
     LOG_PROCESS_ERROR(m_pNetMessageHandler);
@@ -367,7 +370,7 @@ void LPAPI LPEventMgr::_ProcTerminateEvent(std::shared_ptr<TERMINATE_EVENT> pstT
 {
     LPINT32 nResult = 0;
     std::shared_ptr<ILPConnectorImpl> pConnector;
-    ILPSockerImpl* pSocker = NULL;
+    lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
 
     LOG_PROCESS_ERROR(pstTerminateEvent);
     pSocker = pstTerminateEvent->pSocker;
@@ -408,7 +411,7 @@ Exit0:
 void LPAPI LPEventMgr::_ProcEstablishEvent(std::shared_ptr<ESTABLISH_EVENT> pstEstablishEvent)
 {
     LPINT32 nResult = 0;
-    ILPSockerImpl* pSocker = NULL;
+    lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
 
     LOG_PROCESS_ERROR(pstEstablishEvent);
     LOG_PROCESS_ERROR(m_pNetMessageHandler);

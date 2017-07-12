@@ -40,7 +40,7 @@ BOOL LPAPI CGSMessageHandler::UnInit(void)
     return TRUE;
 }
 
-void LPAPI CGSMessageHandler::OnAccepted(ILPSocker * pSocker)
+void LPAPI CGSMessageHandler::OnAccepted(lp_shared_ptr<ILPSocker> pSocker)
 {
     std::pair<MAP_SOCKER::iterator, bool> InsRet;
 
@@ -60,7 +60,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGSMessageHandler::OnConnected(ILPSocker * pSocker)
+void LPAPI CGSMessageHandler::OnConnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     std::pair<MAP_SOCKER::iterator, bool> InsRet;
 
@@ -92,7 +92,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGSMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void LPAPI CGSMessageHandler::OnMessage(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     LPUINT16 wMsgId = 0;
@@ -115,7 +115,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGSMessageHandler::OnDisconnected(ILPSocker * pSocker)
+void LPAPI CGSMessageHandler::OnDisconnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     LOG_PROCESS_ERROR(pSocker);
 
@@ -136,7 +136,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGSMessageHandler::OnConnectDisconnected(ILPSocker* pSocker, std::shared_ptr<ILPConnector> pConnector)
+void LPAPI CGSMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector)
 {
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pConnector != nullptr);
@@ -191,7 +191,7 @@ Exit1:
     return nParseCount;
 }
 
-BOOL CGSMessageHandler::DoGTRegister(ILPSocker* pSocker)
+BOOL CGSMessageHandler::DoGTRegister(lp_shared_ptr<ILPSocker> pSocker)
 {
     LPINT32 nResult = 0;
     G2T_REGISTER tMsg;
@@ -215,7 +215,7 @@ Exit0:
     return FALSE;
 }
 
-void CGSMessageHandler::OnGTRegisterAck(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void CGSMessageHandler::OnGTRegisterAck(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     T2G_REGISTER_ACK* ptMsg = NULL;
@@ -237,7 +237,7 @@ Exit0:
 
 void CGSMessageHandler::CloseAllSocker(void)
 {
-    ILPSocker* pSocker = NULL;
+    lp_shared_ptr<ILPSocker> pSocker = nullptr;
 
     for(m_iterSocker = m_mapSocker.begin(); m_iterSocker != m_mapSocker.end(); ++m_iterSocker)
     {

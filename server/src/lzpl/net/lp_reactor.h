@@ -27,13 +27,13 @@ class LPNetImpl;
 //      sql工作线程参数
 struct REACTOR_THREAD_PARAM
 {
-    ILPReactor*       pReactorImpl;
-    LPINT32           nCompletionPortIndex;
+    ILPReactor*       pReactor;
+    LPINT32           nIndex;
 
     REACTOR_THREAD_PARAM()
     {
-        pReactorImpl = nullptr;
-        nCompletionPortIndex = -1;
+        pReactor = nullptr;
+        nIndex = -1;
     }
 };
 
@@ -64,13 +64,17 @@ public:
     //      无
     virtual BOOL LPAPI UnInit();
 
+    // Summary:
+    //   无
+    virtual boost::asio::io_service& GetIoService(LPUINT32 dwId);
+
     // Summary：
     //     线程处理函数的主逻辑
-    virtual void LPAPI OnExecute(REACTOR_THREAD_PARAM& tThreadParam) = 0;
+    virtual void LPAPI OnExecute(LPUINT32 nIndex);
 
     // Summary：
     //     完成端口线程处理函数
-    static THREAD_FUNC_DECLARE(ThreadFunc)(void* pParam);
+    virtual void ThreadFunc(LPUINT32 nIndex);
 
 protected:
 
@@ -84,109 +88,12 @@ protected:
 
 protected:
 
-    volatile atomic_uint    m_dwState;
-    NET_CONFIG              m_stNetConfig;
-};
+    volatile atomic_uint                    m_dwState;
+    NET_CONFIG                              m_stNetConfig;
 
-
-
-// Summary：
-//     windows IOCP反应器实现类
-class DECLARE LPIocpReactor : public LPReactor
-{
-public:
-
-    // Summary：
-    //     构造函数
-    // Returns:
-    //     无
-    LPIocpReactor();
-
-    // Summary：
-    //     析构函数
-    // Returns:
-    //     无
-    ~LPIocpReactor();
-
-    // Summary：
-    //      无
-    virtual BOOL LPAPI Init(NET_CONFIG& stNetConfig);
-    // Summary：
-    //      无
-    virtual BOOL LPAPI UnInit();
-
-    // Summary:
-    //     注册ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI RegisterEventHandler(ILPEventHandler* pEventHandler);
-
-    // Summary：
-    //     注销ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler);
-
-    // Summary：
-    //     线程处理函数的主逻辑
-    virtual void LPAPI OnExecute(REACTOR_THREAD_PARAM& tThreadParam);
-
-protected:
-
-    LPINT32                  m_nCompletionPortCount;
-    HANDLE*                  m_pCompletionPort;
-    LPINT32                  m_nWorkerCountPerCompIo;
-    HANDLE**                 m_ppWorkerArray;
-};
-
-
-
-// Summary：
-//     linux epoll反应器实现类
-class DECLARE LPEpollReactor : public LPReactor
-{
-public:
-
-    // Summary：
-    //     构造函数
-    // Returns:
-    //     无
-    LPEpollReactor();
-
-    // Summary：
-    //     析构函数
-    // Returns:
-    //     无
-    ~LPEpollReactor();
-
-    // Summary：
-    //      无
-    virtual BOOL LPAPI Init(NET_CONFIG& stNetConfig);
-    // Summary：
-    //      无
-    virtual BOOL LPAPI UnInit();
-
-    // Summary:
-    //     注册ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI RegisterEventHandler(ILPEventHandler* pEventHandler);
-
-    // Summary：
-    //     注销ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler);
-
-    // Summary：
-    //     线程处理函数的主逻辑
-    virtual void LPAPI OnExecute(REACTOR_THREAD_PARAM& tThreadParam);
-
-protected:
-
-    HANDLE                   m_hEpoll;
-    BOOL                     m_bRun;
-    LPThread                 m_oThread;  // check delay线程
+    LPUINT32                                m_nIoServiceNum;
+    asio::io_service**                      m_apIoService;
+    std::thread**                           m_apThread;
 };
 
 

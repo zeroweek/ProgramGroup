@@ -64,10 +64,11 @@ SINGLETON_IMPLEMENT(CGateServer)
 
 CGateServer::CGateServer()
 {
-    m_pNet                   = nullptr;
-    m_pListener              = nullptr;
-    m_pClientListener        = nullptr;
-    m_dwServerState          = eServerState_Invalid;
+    m_pNet                  = nullptr;
+    m_pListener             = nullptr;
+    m_pClientListener       = nullptr;
+    m_pConnector            = nullptr;
+    m_dwServerState         = eServerState_Invalid;
 }
 
 CGateServer::~CGateServer()
@@ -88,25 +89,27 @@ BOOL LPAPI CGateServer::Init(void)
     nResult = g_LoadGlobalConfig(g_szGlobalConfigFileName);
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = m_oGTMessageHandler.Init();
+    m_pGTMessageHandler = lp_make_shared<CGTMessageHandler>();
+    LOG_PROCESS_ERROR(m_pGTMessageHandler);
+    nResult = m_pGTMessageHandler->Init();
     LOG_PROCESS_ERROR(nResult);
 
-    m_pGTInternalPacketParser = new CGTInternalPacketParser();
+    m_pGTInternalPacketParser = lp_make_shared<CGTInternalPacketParser>();
     LOG_PROCESS_ERROR(m_pGTInternalPacketParser);
-    m_pGTInternalPacketParser->AddRef();
 
-    m_pGTExternalPacketParser = new CGTExternalPacketParser();
+    m_pGTExternalPacketParser = lp_make_shared<CGTExternalPacketParser>();
     LOG_PROCESS_ERROR(m_pGTExternalPacketParser);
-    m_pGTExternalPacketParser->AddRef();
 
-    nResult = m_oGTHttpMessageHandler.Init();
+    m_pGTHttpMessageHandler = lp_make_shared<CGTHttpMessageHandler>();
+    LOG_PROCESS_ERROR(m_pGTHttpMessageHandler);
+    nResult = m_pGTHttpMessageHandler->Init();
     LOG_PROCESS_ERROR(nResult);
 
     nResult = ILPNet::GlobalInit();
     LOG_PROCESS_ERROR(nResult);
 
     stNetConfig = g_GlobalConfig.Server.Gt.Net;
-    m_pNet = ILPNet::CreateNetModule(&m_oGTMessageHandler, &stNetConfig);
+    m_pNet = ILPNet::CreateNetModule(m_pGTMessageHandler, &stNetConfig);
     LOG_PROCESS_ERROR(m_pNet != nullptr);
 
     m_pListener = m_pNet->CreateListenerCtrl(m_pGTInternalPacketParser);
@@ -120,6 +123,12 @@ BOOL LPAPI CGateServer::Init(void)
 
     nResult = m_pClientListener->Start(g_GlobalConfig.Server.Gt.szClientListenIp, g_GlobalConfig.Server.Gt.dwClientListenPort, TRUE);
     LOG_PROCESS_ERROR(nResult);
+
+    m_pConnector = m_pNet->CreateConnectorCtrl(m_pGTExternalPacketParser);
+    LOG_PROCESS_ERROR(m_pConnector != nullptr);
+
+    //nResult = m_pConnector->Start("192.168.1.97", 6002, TRUE);
+    //LOG_PROCESS_ERROR(nResult);
 
     SetServerState(eServerState_SelfReady);
 
@@ -139,20 +148,12 @@ BOOL LPAPI CGateServer::UnInit(void)
 
     SetServerState(eServerState_UnIniting);
 
-    nResult = m_oGTMessageHandler.UnInit();
+    nResult = m_pGTMessageHandler->UnInit();
     LOG_CHECK_ERROR(nResult);
+    m_pGTMessageHandler = nullptr;
 
-    if(m_pGTInternalPacketParser)
-    {
-        m_pGTInternalPacketParser->Release();
-        m_pGTInternalPacketParser = NULL;
-    }
-
-    if(m_pGTExternalPacketParser)
-    {
-        m_pGTExternalPacketParser->Release();
-        m_pGTExternalPacketParser = NULL;
-    }
+    m_pGTInternalPacketParser = nullptr;
+    m_pGTExternalPacketParser = nullptr;
 
     //删除释放net对象
     ILPNet::DeleteNetModule(m_pNet);
@@ -192,19 +193,25 @@ void CGateServer::Close(void)
     //停止所有监听器和连接器
     if(m_pListener)
     {
-        m_pListener->Stop();
+        m_pListener->Close();
         m_pListener = nullptr;
     }
 
     if(m_pClientListener)
     {
-        m_pClientListener->Stop();
+        m_pClientListener->Close();
         m_pClientListener = nullptr;
     }
 
+    if(m_pConnector)
+    {
+        m_pConnector->Close();
+        m_pConnector = nullptr;
+    }
+
     //关闭所有链接
-    m_oGTMessageHandler.CloseAllSocker();
-    m_oGTHttpMessageHandler.CloseAllHttpObject();
+    m_pGTMessageHandler->CloseAllSocker();
+    m_pGTHttpMessageHandler->CloseAllHttpObject();
 
     //等待所有链接关闭
 }

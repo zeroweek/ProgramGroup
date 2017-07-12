@@ -12,8 +12,8 @@ GlobalConfig.Server.Gs = {
 	},
 
 	szListenIp = "127.0.0.1",
-	dwListenPort = 7001,
+	dwListenPort = 7701,
 
 	szClientListenIp = "127.0.0.1",
-	dwClientListenPort = 7002,
+	dwClientListenPort = 7702,
 };

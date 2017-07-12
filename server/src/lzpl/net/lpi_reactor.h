@@ -35,16 +35,8 @@ public:
     virtual ~ILPReactor() {}
 
     // Summary:
-    //     注册ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI RegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
-
-    // Summary：
-    //     注销ILPEventHandler
-    // Returns:
-    //     TRUE-成功，FALSE-失败
-    virtual BOOL LPAPI UnRegisterEventHandler(ILPEventHandler* pEventHandler) = 0;
+    //   无
+    virtual boost::asio::io_service& GetIoService(LPUINT32 dwId) = 0;
 
 public:
 

@@ -9,7 +9,7 @@
 
 #include "lpi_connector.h"
 #include "lpi_packetparser.h"
-#include "lpi_eventhandler.h"
+#include "lp_netdef.h"
 
 
 
@@ -20,12 +20,13 @@ NS_LZPL_BEGIN
 
 //类声明
 class LPNetImpl;
+class ILPReactor;
 
 
 
 // Summary:
 //      连接器接口类
-class DECLARE ILPConnectorImpl : public ILPConnector, public ILPEventHandler
+class DECLARE ILPConnectorImpl : public ILPConnector, public lp_enable_shared_from_this<ILPConnectorImpl>
 {
 public:
 
@@ -39,11 +40,11 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 连接器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId) = 0;
+    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId) = 0;
 
     // Summary:
     //      链接关闭回调
-    virtual void LPAPI OnClose() = 0;
+    virtual void LPAPI OnConnectionClose() = 0;
 
 public:
 

@@ -43,7 +43,7 @@ BOOL LPAPI CGTMessageHandler::UnInit(void)
     return TRUE;
 }
 
-void LPAPI CGTMessageHandler::OnAccepted(ILPSocker * pSocker)
+void LPAPI CGTMessageHandler::OnAccepted(lp_shared_ptr<ILPSocker> pSocker)
 {
     std::pair<MAP_SOCKER::iterator, bool> InsRet;
 
@@ -63,7 +63,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnConnected(ILPSocker * pSocker)
+void LPAPI CGTMessageHandler::OnConnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     std::pair<MAP_SOCKER::iterator, bool> InsRet;
 
@@ -93,7 +93,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void LPAPI CGTMessageHandler::OnMessage(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     LPUINT16 wMsgId = 0;
@@ -116,7 +116,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnDisconnected(ILPSocker * pSocker)
+void LPAPI CGTMessageHandler::OnDisconnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     LOG_PROCESS_ERROR(pSocker);
 
@@ -137,7 +137,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnConnectDisconnected(ILPSocker * pSocker, std::shared_ptr<ILPConnector> pConnector)
+void LPAPI CGTMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector)
 {
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pConnector != nullptr);
@@ -159,7 +159,7 @@ Exit0:
     return;
 }
 
-BOOL CGTMessageHandler::DoGSRegisterAck(ILPSocker* pSocker)
+BOOL CGTMessageHandler::DoGSRegisterAck(lp_shared_ptr<ILPSocker> pSocker)
 {
     LPINT32 nResult = 0;
     T2G_REGISTER_ACK tMsg;
@@ -183,7 +183,7 @@ Exit0:
     return FALSE;
 }
 
-void CGTMessageHandler::OnGameServerRegister(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void CGTMessageHandler::OnGameServerRegister(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     G2T_REGISTER* ptMsg = NULL;
@@ -205,7 +205,7 @@ Exit0:
     return;
 }
 
-BOOL CGTMessageHandler::DoCLientLoginAck(ILPSocker * pSocker)
+BOOL CGTMessageHandler::DoCLientLoginAck(lp_shared_ptr<ILPSocker> pSocker)
 {
     LPINT32 nResult = 0;
     T2C_LOGIN_ACK stMsg;
@@ -247,7 +247,7 @@ Exit0:
     return FALSE;
 }
 
-void CGTMessageHandler::OnClientLoginReq(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void CGTMessageHandler::OnClientLoginReq(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     C2T_LOGIN_REQ stMsg;
@@ -281,7 +281,7 @@ Exit0:
 
 void CGTMessageHandler::CloseAllSocker(void)
 {
-    ILPSocker* pSocker = NULL;
+    lp_shared_ptr<ILPSocker> pSocker = nullptr;
 
     for(m_iterSocker = m_mapSocker.begin(); m_iterSocker != m_mapSocker.end(); ++m_iterSocker)
     {

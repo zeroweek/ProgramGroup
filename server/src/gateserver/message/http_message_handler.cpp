@@ -68,7 +68,7 @@ LPHttpObject::~LPHttpObject()
     UnInit();
 }
 
-BOOL LPAPI LPHttpObject::Init(ILPSocker * pSocker)
+BOOL LPAPI LPHttpObject::Init(lp_shared_ptr<ILPSocker> pSocker)
 {
     LOG_PROCESS_ERROR(pSocker);
     m_pSocker = pSocker;
@@ -94,7 +94,7 @@ Exit0:
     return;
 }
 
-ILPSocker *LPAPI LPHttpObject::GetSocker(void)
+lp_shared_ptr<ILPSocker>LPAPI LPHttpObject::GetSocker(void)
 {
     return m_pSocker;
 }
@@ -208,6 +208,7 @@ Exit0:
 
 CGTHttpMessageHandler::CGTHttpMessageHandler()
 {
+
 }
 
 CGTHttpMessageHandler::~CGTHttpMessageHandler()
@@ -232,27 +233,7 @@ BOOL LPAPI CGTHttpMessageHandler::UnInit(void)
     return TRUE;
 }
 
-void LPAPI CGTHttpMessageHandler::AddRef(void)
-{
-    ++m_dwRef;
-}
-
-LPUINT32 LPAPI CGTHttpMessageHandler::QueryRef(void)
-{
-    return m_dwRef;
-}
-
-void LPAPI CGTHttpMessageHandler::Release(void)
-{
-    LOG_CHECK_ERROR(m_dwRef > 0);
-
-    if(m_dwRef > 0)
-    {
-        --m_dwRef;
-    }
-}
-
-void LPAPI CGTHttpMessageHandler::OnAccepted(ILPSocker * pSocker)
+void LPAPI CGTHttpMessageHandler::OnAccepted(lp_shared_ptr<ILPSocker> pSocker)
 {
     LPINT32 nResult = 0;
     LPHttpObject* pHttpObject = NULL;
@@ -266,7 +247,7 @@ void LPAPI CGTHttpMessageHandler::OnAccepted(ILPSocker * pSocker)
     nResult = pHttpObject->Init(pSocker);
     LOG_PROCESS_ERROR(nResult);
 
-    InsRet = m_mapHttpObject.insert(std::make_pair(pSocker, pHttpObject));
+    InsRet = m_mapHttpObject.insert(std::make_pair(pSocker->GetSockerId(), pHttpObject));
     LOG_PROCESS_ERROR(InsRet.second);
 
     return;
@@ -276,7 +257,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnConnected(ILPSocker * pSocker)
+void LPAPI CGTHttpMessageHandler::OnConnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     LPHttpObject* pHttpObject = NULL;
     std::pair<MAP_HTTP_OBJECT::iterator, bool> InsRet;
@@ -286,7 +267,7 @@ void LPAPI CGTHttpMessageHandler::OnConnected(ILPSocker * pSocker)
     pHttpObject = _NewHttpObject();
     LOG_PROCESS_ERROR(pHttpObject);
 
-    InsRet = m_mapHttpObject.insert(std::make_pair(pSocker, pHttpObject));
+    InsRet = m_mapHttpObject.insert(std::make_pair(pSocker->GetSockerId(), pHttpObject));
     LOG_PROCESS_ERROR(InsRet.second);
 
     return;
@@ -306,25 +287,18 @@ Exit0:
     return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+void LPAPI CGTHttpMessageHandler::OnMessage(lp_shared_ptr<ILPSocker> pSocker, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
 
-    __TRY__
-    {
-        nResult = _ParseHttpMessage(pSocker, pcszBuf, dwSize);
-        LOG_PROCESS_ERROR(nResult);
-    }
-    __EXCEPT__
-    {
-
-    }
+    nResult = _ParseHttpMessage(pSocker->GetSockerId(), pcszBuf, dwSize);
+    LOG_PROCESS_ERROR(nResult);
 
 Exit0:
     return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnDisconnected(ILPSocker * pSocker)
+void LPAPI CGTHttpMessageHandler::OnDisconnected(lp_shared_ptr<ILPSocker> pSocker)
 {
     LOG_PROCESS_ERROR(pSocker);
 
@@ -337,13 +311,13 @@ void LPAPI CGTHttpMessageHandler::OnDisconnected(ILPSocker * pSocker)
         IMP("%s local close the socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
     }
 
-    m_iterHttpObject = m_mapHttpObject.find(pSocker);
+    m_iterHttpObject = m_mapHttpObject.find(pSocker->GetSockerId());
     LOG_CHECK_ERROR(m_iterHttpObject != m_mapHttpObject.end());
     if(m_iterHttpObject != m_mapHttpObject.end())
     {
         _DelHttpObject(m_iterHttpObject->second);
     }
-    m_mapHttpObject.erase(pSocker);
+    m_mapHttpObject.erase(pSocker->GetSockerId());
 
     return;
 
@@ -352,7 +326,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTHttpMessageHandler::OnConnectDisconnected(ILPSocker * pSocker, std::shared_ptr<ILPConnector> pConnector)
+void LPAPI CGTHttpMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector)
 {
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pConnector != nullptr);
@@ -366,7 +340,7 @@ void LPAPI CGTHttpMessageHandler::OnConnectDisconnected(ILPSocker * pSocker, std
         IMP("%s local close the connector socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
     }
 
-    m_mapHttpObject.erase(pSocker);
+    m_mapHttpObject.erase(pSocker->GetSockerId());
 
     return;
 
@@ -454,7 +428,25 @@ BOOL LPAPI CGTHttpMessageHandler::_DelHttpObject(LPHttpObject * pHttpObject)
     return TRUE;
 }
 
-BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const char * pcszBuf, LPUINT32 dwSize)
+BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(LPUINT32 dwSockerID, const char * pcszBuf, LPUINT32 dwSize)
+{
+    LPINT32 nResult = 0;
+
+    __TRY__
+    {
+        nResult = _ParseHttpMessageImpl(dwSockerID, pcszBuf, dwSize);
+        LOG_PROCESS_ERROR(nResult);
+    }
+    __EXCEPT__
+    {
+
+    }
+
+Exit0:
+    return nResult;
+}
+
+BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessageImpl(LPUINT32 dwSockerID, const char * pcszBuf, LPUINT32 dwSize)
 {
     LPINT32 nResult = 0;
     LPINT32 nIndex = 0;
@@ -474,7 +466,6 @@ BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const c
     LPUINT32 dwRealMsgSize = 0;
     const char* pFindStr = NULL;
 
-    LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pcszBuf);
 
     lpFastZeroCharArray(szMsgBuf);
@@ -538,7 +529,7 @@ BOOL LPAPI CGTHttpMessageHandler::_ParseHttpMessage(ILPSocker * pSocker, const c
     nResult = jsonReader.parse(szMsgBuf, jsonRoot);
     LOG_CHECK_ERROR(nResult);
 
-    m_iterHttpObject = m_mapHttpObject.find(pSocker);
+    m_iterHttpObject = m_mapHttpObject.find(dwSockerID);
     LOG_PROCESS_ERROR(m_iterHttpObject != m_mapHttpObject.end());
     pHttpObject = m_iterHttpObject->second;
     LOG_PROCESS_ERROR(pHttpObject);

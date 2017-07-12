@@ -9,7 +9,7 @@
 
 #include "lpi_listener.h"
 #include "lpi_packetparser.h"
-#include "lpi_eventhandler.h"
+#include "lp_netdef.h"
 
 
 
@@ -20,12 +20,13 @@ NS_LZPL_BEGIN
 
 //类声明
 class LPNetImpl;
+class ILPReactor;
 
 
 
 // Summary:
 //      监听器接口类
-class DECLARE ILPListenerImpl : public ILPListener, public ILPEventHandler
+class DECLARE ILPListenerImpl : public ILPListener, public lp_enable_shared_from_this<ILPListenerImpl>
 {
 public:
 
@@ -37,11 +38,11 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 监听器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPPacketParser* pPacketParser, LPUINT32 dwId) = 0;
+    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId) = 0;
 
 public:
 
-    static std::shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl(LPUINT32 dwIoType);
+    static std::shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl();
     static void LPAPI DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener);
 };
 

@@ -38,8 +38,8 @@ enum e_EventType
 //      接收事件结构体
 struct DECLARE RECV_EVENT
 {
-    ILPSockerImpl*           pSocker;
-    LPUINT32                 dwLen;
+    lp_shared_ptr<ILPSockerImpl>    pSocker;
+    LPUINT32                        dwLen;
 };
 
 
@@ -48,8 +48,8 @@ struct DECLARE RECV_EVENT
 //      断开事件结构体
 struct DECLARE TERMINATE_EVENT
 {
-    ILPSockerImpl*           pSocker;
-    LPUINT32                 dwSockerId;
+    lp_shared_ptr<ILPSockerImpl>    pSocker;
+    LPUINT32                        dwSockerId;
 };
 
 
@@ -58,8 +58,8 @@ struct DECLARE TERMINATE_EVENT
 //      连接建立事件结构体
 struct DECLARE ESTABLISH_EVENT
 {
-    ILPSockerImpl*           pSocker;
-    BOOL                     bAccept;
+    lp_shared_ptr<ILPSockerImpl>    pSocker;
+    BOOL                            bAccept;
 };
 
 
@@ -78,13 +78,13 @@ struct DECLARE CONNECT_ERROR_EVENT
 //      事件结构体
 struct DECLARE NET_EVENT
 {
-    e_EventType                           eEventType;
-    LPUINT32                              dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
+    e_EventType                             eEventType;
+    LPUINT32                                dwFlag;      // 本字段目前仅用于分散到不同事件列表，平衡压力
 
-    std::shared_ptr<RECV_EVENT>           pRecvEvent;
-    std::shared_ptr<TERMINATE_EVENT>      pTerminateEvent;
-    std::shared_ptr<ESTABLISH_EVENT>      pEstablishEvent;
-    std::shared_ptr<CONNECT_ERROR_EVENT>  pConnectErrorEvent;
+    lp_shared_ptr<RECV_EVENT>               pRecvEvent;
+    lp_shared_ptr<TERMINATE_EVENT>          pTerminateEvent;
+    lp_shared_ptr<ESTABLISH_EVENT>          pEstablishEvent;
+    lp_shared_ptr<CONNECT_ERROR_EVENT>      pConnectErrorEvent;
 
     static LPINT32 ms_dwNetEventCount;
     static NET_EVENT* LPAPI NewNetEvent(LPUINT32 dwEventType)
@@ -96,16 +96,16 @@ struct DECLARE NET_EVENT
         switch(dwEventType)
         {
         case eEventType_Recv:
-            pstEvent->pRecvEvent = std::make_shared<RECV_EVENT>();
+            pstEvent->pRecvEvent = lp_make_shared<RECV_EVENT>();
             break;
         case eEventType_Terminate:
-            pstEvent->pTerminateEvent = std::make_shared<TERMINATE_EVENT>();
+            pstEvent->pTerminateEvent = lp_make_shared<TERMINATE_EVENT>();
             break;
         case eEventType_Establish:
-            pstEvent->pEstablishEvent = std::make_shared<ESTABLISH_EVENT>();
+            pstEvent->pEstablishEvent = lp_make_shared<ESTABLISH_EVENT>();
             break;
         case eEventType_ConnectError:
-            pstEvent->pConnectErrorEvent = std::make_shared<CONNECT_ERROR_EVENT>();
+            pstEvent->pConnectErrorEvent = lp_make_shared<CONNECT_ERROR_EVENT>();
             break;
         case eEventType_None:
         case eEventType_Max:
@@ -170,7 +170,7 @@ public:
     //      nEventListCount：
     // Return:
     //      TRUE-成功，FALSE-失败
-    BOOL LPAPI Init(LPNetImpl* pNetImpl, ILPNetMessageHandler* pNetMessageHandler, LPINT32 nEventListCount);
+    BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount);
 
     // Summary:
     //      清除函数
@@ -178,15 +178,15 @@ public:
 
     // Summary:
     //      push一个接收事件
-    BOOL LPAPI PushRecvEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen);
+    BOOL LPAPI PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen);
 
     // Summary:
     //      push一个断开事件
-    void LPAPI PushTerminateEvent(ILPSockerImpl* pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose);
+    void LPAPI PushTerminateEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose);
 
     // Summary:
     //      push一个连接建立事件
-    void LPAPI PushEstablishEvent(ILPSockerImpl* pSocker, BOOL bAccept);
+    void LPAPI PushEstablishEvent(lp_shared_ptr<ILPSockerImpl> pSocker, BOOL bAccept);
 
     // Summary:
     //      push一个连接错误事件
@@ -221,15 +221,15 @@ private:
 
 private:
 
-    BOOL                        m_bInit;
-    char*                       m_pPacketTempBuf;             // 数据包临时缓冲区
-    LPINT32                     m_nEventListCount;            // 事件列表个数
-    LPListEvent*                m_pEventList;                 // 事件列表
-    LPLock*                     m_pEventListLock;             // 事件列表锁
-    LPLoopBuf*                  m_pEventListRecvLoopBuf;      // 接收事件数据缓冲区数组（每个事件列表对应一个）
-    LPLock*                     m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
-    ILPNetMessageHandler*       m_pNetMessageHandler;         //
-    LPNetImpl*                  m_pNetImpl;                   //
+    BOOL                                m_bInit;
+    char*                               m_pPacketTempBuf;             // 数据包临时缓冲区
+    LPINT32                             m_nEventListCount;            // 事件列表个数
+    LPListEvent*                        m_pEventList;                 // 事件列表
+    LPLock*                             m_pEventListLock;             // 事件列表锁
+    LPLoopBuf*                          m_pEventListRecvLoopBuf;      // 接收事件数据缓冲区数组（每个事件列表对应一个）
+    LPLock*                             m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
+    lp_shared_ptr<ILPNetMessageHandler> m_pNetMessageHandler;         //
+    LPNetImpl*                          m_pNetImpl;                   //
 };
 
 

@@ -11,6 +11,7 @@
 #include "lp_def.h"
 #include "lp_type.h"
 #include "lp_singleton.h"
+#include "boost/lexical_cast.hpp"
 
 
 #if defined _WIN32
@@ -33,6 +34,7 @@
 #endif
 
 using namespace std;
+using namespace boost;
 using namespace LZPL;
 
 //begin声明所处的名字空间

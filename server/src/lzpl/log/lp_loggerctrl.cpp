@@ -640,7 +640,7 @@ void LPAPI LPLoggerCtrl::_Log(e_LogLevel eLogLevel, const char* format, va_list 
     lpStrFastZero(s_pszMsg);
     if('\0' != m_szModulePrefix[0])
     {
-        nCount = snprintf(s_pszMsg, s_nMsgBufSize, "%4d-%02d-%02d %02d:%02d:%02d,%06d [%08d] [%s] %s %s",
+        nCount = snprintf(s_pszMsg, s_nMsgBufSize, "[%4d-%02d-%02d %02d:%02d:%02d,%06d] [%08d] [%s] %s %s",
                           oCurTime.GetYear(),
                           oCurTime.GetMon(),
                           oCurTime.GetMday(),
@@ -655,7 +655,7 @@ void LPAPI LPLoggerCtrl::_Log(e_LogLevel eLogLevel, const char* format, va_list 
     }
     else
     {
-        nCount = snprintf(s_pszMsg, s_nMsgBufSize, "%4d-%02d-%02d %02d:%02d:%02d,%06d [%08d] %s %s",
+        nCount = snprintf(s_pszMsg, s_nMsgBufSize, "[%4d-%02d-%02d %02d:%02d:%02d,%06d] [%08d] %s %s",
                           oCurTime.GetYear(),
                           oCurTime.GetMon(),
                           oCurTime.GetMday(),

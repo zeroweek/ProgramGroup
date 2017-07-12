@@ -50,15 +50,16 @@ private:
 
 private:
 
-    std::shared_ptr<ILPNet>          m_pNet;
-    std::shared_ptr<ILPListener>     m_pListener;
-    std::shared_ptr<ILPListener>     m_pClientListener;
-    CGTMessageHandler                m_oGTMessageHandler;
-    CGTInternalPacketParser *        m_pGTInternalPacketParser;
-    CGTExternalPacketParser *        m_pGTExternalPacketParser;
-    CGTHttpMessageHandler            m_oGTHttpMessageHandler;
+    std::shared_ptr<ILPNet>                 m_pNet;
+    std::shared_ptr<ILPListener>            m_pListener;
+    std::shared_ptr<ILPListener>            m_pClientListener;
+    std::shared_ptr<ILPConnector>           m_pConnector;
+    lp_shared_ptr<CGTMessageHandler>        m_pGTMessageHandler;
+    lp_shared_ptr<CGTInternalPacketParser>  m_pGTInternalPacketParser;
+    lp_shared_ptr<CGTExternalPacketParser>  m_pGTExternalPacketParser;
+    lp_shared_ptr<CGTHttpMessageHandler>    m_pGTHttpMessageHandler;
 
-    LPUINT32                          m_dwServerState;
+    LPUINT32                                m_dwServerState;
 
 };
 

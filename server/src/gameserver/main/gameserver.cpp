@@ -69,7 +69,7 @@ CGameServer::~CGameServer()
     //UnInit();
 }
 
-BOOL CGameServer::_InitDB(void)
+BOOL CGameServer::InitDB(void)
 {
     BOOL nResult = 0;
     MYSQL* pMysql = NULL;
@@ -112,46 +112,59 @@ BOOL LPAPI CGameServer::Init(void)
     LPINT32 nResult = 0;
     NET_CONFIG stNetConfig;
 
+    //设置正在初始化状态
     SetServerState(eServerState_Initing);
 
     // 加载配置
     nResult = g_LoadGlobalConfig(g_szGlobalConfigFileName);
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = _InitDB();
+    //初始化DB
+    nResult = InitDB();
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = m_oGSInternalMessageHandler.Init();
+    //创建内部消息分发处理对象
+    m_pGSInternalMessageHandler = lp_make_shared<CGSMessageHandler>();
+    LOG_PROCESS_ERROR(m_pGSInternalMessageHandler);
+    nResult = m_pGSInternalMessageHandler->Init();
     LOG_PROCESS_ERROR(nResult);
 
-    m_pGSInternalPacketParser = new CGSInternalPacketParser();
+    //创建内部消息解析对象
+    m_pGSInternalPacketParser = lp_make_shared<CGSInternalPacketParser>();
     LOG_PROCESS_ERROR(m_pGSInternalPacketParser);
 
-    m_pGSExternalPacketParser = new CGSExternalPacketParser();
+    //创建外部消息解析对象
+    m_pGSExternalPacketParser = lp_make_shared<CGSExternalPacketParser>();
     LOG_PROCESS_ERROR(m_pGSExternalPacketParser);
 
+    //网络模块初始化
     nResult = ILPNet::GlobalInit();
     LOG_PROCESS_ERROR(nResult);
 
+    //创建Net对象
     stNetConfig = g_GlobalConfig.Server.Gs.Net;
-    m_pNet = ILPNet::CreateNetModule(&m_oGSInternalMessageHandler, &stNetConfig);
+    m_pNet = ILPNet::CreateNetModule(m_pGSInternalMessageHandler, &stNetConfig);
     LOG_PROCESS_ERROR(m_pNet != nullptr);
 
+    //创建GT连接器对象
     m_pConnector = m_pNet->CreateConnectorCtrl(m_pGSInternalPacketParser);
     LOG_PROCESS_ERROR(m_pConnector != nullptr);
 
     nResult = m_pConnector->Start(g_GlobalConfig.Server.Gt.szListenIp, g_GlobalConfig.Server.Gt.dwListenPort, TRUE);
     LOG_PROCESS_ERROR(nResult);
 
+    //创建监听器对象
     //m_pListener = m_pNet->CreateListenerCtrl(m_pGSInternalPacketParser);
     //LOG_PROCESS_ERROR(m_pListener);
 
     //nResult = m_pListener->Start(g_GlobalConfig.Server.Gs.szListenIp, g_GlobalConfig.Server.Gs.dwListenPort, TRUE);
     //LOG_PROCESS_ERROR(nResult);
 
+    //游戏逻辑模块初始化
     nResult = CGameLogic::Instance().Init();
     LOG_PROCESS_ERROR(nResult);
 
+    //设置初始化完毕状态
     SetServerState(eServerState_SelfReady);
 
     return TRUE;
@@ -173,8 +186,12 @@ BOOL LPAPI CGameServer::UnInit(void)
     nResult = CGameLogic::Instance().UnInit();
     LOG_CHECK_ERROR(nResult);
 
-    nResult = m_oGSInternalMessageHandler.UnInit();
+    nResult = m_pGSInternalMessageHandler->UnInit();
     LOG_CHECK_ERROR(nResult);
+    m_pGSInternalMessageHandler = nullptr;
+
+    m_pGSInternalPacketParser = nullptr;
+    m_pGSExternalPacketParser = nullptr;
 
     //删除释放net对象
     ILPNet::DeleteNetModule(m_pNet);
@@ -214,21 +231,21 @@ void CGameServer::Close(void)
     //停止所有监听器和连接器
     if(m_pListener != nullptr)
     {
-        m_pListener->Stop();
+        m_pListener->Close();
         m_pListener = nullptr;
     }
 
     if(m_pConnector != nullptr)
     {
-        m_pConnector->Stop();
+        m_pConnector->Close();
         m_pConnector = nullptr;
     }
 
     //关闭所有链接
-    m_oGSInternalMessageHandler.CloseAllSocker();
+    m_pGSInternalMessageHandler->CloseAllSocker();
 
     //等待所有链接关闭
-    while(m_oGSInternalMessageHandler.GetSockerCount() > 0)
+    while(m_pGSInternalMessageHandler->GetSockerCount() > 0)
     {
         MainLoop();
     }

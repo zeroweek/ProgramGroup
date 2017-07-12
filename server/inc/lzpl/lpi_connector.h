@@ -38,7 +38,7 @@ public:
     //      停止连接
     // Return:
     //      TRUE-成功，FALSE-失败
-    virtual void LPAPI Stop() = 0;
+    virtual void LPAPI Close() = 0;
 
     // Summary:
     //      获取id

@@ -86,9 +86,12 @@
 #if __cplusplus >= 201103L || defined(_WIN32)
 #   define lp_shared_ptr std::shared_ptr
 #   define lp_make_shared std::make_shared
+#   define lp_enable_shared_from_this std::enable_shared_from_this
+#   define lp_shared_from_this shared_from_this
 #else
 #   define lp_shared_ptr boost::shared_ptr
 #   define lp_make_shared boost::make_shared
+#   define lp_shared_from_this boost::shared_from_this
 #endif
 
 //函数传递方向标识符

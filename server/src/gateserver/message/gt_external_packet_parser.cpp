@@ -10,33 +10,12 @@ using namespace EXTERNAL_MESSAGE;
 
 CGTExternalPacketParser::CGTExternalPacketParser()
 {
-    m_dwRef = 0;
+
 }
 
 CGTExternalPacketParser::~CGTExternalPacketParser()
 {
-}
 
-void LPAPI CGTExternalPacketParser::AddRef(void)
-{
-    ++m_dwRef;
-}
-
-LPUINT32 LPAPI CGTExternalPacketParser::QueryRef(void)
-{
-    return m_dwRef;
-}
-
-void LPAPI CGTExternalPacketParser::Release(void)
-{
-    if(m_dwRef > 0)
-    {
-        --m_dwRef;
-    }
-    if(m_dwRef == 0)
-    {
-        delete this;
-    }
 }
 
 LPINT32 LPAPI CGTExternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)

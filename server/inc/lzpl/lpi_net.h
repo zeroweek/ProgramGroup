@@ -70,7 +70,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      监听器对象
-    virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(ILPPacketParser* pPacketParser) = 0;
+    virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser) = 0;
 
     // Summary:
     //      创建ILPConnector连接器对象
@@ -78,7 +78,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      连接器对象
-    virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(ILPPacketParser* pPacketParser) = 0;
+    virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser) = 0;
 
     // Summary:
     //      处理网络包函数
@@ -100,7 +100,7 @@ public:
 
     // Summary:
     //  创建网络组件对象
-    static std::shared_ptr<ILPNet> LPAPI CreateNetModule(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig);
+    static std::shared_ptr<ILPNet> LPAPI CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig);
 
 
 

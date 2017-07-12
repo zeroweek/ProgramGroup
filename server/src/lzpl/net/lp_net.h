@@ -45,7 +45,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      监听器对象
-    virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(ILPPacketParser* pPacketParser);
+    virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
 
     // Summary:
     //      创建ILPConnector连接器对象
@@ -53,7 +53,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      连接器对象
-    virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(ILPPacketParser* pPacketParser);
+    virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
 
     // Summary:
     //      处理网络包函数
@@ -67,7 +67,7 @@ public:
     //      初始化函数
     //Return:
     //      成功返回TRUE，失败返回FALSE
-    BOOL LPAPI Init(ILPNetMessageHandler* pNetMessageHandler, NET_CONFIG* pNetConfig);
+    BOOL LPAPI Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig);
 
     // Summary:
     //      反初始化函数
@@ -99,6 +99,10 @@ public:
     //      无
     NET_CONFIG&  LPAPI GetNetConfig();
 
+    // Summary:
+    //   无
+    boost::asio::io_service& GetIoService(LPUINT32 dwId);
+
 protected:
 
     // Summary:
@@ -107,20 +111,20 @@ protected:
 
 protected:
 
-    LPUINT32                           m_dwState;
-    LPUINT32                           m_dwRef;
-    LPUINT32                           m_dwMaxCreateId;
-    LPLock                             m_oLock;
-    ILPNetMessageHandler*              m_pNetMessageHandler;
-    NET_CONFIG                         m_oNetConfig;
-    MODULE_VERSION                     m_stModuleVersion;
+    LPUINT32                                m_dwState;
+    LPUINT32                                m_dwRef;
+    LPUINT32                                m_dwMaxCreateId;
+    LPLock                                  m_oLock;
+    lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;
+    NET_CONFIG                              m_oNetConfig;
+    MODULE_VERSION                          m_stModuleVersion;
 
-    LPSockerMgr                        m_oSockerMgr;
-    LPEventMgr                         m_oEventMgr;
-    std::shared_ptr<ILPReactor>        m_pReactor;
+    LPSockerMgr                             m_oSockerMgr;
+    LPEventMgr                              m_oEventMgr;
+    std::shared_ptr<ILPReactor>             m_pReactor;
 
-    MAP_LISTENER                       m_mapListener;
-    MAP_CONNECTOR                      m_mapConnector;
+    MAP_LISTENER                            m_mapListener;
+    MAP_CONNECTOR                           m_mapConnector;
 };
 
 
