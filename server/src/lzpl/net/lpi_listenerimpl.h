@@ -38,7 +38,7 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 监听器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId) = 0;
+    virtual BOOL LPAPI Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId) = 0;
 
 public:
 

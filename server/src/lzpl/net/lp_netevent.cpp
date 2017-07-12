@@ -29,7 +29,7 @@ LPEventMgr::~LPEventMgr()
     UnInit();
 }
 
-BOOL LPAPI LPEventMgr::Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount)
+BOOL LPAPI LPEventMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount)
 {
     LPINT32 nResult = 0;
 

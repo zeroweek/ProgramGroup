@@ -55,7 +55,7 @@ public:
     //      pNetImpl:
     // Return:
     //      TRUE-成功，FALSE-失败
-    BOOL LPAPI Init(LPNetImpl* pNetImpl);
+    BOOL LPAPI Init(lp_shared_ptr<LPNetImpl> pNetImpl);
 
     // Summary:
     //      清除函数
@@ -116,7 +116,7 @@ private:
     LPMapSocker                m_oValidMap;         // 当前连接有效的socker map
     LPLock                     m_oValidLock;        // 当前连接有效的socker map锁
 
-    LPNetImpl*                 m_pNetImpl;          //
+    lp_shared_ptr<LPNetImpl>   m_pNetImpl;          //
     LPLoopBufPool*             m_pRecvLoopBufPool;  // 接受缓冲区池（若要支持多个size，可使用map pool）
     LPLoopBufPool*             m_pSendLoopBufPool;  // 发送缓冲区池（若要支持多个size，可使用map pool）
 };

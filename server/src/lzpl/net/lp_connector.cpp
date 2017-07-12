@@ -43,7 +43,7 @@ LPConnector::~LPConnector()
     UnInit();
 }
 
-BOOL LPAPI LPConnector::Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId)
+BOOL LPAPI LPConnector::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId)
 {
     LPINT32 nResult = 0;
 
@@ -76,6 +76,7 @@ BOOL LPAPI LPConnector::UnInit()
     SetState(eCommonState_UnIniting);
 
     m_pReactor = nullptr;
+    m_pNetImpl = nullptr;
 
     if(nullptr != m_pPacketParser)
     {
@@ -179,6 +180,16 @@ Exit0:
     return;
 }
 
+LPUINT16 LPAPI LPConnector::GetPort()
+{
+    return m_dwPort;;
+}
+
+std::string& LPAPI LPConnector::GetIp()
+{
+    return m_strIP;
+}
+
 void LPAPI LPConnector::SetSocker(lp_shared_ptr<ILPSockerImpl> pSocker)
 {
     m_pSocker = pSocker;
@@ -279,7 +290,6 @@ void LPAPI LPConnector::HandleConnect(const system::error_code& err)
                 m_pSocket->set_option(ip::tcp::no_delay(true));
 
                 //ÉèÖÃLPSocker¶ÔÏó
-                pSocker->SetSock((LPUINT32)m_pSocket->native());
                 pSocker->SetSocket(m_pSocket);
                 pSocker->SetConnect(true);
 

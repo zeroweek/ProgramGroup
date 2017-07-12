@@ -74,36 +74,28 @@ public:
     virtual ~ILPSocker() {}
 
     // Summary:
-    //      获取底层sock的句柄
-    // Return:
-    //      返回底层sock句柄
-    virtual SOCKET LPAPI GetSock() = 0;
-
-    // Summary:
     //      获取sock id
     // Return:
     //      返回sock id
     virtual LPUINT32 LPAPI GetSockerId() = 0;
 
     // Summary:
-    //      获取对端连接的ip
-    virtual LPUINT32 LPAPI GetRemoteIp() = 0;
+    //      获取底层sock的句柄
+    // Return:
+    //      返回底层sock句柄
+    virtual SOCKET LPAPI GetSock() = 0;
 
     // Summary:
     //      获取对端连接的ip字符串
-    virtual std::string& LPAPI GetRemoteIpStr() = 0;
+    virtual std::string& LPAPI GetRemoteIp() = 0;
 
     // Summary:
     //      获取对端连接的port
     virtual LPUINT16 LPAPI GetRemotePort() = 0;
 
     // Summary:
-    //      获取本地连接的ip
-    virtual LPUINT32 LPAPI GetLocalIp() = 0;
-
-    // Summary:
     //      获取本地连接的ip字符串
-    virtual std::string& LPAPI GetLocalIpStr() = 0;
+    virtual std::string& LPAPI GetLocalIp() = 0;
 
     // Summary:
     //      获取本地连接的port

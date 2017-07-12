@@ -25,7 +25,7 @@ NS_LZPL_BEGIN
 
 //Summary:
 //      windows平台的net组件实现类
-class DECLARE LPNetImpl : public ILPNet
+class DECLARE LPNetImpl : public ILPNet, public lp_enable_shared_from_this<LPNetImpl>
 {
 public:
 
@@ -93,15 +93,7 @@ public:
 
     // Summary:
     //      无
-    ILPReactor& LPAPI GetReactorImpl();
-
-    // Summary:
-    //      无
     NET_CONFIG&  LPAPI GetNetConfig();
-
-    // Summary:
-    //   无
-    boost::asio::io_service& GetIoService(LPUINT32 dwId);
 
 protected:
 
@@ -117,7 +109,6 @@ protected:
     LPLock                                  m_oLock;
     lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;
     NET_CONFIG                              m_oNetConfig;
-    MODULE_VERSION                          m_stModuleVersion;
 
     LPSockerMgr                             m_oSockerMgr;
     LPEventMgr                              m_oEventMgr;

@@ -88,14 +88,13 @@ void LPAPI LPSocker::Reset()
     m_bSending = false;
 
     SetAcceptCreate(FALSE);
-    SetSock(INVALID_SOCKET);
     SetSocket(nullptr);
     SetSockerId(INVALID_SOCKER_ID);
 
-    m_dwRemoteIp = 0;
     m_wRemotePort = 0;
-    m_dwLocalIp = 0;
+    m_strRemoteIp = NULL_STR;
     m_wLocalPort = 0;
+    m_strLocalIp = NULL_STR;
 
     SetParentId(0);
 
@@ -104,19 +103,6 @@ void LPAPI LPSocker::Reset()
 
     m_pRecvLoopBuf = nullptr;
     m_pSendLoopBuf = nullptr;
-
-    m_qwDelayCloseBeginTick = 0;
-    m_qwDelayCloseDuration = 0;
-    m_qwDelayReleaseBeginTick = 0;
-    m_qwDelayReleaseDuration = 0;
-
-    m_stRecvOrSendPerIoData.eIoOptType = eIoOptType_RecvOrSend;
-    m_stRecvOrSendPerIoData.eHandlerType = eEventHandlerType_Socker;
-}
-
-void LPAPI LPSocker::SetSock(SOCKET sock)
-{
-    m_hSock = sock;
 }
 
 void LPAPI LPSocker::SetSocket(lp_shared_ptr<ip::tcp::socket> pSocket)
@@ -126,7 +112,7 @@ void LPAPI LPSocker::SetSocket(lp_shared_ptr<ip::tcp::socket> pSocket)
 
 SOCKET LPAPI LPSocker::GetSock()
 {
-    return m_hSock;
+    return (SOCKET)m_pSocket->native();
 }
 
 void LPAPI LPSocker::SetSockerId(LPUINT32 dwSockerId)
@@ -139,63 +125,79 @@ LPUINT32 LPAPI LPSocker::GetSockerId()
     return m_dwSockerId;
 }
 
-void LPAPI LPSocker::SetRemoteIp(LPUINT32 dwIp)
+std::string& LPAPI LPSocker::GetRemoteIp()
 {
-    char szRemoteIpStr[IP_LEN];
+    system::error_code err;
+    ip::tcp::endpoint ep;
 
-    m_dwRemoteIp = dwIp;
-    lpFastZeroCharArray(szRemoteIpStr);
-    lpStrCpyN(szRemoteIpStr, inet_ntoa((in_addr&)m_dwRemoteIp), IP_LEN);
-    m_strRemoteIp.append(szRemoteIpStr);
-}
+    PROCESS_SUCCESS(NULL_STR != m_strRemoteIp);
+    LOG_PROCESS_ERROR(m_pSocket);
 
-LPUINT32 LPAPI LPSocker::GetRemoteIp()
-{
-    return m_dwRemoteIp;
-}
+    ep = m_pSocket->remote_endpoint(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
 
-std::string& LPAPI LPSocker::GetRemoteIpStr()
-{
+    m_strRemoteIp = ep.address().to_string(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
+
+Exit1:
+Exit0:
     return m_strRemoteIp;
-}
-
-void LPAPI LPSocker::SetRemotePort(LPUINT16 wPort)
-{
-    m_wRemotePort = wPort;
 }
 
 LPUINT16 LPAPI LPSocker::GetRemotePort()
 {
+    system::error_code err;
+    ip::tcp::endpoint ep;
+    LPUINT16 nPort = 0;
+
+    PROCESS_SUCCESS(0 != m_wRemotePort);
+    LOG_PROCESS_ERROR(m_pSocket);
+
+    ep = m_pSocket->remote_endpoint(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
+
+    m_wRemotePort = ep.port();
+
+Exit1:
+Exit0:
     return m_wRemotePort;
 }
 
-void LPAPI LPSocker::SetLocalIp(LPUINT32 dwIp)
+std::string& LPAPI LPSocker::GetLocalIp()
 {
-    char szLocalIpStr[IP_LEN];
+    system::error_code err;
+    ip::tcp::endpoint ep;
 
-    m_dwLocalIp = dwIp;
-    lpFastZeroCharArray(szLocalIpStr);
-    memcpy(szLocalIpStr, inet_ntoa((in_addr&)m_dwLocalIp), IP_LEN);
-    m_strLocalIp.append(szLocalIpStr);
-}
+    PROCESS_SUCCESS(NULL_STR != m_strLocalIp);
+    LOG_PROCESS_ERROR(m_pSocket);
 
-LPUINT32 LPAPI LPSocker::GetLocalIp()
-{
-    return m_dwLocalIp;
-}
+    ep = m_pSocket->local_endpoint(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
 
-std::string& LPAPI LPSocker::GetLocalIpStr()
-{
+    m_strLocalIp = ep.address().to_string(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
+
+Exit1:
+Exit0:
     return m_strLocalIp;
-}
-
-void LPAPI LPSocker::SetLocalPort(LPUINT16 wPort)
-{
-    m_wLocalPort = wPort;
 }
 
 LPUINT16 LPAPI LPSocker::GetLocalPort()
 {
+    system::error_code err;
+    ip::tcp::endpoint ep;
+    LPUINT16 nPort = 0;
+
+    PROCESS_SUCCESS(0 != m_wLocalPort);
+    LOG_PROCESS_ERROR(m_pSocket);
+
+    ep = m_pSocket->local_endpoint(err);
+    LOG_PROCESS_ERROR(system::errc::success == err);
+
+    m_wLocalPort = ep.port();
+
+Exit1:
+Exit0:
     return m_wLocalPort;
 }
 
@@ -281,46 +283,6 @@ LPLoopBuf* LPAPI LPSocker::DetachSendBuf()
     return pLoopBuf;
 }
 
-void LPAPI LPSocker::SetDelayCloseBeginTick(LPUINT64 qwTick)
-{
-    m_qwDelayCloseBeginTick = qwTick;
-}
-
-LPUINT64 LPAPI LPSocker::GetDelayCloseBeginTick()
-{
-    return m_qwDelayCloseBeginTick;
-}
-
-void LPAPI LPSocker::SetDelayCloseDuration(LPUINT64 qwDuration)
-{
-    m_qwDelayCloseDuration = qwDuration;
-}
-
-LPUINT64 LPAPI LPSocker::GetDelayCloseDuration()
-{
-    return m_qwDelayCloseDuration;
-}
-
-void LPAPI LPSocker::SetDelayReleaseBeginTick(LPUINT64 qwTick)
-{
-    m_qwDelayReleaseBeginTick = qwTick;
-}
-
-LPUINT64 LPAPI LPSocker::GetDelayReleaseBeginTick()
-{
-    return m_qwDelayReleaseBeginTick;
-}
-
-void LPAPI LPSocker::SetDelayReleaseDuration(LPUINT64 qwDuration)
-{
-    m_qwDelayReleaseDuration = qwDuration;
-}
-
-LPUINT64 LPAPI LPSocker::GetDelayReleaseDuration()
-{
-    return m_qwDelayReleaseDuration;
-}
-
 void LPAPI LPSocker::OnClose()
 {
     //ÑÓ³Ù¹Ø±Õ
@@ -331,12 +293,12 @@ Exit0:
     return;
 }
 
-void LPAPI LPSocker::SetNetImpl(LPNetImpl * pNetImpl)
+void LPAPI LPSocker::SetNetImpl(lp_shared_ptr<LPNetImpl> pNetImpl)
 {
     m_pNetImpl = pNetImpl;
 }
 
-LPNetImpl* LPAPI LPSocker::GetNetImpl()
+lp_shared_ptr<LPNetImpl> LPAPI LPSocker::GetNetImpl()
 {
     return m_pNetImpl;
 }

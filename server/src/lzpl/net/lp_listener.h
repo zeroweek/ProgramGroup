@@ -45,7 +45,7 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 监听器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId);
+    virtual BOOL LPAPI Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId);
 
     // Summary：
     //      无
@@ -68,6 +68,14 @@ public:
     // Summary:
     //      获取id
     virtual LPUINT32 LPAPI GetId();
+
+    // Summary:
+    //      获取ip字符串
+    virtual std::string& LPAPI GetIp();
+
+    // Summary:
+    //      获取port
+    virtual LPUINT16 LPAPI GetPort();
 
 protected:
 
@@ -99,7 +107,7 @@ protected:
     BOOL                                m_bReUseAddr;
 
     lp_shared_ptr<ILPPacketParser>      m_pPacketParser;
-    LPNetImpl*                          m_pNetImpl;
+    lp_shared_ptr<LPNetImpl>            m_pNetImpl;
     lp_shared_ptr<ip::tcp::acceptor>    m_pAcceptor;
     lp_shared_ptr<ILPReactor>           m_pReactor;
 };

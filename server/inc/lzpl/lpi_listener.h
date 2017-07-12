@@ -41,6 +41,14 @@ public:
     // Summary:
     //      获取id
     virtual LPUINT32 LPAPI GetId() = 0;
+
+    // Summary:
+    //      获取ip字符串
+    virtual std::string& LPAPI GetIp() = 0;
+
+    // Summary:
+    //      获取port
+    virtual LPUINT16 LPAPI GetPort() = 0;
 };
 
 

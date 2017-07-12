@@ -36,20 +36,10 @@ public:
     virtual void LPAPI Reset();
 
     // Summary:
-    //      设置sock句柄
-    // Input:
-    //      sock：底层socket句柄值
-    virtual void LPAPI SetSock(SOCKET sock);
-
-    // Summary:
-    //      设置socket
-    virtual void LPAPI SetSocket(lp_shared_ptr<ip::tcp::socket> pSocket);
-
-    // Summary:
-    //      获取底层sock的句柄
+    //      获取socker id
     // Return:
-    //      返回底层sock句柄
-    virtual SOCKET LPAPI GetSock();
+    //      返回socker id
+    virtual LPUINT32 LPAPI GetSockerId();
 
     // Summary:
     //      设置socker id
@@ -58,64 +48,26 @@ public:
     virtual void LPAPI SetSockerId(LPUINT32 dwSockerId);
 
     // Summary:
-    //      获取socker id
+    //      获取底层sock的句柄
     // Return:
-    //      返回socker id
-    virtual LPUINT32 LPAPI GetSockerId();
-
-    // Summary:
-    //      设置远端连接ip
-    // Input:
-    //      dwIp：ip
-    virtual void LPAPI SetRemoteIp(LPUINT32 dwIp);
-
-    // Summary:
-    //      获取对端连接的ip
-    virtual LPUINT32 LPAPI GetRemoteIp();
+    //      返回底层sock句柄
+    virtual SOCKET LPAPI GetSock();
 
     // Summary:
     //      获取对端连接的ip字符串
-    virtual std::string& LPAPI GetRemoteIpStr();
-
-    // Summary:
-    //      设置远端连接端口
-    // Input:
-    //      wPort：端口
-    virtual void LPAPI SetRemotePort(LPUINT16 wPort);
+    virtual std::string& LPAPI GetRemoteIp();
 
     // Summary:
     //      获取对端连接的port
     virtual LPUINT16 LPAPI GetRemotePort();
 
     // Summary:
-    //      设置本地连接ip
-    // Input:
-    //      dwIp：ip
-    virtual void LPAPI SetLocalIp(LPUINT32 dwIp);
-
-    // Summary:
-    //      获取本地连接的ip
-    virtual LPUINT32 LPAPI GetLocalIp();
-
-    // Summary:
     //      获取本地连接的ip字符串
-    virtual std::string& LPAPI GetLocalIpStr();
-
-    // Summary:
-    //      设置本地连接端口
-    // Input:
-    //      wPort：端口
-    virtual void LPAPI SetLocalPort(LPUINT16 wPort);
+    virtual std::string& LPAPI GetLocalIp();
 
     // Summary:
     //      获取本地连接的port
     virtual LPUINT16 LPAPI GetLocalPort();
-
-    // Summary:
-    //      设置连接状态标记值
-    // Input:
-    //      bConnect：true-连接，false-断开
-    virtual void LPAPI SetConnect(bool bConnect);
 
     // Summary:
     //      判断当前的socket是否处于连接状态
@@ -124,14 +76,49 @@ public:
     virtual BOOL LPAPI IsConnect();
 
     // Summary:
-    //      设置是否被动关闭
-    virtual void LPAPI SetPassiveClose(BOOL bPassiveClose);
+    //      设置连接状态标记值
+    // Input:
+    //      bConnect：true-连接，false-断开
+    virtual void LPAPI SetConnect(bool bConnect);
 
     // Summary:
     //      判断是否被动关闭
     //  Return:
     //      TRUE-是，FALSE-不是
     virtual BOOL LPAPI IsPassiveClose();
+
+    // Summary:
+    //      设置是否被动关闭
+    virtual void LPAPI SetPassiveClose(BOOL bPassiveClose);
+
+    // Summary:
+    //      发送数据
+    // Input:
+    //      pData：数据
+    //      dwLen：长度
+    virtual BOOL LPAPI Send(const char* pData, LPUINT32 dwLen);
+
+    // Summary:
+    //      post异步接收数据操作
+    virtual void LPAPI PostRecv();
+
+    // Summary:
+    //      post异步发送数据操作
+    // Return:
+    //      TRUE-有发送数据，FALSE-没发送数据
+    virtual BOOL LPAPI PostSend();
+
+    // Summary:
+    //      关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker
+    virtual void LPAPI Close(SOCK_ERR_CODE stSockErrCode, BOOL bPassiveClose);
+
+    // Summary:
+    //      异步关闭回调
+    virtual void LPAPI OnClose();
+
+    // Summary:
+    //      设置socket
+    virtual void LPAPI SetSocket(lp_shared_ptr<ip::tcp::socket> pSocket);
 
     // Summary:
     //      设置父级对象的id（连接器或监听器的id）
@@ -190,73 +177,22 @@ public:
     virtual LPLoopBuf* LPAPI DetachSendBuf();
 
     // Summary:
-    //      设置开始延迟关闭tick
-    virtual void LPAPI SetDelayCloseBeginTick(LPUINT64 qwTick);
+    //      无
+    virtual void LPAPI SetNetImpl(lp_shared_ptr<LPNetImpl> pNetImpl);
 
-    // Summary:
-    //      获取开始延迟关闭tick
-    virtual LPUINT64 LPAPI GetDelayCloseBeginTick();
-
-    // Summary:
-    //      设置延迟关闭持续时间
-    virtual void LPAPI SetDelayCloseDuration(LPUINT64 qwDuration);
-
-    // Summary:
-    //      获取延迟关闭持续时间
-    virtual LPUINT64 LPAPI GetDelayCloseDuration();
-
-    // Summary:
-    //      设置开始延迟释放tick
-    virtual void LPAPI SetDelayReleaseBeginTick(LPUINT64 qwTick);
-
-    // Summary:
-    //      获取开始延迟释放tick
-    virtual LPUINT64 LPAPI GetDelayReleaseBeginTick();
-
-    // Summary:
-    //      设置延迟释放持续时间
-    virtual void LPAPI SetDelayReleaseDuration(LPUINT64 qwDuration);
-
-    // Summary:
-    //      获取延迟释放持续时间
-    virtual LPUINT64 LPAPI GetDelayReleaseDuration();
-
-    // Summary:
-    //      异步关闭回调
-    virtual void LPAPI OnClose();
+protected:
 
     // Summary:
     //      无
-    virtual void LPAPI SetNetImpl(LPNetImpl* pNetImpl);
+    virtual lp_shared_ptr<LPNetImpl> LPAPI GetNetImpl();
 
     // Summary:
-    //      无
-    virtual LPNetImpl* LPAPI GetNetImpl();
-
-    // Summary:
-    //      发送数据
-    // Input:
-    //      pData：数据
-    //      dwLen：长度
-    virtual BOOL LPAPI Send(const char* pData, LPUINT32 dwLen);
-
-    // Summary:
-    //      关闭链接，不管是主动关闭还是被动关闭，都统一调用此接口关闭已经建立的socker
-    virtual void LPAPI Close(SOCK_ERR_CODE stSockErrCode, BOOL bPassiveClose);
-
-    // Summary:
-    //      post异步接收数据操作
-    virtual void LPAPI PostRecv();
+    //      设置socket
+    virtual lp_shared_ptr<ip::tcp::socket> LPAPI GetSocket();
 
     // Summary:
     //   无
     virtual void LPAPI HandleRecv(const system::error_code& err, const size_t nSize);
-
-    // Summary:
-    //      post异步发送数据操作
-    // Return:
-    //      TRUE-有发送数据，FALSE-没发送数据
-    virtual BOOL LPAPI PostSend();
 
     // Summary:
     //   无
@@ -264,40 +200,24 @@ public:
 
 protected:
 
-    // Summary:
-    //      设置socket
-    virtual lp_shared_ptr<ip::tcp::socket> LPAPI GetSocket();
-
-protected:
-
     volatile atomic_bool            m_bConnect;                 // 连接状态标记
     volatile atomic_bool            m_bSending;                 // 数据是否正在发送标记
 
     BOOL                            m_bPassiveClose;            // 是否被动关闭
-    SOCKET                          m_hSock;                    // sock句柄
     LPUINT32                        m_dwSockerId;               // socker id
 
-    LPUINT32                        m_dwRemoteIp;               // 远端ip
     LPUINT16                        m_wRemotePort;              // 远端端口
     std::string                     m_strRemoteIp;              // 远端ip字符串
-    LPUINT32                        m_dwLocalIp;                // 本地ip
     LPUINT16                        m_wLocalPort;               // 本地端口
     std::string                     m_strLocalIp;               // 本地ip字符串
 
     LPUINT32                        m_dwParentId;               // 父级对象的id（连接器或监听器的id）
-    LPNetImpl*                      m_pNetImpl;                 //
+    lp_shared_ptr<LPNetImpl>        m_pNetImpl;                 //
     BOOL                            m_bAcceptCreate;            // 是否是accept创建
     lp_shared_ptr<ILPPacketParser>  m_pPacketParser;            // 解析对象
 
     LPLoopBuf*                      m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
     LPLoopBuf*                      m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
-
-    LPUINT64                        m_qwDelayCloseBeginTick;    // 延迟关闭开始tick
-    LPUINT64                        m_qwDelayCloseDuration;     // 延迟关闭持续时间
-    LPUINT64                        m_qwDelayReleaseBeginTick;  // 延迟释放开始tick
-    LPUINT64                        m_qwDelayReleaseDuration;   // 延迟释放持续时间
-
-    PER_IO_DATA                     m_stRecvOrSendPerIoData;    // io绑定的数据，目前只有linux用到
 
     lp_shared_ptr<ip::tcp::socket>  m_pSocket;
 };

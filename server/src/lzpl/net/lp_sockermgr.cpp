@@ -28,7 +28,7 @@ LPSockerMgr::~LPSockerMgr()
     UnInit();
 }
 
-BOOL LPAPI LPSockerMgr::Init(LPNetImpl* pNetImpl)
+BOOL LPAPI LPSockerMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl)
 {
     LPINT32 nResult = 0;
 
@@ -170,7 +170,6 @@ void LPAPI LPSockerMgr::_Release(lp_shared_ptr<ILPSockerImpl> pSocker)
     LOG_CHECK_ERROR(pRecvLoopBuf);
     LOG_CHECK_ERROR(pSendLoopBuf);
 
-    pSocker->SetSock(INVALID_SOCKET);
     pSocker->SetSocket(nullptr);
     pSocker->SetSockerId(INVALID_SOCKER_ID);
     pSocker->DetachPacketParser();

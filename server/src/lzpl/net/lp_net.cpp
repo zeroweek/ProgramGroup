@@ -17,7 +17,6 @@ LPNetImpl::LPNetImpl(void)
     m_pReactor = nullptr;
 
     memset(&m_oNetConfig, 0, sizeof(m_oNetConfig));
-    memset(&m_stModuleVersion, 0, sizeof(m_stModuleVersion));
 
     m_mapListener.clear();
     m_mapConnector.clear();
@@ -38,7 +37,7 @@ std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(lp_shared_ptr<I
     pListener = ILPListenerImpl::NewListenerImpl();
     LOG_PROCESS_ERROR(pListener != nullptr);
 
-    nResult = pListener->Init(this, m_pReactor, pPacketParser, _CreateId());
+    nResult = pListener->Init(lp_shared_from_this(), m_pReactor, pPacketParser, _CreateId());
     LOG_PROCESS_ERROR(nResult);
 
     m_mapListener.insert(make_pair(pListener->GetId(), pListener));
@@ -58,7 +57,7 @@ std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(lp_shared_ptr
     pConnector = ILPConnectorImpl::NewConnectorImpl(m_oNetConfig.dwIoType);
     LOG_PROCESS_ERROR(pConnector);
 
-    nResult = pConnector->Init(this, m_pReactor, pPacketParser, _CreateId());
+    nResult = pConnector->Init(lp_shared_from_this(), m_pReactor, pPacketParser, _CreateId());
     LOG_PROCESS_ERROR(nResult);
 
     m_mapConnector.insert(make_pair(pConnector->GetId(), pConnector));
@@ -133,10 +132,10 @@ BOOL LPAPI LPNetImpl::Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandle
 
     LOG_PROCESS_ERROR(m_oNetConfig.dwIoType > eIoType_None);
 
-    nResult = m_oSockerMgr.Init(this);
+    nResult = m_oSockerMgr.Init(lp_shared_from_this());
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = m_oEventMgr.Init(this, m_pNetMessageHandler, m_oNetConfig.dwNetEventListCount);
+    nResult = m_oEventMgr.Init(lp_shared_from_this(), m_pNetMessageHandler, m_oNetConfig.dwNetEventListCount);
     LOG_PROCESS_ERROR(nResult);
 
     m_pReactor = ILPReactor::NewReactor(m_oNetConfig);
@@ -155,7 +154,7 @@ Exit0:
 
 LPSockerMgr &LPAPI LPNetImpl::GetSockerMgr()
 {
-    return m_oSockerMgr;;
+    return m_oSockerMgr;
 }
 
 LPEventMgr &LPAPI LPNetImpl::GetEventMgr()
@@ -163,20 +162,9 @@ LPEventMgr &LPAPI LPNetImpl::GetEventMgr()
     return m_oEventMgr;
 }
 
-ILPReactor& LPAPI LPNetImpl::GetReactorImpl()
-{
-    return *m_pReactor;
-}
-
 NET_CONFIG& LPAPI LPNetImpl::GetNetConfig()
 {
     return m_oNetConfig;
-}
-
-boost::asio::io_service& LPNetImpl::GetIoService(LPUINT32 dwId)
-{
-    static boost::asio::io_service service;
-    return service;
 }
 
 void LPAPI LPNetImpl::UnInit()

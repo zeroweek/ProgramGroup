@@ -43,7 +43,7 @@ LPListener::~LPListener()
     UnInit();
 }
 
-BOOL LPAPI LPListener::Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId)
+BOOL LPAPI LPListener::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId)
 {
     LPINT32 nResult = 0;
 
@@ -76,6 +76,7 @@ BOOL LPAPI LPListener::UnInit()
     SetState(eCommonState_UnIniting);
 
     m_pReactor = nullptr;
+    m_pNetImpl = nullptr;
 
     if(m_pAcceptor)
     {
@@ -149,6 +150,16 @@ Exit0:
 LPUINT32 LPAPI LPListener::GetId()
 {
     return m_dwId;
+}
+
+LPUINT16 LPAPI LPListener::GetPort()
+{
+    return m_dwPort;
+}
+
+std::string& LPAPI LPListener::GetIp()
+{
+    return m_strIP;
 }
 
 LPUINT32 LPAPI LPListener::GetState()
@@ -234,18 +245,17 @@ void LPAPI LPListener::HandleAccept(lp_shared_ptr<ip::tcp::socket> pSocket, cons
                     PROCESS_ERROR(FALSE);
                 }
 
-                IMP("listener create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), (LPUINT32)pSocket->native());
-
                 //设置sock选项
                 pSocket->set_option(ip::tcp::no_delay(true));
 
                 //设置LPSocker对象
-                pSocker->SetSock((LPUINT32)pSocket->native());
                 pSocker->SetSocket(pSocket);
                 pSocker->SetConnect(true);
 
                 //设置地址 <UNDONE> ...
                 //
+
+                IMP("listener create socker, socker_id=%d, hSock=%d !", pSocker->GetSockerId(), (LPUINT32)pSocket->native());
 
                 //push连接建立事件
                 m_pNetImpl->GetEventMgr().PushEstablishEvent(pSocker, TRUE);

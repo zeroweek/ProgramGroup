@@ -46,7 +46,7 @@ void LPAPI CGSMessageHandler::OnAccepted(lp_shared_ptr<ILPSocker> pSocker)
 
     LOG_PROCESS_ERROR(pSocker);
 
-    IMP("%s new socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+    IMP("%s new socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pSocker->GetRemoteIp().c_str(), pSocker->GetRemotePort());
 
     InsRet = m_mapSocker.insert(std::make_pair(pSocker->GetSockerId(), pSocker));
     LOG_PROCESS_ERROR(InsRet.second);
@@ -66,7 +66,7 @@ void LPAPI CGSMessageHandler::OnConnected(lp_shared_ptr<ILPSocker> pSocker)
 
     LOG_PROCESS_ERROR(pSocker);
 
-    IMP("%s new socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+    IMP("%s new socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pSocker->GetRemoteIp().c_str(), pSocker->GetRemotePort());
 
     InsRet = m_mapSocker.insert(std::make_pair(pSocker->GetSockerId(), pSocker));
     LOG_PROCESS_ERROR(InsRet.second);
@@ -86,7 +86,7 @@ void LPAPI CGSMessageHandler::OnConnectError(std::shared_ptr<ILPConnector> pConn
 {
     LOG_PROCESS_ERROR(pConnector != nullptr);
 
-    ERR("connect to gt fail, connector id %d, errno %d", pConnector->GetId(), dwErrorNo);
+    ERR("connect to gt %s:%d fail, connector id %d, errno %d", pConnector->GetIp().c_str(), pConnector->GetPort(), pConnector->GetId(), dwErrorNo);
 
 Exit0:
     return;
@@ -121,11 +121,11 @@ void LPAPI CGSMessageHandler::OnDisconnected(lp_shared_ptr<ILPSocker> pSocker)
 
     if(pSocker->IsPassiveClose())
     {
-        IMP("%s peer close the socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+        IMP("%s peer close the socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pSocker->GetRemoteIp().c_str(), pSocker->GetRemotePort());
     }
     else
     {
-        IMP("%s local close the socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+        IMP("%s local close the socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pSocker->GetRemoteIp().c_str(), pSocker->GetRemotePort());
     }
     m_mapSocker.erase(pSocker->GetSockerId());
 
@@ -143,11 +143,11 @@ void LPAPI CGSMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSo
 
     if(pSocker->IsPassiveClose())
     {
-        IMP("%s peer close the connector socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+        IMP("%s peer close the connector socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pConnector->GetIp().c_str(), pConnector->GetPort());
     }
     else
     {
-        IMP("%s local close the connector socker : (%d:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock());
+        IMP("%s local close the connector socker : (%d:%d) (%s:%d)", __FUNCTION__, pSocker->GetSockerId(), pSocker->GetSock(), pConnector->GetIp().c_str(), pConnector->GetPort());
     }
     m_mapSocker.erase(pSocker->GetSockerId());
 

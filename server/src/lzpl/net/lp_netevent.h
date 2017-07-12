@@ -170,7 +170,7 @@ public:
     //      nEventListCount：
     // Return:
     //      TRUE-成功，FALSE-失败
-    BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount);
+    BOOL LPAPI Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount);
 
     // Summary:
     //      清除函数
@@ -229,7 +229,7 @@ private:
     LPLoopBuf*                          m_pEventListRecvLoopBuf;      // 接收事件数据缓冲区数组（每个事件列表对应一个）
     LPLock*                             m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
     lp_shared_ptr<ILPNetMessageHandler> m_pNetMessageHandler;         //
-    LPNetImpl*                          m_pNetImpl;                   //
+    lp_shared_ptr<LPNetImpl>            m_pNetImpl;                   //
 };
 
 

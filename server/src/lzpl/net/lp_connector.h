@@ -37,11 +37,7 @@ public:
     //      pNetImpl:
     //      pPacketParser: 消息包解析对象
     //      dwId: 连接器id
-    virtual BOOL LPAPI Init(LPNetImpl* pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId);
-
-    // Summary：
-    //      无
-    virtual BOOL LPAPI UnInit();
+    virtual BOOL LPAPI Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPReactor> pReactor, lp_shared_ptr<ILPPacketParser> pPacketParser, LPUINT32 dwId);
 
     // Summary:
     //      开始连接
@@ -70,20 +66,26 @@ public:
     virtual void LPAPI OnConnectionClose();
 
     // Summary:
+    //      获取对端连接的ip字符串
+    virtual std::string& LPAPI GetIp();
+
+    // Summary:
+    //      获取对端连接的port
+    virtual LPUINT16 LPAPI GetPort();
+
+protected:
+
+    // Summary：
+    //      无
+    virtual BOOL LPAPI UnInit();
+
+    // Summary:
     //      设置是否自动重连
     virtual void LPAPI SetReconnect(BOOL bReconnect);
 
     // Summary:
     //      是否自动重连
     virtual BOOL LPAPI IsReconnect();
-
-    // Summary:
-    //      设置关联的socker对象
-    virtual void LPAPI SetSocker(lp_shared_ptr<ILPSockerImpl> pSocker);
-
-    // Summary:
-    //      获取关联的socker对象
-    virtual lp_shared_ptr<ILPSockerImpl> LPAPI GetSocker();
 
     // Summary:
     //      设置连接器当前状态
@@ -93,7 +95,13 @@ public:
     //      获取连接器当前状态
     virtual LPUINT32 LPAPI GetState();
 
-protected:
+    // Summary:
+    //      设置关联的socker对象
+    virtual void LPAPI SetSocker(lp_shared_ptr<ILPSockerImpl> pSocker);
+
+    // Summary:
+    //      获取关联的socker对象
+    virtual lp_shared_ptr<ILPSockerImpl> LPAPI GetSocker();
 
     // Summary:
     //   关闭socket，正常情况下，不应该调用这个接口，而是统一由LPSocker来执行关闭
@@ -119,7 +127,7 @@ protected:
     LPUINT32                            m_dwPort;
     BOOL                                m_bReconnect;
     lp_shared_ptr<ILPPacketParser>      m_pPacketParser;
-    LPNetImpl*                          m_pNetImpl;
+    lp_shared_ptr<LPNetImpl>            m_pNetImpl;
     lp_shared_ptr<ILPSockerImpl>        m_pSocker;
 
     lp_shared_ptr<ILPReactor>           m_pReactor;

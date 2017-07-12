@@ -47,6 +47,14 @@ public:
     // Summary:
     //      重连
     virtual BOOL LPAPI Reconnect() = 0;
+
+    // Summary:
+    //      获取对端连接的ip字符串
+    virtual std::string& LPAPI GetIp() = 0;
+
+    // Summary:
+    //      获取对端连接的port
+    virtual LPUINT16 LPAPI GetPort() = 0;
 };
 
 
