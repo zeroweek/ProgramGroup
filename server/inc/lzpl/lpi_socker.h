@@ -38,6 +38,7 @@ enum e_SockErrCode
     eSockErrCode_PostSendFail                = 6,    // post异步发送失败
     eSockErrCode_ReactorErrorEvent           = 7,    // 反应器错误事件
     eSockErrCode_RecvError                   = 8,    // 接收数据错误
+    eSockErrCode_MessageEventBufOverflow     = 9,    // 消息事件缓冲区溢出
     eSockErrCode_Total                               // 无
 };
 

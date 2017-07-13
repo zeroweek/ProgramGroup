@@ -29,6 +29,7 @@ enum e_ErrorString
     eErrorString_Socket_PostSendFail = 6,
     eErrorString_Socket_ReactorErrorEvent = 7,
     eErrorString_Socket_RecvError = 8,
+    eErrorString_Socket_MessageEventBufOverflow = 9,
     eErrorString_Total
 };
 

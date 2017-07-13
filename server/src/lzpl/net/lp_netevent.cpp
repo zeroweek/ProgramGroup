@@ -16,10 +16,8 @@ LPEventMgr::LPEventMgr()
     m_bInit = FALSE;
     m_pPacketTempBuf = nullptr;
     m_nEventListCount = 0;
-    m_pEventList = nullptr;
-    m_pEventListLock = nullptr;
+    m_vectEventList.clear();
     m_vectEventListRecvLoopBuf.clear();
-    m_pEventListRecvLoopBufLock = nullptr;
     m_pNetMessageHandler = nullptr;
     m_pNetImpl = nullptr;
 }
@@ -50,16 +48,23 @@ BOOL LPAPI LPEventMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILP
         m_vectEventListRecvLoopBuf.push_back(pLoopBuf);
     }
 
-    m_pEventListRecvLoopBufLock = new LPLock[m_nEventListCount];
-    LOG_PROCESS_ERROR(m_pEventListRecvLoopBufLock);
+    for(int i = 0; i < m_nEventListCount; i++)
+    {
+        m_vectEventListRecvLoopBufLock.push_back(lp_make_shared<std::mutex>());
+    }
 
     m_pPacketTempBuf = new char[MAX_PACKET_LEN];
     LOG_PROCESS_ERROR(m_pPacketTempBuf);
 
-    m_pEventList = new LPListEvent[m_nEventListCount];
-    LOG_PROCESS_ERROR(m_pEventList);
-    m_pEventListLock = new LPLock[m_nEventListCount];
-    LOG_PROCESS_ERROR(m_pEventListLock);
+    for(int i = 0; i < m_nEventListCount; ++i)
+    {
+        m_vectEventList.push_back(EventList());
+    }
+
+    for(int i = 0; i < m_nEventListCount; i++)
+    {
+        m_vectEventListLock.push_back(lp_make_shared<std::mutex>());
+    }
 
     m_bInit = TRUE;
 
@@ -87,27 +92,29 @@ BOOL LPAPI LPEventMgr::UnInit()
         ILPLoopBuf::ReleaseBuf(pLoopBuf);
     }
 
-    SAFE_DELETE_SZ(m_pEventListRecvLoopBufLock);
     SAFE_DELETE_SZ(m_pPacketTempBuf);
-    SAFE_DELETE_SZ(m_pEventListLock);
-    SAFE_DELETE_SZ(m_pEventList);
+
+    m_vectEventList.clear();
+    m_vectEventListLock.clear();
+    m_vectEventListRecvLoopBufLock.clear();
 
 Exit1:
     return TRUE;
 }
 
-BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen)
+BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, lp_shared_ptr<ILPLoopBuf> pLoopBuf, LPUINT32 dwLen)
 {
     LPINT32 nResult = 0;
     LPINT32 nRetryCount = 0;
     LPUINT32 dwLineSize = 0;
-    NET_EVENT* pstEvent = NULL;
+    lp_shared_ptr<NET_EVENT> pstEvent = nullptr;
 
     PROCESS_SUCCESS(!m_bInit);
 
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pSocker->GetSockerId() == dwSockerId);
-    LOG_PROCESS_ERROR(oLoopBuf.GetTotalReadableLen() >= dwLen);
+    LOG_PROCESS_ERROR(pLoopBuf);
+    LOG_PROCESS_ERROR(pLoopBuf->GetTotalReadableLen() >= dwLen);
 
     pstEvent = NET_EVENT::NewNetEvent(eEventType_Recv);
     LOG_PROCESS_ERROR(pstEvent != nullptr);
@@ -119,50 +126,42 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUIN
     pstEvent->pRecvEvent->dwLen = dwLen;
 
     //lock
-    m_pEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount].Lock();
+    m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->lock();
 
-    while(m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->GetTotalWritableLen() < dwLen)
+    if(m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->GetTotalWritableLen() < dwLen)
     {
-        WRN("function %s in file %s at line %d : buf not enough, sleep and try again !", __FUNCTION__, __FILE__, __LINE__);
-        lpSleep(1);
-        nRetryCount++;
+        m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
-        // ³¬¹ý30Ãë£¬¶ªÆú
-        if(nRetryCount > 30000)
-        {
-            oLoopBuf.FinishRead(dwLen);
-
-            //unlock
-            m_pEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
-            LOG_PROCESS_ERROR(FALSE);
-        }
+        ERR("function %s in file %s at line %d : buf not enough, close socket !", __FUNCTION__, __FILE__, __LINE__);
+        pSocker->Close(SOCK_ERR_CODE(eSockErrCode_MessageEventBufOverflow, 1, 0), FALSE);
+        LOG_PROCESS_ERROR(FALSE);
     }
 
-    dwLineSize = oLoopBuf.GetOnceReadableLen();
+    dwLineSize = pLoopBuf->GetOnceReadableLen();
     if(dwLineSize > dwLen)
     {
         dwLineSize = dwLen;
     }
 
-    nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(oLoopBuf.ReadPtr(), dwLineSize);
+    nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(pLoopBuf->ReadPtr(), dwLineSize);
     LOG_CHECK_ERROR(nResult);
 
-    oLoopBuf.FinishRead(dwLineSize);
+    pLoopBuf->FinishRead(dwLineSize);
 
     if(dwLineSize < dwLen)
     {
-        nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(oLoopBuf.ReadPtr(), dwLen - dwLineSize);
+        nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(pLoopBuf->ReadPtr(), dwLen - dwLineSize);
         LOG_CHECK_ERROR(nResult);
 
-        oLoopBuf.FinishRead(dwLen - dwLineSize);
+        pLoopBuf->FinishRead(dwLen - dwLineSize);
     }
 
     //unlock
-    m_pEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
-    m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->lock();
+    m_vectEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
 Exit1:
 
@@ -178,7 +177,7 @@ Exit0:
 void LPAPI LPEventMgr::PushTerminateEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, BOOL bPassiveClose)
 {
     LPINT32 nResult = 0;
-    NET_EVENT* pstEvent = NULL;
+    lp_shared_ptr<NET_EVENT> pstEvent = nullptr;
 
     PROCESS_SUCCESS(!m_bInit);
 
@@ -194,9 +193,9 @@ void LPAPI LPEventMgr::PushTerminateEvent(lp_shared_ptr<ILPSockerImpl> pSocker, 
     pstEvent->pTerminateEvent->pSocker = pSocker;
     pstEvent->pTerminateEvent->dwSockerId = dwSockerId;
 
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
-    m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->lock();
+    m_vectEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
 Exit1:
 
@@ -212,7 +211,7 @@ Exit0:
 void LPAPI LPEventMgr::PushEstablishEvent(lp_shared_ptr<ILPSockerImpl> pSocker, BOOL bAccept)
 {
     LPINT32 nResult = 0;
-    NET_EVENT* pstEvent = NULL;
+    lp_shared_ptr<NET_EVENT> pstEvent = nullptr;
 
     PROCESS_SUCCESS(!m_bInit);
 
@@ -227,9 +226,9 @@ void LPAPI LPEventMgr::PushEstablishEvent(lp_shared_ptr<ILPSockerImpl> pSocker, 
     pstEvent->pEstablishEvent->pSocker = pSocker;
     pstEvent->pEstablishEvent->bAccept = bAccept;
 
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
-    m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->lock();
+    m_vectEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
 Exit1:
 
@@ -245,7 +244,7 @@ Exit0:
 void LPAPI LPEventMgr::PushConnectErrorEvent(lp_shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo)
 {
     LPINT32 nResult = 0;
-    NET_EVENT* pstEvent = NULL;
+    lp_shared_ptr<NET_EVENT> pstEvent = nullptr;
 
     PROCESS_SUCCESS(!m_bInit);
 
@@ -260,9 +259,9 @@ void LPAPI LPEventMgr::PushConnectErrorEvent(lp_shared_ptr<ILPConnectorImpl> pCo
     pstEvent->pConnectErrorEvent->pConnector = pConnector;
     pstEvent->pConnectErrorEvent->dwErrorNo = dwErrorNo;
 
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].Lock();
-    m_pEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
-    m_pEventListLock[pstEvent->dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->lock();
+    m_vectEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
+    m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
 Exit1:
 
@@ -279,7 +278,7 @@ BOOL LPEventMgr::HaveEventForHandled()
 {
     for(LPINT32 i = 0; i < m_nEventListCount; ++i)
     {
-        if(!m_pEventList[i].empty())
+        if(!m_vectEventList[i].empty())
         {
             return TRUE;
         }
@@ -291,27 +290,27 @@ BOOL LPEventMgr::HaveEventForHandled()
 void LPEventMgr::HandleOneEvent()
 {
     LPINT32 nResult = 0;
-    NET_EVENT* pstEvent = NULL;
+    lp_shared_ptr<NET_EVENT> pstEvent = nullptr;
 
     PROCESS_SUCCESS(!m_bInit);
 
     for(LPINT32 i = 0; i < m_nEventListCount; ++i)
     {
-        if(m_pEventList[i].empty())
+        if(m_vectEventList[i].empty())
         {
             continue;
         }
 
-        m_pEventListLock[i].Lock();
-        if(m_pEventList[i].empty())
+        m_vectEventListLock[i]->lock();
+        if(m_vectEventList[i].empty())
         {
-            m_pEventListLock[i].UnLock();
+            m_vectEventListLock[i]->unlock();
             continue;
         }
 
-        pstEvent = m_pEventList[i].front();
-        m_pEventList[i].pop_front();
-        m_pEventListLock[i].UnLock();
+        pstEvent = m_vectEventList[i].front();
+        m_vectEventList[i].pop_front();
+        m_vectEventListLock[i]->unlock();
 
         LOG_PROCESS_ERROR(pstEvent);
 
@@ -361,9 +360,9 @@ void LPAPI LPEventMgr::_ProcRecvEvent(lp_shared_ptr<RECV_EVENT> pstRecvEvent, LP
     LOG_PROCESS_ERROR(m_pNetMessageHandler);
     LOG_PROCESS_ERROR(pstRecvEvent->dwLen < MAX_PACKET_LEN);
 
-    m_pEventListRecvLoopBufLock[dwFlag % m_nEventListCount].Lock();
+    m_vectEventListRecvLoopBufLock[dwFlag % m_nEventListCount]->lock();
     nResult = m_vectEventListRecvLoopBuf[dwFlag % m_nEventListCount]->Read(m_pPacketTempBuf, pstRecvEvent->dwLen, TRUE, TRUE);
-    m_pEventListRecvLoopBufLock[dwFlag % m_nEventListCount].UnLock();
+    m_vectEventListRecvLoopBufLock[dwFlag % m_nEventListCount]->unlock();
     LOG_PROCESS_ERROR(nResult);
 
     pSocker = pstRecvEvent->pSocker;

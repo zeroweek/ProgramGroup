@@ -87,11 +87,12 @@ struct DECLARE NET_EVENT
     lp_shared_ptr<CONNECT_ERROR_EVENT>      pConnectErrorEvent;
 
     static LPINT32 ms_dwNetEventCount;
-    static NET_EVENT* LPAPI NewNetEvent(LPUINT32 dwEventType)
+    static lp_shared_ptr<NET_EVENT> LPAPI NewNetEvent(LPUINT32 dwEventType)
     {
-        ++ms_dwNetEventCount;
-        NET_EVENT* pstEvent = new NET_EVENT();
+        lp_shared_ptr<NET_EVENT> pstEvent = lp_make_shared<NET_EVENT>();
         LOG_PROCESS_ERROR(pstEvent != nullptr);
+
+        ++ms_dwNetEventCount;
 
         switch(dwEventType)
         {
@@ -118,18 +119,17 @@ struct DECLARE NET_EVENT
         return pstEvent;
 Exit0:
 
-        --ms_dwNetEventCount;
-        SAFE_DELETE(pstEvent);
+        DeleteNetEvent(pstEvent);
         return nullptr;
     }
 
-    static void LPAPI DeleteNetEvent(NET_EVENT* & pNetEvent)
+    static void LPAPI DeleteNetEvent(lp_shared_ptr<NET_EVENT> & pNetEvent)
     {
         if(nullptr != pNetEvent)
         {
             --ms_dwNetEventCount;
         }
-        SAFE_DELETE(pNetEvent);
+        pNetEvent = nullptr;
     }
 };
 
@@ -160,7 +160,8 @@ public:
 
 public:
 
-    typedef std::list<NET_EVENT*> LPListEvent;
+    typedef std::list<lp_shared_ptr<NET_EVENT>> EventList;
+    typedef std::vector<EventList> EventListVector;
 
 public:
 
@@ -178,7 +179,7 @@ public:
 
     // Summary:
     //      push一个接收事件
-    BOOL LPAPI PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, ILPLoopBuf& oLoopBuf, LPUINT32 dwLen);
+    BOOL LPAPI PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUINT32 dwSockerId, lp_shared_ptr<ILPLoopBuf> pLoopBuf, LPUINT32 dwLen);
 
     // Summary:
     //      push一个断开事件
@@ -222,14 +223,14 @@ private:
 private:
 
     BOOL                                    m_bInit;
-    char*                                   m_pPacketTempBuf;             // 数据包临时缓冲区
-    LPINT32                                 m_nEventListCount;            // 事件列表个数
-    LPListEvent*                            m_pEventList;                 // 事件列表
-    LPLock*                                 m_pEventListLock;             // 事件列表锁
-    std::vector<lp_shared_ptr<ILPLoopBuf>>  m_vectEventListRecvLoopBuf;   // 接收事件数据缓冲区数组（每个事件列表对应一个）
-    LPLock*                                 m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
-    lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;         //
-    lp_shared_ptr<LPNetImpl>                m_pNetImpl;                   //
+    char*                                   m_pPacketTempBuf;                   // 数据包临时缓冲区
+    LPINT32                                 m_nEventListCount;                  // 事件列表个数
+    EventListVector                         m_vectEventList;                    // 事件列表数组
+    std::vector<lp_shared_ptr<std::mutex>>  m_vectEventListLock;                // 事件列表锁数组
+    std::vector<lp_shared_ptr<ILPLoopBuf>>  m_vectEventListRecvLoopBuf;         // 接收事件数据缓冲区数组（每个事件列表对应一个）
+    std::vector<lp_shared_ptr<std::mutex>>  m_vectEventListRecvLoopBufLock;     // 接收事件数据缓冲区锁数组
+    lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;               //
+    lp_shared_ptr<LPNetImpl>                m_pNetImpl;                         //
 };
 
 

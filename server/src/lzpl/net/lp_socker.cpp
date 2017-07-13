@@ -32,6 +32,7 @@ const char *LPAPI SOCK_ERR_CODE::GetDescription()
     case LZPL::eSockErrCode_PostSendFail:
     case LZPL::eSockErrCode_ReactorErrorEvent:
     case LZPL::eSockErrCode_RecvError:
+    case LZPL::eSockErrCode_MessageEventBufOverflow:
     case LZPL::eSockErrCode_Total:
         return lpGetErrorString(eSockErrCode - eSockErrCode_AcceptFail + eErrorString_Socket_AcceptFail);
     default:
@@ -416,7 +417,7 @@ void LPAPI LPSocker::HandleRecv(const system::error_code& err, const size_t nSiz
             }
 
             //m_pRecvLoopBuf通过引用而不是指针来传递，可以防止函数内部存储指针
-            nResult = GetNetImpl()->GetEventMgr().PushRecvEvent(lp_shared_from_this(), GetSockerId(), *m_pRecvLoopBuf, nUsed);
+            nResult = GetNetImpl()->GetEventMgr().PushRecvEvent(lp_shared_from_this(), GetSockerId(), m_pRecvLoopBuf, nUsed);
             if(!nResult)
             {
                 Close(SOCK_ERR_CODE(eSockErrCode_RecvError, 3, 0), FALSE);

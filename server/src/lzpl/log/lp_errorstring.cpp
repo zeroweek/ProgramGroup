@@ -31,6 +31,8 @@ DECLARE const char* lpGetErrorString(LPUINT32 dwErrorString)
         return "反应器错误事件";
     case LZPL::eErrorString_Socket_RecvError:
         return "接收数据错误";
+    case LZPL::eErrorString_Socket_MessageEventBufOverflow:
+        return "消息事件缓冲区溢出";
     case LZPL::eErrorString_Total:
         return "eErrorString_Total";
     default:
