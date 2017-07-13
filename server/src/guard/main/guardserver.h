@@ -46,7 +46,7 @@ private:
 
 private:
 
-    std::shared_ptr<ILPNet>            m_pNet;
+    lp_shared_ptr<ILPNet>            m_pNet;
 
     LPUINT32                           m_dwServerState;
 

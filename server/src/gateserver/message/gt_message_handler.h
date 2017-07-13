@@ -56,7 +56,7 @@ public:
 
     // Summary:
     //      нч
-    virtual void LPAPI OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo);
+    virtual void LPAPI OnConnectError(lp_shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo);
 
     // Summary:
     //      нч
@@ -68,7 +68,7 @@ public:
 
     // Summary:
     //      нч
-    virtual void LPAPI OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector);
+    virtual void LPAPI OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, lp_shared_ptr<ILPConnector> pConnector);
 
 
 public:

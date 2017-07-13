@@ -8,7 +8,6 @@
 #define _LP_NET_H_
 
 #include "lpi_net.h"
-#include "lp_lock.h"
 #include "lpi_sockerimpl.h"
 #include "lpi_listenerimpl.h"
 #include "lpi_connectorimpl.h"
@@ -45,7 +44,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      监听器对象
-    virtual std::shared_ptr<ILPListener> LPAPI CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
+    virtual lp_shared_ptr<ILPListener> LPAPI CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
 
     // Summary:
     //      创建ILPConnector连接器对象
@@ -53,7 +52,7 @@ public:
     //      pPacketParser：解析对象
     //Return:
     //      连接器对象
-    virtual std::shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
+    virtual lp_shared_ptr<ILPConnector> LPAPI CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser);
 
     // Summary:
     //      处理网络包函数
@@ -77,11 +76,11 @@ public:
 
     // Summary:
     //      查找监听器对象
-    std::shared_ptr<ILPListenerImpl> LPAPI FindListener(LPUINT32 dwId);
+    lp_shared_ptr<ILPListenerImpl> LPAPI FindListener(LPUINT32 dwId);
 
     // Summary:
     //      查找连接器对象
-    std::shared_ptr<ILPConnectorImpl> LPAPI FindConnector(LPUINT32 dwId);
+    lp_shared_ptr<ILPConnectorImpl> LPAPI FindConnector(LPUINT32 dwId);
 
     // Summary:
     //      无
@@ -106,13 +105,13 @@ protected:
     LPUINT32                                m_dwState;
     LPUINT32                                m_dwRef;
     LPUINT32                                m_dwMaxCreateId;
-    LPLock                                  m_oLock;
+    std::mutex                              m_oMutex;
     lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;
     NET_CONFIG                              m_oNetConfig;
 
     LPSockerMgr                             m_oSockerMgr;
     LPEventMgr                              m_oEventMgr;
-    std::shared_ptr<ILPReactor>             m_pReactor;
+    lp_shared_ptr<ILPReactor>             m_pReactor;
 
     MAP_LISTENER                            m_mapListener;
     MAP_CONNECTOR                           m_mapConnector;

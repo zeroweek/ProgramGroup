@@ -83,7 +83,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnConnectError(std::shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo)
+void LPAPI CGTMessageHandler::OnConnectError(lp_shared_ptr<ILPConnector> pConnector, LPUINT32 dwErrorNo)
 {
     LOG_PROCESS_ERROR(pConnector != nullptr);
 
@@ -137,7 +137,7 @@ Exit0:
     return;
 }
 
-void LPAPI CGTMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, std::shared_ptr<ILPConnector> pConnector)
+void LPAPI CGTMessageHandler::OnConnectDisconnected(lp_shared_ptr<ILPSocker> pSocker, lp_shared_ptr<ILPConnector> pConnector)
 {
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pConnector != nullptr);

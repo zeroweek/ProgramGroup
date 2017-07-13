@@ -242,7 +242,7 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo)
+void LPAPI LPEventMgr::PushConnectErrorEvent(lp_shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo)
 {
     LPINT32 nResult = 0;
     NET_EVENT* pstEvent = NULL;
@@ -352,7 +352,7 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::_ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag)
+void LPAPI LPEventMgr::_ProcRecvEvent(lp_shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag)
 {
     LPINT32 nResult = 0;
     lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
@@ -376,10 +376,10 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::_ProcTerminateEvent(std::shared_ptr<TERMINATE_EVENT> pstTerminateEvent)
+void LPAPI LPEventMgr::_ProcTerminateEvent(lp_shared_ptr<TERMINATE_EVENT> pstTerminateEvent)
 {
     LPINT32 nResult = 0;
-    std::shared_ptr<ILPConnectorImpl> pConnector;
+    lp_shared_ptr<ILPConnectorImpl> pConnector;
     lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
 
     LOG_PROCESS_ERROR(pstTerminateEvent);
@@ -418,7 +418,7 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::_ProcEstablishEvent(std::shared_ptr<ESTABLISH_EVENT> pstEstablishEvent)
+void LPAPI LPEventMgr::_ProcEstablishEvent(lp_shared_ptr<ESTABLISH_EVENT> pstEstablishEvent)
 {
     LPINT32 nResult = 0;
     lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
@@ -445,7 +445,7 @@ Exit0:
     return;
 }
 
-void LPAPI LPEventMgr::_ProcConnectErrorEvent(std::shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent)
+void LPAPI LPEventMgr::_ProcConnectErrorEvent(lp_shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent)
 {
     LPINT32 nResult = 0;
 

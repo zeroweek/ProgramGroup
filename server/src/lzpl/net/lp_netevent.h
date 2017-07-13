@@ -68,7 +68,7 @@ struct DECLARE ESTABLISH_EVENT
 //      连接错误事件结构体
 struct DECLARE CONNECT_ERROR_EVENT
 {
-    std::shared_ptr<ILPConnectorImpl>  pConnector;
+    lp_shared_ptr<ILPConnectorImpl>  pConnector;
     LPUINT32                           dwErrorNo;
 };
 
@@ -190,7 +190,7 @@ public:
 
     // Summary:
     //      push一个连接错误事件
-    void LPAPI PushConnectErrorEvent(std::shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo);
+    void LPAPI PushConnectErrorEvent(lp_shared_ptr<ILPConnectorImpl> pConnector, LPUINT32 dwErrorNo);
 
     // Summary:
     //      判断是否有事件待处理
@@ -205,19 +205,19 @@ private:
 
     // Summary:
     //      处理接收事件
-    void LPAPI _ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag);
+    void LPAPI _ProcRecvEvent(lp_shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag);
 
     // Summary:
     //      处理断开事件
-    void LPAPI _ProcTerminateEvent(std::shared_ptr<TERMINATE_EVENT> pstTerminateEvent);
+    void LPAPI _ProcTerminateEvent(lp_shared_ptr<TERMINATE_EVENT> pstTerminateEvent);
 
     // Summary:
     //      处理连接建立事件
-    void LPAPI _ProcEstablishEvent(std::shared_ptr<ESTABLISH_EVENT> pstEstablishEvent);
+    void LPAPI _ProcEstablishEvent(lp_shared_ptr<ESTABLISH_EVENT> pstEstablishEvent);
 
     // Summary:
     //      处理连接错误事件
-    void LPAPI _ProcConnectErrorEvent(std::shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent);
+    void LPAPI _ProcConnectErrorEvent(lp_shared_ptr<CONNECT_ERROR_EVENT> pstConnectErrorEvent);
 
 private:
 

@@ -15,40 +15,26 @@ NS_LZPL_BEGIN
 
 
 
-std::shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(NET_CONFIG& stNetConfig)
+lp_shared_ptr<ILPReactor> LPAPI ILPReactor::NewReactor(NET_CONFIG& stNetConfig)
 {
     LPINT32 nResult = 0;
-    std::shared_ptr<ILPReactor> pReactor;
+    lp_shared_ptr<ILPReactor> pReactor;
 
-    switch(stNetConfig.dwIoType)
-    {
-    case eIoType_CompletionPort:
-    case eIoType_Epoll:
-        {
-            pReactor = std::make_shared<LPReactor>();
-            LOG_PROCESS_ERROR(pReactor != nullptr);
+    pReactor = std::make_shared<LPReactor>();
+    LOG_PROCESS_ERROR(pReactor != nullptr);
 
-            nResult = ((LPReactor*)pReactor.get())->Init(stNetConfig);
-            LOG_PROCESS_ERROR(nResult);
-        }
-        break;
-    case eIoType_None:
-    default:
-        LOG_CHECK_ERROR(FALSE);
-        LPASSERT(FALSE);
-        LOG_PROCESS_ERROR(FALSE);
-        break;
-    }
+    nResult = ((LPReactor*)pReactor.get())->Init(stNetConfig);
+    LOG_PROCESS_ERROR(nResult);
 
     return pReactor;
 
 Exit0:
 
-    pReactor = nullptr;
+    DeleteReactor(pReactor);
     return FALSE;
 }
 
-void LPAPI ILPReactor::DeleteReactor(std::shared_ptr<ILPReactor>& pReactor)
+void LPAPI ILPReactor::DeleteReactor(lp_shared_ptr<ILPReactor>& pReactor)
 {
     pReactor = nullptr;
 }

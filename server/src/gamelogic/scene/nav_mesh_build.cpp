@@ -144,7 +144,7 @@ BOOL CNavMeshObjLoader::_SeparatePolysToLists(POLYGON_DATA* pPolyData, LPINT32& 
     LPINT32 nResult = 0;
     LPUINT32 dwNeighborPolyCount = 0;
     POLYGON_DATA* pNeighborPoly[MAX_NEIGHBOR_PER_POLYGON];
-    std::shared_ptr<LPBaseList> pLstPolygonData;
+    lp_shared_ptr<LPBaseList> pLstPolygonData;
 
     MAP_ID_2_ID::iterator fit;
     std::pair<MAP_ID_2_ID::iterator, bool> InsRet;
@@ -462,7 +462,7 @@ BOOL CNavMeshObjLoader::_TransTriToPoly(void)
     POLYGON_DATA* pPolyData = NULL;
     POLYGON_DATA* pNextPolyData = NULL;
     LST_LST_POLYGON_DATA::iterator llitr;
-    std::shared_ptr<LPBaseList> pBaseList;
+    lp_shared_ptr<LPBaseList> pBaseList;
 
     ILPFile* pFile = NULL;
     LPINT32 nLen = 0;

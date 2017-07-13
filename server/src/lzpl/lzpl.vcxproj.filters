@@ -279,9 +279,6 @@
     <ClInclude Include="net\lp_socker.h">
       <Filter>net</Filter>
     </ClInclude>
-    <ClInclude Include="net\lp_netoption.h">
-      <Filter>net</Filter>
-    </ClInclude>
     <ClInclude Include="net\lp_reactor.h">
       <Filter>net</Filter>
     </ClInclude>
@@ -289,9 +286,6 @@
       <Filter>log</Filter>
     </ClInclude>
     <ClInclude Include="net\lpi_connectorimpl.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="net\lpi_eventhandler.h">
       <Filter>net</Filter>
     </ClInclude>
     <ClInclude Include="net\lpi_listenerimpl.h">
@@ -432,9 +426,6 @@
       <Filter>net</Filter>
     </ClCompile>
     <ClCompile Include="net\lp_socker.cpp">
-      <Filter>net</Filter>
-    </ClCompile>
-    <ClCompile Include="net\lp_netoption.cpp">
       <Filter>net</Filter>
     </ClCompile>
     <ClCompile Include="net\lp_reactor.cpp">

@@ -70,7 +70,7 @@ public:
 
         LPINT32                        m_nPriority;
         pfunTableEvent                 m_pfTableCB;
-        std::shared_ptr<ILPDataList>   m_poCBParams;
+        lp_shared_ptr<ILPDataList>   m_poCBParams;
     };
 
 public:

@@ -200,26 +200,27 @@ protected:
 
 protected:
 
-    volatile atomic_bool            m_bConnect;                 // 连接状态标记
-    volatile atomic_bool            m_bSending;                 // 数据是否正在发送标记
+    volatile atomic_bool                m_bConnect;                 // 连接状态标记
+    volatile atomic_bool                m_bSending;                 // 数据是否正在发送标记
 
-    BOOL                            m_bPassiveClose;            // 是否被动关闭
-    LPUINT32                        m_dwSockerId;               // socker id
+    LPUINT32                            m_dwSockerId;               // socker id
+    LPUINT32                            m_dwParentId;               // 父级对象的id（连接器或监听器的id）
 
-    LPUINT16                        m_wRemotePort;              // 远端端口
-    std::string                     m_strRemoteIp;              // 远端ip字符串
-    LPUINT16                        m_wLocalPort;               // 本地端口
-    std::string                     m_strLocalIp;               // 本地ip字符串
+    BOOL                                m_bPassiveClose;            // 是否被动关闭
+    BOOL                                m_bAcceptCreate;            // 是否是accept创建
 
-    LPUINT32                        m_dwParentId;               // 父级对象的id（连接器或监听器的id）
-    lp_shared_ptr<LPNetImpl>        m_pNetImpl;                 //
-    BOOL                            m_bAcceptCreate;            // 是否是accept创建
-    lp_shared_ptr<ILPPacketParser>  m_pPacketParser;            // 解析对象
+    LPUINT16                            m_wRemotePort;              // 远端端口
+    std::string                         m_strRemoteIp;              // 远端ip字符串
+    LPUINT16                            m_wLocalPort;               // 本地端口
+    std::string                         m_strLocalIp;               // 本地ip字符串
 
-    lp_shared_ptr<ILPLoopBuf>        m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
-    lp_shared_ptr<ILPLoopBuf>        m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
+    lp_shared_ptr<LPNetImpl>            m_pNetImpl;                 //
+    lp_shared_ptr<ILPPacketParser>      m_pPacketParser;            // 解析对象
 
-    lp_shared_ptr<ip::tcp::socket>  m_pSocket;
+    lp_shared_ptr<ILPLoopBuf>           m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
+    lp_shared_ptr<ILPLoopBuf>           m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
+
+    lp_shared_ptr<ip::tcp::socket>      m_pSocket;
 };
 
 

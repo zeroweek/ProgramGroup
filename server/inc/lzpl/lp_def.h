@@ -40,6 +40,7 @@
 #include <limits.h>
 #include <math.h>
 #include <string.h>
+#include <mutex>
 
 
 
@@ -161,7 +162,7 @@
 
 
 //网络相关宏
-#define IP_LEN                                             (64)                 //定义存储ip字符串的长度
+#define IP_LEN                                             (128)                //定义存储ip字符串的长度
 #define DELAY_CLOSE_SOCKET_TIME                            (3000)               //socker关闭连接延迟时间，单位毫秒/ms
 #define DELAY_RELEASE_SOCKER_TIME                          (1500)               //socker释放延迟时间，单位毫秒/ms
 #define INVALID_SOCKER_ID                                  (0)                  //无效的socker id，每一个连接socker都会分配一个id

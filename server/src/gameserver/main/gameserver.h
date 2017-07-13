@@ -53,9 +53,9 @@ private:
 
 private:
 
-    std::shared_ptr<ILPNet>                 m_pNet;
-    std::shared_ptr<ILPConnector>           m_pConnector;
-    std::shared_ptr<ILPListener>            m_pListener;
+    lp_shared_ptr<ILPNet>                 m_pNet;
+    lp_shared_ptr<ILPConnector>           m_pConnector;
+    lp_shared_ptr<ILPListener>            m_pListener;
     lp_shared_ptr<CGSMessageHandler>        m_pGSInternalMessageHandler;
     lp_shared_ptr<CGSInternalPacketParser>  m_pGSInternalPacketParser;
     lp_shared_ptr<CGSExternalPacketParser>  m_pGSExternalPacketParser;

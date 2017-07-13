@@ -27,10 +27,10 @@ LPNetImpl::~LPNetImpl(void)
     UnInit();
 }
 
-std::shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
+lp_shared_ptr<ILPListener> LPAPI LPNetImpl::CreateListenerCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
 {
     LPINT32 nResult = 0;
-    std::shared_ptr<ILPListenerImpl> pListener;
+    lp_shared_ptr<ILPListenerImpl> pListener;
 
     LOG_PROCESS_ERROR(pPacketParser);
 
@@ -47,10 +47,10 @@ Exit0:
     return NULL;
 }
 
-std::shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
+lp_shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(lp_shared_ptr<ILPPacketParser> pPacketParser)
 {
     LPINT32 nResult = 0;
-    std::shared_ptr<ILPConnectorImpl> pConnector;
+    lp_shared_ptr<ILPConnectorImpl> pConnector;
 
     LOG_PROCESS_ERROR(pPacketParser);
 
@@ -67,9 +67,9 @@ Exit0:
     return NULL;
 }
 
-std::shared_ptr<ILPListenerImpl> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
+lp_shared_ptr<ILPListenerImpl> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
 {
-    std::shared_ptr<ILPListenerImpl> pListener;
+    lp_shared_ptr<ILPListenerImpl> pListener;
     MAP_LISTENER::iterator fit;
 
     fit = m_mapListener.find(dwId);
@@ -81,9 +81,9 @@ std::shared_ptr<ILPListenerImpl> LPAPI LPNetImpl::FindListener(LPUINT32 dwId)
     return pListener;
 }
 
-std::shared_ptr<ILPConnectorImpl> LPAPI LPNetImpl::FindConnector(LPUINT32 dwId)
+lp_shared_ptr<ILPConnectorImpl> LPAPI LPNetImpl::FindConnector(LPUINT32 dwId)
 {
-    std::shared_ptr<ILPConnectorImpl> pConnector;
+    lp_shared_ptr<ILPConnectorImpl> pConnector;
     MAP_CONNECTOR::iterator fit;
 
     fit = m_mapConnector.find(dwId);
@@ -225,9 +225,9 @@ LPUINT32 LPAPI LPNetImpl::_CreateId()
 {
     LPUINT32 dwNewId = 0;
 
-    m_oLock.Lock();
+    m_oMutex.lock();
     dwNewId = ++m_dwMaxCreateId;
-    m_oLock.UnLock();
+    m_oMutex.unlock();
 
     return dwNewId;
 }
@@ -242,10 +242,10 @@ void LPAPI ILPNet::GlobalUnInit()
 
 }
 
-std::shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
+lp_shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
 {
     LPINT32 nResult = 0;
-    std::shared_ptr<ILPNet> poNetImpl;
+    lp_shared_ptr<ILPNet> poNetImpl;
 
     PRINTF_PROCESS_ERROR(lpGetLzplLoggerCtrl());
 
@@ -271,7 +271,7 @@ Exit0:
     return nullptr;
 }
 
-void LPAPI ILPNet::DeleteNetModule(std::shared_ptr<ILPNet>& poNet)
+void LPAPI ILPNet::DeleteNetModule(lp_shared_ptr<ILPNet>& poNet)
 {
     poNet = nullptr;
 }

@@ -79,11 +79,11 @@ public:
     {
         LPUINT32 MapIndexCol;
 
-        std::shared_ptr<RecordIntKeyMap::iterator> PIntMapIter;
-        std::shared_ptr<RecordStrKeyMap::iterator> PStrMapIter;
+        lp_shared_ptr<RecordIntKeyMap::iterator> PIntMapIter;
+        lp_shared_ptr<RecordStrKeyMap::iterator> PStrMapIter;
 
-        std::shared_ptr<RecordIntKeyMulmap::iterator> PIntMulmapIter;
-        std::shared_ptr<RecordStrKeyMulmap::iterator> PStrMulmapIter;
+        lp_shared_ptr<RecordIntKeyMulmap::iterator> PIntMulmapIter;
+        lp_shared_ptr<RecordStrKeyMulmap::iterator> PStrMulmapIter;
     };
 
     typedef TABLE_MAP TableMap;

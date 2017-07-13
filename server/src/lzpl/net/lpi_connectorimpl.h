@@ -48,11 +48,11 @@ public:
 
 public:
 
-    static std::shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl(LPUINT32 dwIoType);
-    static void LPAPI DeleteConnectorImpl(std::shared_ptr<ILPConnectorImpl>& pConnector);
+    static lp_shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl(LPUINT32 dwIoType);
+    static void LPAPI DeleteConnectorImpl(lp_shared_ptr<ILPConnectorImpl>& pConnector);
 };
 
-typedef std::map<LPUINT32, std::shared_ptr<ILPConnectorImpl>> MAP_CONNECTOR;
+typedef std::map<LPUINT32, lp_shared_ptr<ILPConnectorImpl>> MAP_CONNECTOR;
 
 
 

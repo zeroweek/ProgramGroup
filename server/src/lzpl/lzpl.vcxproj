@@ -152,7 +152,6 @@
     <ClInclude Include="log\lp_filelogger.h" />
     <ClInclude Include="log\lp_loggerctrl.h" />
     <ClInclude Include="net\lpi_connectorimpl.h" />
-    <ClInclude Include="net\lpi_eventhandler.h" />
     <ClInclude Include="net\lpi_listenerimpl.h" />
     <ClInclude Include="net\lpi_reactor.h" />
     <ClInclude Include="net\lpi_sockerimpl.h" />
@@ -161,7 +160,6 @@
     <ClInclude Include="net\lp_net.h" />
     <ClInclude Include="net\lp_netdef.h" />
     <ClInclude Include="net\lp_netevent.h" />
-    <ClInclude Include="net\lp_netoption.h" />
     <ClInclude Include="net\lp_reactor.h" />
     <ClInclude Include="net\lp_socker.h" />
     <ClInclude Include="net\lp_sockermgr.h" />
@@ -195,7 +193,6 @@
     <ClCompile Include="net\lp_listener.cpp" />
     <ClCompile Include="net\lp_net.cpp" />
     <ClCompile Include="net\lp_netevent.cpp" />
-    <ClCompile Include="net\lp_netoption.cpp" />
     <ClCompile Include="net\lp_reactor.cpp" />
     <ClCompile Include="net\lp_socker.cpp" />
     <ClCompile Include="net\lp_sockermgr.cpp" />

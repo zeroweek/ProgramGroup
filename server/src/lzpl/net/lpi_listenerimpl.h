@@ -42,11 +42,11 @@ public:
 
 public:
 
-    static std::shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl();
-    static void LPAPI DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener);
+    static lp_shared_ptr<ILPListenerImpl> LPAPI NewListenerImpl();
+    static void LPAPI DeleteListenerImpl(lp_shared_ptr<ILPListenerImpl>& pListener);
 };
 
-typedef std::map<LPUINT32, std::shared_ptr<ILPListenerImpl>> MAP_LISTENER;
+typedef std::map<LPUINT32, lp_shared_ptr<ILPListenerImpl>> MAP_LISTENER;
 
 
 

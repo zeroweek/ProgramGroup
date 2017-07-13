@@ -69,7 +69,7 @@ public:
 
         LPINT32                        m_nPriority;
         pfunPropertyEvent              m_pfPropertyCB;
-        std::shared_ptr<ILPDataList>   m_poCBParams;
+        lp_shared_ptr<ILPDataList>   m_poCBParams;
     };
 
 public:

@@ -14,13 +14,13 @@ NS_LZPL_BEGIN
 
 LPSockerMgr::LPSockerMgr()
 {
-    m_dwMaxSockId = INVALID_SOCKER_ID;
-
     m_oValidMap.clear();
+    m_dwMaxSockId           = INVALID_SOCKER_ID;
+    m_nCurValidConnectCount = 0;
 
-    m_pNetImpl = NULL;
-    m_pRecvLoopBufPool = nullptr;
-    m_pSendLoopBufPool = nullptr;
+    m_pNetImpl              = NULL;
+    m_pRecvLoopBufPool      = nullptr;
+    m_pSendLoopBufPool      = nullptr;
 }
 
 LPSockerMgr::~LPSockerMgr()
@@ -87,7 +87,7 @@ void LPAPI LPSockerMgr::Release(lp_shared_ptr<ILPSockerImpl> pSocker)
 {
     BOOL bAcceptCreate = FALSE;
     LPUINT32 nParentId = 0;
-    std::shared_ptr<ILPConnectorImpl> pConnector;
+    lp_shared_ptr<ILPConnectorImpl> pConnector;
 
     LOG_PROCESS_ERROR(pSocker);
     nParentId = pSocker->GetParentId();
@@ -140,6 +140,7 @@ lp_shared_ptr<ILPSockerImpl> LPAPI LPSockerMgr::_Create(lp_shared_ptr<ILPPacketP
     pSocker->SetNetImpl(m_pNetImpl);
 
     m_oValidLock.Lock();
+    ++m_nCurValidConnectCount;
     m_oValidMap.insert(make_pair(pSocker->GetSockerId(), pSocker));
     m_oValidLock.UnLock();
 
@@ -173,6 +174,7 @@ void LPAPI LPSockerMgr::_Release(lp_shared_ptr<ILPSockerImpl> pSocker)
     pSocker->SetNetImpl(NULL);
 
     m_oValidLock.Lock();
+    --m_nCurValidConnectCount;
     m_oValidMap.erase(pSocker->GetSockerId());
     m_oValidLock.UnLock();
 
@@ -211,13 +213,7 @@ lp_shared_ptr<ILPSockerImpl> LPSockerMgr::Find(LPUINT32 dwSockerId)
 
 LPUINT32 LPAPI LPSockerMgr::GetCurValidConnectCount()
 {
-    LPUINT32 dwValidCount = 0;
-
-    m_oValidLock.Lock();
-    dwValidCount = (LPUINT32)m_oValidMap.size();
-    m_oValidLock.UnLock();
-
-    return dwValidCount;
+    return m_nCurValidConnectCount;
 }
 
 

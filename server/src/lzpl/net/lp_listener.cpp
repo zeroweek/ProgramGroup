@@ -15,12 +15,12 @@ NS_LZPL_BEGIN
 
 
 
-std::shared_ptr<ILPListenerImpl> LPAPI ILPListenerImpl::NewListenerImpl()
+lp_shared_ptr<ILPListenerImpl> LPAPI ILPListenerImpl::NewListenerImpl()
 {
     return std::make_shared<LPListener>();
 }
 
-void LPAPI ILPListenerImpl::DeleteListenerImpl(std::shared_ptr<ILPListenerImpl>& pListener)
+void LPAPI ILPListenerImpl::DeleteListenerImpl(lp_shared_ptr<ILPListenerImpl>& pListener)
 {
     pListener = nullptr;
 }

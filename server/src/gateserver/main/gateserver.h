@@ -50,10 +50,10 @@ private:
 
 private:
 
-    std::shared_ptr<ILPNet>                 m_pNet;
-    std::shared_ptr<ILPListener>            m_pListener;
-    std::shared_ptr<ILPListener>            m_pClientListener;
-    std::shared_ptr<ILPConnector>           m_pConnector;
+    lp_shared_ptr<ILPNet>                 m_pNet;
+    lp_shared_ptr<ILPListener>            m_pListener;
+    lp_shared_ptr<ILPListener>            m_pClientListener;
+    lp_shared_ptr<ILPConnector>           m_pConnector;
     lp_shared_ptr<CGTMessageHandler>        m_pGTMessageHandler;
     lp_shared_ptr<CGTInternalPacketParser>  m_pGTInternalPacketParser;
     lp_shared_ptr<CGTExternalPacketParser>  m_pGTExternalPacketParser;

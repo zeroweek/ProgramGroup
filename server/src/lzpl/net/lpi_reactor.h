@@ -9,7 +9,6 @@
 #ifndef _LPI_REACTOR_H_
 #define _LPI_REACTOR_H_
 
-#include "lpi_eventhandler.h"
 #include "lp_netdef.h"
 
 
@@ -40,41 +39,8 @@ public:
 
 public:
 
-    static std::shared_ptr<ILPReactor> LPAPI NewReactor(NET_CONFIG& stNetConfig);
-    static void LPAPI DeleteReactor(std::shared_ptr<ILPReactor>& pReactor);
-
-    static const char * LPAPI GetIoOptTypeName(e_IoOptType eType)
-    {
-        switch(eType)
-        {
-        case LZPL::eIoOptType_None:
-            LOG_CHECK_ERROR(FALSE);
-            return "eIoOptType_None";
-            break;
-        case LZPL::eIoOptType_Recv:
-            return "eIoOptType_Recv";
-            break;
-        case LZPL::eIoOptType_Send:
-            return "eIoOptType_Send";
-            break;
-        case LZPL::eIoOptType_Accept:
-            return "eIoOptType_Accept";
-            break;
-        case LZPL::eIoOptType_Connect:
-            return "eIoOptType_Connect";
-            break;
-        case LZPL::eIoOptType_Max:
-            LOG_CHECK_ERROR(FALSE);
-            return "eIoOptType_Max";
-            break;
-        default:
-            LOG_PROCESS_ERROR(FALSE);
-            break;
-        }
-
-Exit0:
-        return "*** unknow e_IoOptType ***";
-    }
+    static lp_shared_ptr<ILPReactor> LPAPI NewReactor(NET_CONFIG& stNetConfig);
+    static void LPAPI DeleteReactor(lp_shared_ptr<ILPReactor>& pReactor);
 };
 
 
