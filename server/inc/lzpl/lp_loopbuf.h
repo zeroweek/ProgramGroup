@@ -63,20 +63,6 @@ public:
     LPUINT32 LPAPI GetPoolId();
 
     // Summary:
-    //      获取引用计数
-    // Return:
-    //      引用计数
-    LPUINT32 LPAPI QueryRef();
-
-    // Summary:
-    //      增加引用计数
-    void LPAPI AddRef();
-
-    // Summary:
-    //      减少引用计数
-    void LPAPI DeductRef();
-
-    // Summary:
     //      获取当前总共可读数据长度，读指针前面以及后面的可读取的数据大小都计算在内
     //      注：两次连续调用（期间没有读操作）获得的值可能不一样（调用间可能有写操作完成），
     //              所以当进行调用函数用于判断后赋值的场景，需要存储第一次调用的值用于赋值
@@ -160,7 +146,6 @@ private:
     volatile atomic_uint    m_dwDataLen;     // 有效数据长度
 
     LPUINT32                 m_dwBufSize;     // 缓冲区大小
-    LPUINT32                 m_dwRefCount;    // 引用计数
     LPUINT32                 m_dwPoolId;      // 所在池的id
 };
 
@@ -168,12 +153,12 @@ private:
 
 // Summary:
 //      存放LPLoopBuf对象的池类，每个缓冲池对象对应一个size
-class DECLARE LPLoopBufPool
+class DECLARE LPLoopBufPool : public ILPLoopBufPool
 {
 public:
 
-    typedef std::set<LPLoopBuf*> LPSetBuf;
-    typedef std::list<LPLoopBuf*> LPListBuf;
+    typedef std::set<lp_shared_ptr<ILPLoopBuf>> LPSetBuf;
+    typedef std::list<lp_shared_ptr<ILPLoopBuf>> LPListBuf;
 
 public:
 
@@ -193,37 +178,37 @@ public:
     //      dwBufSize：缓冲区对象大小
     //      bUsePool：是否使用对象池
     //      dwPoolInitCount: 池初始化大小
-    BOOL LPAPI Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount);
+    virtual BOOL LPAPI Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount);
+
+    // Summary:
+    //      获取缓冲区对象大小
+    // Return:
+    //      缓冲区对象大小
+    virtual LPUINT32 LPAPI GetBufSize();
+
+    // Summary:
+    //      创建指定大小的缓冲区对象
+    // Return:
+    //      失败返回NULL
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI Create();
+
+    // Summary:
+    //      释放缓冲区对象
+    // Input:
+    //      pBuf：缓冲区对象
+    virtual void LPAPI Release(lp_shared_ptr<ILPLoopBuf>& pBuf);
+
+private:
 
     // Summary:
     //      无
     BOOL LPAPI UnInit();
 
     // Summary:
-    //      获取缓冲区对象大小
-    // Return:
-    //      缓冲区对象大小
-    LPUINT32 LPAPI GetBufSize();
-
-    // Summary:
-    //      创建指定大小的缓冲区对象
-    // Return:
-    //      失败返回NULL
-    LPLoopBuf* LPAPI Create();
-
-    // Summary:
-    //      释放缓冲区对象
-    // Input:
-    //      pBuf：缓冲区对象
-    void LPAPI Release(LPLoopBuf* &pBuf);
-
-private:
-
-    // Summary:
     //      预先批量创建
     // Input:
     //      dwBatchCount: 创建个数
-    BOOL LPAPI _PreBatchCreate(LPUINT32 dwBatchCount);
+    BOOL LPAPI PreBatchCreate(LPUINT32 dwBatchCount);
 
     // Summary:
     //      获取池对象id

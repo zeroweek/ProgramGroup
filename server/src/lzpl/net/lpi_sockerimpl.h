@@ -9,7 +9,7 @@
 
 #include "lpi_socker.h"
 #include "lpi_packetparser.h"
-#include "lp_loopbuf.h"
+#include "lpi_buf.h"
 #include "lp_netdef.h"
 
 
@@ -102,25 +102,25 @@ public:
     //      设置接收缓冲区
     // Input:
     //      pBuf：缓冲区
-    virtual void LPAPI AttachRecvBuf(LPLoopBuf* pLoopBuf) = 0;
+    virtual void LPAPI AttachRecvBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf) = 0;
 
     // Summary:
     //      分离接收缓冲区
     // Return:
     //      接收缓冲区
-    virtual LPLoopBuf* LPAPI DetachRecvBuf() = 0;
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI DetachRecvBuf() = 0;
 
     // Summary:
     //      设置发送缓冲区
     // Input:
     //      pBuf：缓冲区
-    virtual void LPAPI AttachSendBuf(LPLoopBuf* pLoopBuf) = 0;
+    virtual void LPAPI AttachSendBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf) = 0;
 
     // Summary:
     //      分离发送缓冲区
     // Return:
     //      发送缓冲区
-    virtual LPLoopBuf* LPAPI DetachSendBuf() = 0;
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI DetachSendBuf() = 0;
 
     // Summary:
     //      设置socker id

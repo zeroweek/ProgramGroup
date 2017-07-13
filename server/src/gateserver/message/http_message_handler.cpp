@@ -349,7 +349,7 @@ Exit0:
     return;
 }
 
-LPINT32 LPAPI CGTHttpMessageHandler::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGTHttpMessageHandler::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     LPINT32 nResult = 0;
     LPINT32 nParseCount = 0;

@@ -104,11 +104,8 @@ BOOL LPAPI LPFileLogger::Init(LOG_CONFIG& stLogConfig)
     m_stLogConfig = stLogConfig;
 
     //日志缓冲区初始化
-    m_pLoopBuf = new LPLoopBuf();
+    m_pLoopBuf = ILPLoopBuf::CreateBuf(stLogConfig.dwMaxLogLoopBufSize);
     PRINTF_PROCESS_ERROR(m_pLoopBuf);
-
-    nResult = m_pLoopBuf->Init(stLogConfig.dwMaxLogLoopBufSize);
-    PRINTF_PROCESS_ERROR(nResult);
 
     //日志记录模式判断
     PRINTF_PROCESS_ERROR(stLogConfig.dwLogMode > eLogMode_None);
@@ -183,7 +180,7 @@ void LPAPI LPFileLogger::UnInit()
 
     _CloseFile();
 
-    SAFE_DELETE(m_pLoopBuf);
+    ILPLoopBuf::ReleaseBuf(m_pLoopBuf);
 }
 
 void LPAPI LPFileLogger::_Flush()

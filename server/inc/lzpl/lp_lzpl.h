@@ -20,7 +20,7 @@
 #include "lp_baselist.h"
 #include "lp_looplist.h"
 #include "lp_string.h"
-#include "lp_loopbuf.h"
+#include "lpi_buf.h"
 #include "lp_system.h"
 #include "lp_objpool.h"
 #include "lp_processerror.h"

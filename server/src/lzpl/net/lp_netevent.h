@@ -9,7 +9,7 @@
 
 #include "lpi_net.h"
 #include "lp_lock.h"
-#include "lp_loopbuf.h"
+#include "lpi_buf.h"
 #include "lpi_sockerimpl.h"
 #include "lpi_connectorimpl.h"
 
@@ -221,15 +221,15 @@ private:
 
 private:
 
-    BOOL                                m_bInit;
-    char*                               m_pPacketTempBuf;             // 数据包临时缓冲区
-    LPINT32                             m_nEventListCount;            // 事件列表个数
-    LPListEvent*                        m_pEventList;                 // 事件列表
-    LPLock*                             m_pEventListLock;             // 事件列表锁
-    LPLoopBuf*                          m_pEventListRecvLoopBuf;      // 接收事件数据缓冲区数组（每个事件列表对应一个）
-    LPLock*                             m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
-    lp_shared_ptr<ILPNetMessageHandler> m_pNetMessageHandler;         //
-    lp_shared_ptr<LPNetImpl>            m_pNetImpl;                   //
+    BOOL                                    m_bInit;
+    char*                                   m_pPacketTempBuf;             // 数据包临时缓冲区
+    LPINT32                                 m_nEventListCount;            // 事件列表个数
+    LPListEvent*                            m_pEventList;                 // 事件列表
+    LPLock*                                 m_pEventListLock;             // 事件列表锁
+    std::vector<lp_shared_ptr<ILPLoopBuf>>  m_vectEventListRecvLoopBuf;   // 接收事件数据缓冲区数组（每个事件列表对应一个）
+    LPLock*                                 m_pEventListRecvLoopBufLock;  // 接收事件数据缓冲区数组锁
+    lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;         //
+    lp_shared_ptr<LPNetImpl>                m_pNetImpl;                   //
 };
 
 

@@ -8,6 +8,30 @@ NS_LZPL_BEGIN
 
 
 
+lp_shared_ptr<LZPL::ILPLoopBuf> ILPLoopBuf::CreateBuf(LPUINT32 dwSize)
+{
+    LPINT32 nResult = FALSE;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = nullptr;
+
+    pLoopBuf = lp_make_shared<LPLoopBuf>();
+    LOG_PROCESS_ERROR(pLoopBuf);
+
+    nResult = ((LPLoopBuf*)pLoopBuf.get())->Init(dwSize);
+    LOG_PROCESS_ERROR(nResult);
+
+    return pLoopBuf;
+
+Exit0:
+
+    ReleaseBuf(pLoopBuf);
+    return nullptr;
+}
+
+void ILPLoopBuf::ReleaseBuf(lp_shared_ptr<ILPLoopBuf>& pLoopBuf)
+{
+    pLoopBuf = nullptr;
+}
+
 LPLoopBuf::LPLoopBuf()
 {
     m_pBuf            = NULL;
@@ -15,7 +39,6 @@ LPLoopBuf::LPLoopBuf()
     m_pWrite          = NULL;
     m_dwDataLen       = 0;
     m_dwBufSize       = 0;
-    m_dwRefCount      = 0;
     m_dwPoolId        = BUF_INVALID_POOL_ID;
 }
 
@@ -37,7 +60,6 @@ BOOL LPAPI LPLoopBuf::Init(LPUINT32 dwSize, LPUINT32 dwPoolId)
     m_pWrite          = m_pBuf;
 
     m_dwDataLen       = 0;
-    m_dwRefCount      = 0;
 
     return TRUE;
 Exit0:
@@ -55,7 +77,6 @@ BOOL LPAPI LPLoopBuf::UnInit()
     m_pWrite = NULL;
     m_dwDataLen = 0;
     m_dwBufSize = 0;
-    m_dwRefCount = 0;
     m_dwPoolId = BUF_INVALID_POOL_ID;
 
     return TRUE;
@@ -67,31 +88,11 @@ void LPAPI LPLoopBuf::Reset()
     m_pWrite = m_pBuf;
 
     m_dwDataLen = 0;
-    m_dwRefCount = 0;
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetPoolId()
 {
     return m_dwPoolId;
-}
-
-LPUINT32 LPAPI LPLoopBuf::QueryRef()
-{
-    return m_dwRefCount;
-}
-
-void LPAPI LPLoopBuf::AddRef()
-{
-    ++m_dwRefCount;
-}
-
-void LPAPI LPLoopBuf::DeductRef()
-{
-    LOG_CHECK_ERROR(m_dwRefCount > 0);
-    if(m_dwRefCount > 0)
-    {
-        --m_dwRefCount;
-    }
 }
 
 LPUINT32 LPAPI LPLoopBuf::GetTotalReadableLen()
@@ -269,6 +270,17 @@ void LPAPI LPLoopBuf::FinishWrite(LPUINT32 dwWriteLen)
     m_dwDataLen += dwWriteLen;
 }
 
+lp_shared_ptr<LZPL::ILPLoopBufPool> ILPLoopBufPool::CreatePool()
+{
+    return lp_make_shared<LPLoopBufPool>();
+}
+
+
+void LZPL::ILPLoopBufPool::ReleasePool(lp_shared_ptr<ILPLoopBufPool>& pLoopBufPool)
+{
+    pLoopBufPool = nullptr;
+}
+
 LPLoopBufPool::LPLoopBufPool()
 {
     m_bUsePool      = FALSE;
@@ -285,19 +297,19 @@ LPLoopBufPool::~LPLoopBufPool()
     UnInit();
 }
 
-BOOL LPAPI LPLoopBufPool::_PreBatchCreate(LPUINT32 dwBatchCount)
+BOOL LPAPI LPLoopBufPool::PreBatchCreate(LPUINT32 dwBatchCount)
 {
     LPINT32 nResult = 0;
-    LPLoopBuf* pLoopBuf = NULL;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = nullptr;
 
     PROCESS_SUCCESS(!m_bUsePool);
 
     for(LPUINT32 i = 0; i < dwBatchCount; ++i)
     {
-        pLoopBuf = new LPLoopBuf();
+        pLoopBuf = lp_make_shared<LPLoopBuf>();
         LOG_PROCESS_ERROR(pLoopBuf);
 
-        nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
+        nResult = ((LPLoopBuf*)pLoopBuf.get())->Init(m_dwSizeBuf, m_dwPoolId);
         LOG_PROCESS_ERROR(nResult);
 
         m_oBufSet.insert(pLoopBuf);
@@ -319,7 +331,7 @@ BOOL LPAPI LPLoopBufPool::Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoo
     m_bUsePool = bUsePool;
     dwPoolInitCount = dwPoolInitCount;
 
-    nResult = _PreBatchCreate(dwPoolInitCount);
+    nResult = PreBatchCreate(dwPoolInitCount);
     LOG_PROCESS_ERROR(nResult);
 
     return TRUE;
@@ -331,19 +343,8 @@ Exit0:
 
 BOOL LPAPI LPLoopBufPool::UnInit()
 {
-    LPSetBuf::iterator it;
-    LPLoopBuf* pLoopBuf = NULL;
-
     PROCESS_SUCCESS(!m_bUsePool);
 
-    it = m_oBufSet.begin();
-    for(; it != m_oBufSet.end(); ++it)
-    {
-        pLoopBuf = (*it);
-        LOG_CHECK_ERROR(pLoopBuf);
-
-        SAFE_DELETE(pLoopBuf);
-    }
     m_oBufSet.clear();
     m_oFreeBufList.clear();
 
@@ -356,10 +357,10 @@ LPUINT32 LPAPI LPLoopBufPool::GetBufSize()
     return m_dwSizeBuf;
 }
 
-LPLoopBuf* LPAPI LPLoopBufPool::Create()
+lp_shared_ptr<ILPLoopBuf> LPAPI LPLoopBufPool::Create()
 {
     LPINT32 nResult = 0;
-    LPLoopBuf* pLoopBuf = NULL;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = nullptr;
 
     if(m_bUsePool)
     {
@@ -372,7 +373,7 @@ LPLoopBuf* LPAPI LPLoopBufPool::Create()
         else
         {
             //每次创建10分之一初始化大小的个数
-            nResult = _PreBatchCreate(dwPoolInitCount / 10);
+            nResult = PreBatchCreate(dwPoolInitCount / 10);
             LOG_PROCESS_ERROR(nResult);
             LOG_PROCESS_ERROR(!m_oFreeBufList.empty());
 
@@ -383,45 +384,40 @@ LPLoopBuf* LPAPI LPLoopBufPool::Create()
     }
     else
     {
-        pLoopBuf = new LPLoopBuf();
+        pLoopBuf = lp_make_shared<LPLoopBuf>();
         LOG_PROCESS_ERROR(pLoopBuf);
-        nResult = pLoopBuf->Init(m_dwSizeBuf, m_dwPoolId);
+        nResult = ((LPLoopBuf*)pLoopBuf.get())->Init(m_dwSizeBuf, m_dwPoolId);
         LOG_PROCESS_ERROR(nResult);
     }
 
-    pLoopBuf->Reset();
-    if(m_bUsePool) pLoopBuf->AddRef();
+    ((LPLoopBuf*)pLoopBuf.get())->Reset();
 
     return pLoopBuf;
 Exit0:
 
     if(!m_bUsePool)
     {
-        SAFE_DELETE(pLoopBuf);
+        pLoopBuf = nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
-void LPAPI LPLoopBufPool::Release(LPLoopBuf* &pLoopBuf)
+void LPAPI LPLoopBufPool::Release(lp_shared_ptr<ILPLoopBuf>& pLoopBuf)
 {
     LOG_PROCESS_ERROR(pLoopBuf);
 
     if(m_bUsePool)
     {
-        //判断是否重复释放
-        LOG_PROCESS_ERROR(0 != pLoopBuf->QueryRef());
-
         //判断是否由本池创建的
-        LOG_PROCESS_ERROR(m_dwPoolId == pLoopBuf->GetPoolId());
+        LOG_PROCESS_ERROR(m_dwPoolId == ((LPLoopBuf*)pLoopBuf.get())->GetPoolId());
 
-        pLoopBuf->DeductRef();
         m_oFreeBufList.push_back(pLoopBuf);
-        pLoopBuf = NULL;
+        pLoopBuf = nullptr;
     }
     else
     {
-        SAFE_DELETE(pLoopBuf);
+        pLoopBuf = nullptr;
     }
 
 Exit0:

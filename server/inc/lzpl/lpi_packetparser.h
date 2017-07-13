@@ -30,7 +30,7 @@ public:
     //      pLoopBuf：待解析数据缓冲区
     // Return:
     //      "<0"-解析错误，"=0"-不完整包，">0"-完整包长度
-    virtual LPINT32 LPAPI Parse(ILPLoopBuf* pLoopBuf) = 0;
+    virtual LPINT32 LPAPI Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf) = 0;
 };
 
 

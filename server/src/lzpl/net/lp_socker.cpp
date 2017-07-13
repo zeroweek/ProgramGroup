@@ -259,27 +259,27 @@ Exit0:
     return;
 }
 
-void LPAPI LPSocker::AttachRecvBuf(LPLoopBuf* pLoopBuf)
+void LPAPI LPSocker::AttachRecvBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     m_pRecvLoopBuf = pLoopBuf;
 }
 
-LPLoopBuf* LPAPI LPSocker::DetachRecvBuf()
+lp_shared_ptr<ILPLoopBuf> LPAPI LPSocker::DetachRecvBuf()
 {
-    LPLoopBuf* pLoopBuf = m_pRecvLoopBuf;
-    m_pRecvLoopBuf = NULL;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = m_pRecvLoopBuf;
+    m_pRecvLoopBuf = nullptr;
     return pLoopBuf;
 }
 
-void LPAPI LPSocker::AttachSendBuf(LPLoopBuf* pLoopBuf)
+void LPAPI LPSocker::AttachSendBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     m_pSendLoopBuf = pLoopBuf;
 }
 
-LPLoopBuf* LPAPI LPSocker::DetachSendBuf()
+lp_shared_ptr<ILPLoopBuf> LPAPI LPSocker::DetachSendBuf()
 {
-    LPLoopBuf* pLoopBuf = m_pSendLoopBuf;
-    m_pSendLoopBuf = NULL;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = m_pSendLoopBuf;
+    m_pSendLoopBuf = nullptr;
     return pLoopBuf;
 }
 

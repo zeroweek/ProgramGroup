@@ -15,7 +15,7 @@ CGTInternalPacketParser::~CGTInternalPacketParser()
 
 }
 
-LPINT32 LPAPI CGTInternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGTInternalPacketParser::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     LPINT32 nResult = 0;
     LPUINT16 wMsgId = 0;

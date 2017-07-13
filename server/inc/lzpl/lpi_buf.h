@@ -103,6 +103,58 @@ public:
     // Input:
     //      dwWriteLen：累加写入的大小
     virtual void LPAPI FinishWrite(LPUINT32 dwWriteLen) = 0;
+
+public:
+
+    static lp_shared_ptr<ILPLoopBuf> CreateBuf(LPUINT32 dwSize);
+    static void ReleaseBuf(lp_shared_ptr<ILPLoopBuf>& pLoopBuf);
+};
+
+
+
+// Summary:
+//      存放LPLoopBuf对象的池类，每个缓冲池对象对应一个size
+class DECLARE ILPLoopBufPool
+{
+public:
+
+    // Summary:
+    //      无
+    virtual ~ILPLoopBufPool() {}
+
+public:
+
+    // Summary:
+    //      无
+    // Input:
+    //      dwBufSize：缓冲区对象大小
+    //      bUsePool：是否使用对象池
+    //      dwPoolInitCount: 池初始化大小
+    virtual BOOL LPAPI Init(LPUINT32 dwBufSize, BOOL bUsePool, LPUINT32 dwPoolInitCount) = 0;
+
+    // Summary:
+    //      获取缓冲区对象大小
+    // Return:
+    //      缓冲区对象大小
+    virtual LPUINT32 LPAPI GetBufSize() = 0;
+
+    // Summary:
+    //      创建指定大小的缓冲区对象
+    // Return:
+    //      失败返回NULL
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI Create() = 0;
+
+    // Summary:
+    //      释放缓冲区对象
+    // Input:
+    //      pBuf：缓冲区对象
+    virtual void LPAPI Release(lp_shared_ptr<ILPLoopBuf>& pBuf) = 0;
+
+public:
+
+    static lp_shared_ptr<ILPLoopBufPool> CreatePool();
+    static void ReleasePool(lp_shared_ptr<ILPLoopBufPool>& pLoopBufPool);
+
 };
 
 

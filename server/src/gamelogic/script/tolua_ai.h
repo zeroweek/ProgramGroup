@@ -1,6 +1,6 @@
 /*
 ** Lua binding: ai
-** Generated automatically by tolua++-1.0.92 on Wed Jul 12 21:00:58 2017.
+** Generated automatically by tolua++-1.0.92 on Thu Jul 13 20:49:06 2017.
 */
 
 /* Exported function */

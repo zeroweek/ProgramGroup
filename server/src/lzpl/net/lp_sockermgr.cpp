@@ -19,8 +19,8 @@ LPSockerMgr::LPSockerMgr()
     m_oValidMap.clear();
 
     m_pNetImpl = NULL;
-    m_pRecvLoopBufPool = NULL;
-    m_pSendLoopBufPool = NULL;
+    m_pRecvLoopBufPool = nullptr;
+    m_pSendLoopBufPool = nullptr;
 }
 
 LPSockerMgr::~LPSockerMgr()
@@ -35,12 +35,12 @@ BOOL LPAPI LPSockerMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl)
     LOG_PROCESS_ERROR(pNetImpl);
     m_pNetImpl = pNetImpl;
 
-    m_pRecvLoopBufPool = new LPLoopBufPool();
+    m_pRecvLoopBufPool = ILPLoopBufPool::CreatePool();
     LOG_PROCESS_ERROR(m_pRecvLoopBufPool);
     nResult = m_pRecvLoopBufPool->Init(m_pNetImpl->GetNetConfig().dwRecvBufSize, TRUE, m_pNetImpl->GetNetConfig().dwConnectCount);
     LOG_PROCESS_ERROR(nResult);
 
-    m_pSendLoopBufPool = new LPLoopBufPool();
+    m_pSendLoopBufPool = ILPLoopBufPool::CreatePool();
     LOG_PROCESS_ERROR(m_pSendLoopBufPool);
     nResult = m_pSendLoopBufPool->Init(m_pNetImpl->GetNetConfig().dwSendBufSize, TRUE, m_pNetImpl->GetNetConfig().dwConnectCount);
     LOG_PROCESS_ERROR(nResult);
@@ -57,8 +57,8 @@ Exit0:
 
 BOOL LPAPI LPSockerMgr::UnInit()
 {
-    SAFE_DELETE(m_pRecvLoopBufPool);
-    SAFE_DELETE(m_pSendLoopBufPool);
+    ILPLoopBufPool::ReleasePool(m_pRecvLoopBufPool);
+    ILPLoopBufPool::ReleasePool(m_pSendLoopBufPool);
 
     return TRUE;
 }
@@ -79,9 +79,6 @@ lp_shared_ptr<ILPSockerImpl> LPAPI LPSockerMgr::Create(lp_shared_ptr<ILPPacketPa
     return pSocker;
 
 Exit0:
-
-    SAFE_DELETE(m_pRecvLoopBufPool);
-    SAFE_DELETE(m_pSendLoopBufPool);
 
     return pSocker;
 }
@@ -116,8 +113,8 @@ lp_shared_ptr<ILPSockerImpl> LPAPI LPSockerMgr::_Create(lp_shared_ptr<ILPPacketP
 {
     LPINT32 nResult = 0;
     lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
-    LPLoopBuf* pRecvLoopBuf = nullptr;
-    LPLoopBuf* pSendLoopBuf = nullptr;
+    lp_shared_ptr<ILPLoopBuf> pRecvLoopBuf = nullptr;
+    lp_shared_ptr<ILPLoopBuf> pSendLoopBuf = nullptr;
 
     LOG_PROCESS_ERROR(pPacketParser);
     LOG_PROCESS_ERROR(m_pRecvLoopBufPool);
@@ -160,8 +157,8 @@ Exit0:
 void LPAPI LPSockerMgr::_Release(lp_shared_ptr<ILPSockerImpl> pSocker)
 {
     LPINT32 nResult = 0;
-    LPLoopBuf* pRecvLoopBuf = NULL;
-    LPLoopBuf* pSendLoopBuf = NULL;
+    lp_shared_ptr<ILPLoopBuf> pRecvLoopBuf = nullptr;
+    lp_shared_ptr<ILPLoopBuf> pSendLoopBuf = nullptr;
 
     LOG_PROCESS_ERROR(pSocker);
 

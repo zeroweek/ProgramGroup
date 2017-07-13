@@ -44,7 +44,6 @@ public:
 
 public:
 
-    typedef std::list<lp_shared_ptr<ILPSockerImpl>> LPListSocker;
     typedef std::map<LPUINT32, lp_shared_ptr<ILPSockerImpl>> LPMapSocker;
 
 public:
@@ -112,13 +111,13 @@ private:
 
 private:
 
-    LPUINT32                   m_dwMaxSockId;       // 最大sock id
-    LPMapSocker                m_oValidMap;         // 当前连接有效的socker map
-    LPLock                     m_oValidLock;        // 当前连接有效的socker map锁
+    LPUINT32                        m_dwMaxSockId;       // 最大sock id
+    LPMapSocker                     m_oValidMap;         // 当前连接有效的socker map
+    LPLock                          m_oValidLock;        // 当前连接有效的socker map锁
 
-    lp_shared_ptr<LPNetImpl>   m_pNetImpl;          //
-    LPLoopBufPool*             m_pRecvLoopBufPool;  // 接受缓冲区池（若要支持多个size，可使用map pool）
-    LPLoopBufPool*             m_pSendLoopBufPool;  // 发送缓冲区池（若要支持多个size，可使用map pool）
+    lp_shared_ptr<LPNetImpl>        m_pNetImpl;          //
+    lp_shared_ptr<ILPLoopBufPool>   m_pRecvLoopBufPool;  // 接受缓冲区池（若要支持多个size，可使用map pool）
+    lp_shared_ptr<ILPLoopBufPool>   m_pSendLoopBufPool;  // 发送缓冲区池（若要支持多个size，可使用map pool）
 };
 
 

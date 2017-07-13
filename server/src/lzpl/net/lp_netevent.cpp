@@ -18,7 +18,7 @@ LPEventMgr::LPEventMgr()
     m_nEventListCount = 0;
     m_pEventList = nullptr;
     m_pEventListLock = nullptr;
-    m_pEventListRecvLoopBuf = nullptr;
+    m_vectEventListRecvLoopBuf.clear();
     m_pEventListRecvLoopBufLock = nullptr;
     m_pNetMessageHandler = nullptr;
     m_pNetImpl = nullptr;
@@ -32,6 +32,7 @@ LPEventMgr::~LPEventMgr()
 BOOL LPAPI LPEventMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, LPINT32 nEventListCount)
 {
     LPINT32 nResult = 0;
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = nullptr;
 
     LOG_PROCESS_ERROR(pNetMessageHandler);
     LOG_PROCESS_ERROR(pNetImpl);
@@ -41,13 +42,14 @@ BOOL LPAPI LPEventMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILP
     m_pNetImpl = pNetImpl;
     m_nEventListCount = nEventListCount;
 
-    m_pEventListRecvLoopBuf = new LPLoopBuf[m_nEventListCount];
-    LOG_PROCESS_ERROR(m_pEventListRecvLoopBuf);
     for(LPINT32 i = 0; i < m_nEventListCount; ++i)
     {
-        nResult = m_pEventListRecvLoopBuf[i].Init(m_pNetImpl->GetNetConfig().dwNetRecvEventBufSize);
-        LOG_PROCESS_ERROR(nResult);
+        pLoopBuf = ILPLoopBuf::CreateBuf(m_pNetImpl->GetNetConfig().dwNetRecvEventBufSize);
+        LOG_PROCESS_ERROR(pLoopBuf);
+
+        m_vectEventListRecvLoopBuf.push_back(pLoopBuf);
     }
+
     m_pEventListRecvLoopBufLock = new LPLock[m_nEventListCount];
     LOG_PROCESS_ERROR(m_pEventListRecvLoopBufLock);
 
@@ -73,10 +75,18 @@ Exit0:
 
 BOOL LPAPI LPEventMgr::UnInit()
 {
+    lp_shared_ptr<ILPLoopBuf> pLoopBuf = nullptr;
+
     PROCESS_SUCCESS(m_bInit == FALSE);
     m_bInit = FALSE;
 
-    SAFE_DELETE_SZ(m_pEventListRecvLoopBuf);
+    while(m_vectEventListRecvLoopBuf.size() > 0)
+    {
+        pLoopBuf = m_vectEventListRecvLoopBuf.back();
+        m_vectEventListRecvLoopBuf.pop_back();
+        ILPLoopBuf::ReleaseBuf(pLoopBuf);
+    }
+
     SAFE_DELETE_SZ(m_pEventListRecvLoopBufLock);
     SAFE_DELETE_SZ(m_pPacketTempBuf);
     SAFE_DELETE_SZ(m_pEventListLock);
@@ -111,7 +121,7 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUIN
     //lock
     m_pEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount].Lock();
 
-    while(m_pEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount].GetTotalWritableLen() < dwLen)
+    while(m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->GetTotalWritableLen() < dwLen)
     {
         WRN("function %s in file %s at line %d : buf not enough, sleep and try again !", __FUNCTION__, __FILE__, __LINE__);
         lpSleep(1);
@@ -134,14 +144,14 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUIN
         dwLineSize = dwLen;
     }
 
-    nResult = m_pEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount].Write(oLoopBuf.ReadPtr(), dwLineSize);
+    nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(oLoopBuf.ReadPtr(), dwLineSize);
     LOG_CHECK_ERROR(nResult);
 
     oLoopBuf.FinishRead(dwLineSize);
 
     if(dwLineSize < dwLen)
     {
-        nResult = m_pEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount].Write(oLoopBuf.ReadPtr(), dwLen - dwLineSize);
+        nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(oLoopBuf.ReadPtr(), dwLen - dwLineSize);
         LOG_CHECK_ERROR(nResult);
 
         oLoopBuf.FinishRead(dwLen - dwLineSize);
@@ -352,7 +362,7 @@ void LPAPI LPEventMgr::_ProcRecvEvent(std::shared_ptr<RECV_EVENT> pstRecvEvent, 
     LOG_PROCESS_ERROR(pstRecvEvent->dwLen < MAX_PACKET_LEN);
 
     m_pEventListRecvLoopBufLock[dwFlag % m_nEventListCount].Lock();
-    nResult = m_pEventListRecvLoopBuf[dwFlag % m_nEventListCount].Read(m_pPacketTempBuf, pstRecvEvent->dwLen, TRUE, TRUE);
+    nResult = m_vectEventListRecvLoopBuf[dwFlag % m_nEventListCount]->Read(m_pPacketTempBuf, pstRecvEvent->dwLen, TRUE, TRUE);
     m_pEventListRecvLoopBufLock[dwFlag % m_nEventListCount].UnLock();
     LOG_PROCESS_ERROR(nResult);
 

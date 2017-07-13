@@ -156,25 +156,25 @@ public:
     //      设置接收缓冲区
     // Input:
     //      pBuf：缓冲区
-    virtual void LPAPI AttachRecvBuf(LPLoopBuf* pLoopBuf);
+    virtual void LPAPI AttachRecvBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf);
 
     // Summary:
     //      分离接收缓冲区
     // Return:
     //      接收缓冲区
-    virtual LPLoopBuf* LPAPI DetachRecvBuf();
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI DetachRecvBuf();
 
     // Summary:
     //      设置发送缓冲区
     // Input:
     //      pBuf：缓冲区
-    virtual void LPAPI AttachSendBuf(LPLoopBuf* pLoopBuf);
+    virtual void LPAPI AttachSendBuf(lp_shared_ptr<ILPLoopBuf> pLoopBuf);
 
     // Summary:
     //      分离发送缓冲区
     // Return:
     //      发送缓冲区
-    virtual LPLoopBuf* LPAPI DetachSendBuf();
+    virtual lp_shared_ptr<ILPLoopBuf> LPAPI DetachSendBuf();
 
     // Summary:
     //      无
@@ -216,8 +216,8 @@ protected:
     BOOL                            m_bAcceptCreate;            // 是否是accept创建
     lp_shared_ptr<ILPPacketParser>  m_pPacketParser;            // 解析对象
 
-    LPLoopBuf*                      m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
-    LPLoopBuf*                      m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
+    lp_shared_ptr<ILPLoopBuf>        m_pRecvLoopBuf;             // 接收缓冲区（只有PostRecv和OnRecv有操作，无需写锁，因为没有PostRecv是不会收到OnRecv）
+    lp_shared_ptr<ILPLoopBuf>        m_pSendLoopBuf;             // 发送缓冲区（单线程写不用锁，读需要锁）
 
     lp_shared_ptr<ip::tcp::socket>  m_pSocket;
 };

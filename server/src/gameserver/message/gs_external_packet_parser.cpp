@@ -18,7 +18,7 @@ CGSExternalPacketParser::~CGSExternalPacketParser()
 
 }
 
-LPINT32 LPAPI CGSExternalPacketParser::Parse(ILPLoopBuf * pLoopBuf)
+LPINT32 LPAPI CGSExternalPacketParser::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     LPINT32 nResult = 0;
     LPINT32 nParseCount = 0;
