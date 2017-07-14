@@ -102,7 +102,6 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_packetparser.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_property.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_socker.h" />
-    <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h" />
     <ClInclude Include="..\..\inc\lzpl\lpi_table.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_base.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_base64.h" />

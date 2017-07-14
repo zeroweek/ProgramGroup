@@ -44,26 +44,9 @@ Exit0:
     return lpGetErrorString(eErrorString_Unknow);
 }
 
-lp_shared_ptr<ILPSockerImpl> LPAPI ILPSockerImpl::NewSockerImpl(LPUINT32 dwIoType)
+lp_shared_ptr<ILPSockerImpl> LPAPI ILPSockerImpl::NewSockerImpl()
 {
-    switch(dwIoType)
-    {
-    case eIoType_CompletionPort:
-    case eIoType_Epoll:
-        {
-            return lp_make_shared<LPSocker>();
-        }
-        break;
-    case eIoType_None:
-    default:
-        LOG_CHECK_ERROR(FALSE);
-        LPASSERT(FALSE);
-        LOG_PROCESS_ERROR(FALSE);
-        break;
-    }
-
-Exit0:
-    return nullptr;
+    return lp_make_shared<LPSocker>();
 }
 
 void LPAPI ILPSockerImpl::DeleteSockerImpl(lp_shared_ptr<ILPSockerImpl> & pSocker)

@@ -48,7 +48,7 @@ public:
 
 public:
 
-    static lp_shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl(LPUINT32 dwIoType);
+    static lp_shared_ptr<ILPConnectorImpl> LPAPI NewConnectorImpl();
     static void LPAPI DeleteConnectorImpl(lp_shared_ptr<ILPConnectorImpl>& pConnector);
 };
 

@@ -134,7 +134,7 @@ public:
 
 public:
 
-    static lp_shared_ptr<ILPSockerImpl> LPAPI NewSockerImpl(LPUINT32 dwIoType);
+    static lp_shared_ptr<ILPSockerImpl> LPAPI NewSockerImpl();
     static void LPAPI DeleteSockerImpl(lp_shared_ptr<ILPSockerImpl>& pSocker);
 };
 

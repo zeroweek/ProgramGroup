@@ -132,9 +132,6 @@
     <ClInclude Include="..\..\inc\lzpl\lpi_socker.h">
       <Filter>net\interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\lzpl\lpi_sockoption.h">
-      <Filter>net\interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\lzpl\lp_lock.h">
       <Filter>system</Filter>
     </ClInclude>

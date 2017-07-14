@@ -88,12 +88,12 @@ protected:
 
 protected:
 
-    volatile atomic_uint                    m_dwState;
-    NET_CONFIG                              m_stNetConfig;
+    volatile atomic_uint                            m_dwState;
+    NET_CONFIG                                      m_stNetConfig;
 
-    LPUINT32                                m_nIoServiceNum;
-    asio::io_service**                      m_apIoService;
-    std::thread**                           m_apThread;
+    LPUINT32                                        m_nIoServiceNum;
+    std::vector<lp_shared_ptr<asio::io_service>>    m_vecIoService;
+    std::vector<lp_shared_ptr<std::thread>>         m_vecThread;
 };
 
 

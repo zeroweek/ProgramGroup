@@ -39,7 +39,7 @@ enum e_EventType
 struct DECLARE RECV_EVENT
 {
     lp_shared_ptr<ILPSockerImpl>    pSocker;
-    LPUINT32                        dwLen;
+    lp_shared_ptr<ILPLoopBuf>       pLoopBuf;
 };
 
 
@@ -227,8 +227,6 @@ private:
     LPINT32                                 m_nEventListCount;                  // 事件列表个数
     EventListVector                         m_vectEventList;                    // 事件列表数组
     std::vector<lp_shared_ptr<std::mutex>>  m_vectEventListLock;                // 事件列表锁数组
-    std::vector<lp_shared_ptr<ILPLoopBuf>>  m_vectEventListRecvLoopBuf;         // 接收事件数据缓冲区数组（每个事件列表对应一个）
-    std::vector<lp_shared_ptr<std::mutex>>  m_vectEventListRecvLoopBufLock;     // 接收事件数据缓冲区锁数组
     lp_shared_ptr<ILPNetMessageHandler>     m_pNetMessageHandler;               //
     lp_shared_ptr<LPNetImpl>                m_pNetImpl;                         //
 };

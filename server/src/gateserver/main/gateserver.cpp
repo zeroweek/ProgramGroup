@@ -109,7 +109,7 @@ BOOL LPAPI CGateServer::Init(void)
     LOG_PROCESS_ERROR(nResult);
 
     stNetConfig = g_GlobalConfig.Server.Gt.Net;
-    m_pNet = ILPNet::CreateNetModule(m_pGTMessageHandler, &stNetConfig);
+    m_pNet = ILPNet::CreateNetModule(m_pGTMessageHandler, stNetConfig);
     LOG_PROCESS_ERROR(m_pNet != nullptr);
 
     m_pListener = m_pNet->CreateListenerCtrl(m_pGTInternalPacketParser);

@@ -113,7 +113,7 @@ private:
 
     LPUINT32                        m_dwMaxSockId;              // 最大sock id
     LPMapSocker                     m_oValidMap;                // 当前连接有效的socker map
-    LPLock                          m_oValidLock;               // 当前连接有效的socker map锁
+    std::mutex                      m_oValidMutex;              // 当前连接有效的socker map锁
     LPUINT32                        m_nCurValidConnectCount;    // 当前有效的连接数
 
     lp_shared_ptr<LPNetImpl>        m_pNetImpl;                 //

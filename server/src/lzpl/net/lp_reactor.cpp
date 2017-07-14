@@ -59,16 +59,14 @@ BOOL LPAPI LPReactor::Init(NET_CONFIG& stNetConfig)
     LOG_PROCESS_ERROR(GetState() == eCommonState_NoInit);
     SetState(eCommonState_Initing);
 
-    m_apIoService = new asio::io_service*[m_nIoServiceNum];
-    for(int i = 0; i < m_nIoServiceNum; ++i)
+    for(int i = 0; i < m_nIoServiceNum; i++)
     {
-        m_apIoService[i] = new asio::io_service();
+        m_vecIoService.push_back(lp_make_shared<asio::io_service>());
     }
 
-    m_apThread = new std::thread*[m_nIoServiceNum];
-    for(int i = 0; i < m_nIoServiceNum; ++i)
+    for(int i = 0; i < m_nIoServiceNum; i++)
     {
-        m_apThread[i] = new std::thread(&LPReactor::ThreadFunc, this, i);
+        m_vecThread.push_back(lp_make_shared<std::thread>(&LPReactor::ThreadFunc, this, i));
     }
 
     SetState(eCommonState_Inited);
@@ -88,19 +86,17 @@ BOOL LPAPI LPReactor::UnInit()
     IMP("reactor uniniting ...");
     LPPRINTF("reactor uniniting ...\n");
 
-    for(LPUINT32 i = 0; i < m_nIoServiceNum; ++i)
+    for(int i = 0; i < m_nIoServiceNum; i++)
     {
-        m_apThread[i]->join();
-        SAFE_DELETE(m_apThread[i]);
+        m_vecThread[i]->join();
     }
-    SAFE_DELETE_SZ(m_apThread);
+    m_vecThread.clear();
 
-    for(LPUINT32 i = 0; i < m_nIoServiceNum; ++i)
+    for(int i = 0; i < m_nIoServiceNum; i++)
     {
-        m_apIoService[i]->stop();
-        SAFE_DELETE(m_apIoService[i]);
+        m_vecIoService[i]->stop();
     }
-    SAFE_DELETE_SZ(m_apIoService);
+    m_vecIoService.clear();
 
     IMP("reactor uninit success !");
     LPPRINTF("reactor uninit success !\n");
@@ -113,7 +109,7 @@ Exit1:
 boost::asio::io_service& LPReactor::GetIoService(LPUINT32 dwId)
 {
     LPUINT32 nIndex = dwId % m_nIoServiceNum;
-    return *m_apIoService[nIndex];
+    return *m_vecIoService[nIndex];
 }
 
 void LPAPI LPReactor::OnExecute(LPUINT32 nIndex)
@@ -124,7 +120,7 @@ void LPAPI LPReactor::OnExecute(LPUINT32 nIndex)
         if(GetState() == eCommonState_Inited)
         {
             LOG_PROCESS_ERROR(nIndex < m_nIoServiceNum);
-            m_apIoService[nIndex]->run();
+            m_vecIoService[nIndex]->run();
             boost::this_thread::sleep(boost::posix_time::microseconds(1));
         }
         else if(GetState() == eCommonState_Initing)

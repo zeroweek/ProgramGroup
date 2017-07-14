@@ -143,7 +143,7 @@ BOOL LPAPI CGameServer::Init(void)
 
     //创建Net对象
     stNetConfig = g_GlobalConfig.Server.Gs.Net;
-    m_pNet = ILPNet::CreateNetModule(m_pGSInternalMessageHandler, &stNetConfig);
+    m_pNet = ILPNet::CreateNetModule(m_pGSInternalMessageHandler, stNetConfig);
     LOG_PROCESS_ERROR(m_pNet != nullptr);
 
     //创建GT连接器对象

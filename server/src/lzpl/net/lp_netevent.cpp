@@ -17,7 +17,6 @@ LPEventMgr::LPEventMgr()
     m_pPacketTempBuf = nullptr;
     m_nEventListCount = 0;
     m_vectEventList.clear();
-    m_vectEventListRecvLoopBuf.clear();
     m_pNetMessageHandler = nullptr;
     m_pNetImpl = nullptr;
 }
@@ -39,19 +38,6 @@ BOOL LPAPI LPEventMgr::Init(lp_shared_ptr<LPNetImpl> pNetImpl, lp_shared_ptr<ILP
     m_pNetMessageHandler = pNetMessageHandler;
     m_pNetImpl = pNetImpl;
     m_nEventListCount = nEventListCount;
-
-    for(LPINT32 i = 0; i < m_nEventListCount; ++i)
-    {
-        pLoopBuf = ILPLoopBuf::CreateBuf(m_pNetImpl->GetNetConfig().dwNetRecvEventBufSize);
-        LOG_PROCESS_ERROR(pLoopBuf);
-
-        m_vectEventListRecvLoopBuf.push_back(pLoopBuf);
-    }
-
-    for(int i = 0; i < m_nEventListCount; i++)
-    {
-        m_vectEventListRecvLoopBufLock.push_back(lp_make_shared<std::mutex>());
-    }
 
     m_pPacketTempBuf = new char[MAX_PACKET_LEN];
     LOG_PROCESS_ERROR(m_pPacketTempBuf);
@@ -85,18 +71,10 @@ BOOL LPAPI LPEventMgr::UnInit()
     PROCESS_SUCCESS(m_bInit == FALSE);
     m_bInit = FALSE;
 
-    while(m_vectEventListRecvLoopBuf.size() > 0)
-    {
-        pLoopBuf = m_vectEventListRecvLoopBuf.back();
-        m_vectEventListRecvLoopBuf.pop_back();
-        ILPLoopBuf::ReleaseBuf(pLoopBuf);
-    }
-
     SAFE_DELETE_SZ(m_pPacketTempBuf);
 
     m_vectEventList.clear();
     m_vectEventListLock.clear();
-    m_vectEventListRecvLoopBufLock.clear();
 
 Exit1:
     return TRUE;
@@ -123,41 +101,11 @@ BOOL LPAPI LPEventMgr::PushRecvEvent(lp_shared_ptr<ILPSockerImpl> pSocker, LPUIN
     pstEvent->eEventType = eEventType_Recv;
     pstEvent->dwFlag = dwSockerId;
     pstEvent->pRecvEvent->pSocker = pSocker;
-    pstEvent->pRecvEvent->dwLen = dwLen;
+    pstEvent->pRecvEvent->pLoopBuf = ILPLoopBuf::CreateBuf(dwLen);
+    LOG_PROCESS_ERROR(pstEvent->pRecvEvent->pLoopBuf != nullptr);
 
-    //lock
-    m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->lock();
-
-    if(m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->GetTotalWritableLen() < dwLen)
-    {
-        m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
-
-        ERR("function %s in file %s at line %d : buf not enough, close socket !", __FUNCTION__, __FILE__, __LINE__);
-        pSocker->Close(SOCK_ERR_CODE(eSockErrCode_MessageEventBufOverflow, 1, 0), FALSE);
-        LOG_PROCESS_ERROR(FALSE);
-    }
-
-    dwLineSize = pLoopBuf->GetOnceReadableLen();
-    if(dwLineSize > dwLen)
-    {
-        dwLineSize = dwLen;
-    }
-
-    nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(pLoopBuf->ReadPtr(), dwLineSize);
+    nResult = pLoopBuf->Read(pstEvent->pRecvEvent->pLoopBuf, dwLen);
     LOG_CHECK_ERROR(nResult);
-
-    pLoopBuf->FinishRead(dwLineSize);
-
-    if(dwLineSize < dwLen)
-    {
-        nResult = m_vectEventListRecvLoopBuf[pstEvent->dwFlag % m_nEventListCount]->Write(pLoopBuf->ReadPtr(), dwLen - dwLineSize);
-        LOG_CHECK_ERROR(nResult);
-
-        pLoopBuf->FinishRead(dwLen - dwLineSize);
-    }
-
-    //unlock
-    m_vectEventListRecvLoopBufLock[pstEvent->dwFlag % m_nEventListCount]->unlock();
 
     m_vectEventListLock[pstEvent->dwFlag % m_nEventListCount]->lock();
     m_vectEventList[pstEvent->dwFlag % m_nEventListCount].push_back(pstEvent);
@@ -354,21 +302,25 @@ Exit0:
 void LPAPI LPEventMgr::_ProcRecvEvent(lp_shared_ptr<RECV_EVENT> pstRecvEvent, LPUINT32 dwFlag)
 {
     LPINT32 nResult = 0;
+    LPUINT32 dwLen = 0;
     lp_shared_ptr<ILPSockerImpl> pSocker = nullptr;
 
-    LOG_PROCESS_ERROR(pstRecvEvent);
     LOG_PROCESS_ERROR(m_pNetMessageHandler);
-    LOG_PROCESS_ERROR(pstRecvEvent->dwLen < MAX_PACKET_LEN);
+    LOG_PROCESS_ERROR(pstRecvEvent);
+    LOG_PROCESS_ERROR(pstRecvEvent->pLoopBuf != nullptr);
 
-    m_vectEventListRecvLoopBufLock[dwFlag % m_nEventListCount]->lock();
-    nResult = m_vectEventListRecvLoopBuf[dwFlag % m_nEventListCount]->Read(m_pPacketTempBuf, pstRecvEvent->dwLen, TRUE, TRUE);
-    m_vectEventListRecvLoopBufLock[dwFlag % m_nEventListCount]->unlock();
+    dwLen = pstRecvEvent->pLoopBuf->GetTotalReadableLen();
+    LOG_PROCESS_ERROR(dwLen < MAX_PACKET_LEN);
+
+    nResult = pstRecvEvent->pLoopBuf->Read(m_pPacketTempBuf, dwLen, TRUE, TRUE);
     LOG_PROCESS_ERROR(nResult);
 
     pSocker = pstRecvEvent->pSocker;
     LOG_PROCESS_ERROR(pSocker);
 
-    m_pNetMessageHandler->OnMessage(pSocker, m_pPacketTempBuf, pstRecvEvent->dwLen);
+    m_pNetMessageHandler->OnMessage(pSocker, m_pPacketTempBuf, dwLen);
+
+    ILPLoopBuf::ReleaseBuf(pstRecvEvent->pLoopBuf);
 
 Exit0:
 

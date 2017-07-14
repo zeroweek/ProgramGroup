@@ -175,6 +175,39 @@ Exit0:
     return FALSE;
 }
 
+BOOL LPAPI LPLoopBuf::Read(lp_shared_ptr<ILPLoopBuf> pLoopBuf, LPUINT32 dwReadLen)
+{
+    LPINT32 nResult = FALSE;
+    LPUINT32 dwLineSize = 0;
+
+    LOG_PROCESS_ERROR(pLoopBuf);
+    LOG_PROCESS_ERROR(pLoopBuf->GetTotalWritableLen() >= dwReadLen);
+    LOG_PROCESS_ERROR(this->GetTotalReadableLen() >= dwReadLen);
+
+    dwLineSize = this->GetOnceReadableLen();
+    if(dwLineSize > dwReadLen)
+    {
+        dwLineSize = dwReadLen;
+    }
+
+    nResult = pLoopBuf->Write(this->ReadPtr(), dwLineSize);
+    LOG_CHECK_ERROR(nResult);
+
+    this->FinishRead(dwLineSize);
+
+    if(dwLineSize < dwReadLen)
+    {
+        nResult = pLoopBuf->Write(this->ReadPtr(), dwReadLen - dwLineSize);
+        LOG_CHECK_ERROR(nResult);
+
+        this->FinishRead(dwReadLen - dwLineSize);
+    }
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
 BOOL LPAPI LPLoopBuf::Write(const char* pSrc, LPUINT32 dwWriteLen)
 {
     LPUINT32 dwLineSize = 0;

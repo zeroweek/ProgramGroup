@@ -54,7 +54,7 @@ lp_shared_ptr<ILPConnector> LPAPI LPNetImpl::CreateConnectorCtrl(lp_shared_ptr<I
 
     LOG_PROCESS_ERROR(pPacketParser);
 
-    pConnector = ILPConnectorImpl::NewConnectorImpl(m_oNetConfig.dwIoType);
+    pConnector = ILPConnectorImpl::NewConnectorImpl();
     LOG_PROCESS_ERROR(pConnector);
 
     nResult = pConnector->Init(lp_shared_from_this(), m_pReactor, pPacketParser, _CreateId());
@@ -118,7 +118,7 @@ Exit1:
     return TRUE;
 }
 
-BOOL LPAPI LPNetImpl::Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
+BOOL LPAPI LPNetImpl::Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, const NET_CONFIG& tNetConfig)
 {
     LPINT32 nResult = 0;
 
@@ -127,10 +127,7 @@ BOOL LPAPI LPNetImpl::Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandle
     m_pNetMessageHandler = pNetMessageHandler;
     LOG_PROCESS_ERROR(m_pNetMessageHandler);
 
-    LOG_PROCESS_ERROR(pNetConfig);
-    memcpy(&m_oNetConfig, pNetConfig, sizeof(m_oNetConfig));
-
-    LOG_PROCESS_ERROR(m_oNetConfig.dwIoType > eIoType_None);
+    m_oNetConfig = tNetConfig;
 
     nResult = m_oSockerMgr.Init(lp_shared_from_this());
     LOG_PROCESS_ERROR(nResult);
@@ -242,7 +239,7 @@ void LPAPI ILPNet::GlobalUnInit()
 
 }
 
-lp_shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig)
+lp_shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, const NET_CONFIG& tNetConfig)
 {
     LPINT32 nResult = 0;
     lp_shared_ptr<ILPNet> poNetImpl;
@@ -250,12 +247,11 @@ lp_shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageH
     PRINTF_PROCESS_ERROR(lpGetLzplLoggerCtrl());
 
     LOG_PROCESS_ERROR(pNetMessageHandler);
-    LOG_PROCESS_ERROR(pNetConfig);
 
     poNetImpl = std::make_shared<LPNetImpl>();
     LOG_PROCESS_ERROR(poNetImpl != nullptr);
 
-    nResult = ((LPNetImpl*)poNetImpl.get())->Init(pNetMessageHandler, pNetConfig);
+    nResult = ((LPNetImpl*)poNetImpl.get())->Init(pNetMessageHandler, tNetConfig);
     LOG_PROCESS_ERROR(nResult);
 
     return poNetImpl;

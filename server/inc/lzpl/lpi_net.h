@@ -39,13 +39,11 @@ enum e_IoType
 //
 struct NET_CONFIG
 {
-    LPUINT32                       dwIoType;                    // io类型
     LPUINT32                       dwRecvBufSize;               // 接收缓冲区的大小
     LPUINT32                       dwSendBufSize;               // 发送缓冲区的大小
     LPUINT32                       dwConnectCount;              // 允许连接的数量
     LPUINT32                       dwNetEventPoolSize;          // 网络事件池大小
     LPUINT32                       dwNetEventListCount;         // 网络事件处理列表个数
-    LPUINT32                       dwNetRecvEventBufSize;       // 网络接收事件缓冲区大小
 
 };
 
@@ -100,7 +98,7 @@ public:
 
     // Summary:
     //  创建网络组件对象
-    static lp_shared_ptr<ILPNet> LPAPI CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig);
+    static lp_shared_ptr<ILPNet> LPAPI CreateNetModule(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, const NET_CONFIG& tNetConfig);
 
 
 

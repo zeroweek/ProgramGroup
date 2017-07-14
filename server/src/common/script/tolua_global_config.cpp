@@ -1,6 +1,6 @@
 /*
 ** Lua binding: global_config
-** Generated automatically by tolua++-1.0.92 on Thu Jul 13 22:03:32 2017.
+** Generated automatically by tolua++-1.0.92 on Fri Jul 14 19:23:09 2017.
 */
 
 #ifndef __cplusplus
@@ -30,36 +30,6 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"NET_CONFIG");
  tolua_usertype(tolua_S,"SERVER_CONFIG::GAME_LOGIC_CONFIG");
 }
-
-/* get function: dwIoType of class  NET_CONFIG */
-#ifndef TOLUA_DISABLE_tolua_get_NET_CONFIG_unsigned_dwIoType
-static int tolua_get_NET_CONFIG_unsigned_dwIoType(lua_State* tolua_S)
-{
-  NET_CONFIG* self = (NET_CONFIG*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dwIoType'",NULL);
-#endif
- tolua_pushnumber(tolua_S,(lua_Number)self->dwIoType);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: dwIoType of class  NET_CONFIG */
-#ifndef TOLUA_DISABLE_tolua_set_NET_CONFIG_unsigned_dwIoType
-static int tolua_set_NET_CONFIG_unsigned_dwIoType(lua_State* tolua_S)
-{
-  NET_CONFIG* self = (NET_CONFIG*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dwIoType'",NULL);
- if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
- tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->dwIoType = (( unsigned int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
 
 /* get function: dwRecvBufSize of class  NET_CONFIG */
 #ifndef TOLUA_DISABLE_tolua_get_NET_CONFIG_unsigned_dwRecvBufSize
@@ -206,36 +176,6 @@ static int tolua_set_NET_CONFIG_unsigned_dwNetEventListCount(lua_State* tolua_S)
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
   self->dwNetEventListCount = (( unsigned int)  tolua_tonumber(tolua_S,2,0))
-;
- return 0;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* get function: dwNetRecvEventBufSize of class  NET_CONFIG */
-#ifndef TOLUA_DISABLE_tolua_get_NET_CONFIG_unsigned_dwNetRecvEventBufSize
-static int tolua_get_NET_CONFIG_unsigned_dwNetRecvEventBufSize(lua_State* tolua_S)
-{
-  NET_CONFIG* self = (NET_CONFIG*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dwNetRecvEventBufSize'",NULL);
-#endif
- tolua_pushnumber(tolua_S,(lua_Number)self->dwNetRecvEventBufSize);
- return 1;
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* set function: dwNetRecvEventBufSize of class  NET_CONFIG */
-#ifndef TOLUA_DISABLE_tolua_set_NET_CONFIG_unsigned_dwNetRecvEventBufSize
-static int tolua_set_NET_CONFIG_unsigned_dwNetRecvEventBufSize(lua_State* tolua_S)
-{
-  NET_CONFIG* self = (NET_CONFIG*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'dwNetRecvEventBufSize'",NULL);
- if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
- tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
-#endif
-  self->dwNetRecvEventBufSize = (( unsigned int)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -908,13 +848,11 @@ TOLUA_API int tolua_global_config_open (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,NULL);
  tolua_cclass(tolua_S,"NET_CONFIG","NET_CONFIG","",NULL);
  tolua_beginmodule(tolua_S,"NET_CONFIG");
-  tolua_variable(tolua_S,"dwIoType",tolua_get_NET_CONFIG_unsigned_dwIoType,tolua_set_NET_CONFIG_unsigned_dwIoType);
   tolua_variable(tolua_S,"dwRecvBufSize",tolua_get_NET_CONFIG_unsigned_dwRecvBufSize,tolua_set_NET_CONFIG_unsigned_dwRecvBufSize);
   tolua_variable(tolua_S,"dwSendBufSize",tolua_get_NET_CONFIG_unsigned_dwSendBufSize,tolua_set_NET_CONFIG_unsigned_dwSendBufSize);
   tolua_variable(tolua_S,"dwConnectCount",tolua_get_NET_CONFIG_unsigned_dwConnectCount,tolua_set_NET_CONFIG_unsigned_dwConnectCount);
   tolua_variable(tolua_S,"dwNetEventPoolSize",tolua_get_NET_CONFIG_unsigned_dwNetEventPoolSize,tolua_set_NET_CONFIG_unsigned_dwNetEventPoolSize);
   tolua_variable(tolua_S,"dwNetEventListCount",tolua_get_NET_CONFIG_unsigned_dwNetEventListCount,tolua_set_NET_CONFIG_unsigned_dwNetEventListCount);
-  tolua_variable(tolua_S,"dwNetRecvEventBufSize",tolua_get_NET_CONFIG_unsigned_dwNetRecvEventBufSize,tolua_set_NET_CONFIG_unsigned_dwNetRecvEventBufSize);
  tolua_endmodule(tolua_S);
  tolua_cclass(tolua_S,"GUARD_CONFIG","GUARD_CONFIG","",NULL);
  tolua_beginmodule(tolua_S,"GUARD_CONFIG");

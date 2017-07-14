@@ -7,7 +7,6 @@
 #ifndef _LPI_SOCKER_H_
 #define _LPI_SOCKER_H_
 
-#include "lpi_sockoption.h"
 #include "lp_processerror.h"
 
 

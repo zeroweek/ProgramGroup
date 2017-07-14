@@ -15,7 +15,7 @@ NS_LZPL_BEGIN
 
 
 
-lp_shared_ptr<ILPConnectorImpl> LPAPI ILPConnectorImpl::NewConnectorImpl(LPUINT32 dwIoType)
+lp_shared_ptr<ILPConnectorImpl> LPAPI ILPConnectorImpl::NewConnectorImpl()
 {
     return std::make_shared<LPConnector>();
 }

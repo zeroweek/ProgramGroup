@@ -107,6 +107,15 @@ public:
     virtual BOOL LPAPI Read(char* pDst, LPUINT32 dwReadLen, BOOL bDoRead, BOOL bNullTerminate);
 
     // Summary:
+    //      读取数据，该函数会自动调整<读指针>的位置，以及当前有效数据长度
+    // Input:
+    //      pLoopBuf：目的缓冲区
+    //      dwReadLen：要读取的长度
+    // Return:
+    //      TRUE-成功读取指定长度数据，FALSE-无任何操作
+    virtual BOOL LPAPI Read(lp_shared_ptr<ILPLoopBuf> pLoopBuf, LPUINT32 dwReadLen);
+
+    // Summary:
     //      写入数据，该函数会自动调整<写指针>的位置，以及当前有效数据长度
     // Input:
     //      pSrc：源缓冲区

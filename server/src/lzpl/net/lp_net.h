@@ -66,7 +66,7 @@ public:
     //      初始化函数
     //Return:
     //      成功返回TRUE，失败返回FALSE
-    BOOL LPAPI Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, NET_CONFIG* pNetConfig);
+    BOOL LPAPI Init(lp_shared_ptr<ILPNetMessageHandler> pNetMessageHandler, const NET_CONFIG& tNetConfig);
 
     // Summary:
     //      反初始化函数
@@ -111,7 +111,7 @@ protected:
 
     LPSockerMgr                             m_oSockerMgr;
     LPEventMgr                              m_oEventMgr;
-    lp_shared_ptr<ILPReactor>             m_pReactor;
+    lp_shared_ptr<ILPReactor>               m_pReactor;
 
     MAP_LISTENER                            m_mapListener;
     MAP_CONNECTOR                           m_mapConnector;

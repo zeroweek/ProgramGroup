@@ -120,7 +120,7 @@ lp_shared_ptr<ILPSockerImpl> LPAPI LPSockerMgr::_Create(lp_shared_ptr<ILPPacketP
     LOG_PROCESS_ERROR(m_pRecvLoopBufPool);
     LOG_PROCESS_ERROR(m_pSendLoopBufPool);
 
-    pSocker = ILPSockerImpl::NewSockerImpl(m_pNetImpl->GetNetConfig().dwIoType);
+    pSocker = ILPSockerImpl::NewSockerImpl();
     LOG_PROCESS_ERROR(pSocker);
 
     pRecvLoopBuf = m_pRecvLoopBufPool->Create();
@@ -139,10 +139,10 @@ lp_shared_ptr<ILPSockerImpl> LPAPI LPSockerMgr::_Create(lp_shared_ptr<ILPPacketP
 
     pSocker->SetNetImpl(m_pNetImpl);
 
-    m_oValidLock.Lock();
+    m_oValidMutex.lock();
     ++m_nCurValidConnectCount;
     m_oValidMap.insert(make_pair(pSocker->GetSockerId(), pSocker));
-    m_oValidLock.UnLock();
+    m_oValidMutex.unlock();
 
     return pSocker;
 
@@ -173,10 +173,10 @@ void LPAPI LPSockerMgr::_Release(lp_shared_ptr<ILPSockerImpl> pSocker)
     pSocker->DetachPacketParser();
     pSocker->SetNetImpl(NULL);
 
-    m_oValidLock.Lock();
+    m_oValidMutex.lock();
     --m_nCurValidConnectCount;
     m_oValidMap.erase(pSocker->GetSockerId());
-    m_oValidLock.UnLock();
+    m_oValidMutex.unlock();
 
     LOG_PROCESS_ERROR(m_pRecvLoopBufPool);
     m_pRecvLoopBufPool->Release(pRecvLoopBuf);
@@ -200,13 +200,13 @@ lp_shared_ptr<ILPSockerImpl> LPSockerMgr::Find(LPUINT32 dwSockerId)
     lp_shared_ptr<ILPSockerImpl> pSocker = NULL;
     LPMapSocker::iterator fit;
 
-    m_oValidLock.Lock();
+    m_oValidMutex.lock();
     fit = m_oValidMap.find(dwSockerId);
     if(fit != m_oValidMap.end())
     {
         pSocker = fit->second;
     }
-    m_oValidLock.UnLock();
+    m_oValidMutex.unlock();
 
     return pSocker;
 }
