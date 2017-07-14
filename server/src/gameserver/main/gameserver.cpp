@@ -31,6 +31,8 @@
 #   pragma comment(lib, "ssleay32.lib")
 #   pragma comment(lib, "libeay32.lib")
 #   pragma comment(lib, "libcurld.lib")
+#   pragma comment(lib, "libprotobuf_d.lib")
+
 
 #   else
 
@@ -45,6 +47,7 @@
 #   pragma comment(lib, "ssleay32.lib")
 #   pragma comment(lib, "libeay32.lib")
 #   pragma comment(lib, "libcurl.lib")
+#   pragma comment(lib, "libprotobuf.lib")
 
 #   endif
 

@@ -89,8 +89,8 @@ public:
 
 private:
 
-    LPExternalMessageSerializer      m_oRecvMessageSerializer;
-    LPExternalMessageSerializer      m_oSendMessageSerializer;
+    LPMessageSerializer      m_oRecvMessageSerializer;
+    LPMessageSerializer      m_oSendMessageSerializer;
 
     typedef std::map<LPUINT32, lp_shared_ptr<ILPSocker>>  MAP_SOCKER;
     MAP_SOCKER                       m_mapSocker;

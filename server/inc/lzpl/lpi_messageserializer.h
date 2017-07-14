@@ -4,8 +4,8 @@
 //    description: 消息解析接口定义
 //
 //****************************************************************************/
-#ifndef _LPI_MESSAGE_PARSER_H_
-#define _LPI_MESSAGE_PARSER_H_
+#ifndef _LPI_MESSAGE_SERIALIZER_H_
+#define _LPI_MESSAGE_SERIALIZER_H_
 
 #include "lp_base.h"
 

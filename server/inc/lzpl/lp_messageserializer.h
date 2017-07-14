@@ -4,8 +4,8 @@
 //    description: 消息解析类定义
 //
 //****************************************************************************/
-#ifndef _LP_MESSAGE_PARSER_H_
-#define _LP_MESSAGE_PARSER_H_
+#ifndef _LP_MESSAGE_SERIALIZER_H_
+#define _LP_MESSAGE_SERIALIZER_H_
 
 #include "lpi_messageserializer.h"
 
@@ -21,17 +21,17 @@ NS_LZPL_BEGIN
 
 // Summary:
 //      消息解析类
-class DECLARE LPExternalMessageSerializer : public ILPMessageSerializer
+class DECLARE LPMessageSerializer : public ILPMessageSerializer
 {
 public:
 
     // Summary:
     //      无
-    LPExternalMessageSerializer();
+    LPMessageSerializer();
 
     // Summary:
     //      无
-    virtual ~LPExternalMessageSerializer();
+    virtual ~LPMessageSerializer();
 
     // Summary:
     //      初始化

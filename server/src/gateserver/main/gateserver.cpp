@@ -41,6 +41,7 @@
 #   pragma comment(lib, "common64d.lib")
 #   pragma comment(lib, "jsoncpp64d.lib")
 #   pragma comment(lib, "libcurld.lib")
+#   pragma comment(lib, "libprotobuf_d.lib")
 
 #   else
 
@@ -53,6 +54,7 @@
 #   pragma comment(lib, "common64.lib")
 #   pragma comment(lib, "jsoncpp64.lib")
 #   pragma comment(lib, "libcurl.lib")
+#   pragma comment(lib, "libprotobuf.lib")
 
 #   endif
 

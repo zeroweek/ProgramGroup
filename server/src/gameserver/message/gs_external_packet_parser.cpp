@@ -23,7 +23,7 @@ LPINT32 LPAPI CGSExternalPacketParser::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
     LPINT32 nResult = 0;
     LPINT32 nParseCount = 0;
     LPUINT32 dwHeadSize = 4;
-    LPExternalMessageSerializer oMessageSerializer;
+    LPMessageSerializer oMessageSerializer;
     char szPacketBuf[128];
 
     LOG_PROCESS_ERROR(pLoopBuf);

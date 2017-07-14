@@ -19,6 +19,8 @@
 #   pragma comment(lib, "luastat64d.lib")
 #   pragma comment(lib, "toluapp64d.lib")
 #   pragma comment(lib, "common64d.lib")
+#   pragma comment(lib, "libprotobuf_d.lib")
+
 
 #   else
 
@@ -28,6 +30,7 @@
 #   pragma comment(lib, "luastat64.lib")
 #   pragma comment(lib, "toluapp64.lib")
 #   pragma comment(lib, "common64.lib")
+#   pragma comment(lib, "libprotobuf.lib")
 
 #   endif
 

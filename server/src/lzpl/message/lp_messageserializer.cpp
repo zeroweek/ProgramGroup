@@ -9,7 +9,7 @@ NS_LZPL_BEGIN
 
 
 
-LPExternalMessageSerializer::LPExternalMessageSerializer()
+LPMessageSerializer::LPMessageSerializer()
 {
     lpFastZeroCharArray(m_szSerializeBuf);
     lpFastZeroCharArray(m_szUnSerializeBuf);
@@ -22,12 +22,12 @@ LPExternalMessageSerializer::LPExternalMessageSerializer()
     m_pUnSerializeBuf        = NULL;
 }
 
-LPExternalMessageSerializer::~LPExternalMessageSerializer()
+LPMessageSerializer::~LPMessageSerializer()
 {
     UnInit();
 }
 
-BOOL LPAPI LPExternalMessageSerializer::Init(char * pszSerializeBuf, LPUINT32 dwSerializeBufSize, const char * pszUnSerializeBuf, LPUINT32 dwUnSerializeBufSize)
+BOOL LPAPI LPMessageSerializer::Init(char * pszSerializeBuf, LPUINT32 dwSerializeBufSize, const char * pszUnSerializeBuf, LPUINT32 dwUnSerializeBufSize)
 {
     LOG_PROCESS_ERROR((NULL == pszSerializeBuf && 0 == dwSerializeBufSize)
                       || (NULL != pszSerializeBuf && 0 != dwSerializeBufSize));
@@ -48,7 +48,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::UnInit(void)
+BOOL LPAPI LPMessageSerializer::UnInit(void)
 {
     lpFastZeroCharArray(m_szSerializeBuf);
     lpFastZeroCharArray(m_szUnSerializeBuf);
@@ -64,7 +64,7 @@ BOOL LPAPI LPExternalMessageSerializer::UnInit(void)
     return TRUE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::ReadUint8(LPUINT8 * pbyValue)
+BOOL LPAPI LPMessageSerializer::ReadUint8(LPUINT8 * pbyValue)
 {
     const char* pBuf = NULL;
     LOG_PROCESS_ERROR(pbyValue);
@@ -82,7 +82,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::WriteUint8(LPUINT8 byValue)
+BOOL LPAPI LPMessageSerializer::WriteUint8(LPUINT8 byValue)
 {
     char* pBuf = NULL;
     LOG_PROCESS_ERROR(sizeof(LPUINT8) == 1);
@@ -98,7 +98,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::ReadUint16(LPUINT16 * pwValue)
+BOOL LPAPI LPMessageSerializer::ReadUint16(LPUINT16 * pwValue)
 {
     LPINT32 nResult = 0;
     LPUINT8 byData1 = 0;
@@ -120,7 +120,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::WriteUint16(LPUINT16 wValue)
+BOOL LPAPI LPMessageSerializer::WriteUint16(LPUINT16 wValue)
 {
     LPINT32 nResult = 0;
     LPUINT8 byData1 = 0;
@@ -141,7 +141,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::ReadUint32(LPUINT32 * pdwValue)
+BOOL LPAPI LPMessageSerializer::ReadUint32(LPUINT32 * pdwValue)
 {
     LPINT32 nResult = 0;
     LPUINT16 wData1 = 0;
@@ -163,7 +163,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::WriteUint32(LPUINT32 dwValue)
+BOOL LPAPI LPMessageSerializer::WriteUint32(LPUINT32 dwValue)
 {
     LPINT32 nResult = 0;
     LPUINT16 wData1 = 0;
@@ -184,7 +184,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::ReadUint64(LPUINT64 * pqwValue)
+BOOL LPAPI LPMessageSerializer::ReadUint64(LPUINT64 * pqwValue)
 {
     LPINT32 nResult = 0;
     LPUINT32 dwData1 = 0;
@@ -206,7 +206,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::WriteUint64(LPUINT64 qwValue)
+BOOL LPAPI LPMessageSerializer::WriteUint64(LPUINT64 qwValue)
 {
     LPINT32 nResult = 0;
     LPUINT32 dwData1 = 0;
@@ -227,7 +227,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::ReadString(char * pcszData)
+BOOL LPAPI LPMessageSerializer::ReadString(char * pcszData)
 {
     LPINT32 nResult = 0;
     LPUINT32 dwLen = 0;
@@ -251,7 +251,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL LPAPI LPExternalMessageSerializer::WriteString(const char * pcszData, LPUINT32 dwLen, LPUINT32 dwMaxLen)
+BOOL LPAPI LPMessageSerializer::WriteString(const char * pcszData, LPUINT32 dwLen, LPUINT32 dwMaxLen)
 {
     LPINT32 nResult = 0;
     char* pBuf = NULL;
@@ -277,12 +277,12 @@ Exit0:
     return FALSE;
 }
 
-char *LPAPI LPExternalMessageSerializer::GetSerializeBuf(void)
+char *LPAPI LPMessageSerializer::GetSerializeBuf(void)
 {
     return NULL != m_pSerializeBuf ? m_pSerializeBuf : m_szSerializeBuf;
 }
 
-LPUINT32 LPAPI LPExternalMessageSerializer::GetSerializeSize(void)
+LPUINT32 LPAPI LPMessageSerializer::GetSerializeSize(void)
 {
     return m_dwSerializeSize;
 }
