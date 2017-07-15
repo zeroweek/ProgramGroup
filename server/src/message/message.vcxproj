@@ -11,18 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="external\external_message.cpp" />
-    <ClCompile Include="external\external_message_header.cpp" />
+    <ClCompile Include="..\..\..\protocol\LPDefine.pb.cc" />
+    <ClCompile Include="..\..\..\protocol\LPMsg.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\message\external\external_message.h" />
-    <ClInclude Include="..\..\inc\message\external\external_message_header.h" />
-    <ClInclude Include="..\..\inc\message\internal\g2t_message.h" />
-    <ClInclude Include="..\..\inc\message\internal\internal_message_header.h" />
-    <ClInclude Include="..\..\inc\message\internal\t2g_message.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\inc\message\external\external_message.xml" />
+    <ClInclude Include="..\..\..\protocol\LPDefine.pb.h" />
+    <ClInclude Include="..\..\..\protocol\LPMsg.pb.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5F6AEEED-50AC-4C66-9DA8-FB4E1812679D}</ProjectGuid>
@@ -72,9 +66,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\3rd\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\protocol;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,9 +81,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;BOOST_ASIO_SEPARATE_COMPILATION;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\3rd\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\protocol;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

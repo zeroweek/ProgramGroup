@@ -12,13 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\gameserver.cpp" />
-    <ClCompile Include="message\gs_external_packet_parser.cpp" />
     <ClCompile Include="message\gs_internal_packet_parser.cpp" />
     <ClCompile Include="message\gs_message_handler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameserver.h" />
-    <ClInclude Include="message\gs_external_packet_parser.h" />
     <ClInclude Include="message\gs_internal_packet_parser.h" />
     <ClInclude Include="message\gs_message_handler.h" />
   </ItemGroup>
@@ -71,7 +69,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\3rd\SDL-2.0.0-6713\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\3rd\SDL-2.0.0-6713\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\protocol;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -89,7 +87,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;BOOST_ASIO_SEPARATE_COMPILATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%LZPL_ROOT%\server\3rd\mysql\include;%LZPL_ROOT%\server\3rd\zlib\include;%LZPL_ROOT%\server\3rd\lua\include;%LZPL_ROOT%\server\3rd\tolua++\include;%LZPL_ROOT%\server\3rd\curl\include;%LZPL_ROOT%\server\inc\lzpl;%LZPL_ROOT%\server\inc\message\internal;%LZPL_ROOT%\server\inc\message\external;%LZPL_ROOT%\protocol;%LZPL_ROOT%\server\inc\common;%LZPL_ROOT%\server\inc\gamelogic;.\main;.\message;.\test;%LZPL_ROOT%\server\3rd\boost;%LZPL_ROOT%\server\3rd\protobuf\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

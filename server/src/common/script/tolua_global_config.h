@@ -1,6 +1,6 @@
 /*
 ** Lua binding: global_config
-** Generated automatically by tolua++-1.0.92 on Fri Jul 14 20:31:20 2017.
+** Generated automatically by tolua++-1.0.92 on Sat Jul 15 18:34:58 2017.
 */
 
 /* Exported function */

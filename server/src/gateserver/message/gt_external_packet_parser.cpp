@@ -1,64 +1,68 @@
 #include "gt_external_packet_parser.h"
 #include "lp_processerror.h"
-#include "external_message.h"
-#include "lp_messageserializer.h"
-
-
-using namespace EXTERNAL_MESSAGE;
+#include "LPDefine.pb.h"
 
 
 
 CGTExternalPacketParser::CGTExternalPacketParser()
 {
+    m_pMessageHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
+    LOG_PROCESS_ERROR(m_pMessageHead);
 
+    m_pMessageSerializer = lp_make_shared<LPMessageSerializer>();
+    LOG_PROCESS_ERROR(m_pMessageSerializer);
+
+Exit0:
+    return;
 }
 
 CGTExternalPacketParser::~CGTExternalPacketParser()
 {
-
+    MessageHead::DeleteMsgHead(m_pMessageHead);
+    m_pMessageSerializer = nullptr;
 }
 
 LPINT32 LPAPI CGTExternalPacketParser::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     LPINT32 nResult = 0;
     LPINT32 nParseCount = 0;
-    LPUINT32 dwHeadSize = 4;
-    LPMessageSerializer oMessageSerializer;
-    char szPacketBuf[128];
+    char* pszMsgHead = nullptr;
 
     LOG_PROCESS_ERROR(pLoopBuf);
+    LOG_PROCESS_ERROR(m_pMessageHead);
 
-    if(pLoopBuf->GetTotalReadableLen() < dwHeadSize)
+    if(pLoopBuf->GetTotalReadableLen() < m_pMessageHead->GetHeadLength())
     {
         PROCESS_SUCCESS(TRUE);
     }
 
-    nResult = pLoopBuf->Read(szPacketBuf, dwHeadSize, FALSE, FALSE);
+    pszMsgHead = new char[m_pMessageHead->GetHeadLength()];
+    LOG_PROCESS_ERROR(pszMsgHead);
+
+    nResult = pLoopBuf->Read(pszMsgHead, m_pMessageHead->GetHeadLength(), FALSE, FALSE);
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = oMessageSerializer.Init(NULL, 0, szPacketBuf, dwHeadSize);
+    nResult = m_pMessageSerializer->Init(nullptr, 0, pszMsgHead, m_pMessageHead->GetHeadLength());
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = m_stMessageHead.UnSerialize(&oMessageSerializer);
+    nResult = m_pMessageHead->UnSerialize(m_pMessageSerializer);
     LOG_PROCESS_ERROR(nResult);
 
-    LOG_PROCESS_ERROR(m_stMessageHead.wMsgId > min_external_message && m_stMessageHead.wMsgId < max_external_message);
+    LOG_PROCESS_ERROR(LPDefine::msg_begin < m_pMessageHead->GetMessageID() && m_pMessageHead->GetMessageID() < LPDefine::msg_end);
 
-    if(pLoopBuf->GetTotalReadableLen() >= m_stMessageHead.wMsgSize)
+    if(pLoopBuf->GetTotalReadableLen() >= m_pMessageHead->GetMessageLength())
     {
-        nParseCount = m_stMessageHead.wMsgSize;
+        nParseCount = m_pMessageHead->GetMessageLength();
     }
 
     PROCESS_SUCCESS(TRUE);
 
 Exit0:
-
     nParseCount = -1;
 
 Exit1:
 
-    nResult = oMessageSerializer.UnInit();
-    LOG_CHECK_ERROR(nResult);
+    SAFE_DELETE_SZ(pszMsgHead);
 
     return nParseCount;
 }

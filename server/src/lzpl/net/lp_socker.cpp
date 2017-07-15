@@ -76,9 +76,9 @@ void LPAPI LPSocker::Reset()
     SetSockerId(INVALID_SOCKER_ID);
 
     m_wRemotePort = 0;
-    m_strRemoteIp = NULL_STR;
+    m_strRemoteIp = nullstr;
     m_wLocalPort = 0;
-    m_strLocalIp = NULL_STR;
+    m_strLocalIp = nullstr;
 
     SetParentId(0);
 
@@ -114,7 +114,7 @@ std::string& LPAPI LPSocker::GetRemoteIp()
     system::error_code err;
     ip::tcp::endpoint ep;
 
-    PROCESS_SUCCESS(NULL_STR != m_strRemoteIp);
+    PROCESS_SUCCESS(nullstr != m_strRemoteIp);
     LOG_PROCESS_ERROR(m_pSocket);
 
     ep = m_pSocket->remote_endpoint(err);
@@ -152,7 +152,7 @@ std::string& LPAPI LPSocker::GetLocalIp()
     system::error_code err;
     ip::tcp::endpoint ep;
 
-    PROCESS_SUCCESS(NULL_STR != m_strLocalIp);
+    PROCESS_SUCCESS(nullstr != m_strLocalIp);
     LOG_PROCESS_ERROR(m_pSocket);
 
     ep = m_pSocket->local_endpoint(err);
@@ -467,6 +467,8 @@ void LPAPI LPSocker::HandleSend(const system::error_code& err, const size_t nSiz
 
     //有数据正在发送标记清除
     m_bSending = false;
+
+    PostSend();
 
 Exit0:
     return;

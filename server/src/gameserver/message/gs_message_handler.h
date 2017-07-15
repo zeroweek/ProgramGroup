@@ -8,14 +8,10 @@
 #define _GS_MESSAGE_HANDLER_H_
 
 #include "lp_lzpl.h"
+#include "lpi_message.h"
 #include "lp_messageserializer.h"
-#include "internal_message_header.h"
-#include "external_message_header.h"
-
-
-
-using namespace INTERNAL_MESSAGE;
-using namespace EXTERNAL_MESSAGE;
+#include "LPMsg.pb.h"
+#include "LPDefine.pb.h"
 
 
 
@@ -69,16 +65,6 @@ public:
 
 public:
 
-    // Summary:
-    //      解包
-    // Input:
-    //      pLoopBuf：待解析数据缓冲区
-    // Return:
-    //      "<0"-解析错误，"=0"-不完整包，">0"-完整包长度
-    virtual LPINT32 LPAPI Parse(ILPLoopBuf* pLoopBuf);
-
-public:
-
     BOOL DoGTRegister(lp_shared_ptr<ILPSocker> pSocker);
     void OnGTRegisterAck(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
@@ -89,14 +75,22 @@ public:
 
     LPUINT32 GetSockerCount(void);
 
+    BOOL SendMessage(lp_shared_ptr<ILPSocker> pSocker, const LPUINT32 nMsgID, const std::string& strMsgData);
+
 private:
 
+    lp_shared_ptr<MessageHead>              m_pMessageHead;
+    lp_shared_ptr<LPMessageSerializer>      m_pMessageSerializer;
+
+    lp_shared_ptr<LPMessageSerializer>      m_pRecvMessageSerializer;
+    lp_shared_ptr<LPMessageSerializer>      m_pSendMessageSerializer;
+
     typedef std::map<LPUINT32, lp_shared_ptr<ILPSocker>>  MAP_SOCKER;
-    MAP_SOCKER                         m_mapSocker;
-    MAP_SOCKER::iterator               m_iterSocker;
+    MAP_SOCKER                              m_mapSocker;
+    MAP_SOCKER::iterator                    m_iterSocker;
 
     typedef void (CGSMessageHandler::*pfunMessageCallback)(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
-    pfunMessageCallback                m_MessageCallbackList[max_internal_message_count];
+    pfunMessageCallback                m_MessageCallbackList[LPDefine::msg_end];
 };
 
 

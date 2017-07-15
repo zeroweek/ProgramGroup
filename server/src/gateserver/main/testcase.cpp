@@ -563,7 +563,7 @@ BOOL TC_TestTable_Invalid()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord2);
     LOG_CHECK_ERROR(nResult);
@@ -647,7 +647,7 @@ BOOL TC_TestTable_Col0_Map_Int64()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);
@@ -781,7 +781,7 @@ BOOL TC_TestTable_Col0_Map_String()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);
@@ -866,7 +866,7 @@ BOOL TC_TestTable_Col4_Map_Int64()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);
@@ -958,7 +958,7 @@ BOOL TC_TestTable_Col4_Map_String()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);
@@ -1056,7 +1056,7 @@ BOOL TC_TestTable_Col4_Mulmap_Int64()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);
@@ -1175,7 +1175,7 @@ BOOL TC_TestTable_Col4_Mulmap_String()
     LPINT64 lValue = 0;
     FLOAT fValue = ZERO_FLOAT;
     DOUBLE dValue = ZERO_DOUBLE;
-    std::string strValue = NULL_STR;
+    std::string strValue = nullstr;
 
     nResult = poTable->AddRecord(oRecord1);
     LOG_CHECK_ERROR(nResult);

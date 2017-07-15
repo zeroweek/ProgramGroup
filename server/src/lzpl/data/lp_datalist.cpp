@@ -287,7 +287,7 @@ const std::string& LPAPI LPDataList::String(const LPINT32 nIndex) const
     SIMPLE_LIST_FOR_END
 
 Exit0:
-    return NULL_STR;
+    return nullstr;
 }
 
 BOOL LPDataList::Append(const ILPDataList& oSrc, LPUINT32 dwStart, LPUINT32 dwCount)

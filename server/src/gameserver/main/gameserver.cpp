@@ -136,10 +136,6 @@ BOOL LPAPI CGameServer::Init(void)
     m_pGSInternalPacketParser = lp_make_shared<CGSInternalPacketParser>();
     LOG_PROCESS_ERROR(m_pGSInternalPacketParser);
 
-    //创建外部消息解析对象
-    m_pGSExternalPacketParser = lp_make_shared<CGSExternalPacketParser>();
-    LOG_PROCESS_ERROR(m_pGSExternalPacketParser);
-
     //网络模块初始化
     nResult = ILPNet::GlobalInit();
     LOG_PROCESS_ERROR(nResult);
@@ -194,7 +190,6 @@ BOOL LPAPI CGameServer::UnInit(void)
     m_pGSInternalMessageHandler = nullptr;
 
     m_pGSInternalPacketParser = nullptr;
-    m_pGSExternalPacketParser = nullptr;
 
     //删除释放net对象
     ILPNet::DeleteNetModule(m_pNet);

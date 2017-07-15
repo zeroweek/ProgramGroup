@@ -15,11 +15,10 @@
 #include "lp_codeconvert.h"
 #include "lp_filelist.h"
 #include "lp_dump.h"
-#include "external_message_header.h"
-#include "internal_message_header.h"
 #include "lp_sharememory.h"
 
 #include "testcase.h"
+#include "LPMsg.pb.h"
 
 #ifdef _WIN32
 
@@ -662,7 +661,7 @@ BOOL _Test_VarData(void)
 {
     LPINT32 nResult = 0;
     LPString str = LPString(2, true);
-    std::string strTemp = NULL_STR;
+    std::string strTemp = nullstr;
 
     ILPData* poDataInt64 = ILPData::NewData(eDataType_Int64);
     ILPData* poDataFloat = ILPData::NewData(eDataType_Float);
@@ -766,11 +765,45 @@ Exit0:
     return FALSE;
 }
 
+
+BOOL _Test_ProtoBuf(void)
+{
+    LPINT32 nResult = 0;
+    LPMsg::TestString xMsg;
+    std::string strMsgData = nullstr;
+    std::string strMsgData2 = nullstr;
+    std::string strTest = nullstr;
+    std::string strTest2 = nullstr;
+    char szTest[100] = { 0 };
+
+    xMsg.set_str_value1("str1");
+    xMsg.set_num_value1(1);
+    xMsg.set_num_value2(0);
+    xMsg.set_num_value3(0);
+    xMsg.set_str_value2("str2");
+
+    LOG_PROCESS_ERROR(xMsg.SerializeToString(&strMsgData));
+    strMsgData2 = std::string(strMsgData.c_str());
+
+    szTest[0] = 'a';
+    szTest[1] = 'b';
+    szTest[2] = 0;
+    szTest[3] = 'd';
+    szTest[4] = 'e';
+    strTest = std::string(szTest, 5);
+    strTest2 = std::string(szTest);
+
+    LOG_PROCESS_ERROR(TRUE);
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
 BOOL _Test(void)
 {
     LPINT32 nResult = 0;
 
-    nResult = _Test_String();
+    nResult = _Test_ProtoBuf();
     LOG_PROCESS_ERROR(nResult);
 
     LOG_PROCESS_ERROR(TRUE);

@@ -8,13 +8,10 @@
 #define _GT_MESSAGE_HANDLER_H_
 
 #include "lp_lzpl.h"
+#include "lpi_message.h"
 #include "lp_messageserializer.h"
-#include "internal_message_header.h"
-#include "external_message_header.h"
-
-
-using namespace INTERNAL_MESSAGE;
-using namespace EXTERNAL_MESSAGE;
+#include "LPMsg.pb.h"
+#include "LPDefine.pb.h"
 
 
 
@@ -76,28 +73,28 @@ public:
     BOOL DoGSRegisterAck(lp_shared_ptr<ILPSocker> pSocker);
     void OnGameServerRegister(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
-
 public:
 
-    BOOL DoCLientLoginAck(lp_shared_ptr<ILPSocker> pSocker);
+    BOOL DoCLientLoginAck(lp_shared_ptr<ILPSocker> pSocker, const std::string& strAccount, LPINT32 nErrorCode);
     void OnClientLoginReq(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
-
 
 public:
 
     void CloseAllSocker(void);
 
+    BOOL SendMessage(lp_shared_ptr<ILPSocker> pSocker, const LPUINT32 nMsgID, const std::string& strMsgData);
+
 private:
 
-    LPMessageSerializer      m_oRecvMessageSerializer;
-    LPMessageSerializer      m_oSendMessageSerializer;
+    lp_shared_ptr<LPMessageSerializer>  m_pRecvMessageSerializer;
+    lp_shared_ptr<LPMessageSerializer>  m_pSendMessageSerializer;
 
     typedef std::map<LPUINT32, lp_shared_ptr<ILPSocker>>  MAP_SOCKER;
-    MAP_SOCKER                       m_mapSocker;
-    MAP_SOCKER::iterator             m_iterSocker;
+    MAP_SOCKER                          m_mapSocker;
+    MAP_SOCKER::iterator                m_iterSocker;
 
     typedef void (CGTMessageHandler::*pfunMessageCallback)(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
-    pfunMessageCallback              m_MessageCallbackList[max_internal_message_count];
+    pfunMessageCallback              m_MessageCallbackList[LPDefine::msg_end];
 };
 
 

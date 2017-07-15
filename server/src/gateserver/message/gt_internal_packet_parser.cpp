@@ -1,43 +1,58 @@
 #include "gt_internal_packet_parser.h"
 #include "lp_processerror.h"
+#include "LPDefine.pb.h"
 
 
-
-LPINT32  g_MessageSize[INTERNAL_MESSAGE::max_internal_message_count];
 
 CGTInternalPacketParser::CGTInternalPacketParser()
 {
+    m_pMessageHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
+    LOG_PROCESS_ERROR(m_pMessageHead);
 
+    m_pMessageSerializer = lp_make_shared<LPMessageSerializer>();
+    LOG_PROCESS_ERROR(m_pMessageSerializer);
+
+Exit0:
+    return;
 }
 
 CGTInternalPacketParser::~CGTInternalPacketParser()
 {
-
+    MessageHead::DeleteMsgHead(m_pMessageHead);
+    m_pMessageSerializer = nullptr;
 }
 
 LPINT32 LPAPI CGTInternalPacketParser::Parse(lp_shared_ptr<ILPLoopBuf> pLoopBuf)
 {
     LPINT32 nResult = 0;
-    LPUINT16 wMsgId = 0;
     LPINT32 nParseCount = 0;
+    char* pszMsgHead = nullptr;
 
     LOG_PROCESS_ERROR(pLoopBuf);
+    LOG_PROCESS_ERROR(m_pMessageHead);
 
-    if(pLoopBuf->GetTotalReadableLen() < sizeof(wMsgId))
+    if(pLoopBuf->GetTotalReadableLen() < m_pMessageHead->GetHeadLength())
     {
         PROCESS_SUCCESS(TRUE);
     }
 
-    nResult = pLoopBuf->Read((char*)(&wMsgId), sizeof(wMsgId), FALSE, FALSE);
+    pszMsgHead = new char[m_pMessageHead->GetHeadLength()];
+    LOG_PROCESS_ERROR(pszMsgHead);
+
+    nResult = pLoopBuf->Read(pszMsgHead, m_pMessageHead->GetHeadLength(), FALSE, FALSE);
     LOG_PROCESS_ERROR(nResult);
 
-    CONVERT_MSG_ID_ENDIAN(wMsgId);
+    nResult = m_pMessageSerializer->Init(nullptr, 0, pszMsgHead, m_pMessageHead->GetHeadLength());
+    LOG_PROCESS_ERROR(nResult);
 
-    LOG_PROCESS_ERROR(wMsgId > min_internal_message && wMsgId < max_internal_message);
+    nResult = m_pMessageHead->UnSerialize(m_pMessageSerializer);
+    LOG_PROCESS_ERROR(nResult);
 
-    if(pLoopBuf->GetTotalReadableLen() >= g_MessageSize[wMsgId])
+    LOG_PROCESS_ERROR(LPDefine::msg_begin < m_pMessageHead->GetMessageID() && m_pMessageHead->GetMessageID() < LPDefine::msg_end);
+
+    if(pLoopBuf->GetTotalReadableLen() >= m_pMessageHead->GetMessageLength())
     {
-        nParseCount = g_MessageSize[wMsgId];
+        nParseCount = m_pMessageHead->GetMessageLength();
     }
 
     PROCESS_SUCCESS(TRUE);
@@ -46,5 +61,8 @@ Exit0:
     nParseCount = -1;
 
 Exit1:
+
+    SAFE_DELETE_SZ(pszMsgHead);
+
     return nParseCount;
 }

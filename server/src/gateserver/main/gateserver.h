@@ -50,16 +50,16 @@ private:
 
 private:
 
-    lp_shared_ptr<ILPNet>                 m_pNet;
-    lp_shared_ptr<ILPListener>            m_pListener;
-    lp_shared_ptr<ILPListener>            m_pClientListener;
-    lp_shared_ptr<ILPConnector>           m_pConnector;
+    LPUINT32                                m_dwServerState;
+
+    lp_shared_ptr<ILPNet>                   m_pNet;
+    lp_shared_ptr<ILPListener>              m_pListener;
+    lp_shared_ptr<ILPListener>              m_pClientListener;
+    lp_shared_ptr<ILPConnector>             m_pConnector;
     lp_shared_ptr<CGTMessageHandler>        m_pGTMessageHandler;
     lp_shared_ptr<CGTInternalPacketParser>  m_pGTInternalPacketParser;
     lp_shared_ptr<CGTExternalPacketParser>  m_pGTExternalPacketParser;
     lp_shared_ptr<CGTHttpMessageHandler>    m_pGTHttpMessageHandler;
-
-    LPUINT32                                m_dwServerState;
 
 };
 

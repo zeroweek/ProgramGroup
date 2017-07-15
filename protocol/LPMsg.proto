@@ -1,0 +1,47 @@
+syntax = "proto2";
+
+package LPMsg;
+
+////////////////////////BaseCommon/////////////////////////////
+//消息子结构体(因客户端Lua不支持64位的处理，所以修改为两个bytes)
+message GUID
+{
+    required bytes      head = 1;
+    required bytes      data = 2;
+}
+
+message ReqRegister
+{
+	required int32 server_id           = 1;
+	required string server_name        = 2;
+	required string message            = 3;
+}
+
+message AckRegister
+{
+	required int32 server_id           = 1;
+	required string server_name        = 2;
+	required string message            = 3;
+}
+
+message TestString
+{
+	required string str_value1         = 1;
+	required int32 num_value1          = 2;
+	required int32 num_value2          = 3;
+	required int32 num_value3          = 4;
+	required string str_value2         = 5;
+}
+
+message ReqLogin
+{
+	required string account            = 1;
+	required string password           = 2;
+}
+
+message AckLogin
+{
+	required string account            = 1;
+	required int32 error_code          = 2;
+	required string message            = 3;
+}

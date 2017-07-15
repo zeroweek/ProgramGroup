@@ -19,7 +19,7 @@ NS_LZPL_BEGIN
 
 // Summary:
 //   全局变量
-extern std::string NULL_STR;
+extern std::string nullstr;
 
 
 

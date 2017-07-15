@@ -125,6 +125,7 @@
     <ClInclude Include="..\..\inc\lzpl\lp_luascriptmgr.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_lzpl.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_md5.h" />
+    <ClInclude Include="..\..\inc\lzpl\lp_message.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_messageserializer.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_objpool.h" />
     <ClInclude Include="..\..\inc\lzpl\lp_processerror.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="log\lp_profile.cpp" />
     <ClCompile Include="lua\lp_luascript.cpp" />
     <ClCompile Include="lua\lp_luascriptmgr.cpp" />
+    <ClCompile Include="message\lp_message.cpp" />
     <ClCompile Include="message\lp_messageserializer.cpp" />
     <ClCompile Include="net\lp_connector.cpp" />
     <ClCompile Include="net\lp_listener.cpp" />

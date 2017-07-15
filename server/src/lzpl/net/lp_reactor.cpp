@@ -121,7 +121,7 @@ void LPAPI LPReactor::OnExecute(LPUINT32 nIndex)
         {
             LOG_PROCESS_ERROR(nIndex < m_nIoServiceNum);
             m_vecIoService[nIndex]->run();
-            boost::this_thread::sleep(boost::posix_time::microseconds(1));
+            boost::this_thread::sleep(boost::posix_time::millisec(1));
         }
         else if(GetState() == eCommonState_Initing)
         {

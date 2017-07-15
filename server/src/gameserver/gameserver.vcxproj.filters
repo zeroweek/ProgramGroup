@@ -15,9 +15,6 @@
     <ClCompile Include="message\gs_message_handler.cpp">
       <Filter>message</Filter>
     </ClCompile>
-    <ClCompile Include="message\gs_external_packet_parser.cpp">
-      <Filter>message</Filter>
-    </ClCompile>
     <ClCompile Include="message\gs_internal_packet_parser.cpp">
       <Filter>message</Filter>
     </ClCompile>
@@ -27,9 +24,6 @@
       <Filter>main</Filter>
     </ClInclude>
     <ClInclude Include="message\gs_message_handler.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="message\gs_external_packet_parser.h">
       <Filter>message</Filter>
     </ClInclude>
     <ClInclude Include="message\gs_internal_packet_parser.h">

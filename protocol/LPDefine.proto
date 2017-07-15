@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package LPDefine;
+
+enum e_MsgID
+{
+	msg_begin                                    = 1;
+	
+	msg_req_server_register                      = 1001;
+	msg_ack_server_register                      = 1002;
+	
+	msg_req_client_login                         = 2001;
+	msg_ack_client_login                         = 2002;
+	
+	msg_end                                      = 65535;
+}
+
+enum e_ResultCode
+{
+    eRstUnknow                                   = 0;
+	eRstSuccess                                  = 1;
+}

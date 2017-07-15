@@ -9,7 +9,7 @@ NS_LZPL_BEGIN
 
 
 
-std::string NULL_STR = "";
+std::string nullstr = "";
 
 DECLARE void LPAPI lpPathFilter(char * pszPath, LPUINT32 dwMaxLen)
 {
@@ -399,7 +399,7 @@ DECLARE std::string LPAPI lpSerializeToString(LPUINT32 nMaxLen, const char * for
 
     if(nullptr == format || nMaxLen == 0)
     {
-        return NULL_STR;
+        return nullstr;
     }
 
     pszBuf = new char[nMaxLen + 1];

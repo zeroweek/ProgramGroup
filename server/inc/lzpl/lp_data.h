@@ -29,7 +29,7 @@ public:
 
     virtual std::string LPAPI ToString()
     {
-        return NULL_STR;
+        return nullstr;
     }
 
     virtual E_DataType LPAPI GetType() const
@@ -91,7 +91,7 @@ public:
     {
         LOG_CHECK_ERROR(FALSE);
         LPASSERT(FALSE);
-        return NULL_STR;
+        return nullstr;
     }
 
 private:
@@ -145,7 +145,7 @@ public:
     {
         LOG_CHECK_ERROR(FALSE);
         LPASSERT(FALSE);
-        return NULL_STR;
+        return nullstr;
     }
 
 private:
@@ -199,7 +199,7 @@ public:
     {
         LOG_CHECK_ERROR(FALSE);
         LPASSERT(FALSE);
-        return NULL_STR;
+        return nullstr;
     }
 
 private:
@@ -253,7 +253,7 @@ public:
     {
         LOG_CHECK_ERROR(FALSE);
         LPASSERT(FALSE);
-        return NULL_STR;
+        return nullstr;
     }
 
 private:

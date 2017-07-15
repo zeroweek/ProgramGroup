@@ -300,6 +300,9 @@
     <ClInclude Include="net\lp_netdef.h">
       <Filter>net</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\lzpl\lp_message.h">
+      <Filter>message</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt\lp_bt.cpp">
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="net\lp_sockermgr.cpp">
       <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="message\lp_message.cpp">
+      <Filter>message</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,41 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="internal">
-      <UniqueIdentifier>{a461ae62-85f5-496e-9f0f-130446d297dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external">
-      <UniqueIdentifier>{f579486d-2842-421b-9667-29c91b561d64}</UniqueIdentifier>
+    <Filter Include="protocol">
+      <UniqueIdentifier>{65292e8f-a4ea-4933-b7ef-6170a0b4f324}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="external\external_message.cpp">
-      <Filter>external</Filter>
+    <ClCompile Include="..\..\..\protocol\LPDefine.pb.cc">
+      <Filter>protocol</Filter>
     </ClCompile>
-    <ClCompile Include="external\external_message_header.cpp">
-      <Filter>external</Filter>
+    <ClCompile Include="..\..\..\protocol\LPMsg.pb.cc">
+      <Filter>protocol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\message\internal\g2t_message.h">
-      <Filter>internal</Filter>
+    <ClInclude Include="..\..\..\protocol\LPDefine.pb.h">
+      <Filter>protocol</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\message\internal\internal_message_header.h">
-      <Filter>internal</Filter>
+    <ClInclude Include="..\..\..\protocol\LPMsg.pb.h">
+      <Filter>protocol</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\message\internal\t2g_message.h">
-      <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\message\external\external_message_header.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\message\external\external_message.h">
-      <Filter>external</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\inc\message\external\external_message.xml">
-      <Filter>external</Filter>
-    </Xml>
   </ItemGroup>
 </Project>

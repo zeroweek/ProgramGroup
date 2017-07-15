@@ -8,10 +8,8 @@
 #define _GT_EXTERNAL_PACKET_PARSER_H_
 
 #include "lpi_packetparser.h"
-#include "external_message_header.h"
-
-
-using namespace EXTERNAL_MESSAGE;
+#include "lpi_message.h"
+#include "lp_messageserializer.h"
 
 
 
@@ -39,11 +37,9 @@ public:
 
 private:
 
-    EXTERNAL_MESSAGE_HEADER       m_stMessageHead;
+    lp_shared_ptr<MessageHead> m_pMessageHead;
+    lp_shared_ptr<LPMessageSerializer> m_pMessageSerializer;
 };
-
-
-
 
 
 
