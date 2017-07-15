@@ -10,15 +10,15 @@ NS_LZPL_BEGIN
 
 
 
-DECLARE ILPFileLogger* LPAPI lpCreateFileLogger()
+lp_shared_ptr<ILPFileLogger> LPAPI ILPFileLogger::CreateFileLogger()
 {
-    ILPFileLogger* pFileLogger = NULL;
+    return lp_make_shared<LPFileLogger>();
+}
 
-    pFileLogger = new LPFileLogger();
-    PRINTF_PROCESS_ERROR(pFileLogger);
 
-Exit0:
-    return pFileLogger;
+void LPAPI LZPL::ILPFileLogger::DeleteFileLogger(lp_shared_ptr<ILPFileLogger>& pLogger)
+{
+    pLogger = nullptr;
 }
 
 LPFileLogger::LPFileLogger()
@@ -26,7 +26,6 @@ LPFileLogger::LPFileLogger()
     m_bRun                   = FALSE;
     m_bInit                  = FALSE;
     m_bErrorLog              = false;
-    m_dwRef                  = 0;
     m_eLogMode               = eLogMode_None;
     m_dwOutputMask           = eOutputType_Off;
 
@@ -140,32 +139,6 @@ Exit0:
     UnInit();
 
     return FALSE;
-}
-
-
-void LPAPI LPFileLogger::AddRef(void)
-{
-    ++m_dwRef;
-}
-
-LPUINT32 LPAPI LPFileLogger::QueryRef(void)
-{
-    return m_dwRef;
-}
-
-void LPAPI LPFileLogger::Release()
-{
-    PRINTF_CHECK_ERROR(m_dwRef > 0);
-
-    if(m_dwRef > 0)
-    {
-        --m_dwRef;
-    }
-
-    if(0 == m_dwRef)
-    {
-        delete this;
-    }
 }
 
 void LPAPI LPFileLogger::UnInit()

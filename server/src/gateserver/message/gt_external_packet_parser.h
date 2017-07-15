@@ -37,8 +37,9 @@ public:
 
 private:
 
-    lp_shared_ptr<MessageHead> m_pMessageHead;
-    lp_shared_ptr<LPMessageSerializer> m_pMessageSerializer;
+    char*                               m_pszMsgHead;
+    lp_shared_ptr<MessageHead>          m_pMessageHead;
+    lp_shared_ptr<LPMessageSerializer>  m_pMessageSerializer;
 };
 
 

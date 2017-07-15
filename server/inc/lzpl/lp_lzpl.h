@@ -39,19 +39,38 @@ NS_LZPL_BEGIN
 
 
 // Summary:
-//   初始化LZPL默认日志控制对象
-//   注：使用层应当在使用LZPL组件之前调用此日志模块初始化函数
-// Input:
-//  stLogConfig: 日志配置
-// Return:
-//      TRUE-成功，FALSE-失败
-DECLARE BOOL LPAPI lpInitLzpl(LOG_CONFIG& stLogConfig);
+//   LZPL模块类
+class LP
+{
+public:
 
+    // Summary:
+    //   初始化LZPL默认日志控制对象
+    //   注：使用层应当在使用LZPL组件之前调用此日志模块初始化函数
+    // Input:
+    //  stLogConfig: 日志配置
+    // Return:
+    //      TRUE-成功，FALSE-失败
+    static BOOL LPAPI InitLzpl(LOG_CONFIG& stLogConfig);
 
-// Summary:
-//   反初始化LZPL模块
-DECLARE void LPAPI lpUnInitLzpl();
+    // Summary:
+    //   反初始化LZPL模块
+    static void LPAPI UnInitLzpl();
 
+    // Summary:
+    //      加载日志配置
+    // Input:
+    //      pszDir：日志配置文件的目录
+    //      pszFileName：日志配置文件名
+    // Return:
+    //      TRUE-成功，FALSE-失败
+    static BOOL LPAPI LoadLogConfig(const char* pszLogConfigDir, const char* pszLogConfigFileName, LOG_CONFIG& stLogConfig);
+
+private:
+
+    static void LPAPI GlobalAssert();
+
+};
 
 
 

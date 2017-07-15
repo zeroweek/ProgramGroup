@@ -37,7 +37,7 @@ public:
     //      pLogger：底层使用的日志对象
     //      pszPrefix：日志信息前缀，空则传入NULL
     //      dwLogLevelConfig：日志等级配置
-    virtual BOOL LPAPI Init(ILPLogger* pLogger, LOG_CONFIG& stLogConfig);
+    virtual BOOL LPAPI Init(lp_shared_ptr<ILPLogger> pLogger, LOG_CONFIG& stLogConfig);
 
     // Summary:
     //      无
@@ -71,10 +71,6 @@ public:
     //      调试信息
     virtual void LPAPI Debug(const char* format, ...);
 
-    // Summary:
-    //      释放
-    virtual void LPAPI Release();
-
 private:
 
     // Summary:
@@ -87,13 +83,13 @@ private:
 
 private:
 
-    ILPLogger*     m_pLogger;                             // 底层使用的日志对象
-    BOOL           m_bLogLock;                            // 是否使用锁
-    LPLock         m_oLock;                               // 锁
-    LPUINT32        m_dwLogLevelConfig;                    // 日志等级配置，控制各个等级日志的开关
-    LPUINT32        m_dwOutputMask;
-    char           m_szModulePrefix[COMMON_NAME_LEN];     // 日志模块前缀，表明是哪个模块记录的日志信息
-    LOG_CONFIG     m_stLogConfig;                         // 日志配置
+    lp_shared_ptr<ILPLogger>            m_pLogger;                             // 底层使用的日志对象
+    BOOL                                m_bLogLock;                            // 是否使用锁
+    LPLock                              m_oLock;                               // 锁
+    LPUINT32                            m_dwLogLevelConfig;                    // 日志等级配置，控制各个等级日志的开关
+    LPUINT32                            m_dwOutputMask;
+    char                                m_szModulePrefix[COMMON_NAME_LEN];     // 日志模块前缀，表明是哪个模块记录的日志信息
+    LOG_CONFIG                          m_stLogConfig;                         // 日志配置
 };
 
 

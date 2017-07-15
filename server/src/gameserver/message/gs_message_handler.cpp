@@ -16,8 +16,8 @@ CGSMessageHandler::~CGSMessageHandler()
 
 BOOL LPAPI CGSMessageHandler::Init(void)
 {
-    m_pMessageHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
-    LOG_PROCESS_ERROR(m_pMessageHead);
+    m_pRecvMsgHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
+    LOG_PROCESS_ERROR(m_pRecvMsgHead);
 
     m_pMessageSerializer = lp_make_shared<LPMessageSerializer>();
     LOG_PROCESS_ERROR(m_pMessageSerializer);
@@ -38,7 +38,7 @@ Exit0:
 
 BOOL LPAPI CGSMessageHandler::UnInit(void)
 {
-    MessageHead::DeleteMsgHead(m_pMessageHead);
+    MessageHead::DeleteMsgHead(m_pRecvMsgHead);
 
     m_pMessageSerializer        = nullptr;
     m_pRecvMessageSerializer    = nullptr;
@@ -103,26 +103,23 @@ void LPAPI CGSMessageHandler::OnMessage(lp_shared_ptr<ILPSocker> pSocker, const 
 {
     LPINT32 nResult = 0;
     LPUINT16 wMsgId = 0;
-    lp_shared_ptr<MessageHead> pMsgHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
 
-    LOG_PROCESS_ERROR(pMsgHead);
+    LOG_PROCESS_ERROR(m_pRecvMsgHead);
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pcszBuf);
-    LOG_PROCESS_ERROR(dwSize >= pMsgHead->GetHeadLength());
+    LOG_PROCESS_ERROR(dwSize >= m_pRecvMsgHead->GetHeadLength());
 
-    nResult = m_pRecvMessageSerializer->Init(nullptr, 0, pcszBuf, pMsgHead->GetHeadLength());
+    nResult = m_pRecvMessageSerializer->Init(nullptr, 0, pcszBuf, m_pRecvMsgHead->GetHeadLength());
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = pMsgHead->UnSerialize(m_pRecvMessageSerializer);
+    nResult = m_pRecvMsgHead->UnSerialize(m_pRecvMessageSerializer);
     LOG_PROCESS_ERROR(nResult);
 
-    LOG_PROCESS_ERROR(LPDefine::msg_begin < pMsgHead->GetMessageID() && pMsgHead->GetMessageID() < LPDefine::msg_end);
+    LOG_PROCESS_ERROR(LPDefine::msg_begin < m_pRecvMsgHead->GetMessageID() && m_pRecvMsgHead->GetMessageID() < LPDefine::msg_end);
 
-    LOG_PROCESS_ERROR(m_MessageCallbackList[pMsgHead->GetMessageID()]);
+    LOG_PROCESS_ERROR(m_MessageCallbackList[m_pRecvMsgHead->GetMessageID()]);
 
-    (this->*m_MessageCallbackList[pMsgHead->GetMessageID()])(pSocker, pcszBuf + pMsgHead->GetHeadLength(), dwSize - pMsgHead->GetHeadLength());
-
-    MessageHead::DeleteMsgHead(pMsgHead);
+    (this->*m_MessageCallbackList[m_pRecvMsgHead->GetMessageID()])(pSocker, pcszBuf + m_pRecvMsgHead->GetHeadLength(), dwSize - m_pRecvMsgHead->GetHeadLength());
 
 Exit0:
     return;

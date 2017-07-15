@@ -75,7 +75,7 @@ public:
 
 public:
 
-    BOOL DoCLientLoginAck(lp_shared_ptr<ILPSocker> pSocker, const std::string& strAccount, LPINT32 nErrorCode);
+    BOOL DoClientLoginAck(lp_shared_ptr<ILPSocker> pSocker, const std::string& strAccount, LPINT32 nErrorCode);
     void OnClientLoginReq(lp_shared_ptr<ILPSocker> pSocker, const char* pcszBuf, LPUINT32 dwSize);
 
 public:
@@ -86,6 +86,7 @@ public:
 
 private:
 
+    lp_shared_ptr<MessageHead>          m_pRecvMsgHead;
     lp_shared_ptr<LPMessageSerializer>  m_pRecvMessageSerializer;
     lp_shared_ptr<LPMessageSerializer>  m_pSendMessageSerializer;
 

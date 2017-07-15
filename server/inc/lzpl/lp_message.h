@@ -19,7 +19,7 @@ NS_LZPL_BEGIN
 #pragma pack(push, 1)
 
 // Summary:
-//   消息头接口结构
+//   server to server 消息头接口结构
 struct DECLARE SSMessageHead : public MessageHead
 {
     LPUINT32 nMsgID;

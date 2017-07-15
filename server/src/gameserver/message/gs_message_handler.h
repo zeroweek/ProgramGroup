@@ -79,7 +79,7 @@ public:
 
 private:
 
-    lp_shared_ptr<MessageHead>              m_pMessageHead;
+    lp_shared_ptr<MessageHead>              m_pRecvMsgHead;
     lp_shared_ptr<LPMessageSerializer>      m_pMessageSerializer;
 
     lp_shared_ptr<LPMessageSerializer>      m_pRecvMessageSerializer;

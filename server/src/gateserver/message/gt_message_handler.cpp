@@ -16,6 +16,9 @@ CGTMessageHandler::~CGTMessageHandler()
 
 BOOL LPAPI CGTMessageHandler::Init(void)
 {
+    m_pRecvMsgHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
+    LOG_PROCESS_ERROR(m_pRecvMsgHead);
+
     m_pRecvMessageSerializer = lp_make_shared<LPMessageSerializer>();
     LOG_PROCESS_ERROR(m_pRecvMessageSerializer);
 
@@ -34,6 +37,8 @@ Exit0:
 
 BOOL LPAPI CGTMessageHandler::UnInit(void)
 {
+    MessageHead::DeleteMsgHead(m_pRecvMsgHead);
+
     m_pRecvMessageSerializer = nullptr;
     m_pSendMessageSerializer = nullptr;
 
@@ -94,26 +99,23 @@ void LPAPI CGTMessageHandler::OnMessage(lp_shared_ptr<ILPSocker> pSocker, const 
 {
     LPINT32 nResult = 0;
     LPUINT16 wMsgId = 0;
-    lp_shared_ptr<MessageHead> pMsgHead = MessageHead::CreateMsgHead(eMsgHeadType_ss);
 
-    LOG_PROCESS_ERROR(pMsgHead);
+    LOG_PROCESS_ERROR(m_pRecvMsgHead);
     LOG_PROCESS_ERROR(pSocker);
     LOG_PROCESS_ERROR(pcszBuf);
-    LOG_PROCESS_ERROR(dwSize >= pMsgHead->GetHeadLength());
+    LOG_PROCESS_ERROR(dwSize >= m_pRecvMsgHead->GetHeadLength());
 
-    nResult = m_pRecvMessageSerializer->Init(nullptr, 0, pcszBuf, pMsgHead->GetHeadLength());
+    nResult = m_pRecvMessageSerializer->Init(nullptr, 0, pcszBuf, m_pRecvMsgHead->GetHeadLength());
     LOG_PROCESS_ERROR(nResult);
 
-    nResult = pMsgHead->UnSerialize(m_pRecvMessageSerializer);
+    nResult = m_pRecvMsgHead->UnSerialize(m_pRecvMessageSerializer);
     LOG_PROCESS_ERROR(nResult);
 
-    LOG_PROCESS_ERROR(LPDefine::msg_begin < pMsgHead->GetMessageID() && pMsgHead->GetMessageID() < LPDefine::msg_end);
+    LOG_PROCESS_ERROR(LPDefine::msg_begin < m_pRecvMsgHead->GetMessageID() && m_pRecvMsgHead->GetMessageID() < LPDefine::msg_end);
 
-    LOG_PROCESS_ERROR(m_MessageCallbackList[pMsgHead->GetMessageID()]);
+    LOG_PROCESS_ERROR(m_MessageCallbackList[m_pRecvMsgHead->GetMessageID()]);
 
-    (this->*m_MessageCallbackList[pMsgHead->GetMessageID()])(pSocker, pcszBuf + pMsgHead->GetHeadLength(), dwSize - pMsgHead->GetHeadLength());
-
-    MessageHead::DeleteMsgHead(pMsgHead);
+    (this->*m_MessageCallbackList[m_pRecvMsgHead->GetMessageID()])(pSocker, pcszBuf + m_pRecvMsgHead->GetHeadLength(), dwSize - m_pRecvMsgHead->GetHeadLength());
 
 Exit0:
     return;
@@ -204,7 +206,7 @@ Exit0:
     return;
 }
 
-BOOL CGTMessageHandler::DoCLientLoginAck(lp_shared_ptr<ILPSocker> pSocker, const std::string& strAccount, LPINT32 nErrorCode)
+BOOL CGTMessageHandler::DoClientLoginAck(lp_shared_ptr<ILPSocker> pSocker, const std::string& strAccount, LPINT32 nErrorCode)
 {
     LPINT32 nResult = 0;
     LPMsg::AckLogin xMsg;
@@ -241,7 +243,7 @@ void CGTMessageHandler::OnClientLoginReq(lp_shared_ptr<ILPSocker> pSocker, const
 
     IMP("recv client login req: (%s : %s)", xMsg.account().c_str(), xMsg.password().c_str());
 
-    DoCLientLoginAck(pSocker, xMsg.account(), (LPINT32)LPDefine::eRstSuccess);
+    DoClientLoginAck(pSocker, xMsg.account(), (LPINT32)LPDefine::eRstSuccess);
 
 Exit0:
     return;

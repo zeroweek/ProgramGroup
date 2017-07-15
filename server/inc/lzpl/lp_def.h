@@ -108,8 +108,10 @@
 #endif
 
 #ifdef _WIN32
-#   define __TRY__                                         __try
-#   define __EXCEPT__                                      __except (lpDUMPExceptionFilter(GetExceptionInformation()))
+//#   define __TRY__                                         __try
+//#   define __EXCEPT__                                      __except (lpDUMPExceptionFilter(GetExceptionInformation()))
+#   define __TRY__                                         try
+#   define __EXCEPT__                                      catch(...)
 #else
 #   define __TRY__                                         try
 #   define __EXCEPT__                                      catch(...)

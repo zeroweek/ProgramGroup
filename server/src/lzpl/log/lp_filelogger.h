@@ -36,18 +36,6 @@ public:
     virtual ~LPFileLogger();
 
     // Summary:
-    //      引用计数加1
-    virtual void LPAPI AddRef(void);
-
-    // Summary:
-    //      引用计数减1
-    virtual LPUINT32 LPAPI QueryRef(void);
-
-    // Summary:
-    //      释放
-    virtual void LPAPI Release();
-
-    // Summary:
     //      记录日志
     // Input:
     //      pszLog：日志内容
@@ -102,7 +90,6 @@ private:
     volatile atomic_bool        m_bErrorLog;                  // 日志错误
 
     LPThread                    m_oThread;
-    LPUINT32                    m_dwRef;                      // 本日志对象引用计数
     e_LogMode                   m_eLogMode;                   // 日志记录模式
     LPUINT32                    m_dwOutputMask;                // 输出掩码
 

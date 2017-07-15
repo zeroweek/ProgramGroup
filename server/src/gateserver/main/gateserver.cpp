@@ -823,16 +823,16 @@ int main(int argc, char* argv[])
     RedefinedConsole();
 
     // 使用LZPL，必须在程序运行时先初始化
-    nResult = lpLoadLogConfig(lpGetExeDir(), "logconfig.xml", stLogConfig);
+    nResult = LP::LoadLogConfig(lpGetExeDir(), "logconfig.xml", stLogConfig);
     PRINTF_PROCESS_ERROR(nResult);
 
 #   ifdef _DEBUG
     {
-        nResult = lpInitLzpl(stLogConfig);
+        nResult = LP::InitLzpl(stLogConfig);
     }
 #   else
     {
-        nResult = lpInitLzpl(stLogConfig);
+        nResult = LP::InitLzpl(stLogConfig);
     }
 #   endif
 

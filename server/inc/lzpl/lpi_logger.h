@@ -23,8 +23,8 @@ enum e_LogLevel
     eLogLevel_Off       = 0x00000000,   // 关闭所有
     eLogLevel_Debug     = 0x00000001,   // 调试日志
     eLogLevel_Info      = 0x00000002,   // 普通信息
-    eLogLevel_Warn      = 0x00000004,   // 警告
-    eLogLevel_Important = 0x00000008,   // 警告
+    eLogLevel_Warn      = 0x00000004,   // 警告信息
+    eLogLevel_Important = 0x00000008,   // 重要信息
     eLogLevel_Error     = 0x00000010,   // 一般性错误
     eLogLevel_Fatal     = 0x00000020,   // 致命错误
     eLogLevel_Lua       = 0x00000040,   // lua信息
@@ -67,6 +67,7 @@ enum e_LogType
     eLogType_None            = 0,      // none
     eLogType_File            = 1,      // 文件日志，日志记录在文件
     eLogType_Net             = 2,      // 网络日志，日志发送到网络
+    eLogType_Mysql           = 3,      // 数据库日志，日志存储到数据库
     eLogType_Max
 };
 
@@ -153,31 +154,20 @@ DECLARE void LPAPI lpSetConsoleColor(e_ConsoleTextColor textColor = CTC_WHITE, e
 //   日志配置结构对象
 struct LOG_CONFIG
 {
-    char                szLogDir[MAX_PATH];              //日志文件的目录
-    char                szFileName[MAX_FILE_NAME];       //日志文件名
-    char                szModulePrefix[COMMON_NAME_LEN]; //日志信息模块前缀
-    BOOL                bWrithLock;                      //日志是否写加锁
-    LPUINT32             dwLogMode;                       //日志模式
-    LPUINT32             dwLogLevelConfig;                //日志等级配置
-    LPUINT32             dwOutputMask;                    //日志输出掩码
+    char                    szLogDir[MAX_PATH];              //日志文件的目录
+    char                    szFileName[MAX_FILE_NAME];       //日志文件名
+    char                    szModulePrefix[COMMON_NAME_LEN]; //日志信息模块前缀
+    BOOL                    bWrithLock;                      //日志是否写加锁
+    LPUINT32                dwLogMode;                       //日志模式
+    LPUINT32                dwLogLevelConfig;                //日志等级配置
+    LPUINT32                dwOutputMask;                    //日志输出掩码
 
-    LPUINT32             dwMaxLogLoopBufSize;             //文件日志缓冲区大小，默认=10*1024*1024
-    LPUINT32             dwMaxLogSingleFileSize;          //文件日志单个文件最大容量，默认=10*1024*1024
-    LPUINT32             dwMaxLogOneMsgSize;              //日志消息最大字节数，默认=4096
-    LPUINT32             dwLogFlushInterval;              //日志flush间隔（单位/毫秒），默认=3000
-    LPINT32              nTimezone;                       //时区
+    LPUINT32                dwMaxLogLoopBufSize;             //文件日志缓冲区大小，默认=10*1024*1024
+    LPUINT32                dwMaxLogSingleFileSize;          //文件日志单个文件最大容量，默认=10*1024*1024
+    LPUINT32                dwMaxLogOneMsgSize;              //日志消息最大字节数，默认=4096
+    LPUINT32                dwLogFlushInterval;              //日志flush间隔（单位/毫秒），默认=3000
+    LPINT32                 nTimezone;                       //时区
 };
-
-
-
-// Summary:
-//      加载日志配置
-// Input:
-//      pszDir：日志配置文件的目录
-//      pszFileName：日志配置文件名
-// Return:
-//      TRUE-成功，FALSE-失败
-DECLARE BOOL LPAPI lpLoadLogConfig(const char* pszLogConfigDir, const char* pszLogConfigFileName, LOG_CONFIG& stLogConfig);
 
 
 
@@ -190,18 +180,6 @@ public:
     // Summary:
     //      无
     virtual ~ILPLogger() {}
-
-    // Summary:
-    //      引用计数加1
-    virtual void LPAPI AddRef(void) = 0;
-
-    // Summary:
-    //      引用计数减1
-    virtual LPUINT32 LPAPI QueryRef(void) = 0;
-
-    // Summary:
-    //      释放
-    virtual void LPAPI Release() = 0;
 
     // Summary:
     //      记录日志
@@ -234,7 +212,7 @@ public:
     // Input:
     //   pLogger：底层使用的日志对象
     //   stLogConfig：日志配置
-    virtual BOOL LPAPI Init(ILPLogger* pLogger, LOG_CONFIG& stLogConfig) = 0;
+    virtual BOOL LPAPI Init(lp_shared_ptr<ILPLogger>, LOG_CONFIG& stLogConfig) = 0;
 
     // Summary:
     //      lua信息
@@ -264,18 +242,40 @@ public:
     //      调试信息
     virtual void LPAPI Debug(const char* format, ...) = 0;
 
+public:
+
     // Summary:
-    //      释放
-    virtual void LPAPI Release() = 0;
+    //   初始化LZPL默认日志控制对象
+    //   注：使用层应当在使用LZPL组件之前调用此日志模块初始化函数
+    // Input:
+    //   stLogConfig: 日志配置
+    // Return:
+    //   TRUE-成功，FALSE-失败
+    static BOOL LPAPI InitLzplLoggerCtrl(LOG_CONFIG& stLogConfig);
+
+    // Summary:
+    //      设置组件内部使用的ILPLoggerCtrl（不使用默认的）
+    // Input:
+    //      poLzplLoggerCtrl：日志控制器对象
+    // Return:
+    //      TRUE-成功，FALSE-失败
+    static BOOL LPAPI SetLzplLoggerCtrl(lp_shared_ptr<ILPLoggerCtrl> pLzplLoggerCtrl);
+
+    // Summary:
+    //      获取LZPL内部日志控制对象
+    // Return:
+    //      网络组建日志控制对象
+    static lp_shared_ptr<ILPLoggerCtrl> LPAPI GetLzplLoggerCtrl();
+
+public:
+
+    static lp_shared_ptr<ILPLoggerCtrl> m_pLzplLoggerCtrl;
+
+public:
+
+    static lp_shared_ptr<ILPLoggerCtrl> LPAPI CreateLoggerCtrl();
+    static void LPAPI DeleteLoggerCtrl(lp_shared_ptr<ILPLoggerCtrl>& pLoggerCtrl);
 };
-
-
-
-// Summary:
-//      创建网络组件日志控制对象
-// Return:
-//      网络组建日志控制对象
-DECLARE ILPLoggerCtrl* LPAPI lpCreateLoggerCtrl();
 
 
 
@@ -295,59 +295,32 @@ public:
     //   stLogConfig：日志配置
     virtual BOOL LPAPI Init(LOG_CONFIG& stLogConfig) = 0;
 
+public:
+
+    // Summary:
+    //      创建文件日志对象
+    // Return:
+    //      文件日志对象
+    static lp_shared_ptr<ILPFileLogger> LPAPI CreateFileLogger();
+    static void LPAPI DeleteFileLogger(lp_shared_ptr<ILPFileLogger>& pLogger);
 };
 
 
 
-// Summary:
-//      创建文件日志对象
-// Return:
-//      文件日志对象
-DECLARE ILPFileLogger* LPAPI lpCreateFileLogger();
-
-
-
-// Summary:
-//   初始化LZPL默认日志控制对象
-//   注：使用层应当在使用LZPL组件之前调用此日志模块初始化函数
-// Input:
-//   stLogConfig: 日志配置
-// Return:
-//   TRUE-成功，FALSE-失败
-DECLARE BOOL LPAPI lpInitLzplLoggerCtrl(LOG_CONFIG& stLogConfig);
-
-// Summary:
-//      设置组件内部使用的ILPLoggerCtrl（不使用默认的）
-// Input:
-//      poLzplLoggerCtrl：日志控制器对象
-// Return:
-//      TRUE-成功，FALSE-失败
-DECLARE BOOL LPAPI lpSetLzplLoggerCtrl(ILPLoggerCtrl* poLzplLoggerCtrl);
-
-
-
-// Summary:
-//      获取LZPL内部日志控制对象
-// Return:
-//      网络组建日志控制对象
-DECLARE ILPLoggerCtrl* LPAPI lpGetLzplLoggerCtrl();
-
-
-
 //lua相关消息（不屏蔽）
-#define LUA        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Lua
+#define LUA        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Lua
 //致命消息（不屏蔽）
-#define FTL        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Fatal
+#define FTL        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Fatal
 //错误消息（不屏蔽）
-#define ERR        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Error
+#define ERR        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Error
 //警告消息（不屏蔽）
-#define WRN        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Warn
+#define WRN        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Warn
 //重要消息（不屏蔽）
-#define IMP        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Important
+#define IMP        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Important
 //一般消息（release可屏蔽）
-#define INF        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Info
+#define INF        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Info
 //调试提示（release屏蔽）
-#define DBG        if(NULL!=lpGetLzplLoggerCtrl()) lpGetLzplLoggerCtrl()->Debug
+#define DBG        if(nullptr != ILPLoggerCtrl::GetLzplLoggerCtrl()) ILPLoggerCtrl::GetLzplLoggerCtrl()->Debug
 
 
 

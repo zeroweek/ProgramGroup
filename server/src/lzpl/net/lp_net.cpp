@@ -244,7 +244,7 @@ lp_shared_ptr<ILPNet> LPAPI ILPNet::CreateNetModule(lp_shared_ptr<ILPNetMessageH
     LPINT32 nResult = 0;
     lp_shared_ptr<ILPNet> poNetImpl;
 
-    PRINTF_PROCESS_ERROR(lpGetLzplLoggerCtrl());
+    PRINTF_PROCESS_ERROR(ILPLoggerCtrl::GetLzplLoggerCtrl());
 
     LOG_PROCESS_ERROR(pNetMessageHandler);
 
